@@ -29,10 +29,10 @@ jobs:
         # npm run build --prod
         npm run build:ssr
     
-    - name: 'Copy web.config'
+    - name: 'Move web.config to root'
       run: mv dist/RemojuApp-V3U/browser/web.config dist/RemojuApp-V3U/
 
-    - name: 'Copy main.js'
+    - name: 'Move main.js and Remove server folder'
       run: |
         mv dist/RemojuApp-V3U/server/main.js dist/RemojuApp-V3U/
         rm -rf dist/RemojuApp-V3U/server
