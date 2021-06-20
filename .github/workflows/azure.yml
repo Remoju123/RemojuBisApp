@@ -26,8 +26,15 @@ jobs:
         # Build and test the project, then
         # deploy to Azure Web App.
         npm install
-        npm run build --prod
-        # npm run build:ssr
+        # npm run build --prod
+        npm run build:ssr
+    
+    - name: 'Copy web.config'
+      run: mv dist/RemojuApp-V3U/browser/web.config dist/RemojuApp-V3U/
+
+    - name: 'Copy main.js'
+      run: |
+        mv dist/RemojuApp-V3U/server/main.js dist/RemojuApp-V3U/
         
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
