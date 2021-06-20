@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - Remoju-App-V3-U
 on:
   push:
     branches:
-      - develop
+      - brank
   workflow_dispatch:
 
 jobs:
