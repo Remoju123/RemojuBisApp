@@ -35,6 +35,7 @@ jobs:
     - name: 'Copy main.js'
       run: |
         mv dist/RemojuApp-V3U/server/main.js dist/RemojuApp-V3U/
+        rm -rf dist/RemojuApp-V3U/server
         
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
