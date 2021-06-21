@@ -1,0 +1,19 @@
+<footer>
+  <mat-nav-list class="footerlink">
+    <mat-list-item *ngFor="let item of menuItems.getMenuitem()">
+      <a class="" [routerLink]="['/', item.state]">
+        <span>{{ item.name }}</span>
+      </a>
+    </mat-list-item>
+  </mat-nav-list>
+
+  <mat-nav-list class="footerpublic">
+    <mat-list-item *ngFor="let item of menuItems.getPubmenuitem()">
+      <a class="" [routerLink]="['/', item.state]">
+        <span>{{ item.name }}</span>
+      </a>
+    </mat-list-item>
+  </mat-nav-list>
+
+  <p id="Copyright">Copyright © Remoju. All rights reserved.</p>
+</footer>

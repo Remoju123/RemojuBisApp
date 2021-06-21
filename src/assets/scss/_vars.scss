@@ -1,0 +1,648 @@
+// Detail Font Size
+$fs-normal: 15px;
+
+// COLORS
+$color-remoju: #b52b3b;
+
+$color-gold: #cdbf9c;
+$color-darkgold: #c0a080;
+
+/* colors */
+$color-gld01: #bfa060;
+$color-gld02: #6f4b00;
+$color-gld03: #8f7848;
+$color-gld04: #9a721e;
+$color-gld04cf:#9a721ecf;
+
+$color-gry00: #f6f6f6;
+$color-gry01: #eaeaea;
+$color-gry02: #c7c4c1;
+$color-gry03: #949494;
+$color-gry04: #807e7d;
+$color-gry05: #757575;
+$color-gry06: #696969;
+
+$color-pnk00: #e58e90;
+$color-pnk02: #f3787e;
+$color-pnk04: #de7274;
+
+$color-grn01: #81C5B4;
+
+/* iOSでのデフォルトスタイルをリセット */
+@mixin ios-reset {
+  border-radius: 0;
+  -webkit-box-sizing: content-box;
+  -webkit-appearance: none;
+  appearance: button;
+  border: none !important;
+  box-sizing: border-box;
+  background: none;
+
+  &::-webkit-search-decoration {
+    display: none;
+  }
+
+  &::focus {
+    outline-offset: -2px;
+  }
+}
+
+// Custom Checkbox
+// https://copypet.jp/774/
+@mixin CpCheckbox {
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    left: -1000em;
+    margin: 0;
+    z-index: 10;
+  }
+
+  label {
+    // font-size: 16px;
+    // display: inline-block;
+    padding-left: 25px;
+    cursor: pointer;
+    height: 30px;
+    // line-height: 30px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 0;
+  }
+
+  label::before {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: solid 1px #ccc;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 6px;
+    transition: 0.1s ease-in-out;
+  }
+
+  label::after {
+    content: "";
+    display: block;
+    transform: rotate(45deg);
+    border: solid 2px #3cb371;
+    border-top: 0;
+    border-left: 0;
+    width: 10px;
+    height: 16px;
+    left: 5px;
+    top: -5px; // -5px;
+    position: absolute;
+    box-sizing: border-box;
+    transition: 0.2s ease-in-out;
+    opacity: 0;
+  }
+
+  input[type="checkbox"]:checked + label::after {
+    transform: rotate(45deg);
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@mixin copy-protect {
+  pointer-events: none;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -moz-touch-callout:none;
+  -moz-user-select:none;
+  user-select:none;
+}
+
+@mixin scCheckbox{
+  input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    left: -1000em;
+    margin: 0;
+    z-index: 10;
+
+    &:checked + label{
+      background-color: #fff;
+      color:$color-gld04;
+      border:1px solid $color-gld04;
+    }
+  }
+
+  label {
+    cursor: pointer;
+    padding: 2px 8px;
+    border: 1px solid #EDEAE8;
+    border-radius: 3px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+@mixin routeIcons {
+  dl.route{
+    display: inline-flex;
+    margin: 0;
+    dd{
+      margin-inline-start: 14px;
+      position: relative;
+
+      &:first-child{
+        &::after{
+          content: unset;
+        }
+      }
+
+      &.walk{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_walk_h.svg);
+        }
+      }
+
+      &.bus{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_bus_h.svg);
+        }
+      }
+
+      &.rail{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_rail_h.svg);
+        }
+      }
+
+      &.JP{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_rail_h.svg);
+        }
+      }
+
+      &.bullettrain{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_bullettrain_h.svg);
+        }
+      }
+
+      &.plane{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_plane_h.svg);
+        }
+      }
+
+      &.ship{
+        &::before{
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url(../../assets/img/move_ship_h.svg);
+        }
+      }
+    }
+  }
+}
+
+@mixin transfer-style {
+  .mat-list {
+    $width: 4px;
+    $left: 97px;
+    $top: -16px;
+    $top0: 0;
+    $top2: 2px;
+    $top7: 7px;
+    $top11: 11px;
+    $bottom: 26px;
+    $dl-left: 39px;
+    $dl-top: 18px;
+    $dl-border-right: none;
+    $dd-left: 96px;
+    $dd-top: -38px;
+    $dd-bottom: -14px;
+    $dd-width: 12px;
+    $border-right-width: 3px;
+    $border-right-color: #bfb18a;
+
+    .mat-list-item {
+      height: auto;
+      font-size: 13px;
+      ::ng-deep.mat-list-item-content{
+        padding: 0;
+      }
+
+      &:last-of-type {
+        dl {
+          dd:last-of-type {
+            border-top: none;
+            border-bottom: none;
+          }
+
+          dd:last-of-type::after {
+            position: absolute;
+            bottom: 0;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      ::ng-deep.mat-list-item-ripple {
+        top: -13px;
+      }
+
+      &.walk {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: 14px;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width dotted $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.bus {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.rail {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.JR {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;            
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.bullettrain {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;            
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.plane {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;            
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      &.ship {
+        ::ng-deep.mat-list-item-content {
+          :first-child::before {
+            position: absolute;
+            top: $top0;
+            bottom: $bottom;
+            left: $left;
+            width: $width;
+            border-right: $border-right-width solid $border-right-color;
+            content: "";
+          }
+        }
+
+        dl {
+          :first-child::before {
+            border-right: $dl-border-right;
+          }
+
+          > dd:last-of-type::before {
+            position: absolute;
+            top: $dd-top;
+            left: $dd-left;
+            width: $dd-width;
+            content: url("../../assets/img/trip_origin.svg");
+          }
+        }
+      }
+
+      dl {
+        width: 100%;
+        line-height: 2;
+        margin-block-start: 0;
+        margin-block-end: 0;
+
+        dd {
+          &:first-child{
+            height: 56px;
+            margin-inline-start: 0;
+            background-color: #fff;  
+
+            display: flex;
+            align-items: center;
+
+            span.icon{
+              flex-basis: 30%;
+              display: flex;
+              justify-content: center;
+            }
+
+            span.line{
+              margin-left: 2em;
+            }
+          }
+
+          &:last-child{
+            display: flex;
+            .times{
+              line-height: 1.2;
+              flex-basis: 28%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+            .station{
+              display: flex;
+              align-items: center;
+              font-size: 16px;
+              margin-left: 1em;
+              font-weight:bolder;
+              color: #555;
+            }
+          }
+
+          line-height: 3;
+          height: 40px;
+        }
+
+        dd:last-of-type {
+          margin-inline-start: 0;
+        }
+      }
+
+      @media screen and (min-width: 415px) and (max-width: 1024px) { 
+        dl{
+          dd{
+            &:last-child{
+              .times{
+                flex-basis: 18%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin switchView {
+  .switchView{
+    $edit:"編集";
+    $preview:"プレビュー";
+    $edit_en:"Edit";
+    $preview_en:"Preview";
+
+    line-height: 32px;
+    letter-spacing: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bolder;
+    
+    position: relative;
+    // margin: auto;
+    width: 130px;
+    background: #fff;
+
+    &.en{
+      input[type="checkbox"]{
+        &:checked +label{
+          span::after{
+            content: $edit_en;
+          }
+        }
+        &:checked ~#swImg{
+          &::before{
+            content: $preview_en;  
+          }  
+        }
+      }
+
+      label{
+        span::after{
+          content: $preview_en;
+        }
+      }
+
+      #swImg{
+        &::before{
+          content: $edit_en;
+        }
+      }
+    }
+
+    input[type="checkbox"]{
+      display: none;
+      &:checked +label{
+        border-color: $color-pnk02;
+        span::after{
+          content: $edit;
+          padding: 0 65px 0 0;
+          color: $color-pnk02;
+        }
+      }
+
+      &:checked ~#swImg{
+        transform: translateX(60px);
+        background: $color-pnk02; 
+        &::before{
+          content: $preview;
+          color: #fff;
+        }
+      }
+    }
+
+    label{
+      display: block;
+      box-sizing: border-box;
+      height: 32px;
+      border: 1px solid $color-pnk02;
+      border-radius: 30px;
+
+      span::after{
+        content: $preview;
+        padding: 0 0 0 67px;
+        color: $color-pnk02;
+      }
+    }
+
+    #swImg{
+      position:absolute;
+      width: 70px;
+      height: 32px;
+      background: $color-pnk02;
+      top: 0px;
+      left: 0px;
+      border-radius: 16px;
+      transition: .2s;
+
+      &::before{
+        content: $edit;
+        color: #fff;
+      }
+    }
+  }
+}
+
+
