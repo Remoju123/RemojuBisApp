@@ -1,0 +1,116 @@
+@charset "UTF-8";
+
+/* ----------------------------------------------------------------------------------------------------
+利用推奨
+
+モバイルのブレイクポイントは、material.ioを参考にしています。
+https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+---------------------------------------------------------------------------------------------------- */
+@mixin mobile-xsmall {
+  @media screen and (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin mobile-small() {
+  @media screen and (min-width: 640px) and (max-width: 960px) {
+    @content;
+  }
+}
+
+@mixin pc-small() {
+  @media screen and (min-width: 960px) and (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin pc-large() {
+  @media screen and (min-width: 1280px) {
+    @content;
+  }
+}
+
+/* 複数のコンポーネントで共通利用 */
+.myContainerMain {
+  color: black;
+  line-height: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: sans-serif;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
+  position: static;
+  box-sizing: border-box;
+  max-width: 640px;
+  border: gray solid 2px;
+}
+
+.myRed {
+  color: red;
+}
+
+.myClickableIcon {
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+
+.myCenterLayout {
+  margin: 1rem auto 1rem auto;
+}
+
+.myFlexGrow {
+  flex-grow: 1;
+}
+
+.myFullWidth {
+  width: 100%;
+}
+
+.my90Width {
+  width: 90%;
+}
+
+.myTextCenter {
+  text-align: center;
+}
+
+.myToolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 56px;
+  width: 100%;
+  z-index: 2;
+  //max-width: 640px;
+  background: #b52b3b;
+}
+
+.my1RemMargin {
+  margin: 1rem auto 1rem auto;
+}
+
+.my2RemMargin {
+  margin: 2rem auto 2rem auto;
+}
+
+.myTextLarge {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.myBackButton {
+  display: inline;
+  font-size: 4rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #666;
+}

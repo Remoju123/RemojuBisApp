@@ -1,0 +1,166 @@
+@import "../../common.scss";
+@import "../../../assets/scss/vars";
+
+.darkBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.75;
+}
+
+.darkBackgroundText {
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.outletArea {
+  //padding-top: 58px;
+  width: 100%;
+  min-height: calc(100vh - 300px - 58px);
+}
+
+@media screen and (min-width: 768px) {
+  .outletArea {
+    min-height: calc(100vh - 300px - 122px);
+    //padding-top: 122px;
+  }
+}
+
+.outletWidth {
+  max-width: 100%;
+}
+
+footer {
+  height: 300px;
+  margin-top: -300px;
+  background: #4a4a4a;
+}
+
+button {
+  cursor: pointer;
+  //border-radius: 5px;
+}
+
+.scroll-to-top {
+  position: fixed;
+  margin: auto;
+  right: 17px;
+  bottom: 101px;
+  z-index: 100;
+  padding: 0;
+  opacity: 0;
+  transition: all 0.2s ease-in-out;
+
+  @include ios-reset();
+
+  img {
+    width: 59px;
+  }
+}
+
+.view-my-plan{
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 101;
+  padding: 0;
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
+
+  @include ios-reset();
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+
+  ::ng-deep .mat-button-ripple{
+    all: unset;
+  }
+
+  ::ng-deep .mat-badge-content{
+    position: absolute;
+    right: 0!important;
+    top:0;
+    // background-color: #000;
+    color: #fff;
+    background: url("../../../assets/img/icon_badge0.svg") no-repeat;
+    width: 24px;
+    height: 28px;
+    line-height: 28px;
+  }
+
+  &.on{
+    ::ng-deep .mat-badge-content{
+      background-image: url("../../../assets/img/icon_badge.svg");
+    }
+  }
+}
+
+.show-scroll {
+  opacity: 1;
+}
+// https://stackoverflow.com/questions/52441095/sticky-table-header-doesnt-work-in-angular-materials-mat-sidenav-container
+// sticky-table-header-doesnt-work
+mat-sidenav-container,
+mat-sidenav-content {
+  overflow: initial;
+  
+  @include mobile-xsmall {
+    .wrapper {
+      // padding-top: 110px;
+      // padding-top: 44px;
+      // padding-top: 189px;
+      &.on{
+        // padding-top: 50px;
+      }
+
+      &.off{
+        padding-top: 50px;
+      }
+    }
+  }
+}
+
+// .mat-drawer:not(.mat-drawer-side) {
+//   position: fixed;
+// }
+
+// .mat-drawer-backdrop {
+//   position: fixed !important;
+// }
+
+.navclose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+}
+
+.mat-sidenav.cartnav{
+  width: 100%;
+
+  button.close-my-plan{
+    position: fixed;
+    right: 8px;
+    bottom: 8px;
+    z-index: 101;
+    padding: 0;
+    opacity: 1;
+    transition: all 0.2s ease-in-out;
+
+    @include ios-reset();
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}

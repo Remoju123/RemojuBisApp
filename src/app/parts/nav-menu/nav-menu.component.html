@@ -1,0 +1,65 @@
+<!-- Navigation start -->
+<nav class="navbar" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand lower" href="/">
+        <img src="../../../assets/img/remoju-logo-b.svg" alt="remoju-app" />
+      </a>
+    </div>
+    <div class="nav-wrap">
+      <mat-nav-list class="user">
+        <span *ngIf="!common.loggedIn">
+          <a mat-list-item (click)="common.login()" *ngIf="!common.loggedIn">{{ "PleaseLogin" | translate }}</a>
+        </span>
+        <div class="logout" *ngIf="common.loggedIn">
+          <span>
+            {{ "Welcome" | translate }} 
+            {{common.name}} 
+            {{ "San" | translate }}
+          </span>
+          <span>
+            <a mat-list-item (click)="common.logout(currentlang)">{{ "Logout" | translate }}</a>
+          </span>
+        </div>
+      </mat-nav-list>
+  
+      <mat-nav-list class="status">
+        
+      </mat-nav-list>
+      <div class="title">Menu</div>
+      <mat-nav-list>
+        <div>{{ "MakeATripPlan" | translate }}</div>
+        <mat-nav-list class="sub">
+          <a mat-list-item routerLink="./spots">{{ "SearchBySpot" | translate }}</a>
+          <a mat-list-item routerLink="./plans">{{ "SearchByModelPlan" | translate }}</a>
+          <a mat-list-item routerLink="./mypage" fragment="favorite">{{ "SearchByFavorite" | translate }}</a>
+        </mat-nav-list>
+      </mat-nav-list>
+      <mat-divider></mat-divider>
+      <mat-nav-list>
+        <div>{{ "ViewFeaturedArticles" | translate }}</div>
+        <mat-nav-list class="sub">
+          <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto/jyoshitabi.html">{{ "RecommendedTripForGirls" | translate }}</a>
+          <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto_guidemap.html">{{ "LetsGoToKyotoNow" | translate }}</a>
+          <a mat-list-item href="">{{ "ExcitingTripForKids" | translate }}</a>
+          <a mat-list-item href="">{{ "SeeOther" | translate }}</a>
+        </mat-nav-list>
+      </mat-nav-list>
+      <div *ngIf="common.loggedIn">
+        <mat-divider></mat-divider>
+        <div>{{ "ViewMyPage" | translate }}</div>
+        <mat-nav-list class="sub">
+          <a mat-list-item routerLink="./mypage">{{ "EditProfile" | translate }}</a>
+          <a mat-list-item routerLink="./mypage" fragment="list">{{ "ViewSavedPlans" | translate }}</a>
+          <a mat-list-item routerLink="./mypage" fragment="favorite">{{ "ViewFavorite" | translate }}</a>
+        </mat-nav-list>
+        
+      </div>
+      <mat-divider></mat-divider>
+      <mat-nav-list>
+        <a mat-list-item href="{{ currentlang }}/sharedplan/ae61Ttioyve7DaVEOTcw"
+          >プラン作成(確認用)</a
+        >
+      </mat-nav-list>
+    </div>
+  </nav>
+  

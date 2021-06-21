@@ -1,0 +1,31 @@
+<header>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span style="flex-basis: 80%;">
+          <!-- Remoju -->
+          <a *ngIf="!tollSpotLogo" href="/{{ currentLang }}/spots" style="min-height:54px;">
+            <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" />
+          </a>
+          <!-- Keihan -->
+          <a *ngIf="tollSpotLogo" href="/{{ currentLang }}/top" style="min-height:54px;">
+            <img [src]="tollSpotLogo" style="width: 180px;height: auto;margin-top: 0.5em;" />
+          </a>
+        </span>
+        <span class="feature">
+          <button mat-icon-button aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
+            <img src="../../../assets/img/icon_fav.svg">
+          </button>
+          <button mat-icon-button aria-label="mypage" class="user"
+          matTooltip="{{userName}}" (click)="linktoProfile()">
+            <img src="{{pictureUrl}}">
+          </button>
+        </span>
+        <span class="menu">
+          <button mat-icon-button color="primary" aria-label="menu" (click)="toggleactive()">
+            <mat-icon>
+              more_vert</mat-icon>
+          </button>
+        </span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </header>

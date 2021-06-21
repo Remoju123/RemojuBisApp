@@ -1,0 +1,220 @@
+@import "../../common.scss";
+@import "../../../assets/scss/vars";
+
+header {
+  @include mobile-xsmall() {
+    // position: fixed;
+    z-index: 12;
+    right: 0;
+    left: 0;
+    margin-top: 0;
+    transition: all 0.1s ease-out;
+    box-shadow: 0 4px 6px #0000001f;
+  }
+
+  &.collapse{
+    margin-top: -44px;
+  }
+}
+
+.mat-toolbar-multiple-rows{
+  min-height: 44px;
+}
+
+::ng-deep.mat-toolbar-row {
+  background: #fff;
+  padding: 4px 0 4px 8px;
+  display: flex;
+  justify-content: space-around;
+  height: 50px;
+
+  .imgpc {
+    height: 94px;
+    margin: 13px;
+  }
+
+  .imgsp {
+    width: 29vw; //42vw;
+    margin-top: 2vw; //1vw
+    margin-left: 1vw;
+  }
+
+  @media screen and (min-width: 415px) and (max-width: 1024px) { 
+    .imgsp {
+      margin-top: 1vw;
+      margin-left: 0vw;
+      width: 17vw;
+    }
+  }
+
+  .menu-trigger {
+    vertical-align: middle;
+
+    @include ios-reset;
+  }
+
+  .lang {
+    select {
+      background-color: #999;
+      color: #fff;
+      padding-left: 1em;
+      margin-right: 10px;
+    }
+  }
+
+  .mat-icon-button{
+    // height: 20px;
+    // line-height: 20px;
+    // width: 32px;
+    &.mat-badge-small {
+      .mat-badge-content{
+        top: 2px;
+        right: -2px;
+        //background-color: $color-pnk04;
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+::ng-deep.mat-toolbar.mat-primary {
+  color: #666;
+
+  .menu{
+    .mat-icon{
+      font-size: 37px;
+      height: auto;
+      width: auto;
+    }
+
+    .mat-icon-button.mat-primary{
+        color: $color-gry06;
+    }
+  }
+
+  .feature{
+    button{
+      img{
+        width: 30px;
+        height: 30px;
+      }
+      &.user{
+        img{
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+
+.humbmenu {
+  flex-basis: 10%;
+  line-height: 1;
+  white-space: normal;
+  height: 36px;
+
+  .menu {
+    font-size: 0.5em;
+    color: #999;
+  }
+}
+
+/* ====================================
+// hamburger menu icon
+====================================== */
+$menu_width: 28px;
+$menu_height: 22px;
+$menu_line: 2px;
+
+.menu-trigger,
+.menu-trigger span {
+  display: inline-block;
+  transition: all 0.4s;
+  box-sizing: border-box;
+}
+
+.menu-trigger {
+  position: relative;
+  width: $menu_width;
+  height: $menu_height;
+
+  span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: $menu-line;
+    background-color: #707070;
+    border-radius: $menu_line;
+
+    &:nth-of-type(1) {
+      top: 0;
+    }
+
+    &:nth-of-type(2) {
+      top: 50%;
+    }
+
+    &:nth-of-type(3) {
+      top: 100%;
+    }
+  }
+
+  &.active {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+
+    span {
+      &:nth-of-type(1) {
+        -webkit-transform: translateY(($menu_height - $menu_line)/2)
+          rotate(-45deg);
+        transform: translateY(($menu_height - $menu_line)/2) rotate(-45deg);
+      }
+
+      &:nth-of-type(2) {
+        -webkit-transform: translateY(0) rotate(45deg);
+        transform: translateY(0) rotate(45deg);
+      }
+
+      &:nth-of-type(3) {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.card-header {
+  ::ng-deep.mat-card-header-text {
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+
+    .mat-card-title {
+      font-size: 4.2vw;
+      font-weight: bold;
+      position: relative;
+      margin-bottom: 6px;
+      white-space: nowrap;
+
+      .mat-badge {
+        position: absolute;
+        top: 12px;
+
+        .mat-badge-content {
+          width: 20px;
+          height: 20px;
+          line-height: 19px;
+        }
+      }
+    }
+
+    .btn-show {
+      margin-left: auto;
+      height: 36px;
+      background-color: #c0a080;
+      font-weight: bold;
+      color: #fff;
+      padding: 0 8px;
+      font-size: 13px;
+    }
+  }
+}

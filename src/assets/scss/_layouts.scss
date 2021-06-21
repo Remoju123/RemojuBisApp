@@ -1,0 +1,63 @@
+// margin & padding指定の汎用クラス
+$num:4;
+
+@for $i from 0 through 10 {
+  .m#{$i * $num} {
+    margin: #{$i * $num}px !important;
+  }
+
+  .mt#{$i * $num} {
+    margin-top: #{$i * $num}px !important;
+  }
+
+  .mr#{$i * $num} {
+    margin-right: #{$i * $num}px !important;
+  }
+
+  .mb#{$i * $num} {
+    margin-bottom: #{$i * $num}px !important;
+  }
+
+  .ml#{$i * $num} {
+    margin-left: #{$i * $num}px !important;
+  }
+
+  .p#{$i * $num} {
+    padding: #{$i * $num}px !important;
+  }
+
+  .pt#{$i * $num} {
+    padding-top: #{$i * $num}px !important;
+  }
+
+  .pr#{$i * $num} {
+    padding-right: #{$i * $num}px !important;
+  }
+
+  .pb#{$i * $num} {
+    padding-bottom: #{$i * $num}px !important;
+  }
+
+  .pl#{$i * $num} {
+    padding-left: #{$i * $num}px !important;
+  }
+}
+
+// fontサイズ指定の汎用クラス
+$fs-min: 10;
+$fs-max: 20;
+
+@for $i from $fs-min through $fs-max {
+  .fs#{$i} {
+    font-size: #{$i}px;
+  }
+}
+
+// width カラム幅指定の汎用クラス
+@for $i from 1 through 8 {
+  $width: percentage(1 / $i);
+
+  .col#{$i} {
+    width: $width;
+  }
+}

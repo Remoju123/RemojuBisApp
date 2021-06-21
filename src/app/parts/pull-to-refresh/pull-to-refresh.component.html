@@ -1,0 +1,41 @@
+<div style="position: absolute; top: 0; left: 50%; z-index: 9999;">
+    <div
+      style="margin-left: -35px"
+      [style.transform]="positionTranslate3d$ | async"
+    >
+      <svg
+        width="70px"
+        height="70"
+        [style.transform]="rotateTransform$ | async"
+        [style.opacity]="opacity$ | async"
+      >
+        <!-- via: https://gist.github.com/redblobgames/6851dc787241e390c241cd9484b16e4d -->
+        <filter id="dropShadow" height="130%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+          <feOffset dx="2" dy="2" result="offsetblur" />
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.5" />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <circle
+          cy="35"
+          cx="35"
+          r="30"
+          fill="white"
+          fill-opacity="0.8"
+          style="filter:url(#dropShadow)"
+          >
+        </circle>
+        <!-- via: https://material.io/resources/icons/?style=baseline -->
+        <path
+          transform="scale(2.0,2.0) translate(5.5,5.5)"
+          fill="#bfa060"
+          d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+        />
+      </svg>
+    </div>
+  </div>

@@ -1,0 +1,115 @@
+html,
+body {
+  height: 100%;
+  font-family: "Noto Sans JP", sans-serif;
+  // font: 400 "Open Sans", sans-serif;
+  color: #666;
+  -webkit-font-smoothing: antialiased;
+  touch-action: pan-x pan-y;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Noto Sans JP";
+}
+
+p {
+  font-family: "Noto Sans JP";
+  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  color: #4d4d4d;
+}
+
+.rj-heading {
+  margin: 0 -15px;
+  border-bottom: 1px solid $color-remoju;
+  padding: 0 15px;
+}
+
+.rj-linecolor {
+  // border-color: $color-remoju;
+  border-color: #bfa060;
+}
+
+.subheading {
+  // border-top:3px solid #bfa060;
+  padding-left: 13px;
+  padding-right: 16px;
+  // padding-top: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 24px;
+  color: #555;
+}
+
+.header {
+  margin-bottom: 4px;
+  font-weight: 700;
+  color: #555;
+}
+
+.material-icons.bottom {
+  vertical-align: bottom;
+}
+
+.material-icons.middle {
+  vertical-align: middle;
+}
+
+.text-color {
+  color: $color-remoju;
+}
+
+.mat-drawer-container {
+  background-color: #fff;
+}
+
+.mat-card-header-text {
+  /* CSS styles go here */
+  margin: 0 !important; // for example to remove the margin
+}
+
+.mat-divider.typeA {
+  border-color: $color-remoju;
+  margin: 2rem 8rem;
+}
+
+.mat-card.no-bs {
+  box-shadow: none;
+}
+
+button.line {
+  background-color: #01b902;
+  color: #fff;
+
+  .mat-icon::before {
+    margin-right: 0.2em;
+  }
+}
+
+button.fb {
+  background-color: #1877f2;
+  color: #fff;
+  
+  .mat-icon::before {
+    margin-right: 0.2em;
+  }
+}
+
+button.tw {
+  background-color: #1da1f3;
+  color: #fff;
+
+  .mat-icon::before {
+    margin-right: 0.2em;
+  }
+}

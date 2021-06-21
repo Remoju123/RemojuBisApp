@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - develop
+      - dev001
 
 env:
-  AZURE_WEBAPP_NAME: remojuapp-v3    # set this to your application's name
+  AZURE_WEBAPP_NAME: remojuapp-v3u    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './dist/RemojuApp-V3U'      # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'                # set this to the node version to use
 
