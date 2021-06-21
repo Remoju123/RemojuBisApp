@@ -9,10 +9,10 @@ export const authConfig:AuthConfig = {
   // URL of the SPA to redirect the user to after login
   //redirectUri: window.location.origin + '/',
   //redirectUri: 'http://localhost:4200/',
-  redirectUri: environment.host,
+  redirectUri: environment.location,
 
   //silentRefreshRedirectUri:window.location.origin + '/silent-refresh.html',
-  silentRefreshRedirectUri: 'http://localhost:4200/silent-refresh.html',
+  silentRefreshRedirectUri: environment.location + 'silent-refresh.html',
  
   // The SPA's id. The SPA is registered with this id at the auth-server
   clientId: '3e5bffaf-86d7-4a4c-bcde-6ba4d1cb52d3',

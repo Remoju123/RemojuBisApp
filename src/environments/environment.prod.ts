@@ -6,6 +6,7 @@ export const environment = {
   defaultLang:"ja",
   languages: [{ lang: "en", label: "EN" }, { lang: "ja", label: "JP" }],
   host: locationhost + "/app",
+  location: locationhost + "/",
   openidConf:"https://remojuauth.b2clogin.com/remojuauth.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1A_signup_signin",
   backend: "https://remoju-api-v2-dev.azurewebsites.net",
   blobUrl: "https://remoju.blob.core.windows.net",
