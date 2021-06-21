@@ -29,31 +29,31 @@ export class RootComponent implements OnInit, OnDestroy {
   private reloadRequestCount = 0;
   private onDestroy$ = new Subject();
   title = "Remoju";
-  showScroll: boolean;
+  showScroll: boolean | undefined;
   showScrollHeight = 300;
   hideScrollHeight = 10;
 
   mode = "over";
-  opened: boolean;
+  opened: boolean | undefined;
   events: string[] = [];
   closed: any;
 
-  currentLang: string;
+  currentLang: string | undefined;
 
   showPlanpanel:boolean = true;
   expandHeader:boolean = true;
   
-  cartopened:boolean;
+  cartopened:boolean | undefined;
   myPlanSpots:any;
-  spots:number;
+  spots!: number;
 
-  viewbtn_src:string;
-  backbtn_src:string;
+  viewbtn_src:string | undefined;
+  backbtn_src:string | undefined;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
   @ViewChild(HeaderComponent)
-  protected headerCompornent:HeaderComponent;
+  protected headerCompornent!: HeaderComponent;
 
 
   constructor(

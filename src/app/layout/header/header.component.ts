@@ -32,7 +32,7 @@ import { isPlatformBrowser } from "@angular/common";
 export class HeaderComponent implements OnInit ,OnDestroy{
   private onDestroy$ = new Subject();
   mode = new FormControl("over");
-  shouldRun:boolean;
+  shouldRun: boolean = false;
   // shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h =>
   //   h.test(window.location.host)
   // );
@@ -43,22 +43,24 @@ export class HeaderComponent implements OnInit ,OnDestroy{
 
   // サイドナビバインドプロパティ
   @Output() event = new EventEmitter<boolean>();
-  @Input() sidenav_closed: boolean;
-  status: boolean;
+  @Input()
+  sidenav_closed: boolean = false;
+  status: boolean = false;
 
   // カートナビバインドプロパティ
   @Output() cartevent = new EventEmitter<boolean>();
-  @Input() cartnav_closed:boolean;
-  cartStatus:boolean;
+  @Input()
+  cartnav_closed: boolean = false;
+  cartStatus: boolean = false;
   
   logopc = "remoju-logo-pc-ja";
   logosp = "remoju-logo-sp-ja";
   logo_body = "remoju-logo";
-  isDesktopDevice: boolean;
+  isDesktopDevice: boolean = false;
   
   favcount:any;
   
-  loggedIn: boolean;
+  loggedIn: boolean = false;
   public userInfo: any = null;
 
   tollSpotLogo: string = "";

@@ -1,0 +1,87 @@
+@import "../../common.scss";
+@import "../../../assets/scss/vars";
+
+::ng-deep.mat-sidenav {
+  width: 80%;
+  //background-color: $color-remoju;
+  //color: #fff;
+  background-color: #fff;
+  .navbar-header {
+    // padding: 15px 10px;
+    padding: 8px;
+    // background-color: $color-remoju;
+    // background-color: #cdbf9c;
+    height: 41px;
+
+    img {
+      width: 39%;
+      margin-top: 4px;
+      margin-left: 10px;
+    }
+
+    @media screen and (min-width: 415px) and (max-width: 1024px) { 
+      img {
+        margin-top: -0.3vw;
+        margin-left: 2vw;
+        width: 17vw;
+      }
+    }
+  }
+
+  .nav-wrap {
+    padding: 10px 20px;
+
+    .mat-nav-list{
+      padding-top: 0;
+      .mat-list-item {
+        font-size: 14px;
+        height: 36px;
+  
+        .mat-list-item-content {
+          padding: 0;
+        }
+  
+        
+      }
+      &.sub{
+        padding-top: 0;
+        margin-left: 13px;
+      }
+    }
+    
+
+    .title {
+      margin: auto -20px;
+      margin-block-start: 8px;
+      background-color: $color-gold;
+      text-align: center;
+      font-size: 80%;
+      padding: 4px;
+      color: #fff;
+    }
+
+    .mat-divider {
+      border-top-color: $color-gold;
+    }
+
+    .user {
+      p {
+        margin-block-start: 0;
+        margin-block-end: 0;
+      }
+
+      .logout{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .status {
+      .mat-list-item {
+        text-decoration: underline;
+        color: $color-darkgold;
+      }
+    }
+  }
+}
