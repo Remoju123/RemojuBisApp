@@ -1,3 +1,4 @@
+//let locationhost = `${window.location.protocol}//${window.location.host}`;
 let locationhost = `https://remoju-app-v3-u.azurewebsites.net`;
 export const environment = {
   production: true,
