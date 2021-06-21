@@ -1,4 +1,5 @@
 import {AuthConfig} from "angular-oauth2-oidc";
+import { environment } from "../environments/environment";
 
 export const authConfig:AuthConfig = {
 
@@ -7,7 +8,8 @@ export const authConfig:AuthConfig = {
  
   // URL of the SPA to redirect the user to after login
   //redirectUri: window.location.origin + '/',
-  redirectUri: 'http://localhost:4200/',
+  //redirectUri: 'http://localhost:4200/',
+  redirectUri: environment.host,
 
   //silentRefreshRedirectUri:window.location.origin + '/silent-refresh.html',
   silentRefreshRedirectUri: 'http://localhost:4200/silent-refresh.html',
