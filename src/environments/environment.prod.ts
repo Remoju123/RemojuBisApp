@@ -1,4 +1,4 @@
-let locationhost = ``;
+let locationhost = `https://remoju-app-v3-u.azurewebsites.net`;
 export const environment = {
   production: true,
   defaultLang:"ja",
