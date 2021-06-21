@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+// @use '~@angular/material' as mat;
+@import "~ngx-owl-carousel-o/lib/styles/scss/owl.carousel";
+@import "~ngx-owl-carousel-o/lib/styles/scss/owl.theme.default";
+@import "./assets/scss/vars";
+@import "./assets/scss/mq";
+@import "./assets/scss/styles";
+@import "./assets/scss/layouts";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+// $custom-typography: mat.define-typography-config(
+//   $font-family: "'Noto Sans JP','sans-serif'"
+// );
+
+// @include mat.core($custom-typography);
+
+// LoadingIndicator
+.app-loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-loading-indicator-backdrop {
+  // background-color: rgba(0, 0, 0, .75);
+  background-color: #fff;
+}
+
+.custom-snackbar{
+  margin: 0 !important;
+  position: absolute;
+  top:50%;
+}

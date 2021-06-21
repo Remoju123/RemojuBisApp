@@ -20,7 +20,7 @@ export class TranslateServerLoader implements TranslateLoader {
       const assets_folder = join(
         process.cwd(),
         'dist',
-        'remojuapp-v3', // Your project name here
+        'remojuapp-v3u', // Your project name here
         'browser',
         'assets',
         this.prefix

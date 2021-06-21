@@ -1,23 +1,64 @@
+const domino = require('domino');
+import "localstorage-polyfill";
+
 import 'zone.js/dist/zone-node';
 
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
 import { join } from 'path';
+import { existsSync, readFileSync } from 'fs';
+
+let distFolder = join(process.cwd(), 'dist/remojuapp-v3u/browser');
+if(!existsSync(distFolder)){
+  distFolder = join(process.cwd(),'browser');
+}
+const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index.html';
+
+//SSR Dom errors polyfile and work around
+const template = readFileSync(join(distFolder, indexHtml)).toString();
+const window = domino.createWindow(template);
+
+(global as any).window = window;
+(global as any).document = window.document;
+(global as any).Event = window.Event;
+(global as any).KeyboardEvent = window.KeyboardEvent;
+(global as any).MouseEvent = window.MouseEvent;
+(global as any).FocusEvent = window.FocusEvent;
+(global as any).PointerEvent = window.PointerEvent;
+(global as any).HTMLElement = window.HTMLElement;
+(global as any).HTMLElement.prototype.getBoundingClientRect = () => {
+  return {
+    left: '',
+    right: '',
+    top: '',
+    bottom: ''
+  };
+};
+// xmlhttprequest
+// (global as any).XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+(global as any).navigator = window.navigator;
+(global as any).localStorage = window.localStorage;
+(global as any).DOMTokenList = window.DOMTokenList;
+Object.defineProperty(window.document.body.style, 'transform', {
+  value: () => {
+    return {
+      enumerable: true,
+      configurable: true,
+    };
+  },
+});
+(global as any).CSS = null;
+(global as any).Prism = null;
+//SSR Dom errors polyfile and work around
 
 import { AppServerModule } from './src/main.server';
 import { APP_BASE_HREF } from '@angular/common';
-import { existsSync } from 'fs';
+
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
   const server = express();
-  let distFolder = join(process.cwd(), 'dist/RemojuApp-V3U/browser');
-  if(!existsSync(distFolder)){
-    distFolder = join(process.cwd(),'browser');
-  }
-
-  const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index.html';
-
+  
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
   server.engine('html', ngExpressEngine({
     bootstrap: AppServerModule,
