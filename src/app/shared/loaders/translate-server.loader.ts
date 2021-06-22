@@ -26,17 +26,17 @@ export class TranslateServerLoader implements TranslateLoader {
         this.prefix
       );
 
-      const jsonData = JSON.parse(
-        fs.readFileSync(`${assets_folder}/${lang}${this.suffix}`, 'utf8')
-      );
+      // const jsonData = JSON.parse(
+      //   fs.readFileSync(`${assets_folder}/${lang}${this.suffix}`, 'utf8')
+      // );
 
-      // Here we save the translations in the transfer-state
-      const key: StateKey<number> = makeStateKey<number>(
-        'transfer-translate-' + lang
-      );
-      this.transferState.set(key, jsonData);
+      // // Here we save the translations in the transfer-state
+      // const key: StateKey<number> = makeStateKey<number>(
+      //   'transfer-translate-' + lang
+      // );
+      // this.transferState.set(key, jsonData);
 
-      observer.next(jsonData);
+      // observer.next(jsonData);
       observer.complete();
     });
   }

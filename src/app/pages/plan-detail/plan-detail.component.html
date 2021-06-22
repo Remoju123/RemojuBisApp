@@ -1,0 +1,354 @@
+<div class="plandtl">
+  <mat-card id="header" [ngClass]="{'onplan':match(planSpotids,myPlanSpots)}">
+    <mat-card-header>
+      <div class="lt">
+        <span class="planName">
+          {{ data.planName }}
+        </span>
+      </div>
+      <div class="rt">
+        <button mat-icon-button class="plan_fav" (click)="onClickFavorite()">
+          <img src="../../../assets/img/hart_small.svg">
+        </button>
+        <button mat-icon-button (click)="onClickAddToPlan()">
+          <img src="{{addplanbtn_src}}" alt="add to plan">
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+  <!-- プランメイン写真 -->
+  <mat-card class="p0">
+    <mat-card-content>
+      <span>{{data.pictures}}</span>
+      <owl-carousel-o *ngIf="data.picCnt > 1; else singlePict">
+        <ng-container *ngFor="let item of data.pictures; index as i">
+          <ng-template carouselSlide id="i + 1">
+            <div class="thumbmain">
+              <img
+                [src]="item"
+                [alt]="data.planId"
+                [title]="data.planId"
+              />
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+  
+      <ng-template #singlePict>
+        <ng-container *ngFor="let item of data.pictures; index as i">
+          <div class="thumbmain">
+            <img
+              [src]="item"
+              [alt]="data.planId"
+              [title]="data.planId"
+            />
+          </div>
+        </ng-container>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- プラン概要 -->
+  <mat-card id="planExplanation" *ngIf="data.planExplanation">
+    <mat-card-content>
+      <p [innerHTML]="data.planExplanation | replaceNewline"></p>
+    </mat-card-content>
+  </mat-card>
+  <!-- プランスポットサムネイル -->
+  <mat-card id="planPictures">
+    <mat-card-content>
+      <owl-carousel-o [options]="thumbOptions">
+        <ng-container *ngFor="let item of spots; index as i">
+          <ng-template carouselSlide>
+            <div class="thumbspots">
+              <a (click)="setMapCenter(item.latitude, item.longitude)">
+                <div class="thumbnum">
+                  <span>{{ i + 1 }}</span>
+                </div>
+                <img [src]="item.pictureUrl" />
+              </a>
+            </div>
+            <div class="thumbname">
+              <span>{{ item.spotName }}</span>
+            </div>
+            <div class="thumbstart">
+              {{item.startTime}}
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </mat-card-content>
+  </mat-card>
+  <!-- マップ -->
+  <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true"></app-map-panel>
+  <!-- プラン詳細 -->
+  <mat-card id="planSummary">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "PlanDetail" | translate }}
+      </h4>
+      <ng-container *ngIf="!$isRemojuPlan">
+        <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menuPlan">
+          <mat-icon>
+            more_vert</mat-icon>
+        </button>
+      </ng-container>
+      <mat-menu #menuPlan="matMenu">
+        <button mat-menu-item (click)="onClickReport()">{{ "ReportPlanUser" | translate }}</button>
+      </mat-menu>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item class="row">
+          <span class="area">
+            <label>{{ "Areas" | translate }}：</label>
+            <span class="arealink" *ngIf="data.areaName" (click)="onClickArea()">
+              {{ data.areaName | langFilter:lang }}
+            </span>
+          </span>
+        </mat-list-item>
+        <mat-list-item class="row">
+          <span class="time">
+            <label>{{ "TimeRequired" | translate }}：</label>
+            <span *ngIf="data.timeRequiredHour > 0">{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span>
+              <span *ngIf="data.timeRequiredMin > 0">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
+          </span>
+          <span class="timespan">
+            {{ data.startTime }}～{{ data.endTime }}
+          </span>
+        </mat-list-item>
+        <mat-list-item class="row">
+          <span class="contributor">
+            <label>{{ "Contributor" | translate }}：</label>
+              <ng-template #blankuser>
+                <img class="staff" src="../../../assets/img/blank_sq-80.jpg"/>
+              </ng-template>
+              <!--<img *ngIf="data.user" [src]="data.user.pictureUrl" />-->
+              <span *ngIf="data.user">{{ data.user.displayName }}</span>
+              <!--<img *ngIf="$userStaff" [src]="$userStaff.pictureUrl" />-->
+              <span *ngIf="$userStaff">{{ $userStaff.romanLetterName | langFilter: lang }}</span>
+          </span>
+        </mat-list-item>
+        <mat-list-item class="row categories">
+          <ng-container *ngFor="let item of categoryNames">
+            <span class="feature" (click)="onClickCategory(item.id)">{{ item.name | langFilter:lang }}</span>
+          </ng-container>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  <!-- プランスポット一覧 -->
+  <div class="box">
+    <ng-container *ngFor="let item of spots; index as i">
+      <mat-card class="spotinfo">
+        <mat-card-content>
+          <!-- 掲載OK -->
+          <div *ngIf="!item.isEndOfPublication">
+            <div class="card-box">
+              <div class="spot-title">
+                <div class="rt">
+                  <span class="mark">{{i+1}}</span>
+                  <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
+                </div>
+                <div class="lt">
+                  <div class="sugtime">
+                    <span class="caption">{{ "SuggestedTime" | translate }}</span>
+                    <span class="text">{{ item.stayTime }}{{ "Minute" | translate }}</span>
+                  </div>
+                  <button *ngIf="item.type!==3" mat-button class="add-to-favorite"  (click)="onClickSpotFavorite(item)" [ngClass]="{'on':item.isFavorite}">
+                  </button>
+                </div>
+              </div>
+              <div class="spot-image" (click)="linktoSpot(item.spotId)">
+                <owl-carousel-o
+                    *ngIf="item.pictures.length > 1; else singlePict"
+                    [options]="mainOptions"
+                  >
+                  <ng-container *ngFor="let pict of item.pictures">
+                    <ng-template carouselSlide id="item.spotId">
+                      <div class="thumbmain">
+                        <img
+                          [src]="pict"
+                          [alt]="item.spotId"
+                          [title]="item.spotId"
+                        />
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </owl-carousel-o>
+  
+                <ng-template #singlePict>
+                  <ng-container *ngFor="let pict of item.pictures">
+                    <div class="thumbmain">
+                      <img
+                        [src]="pict"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
+                    </div>
+                  </ng-container>
+                </ng-template>
+  
+                <div class="info">
+                  <div class="lt">
+                    <div class="spotname">
+                      {{ item.spotName  }}
+                    </div>
+                  </div>
+                  <div class="rt" *ngIf="item.pvAllQty">
+                    <div class="views">
+                      <span class="label">View</span>
+                      <span class="item">{{ item.pvAllQty.toLocaleString() }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>    
+          </div>
+          <!-- 掲載終了スポット -->
+          <div *ngIf="item.isEndOfPublication">
+            <div class="card-box">
+              <div class="spot-title">
+                <span class="mark">{{i+1}}</span>
+              </div>
+            </div>
+            <span>{{ "EndOfPublication" | translate }}</span>
+          </div>  
+  
+          <mat-list>
+            <mat-list-item class="subheading" *ngIf="item.subheading">
+              <p>{{ item.subheading }}</p>
+              <mat-divider class="rj-linecolor"></mat-divider>
+            </mat-list-item>
+            <mat-list-item class="overview" *ngIf="item.overview">
+              <p>{{ item.overview }}</p>
+            </mat-list-item>
+            <mat-list-item class="memo" *ngIf="item.memo">
+              <p>{{ item.memo }}</p>
+            </mat-list-item>
+            <mat-list-item class="outtime" *ngIf="i + 1 < spots.length && item.transfer">
+              <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
+            </mat-list-item>
+            <mat-list-item class="endtime" *ngIf="i === spots.length - 1 && data.endTime">
+              <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
+            </mat-list-item>
+          </mat-list>
+  
+          <!-- 移動方法 -->
+          <app-transfer-panel *ngIf="i + 1 < spots.length" [item]="item"></app-transfer-panel>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </div>
+  
+  <!-- レビュー投稿 -->
+  <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3" [id]="data.planId" [spotplanName]="data.planName"></app-review-list-panel>
+  
+  <!-- スタッフ -->
+  <mat-card id="writer" *ngIf="$userStaff">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "Article" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <mat-list>
+        <mat-list-item style="height: auto;">
+          <dl class="profile">
+            <dt>
+              <img
+                src="{{ $userStaff.pictureUrl }}"
+                alt="{{ $userStaff.romanLetterName | langFilter: lang }}"
+              />
+            </dt>
+            <dd>
+              {{ $userStaff.romanLetterName | langFilter: lang }}<br /><span class="division">{{
+                $userStaff.departmentName | langFilter: lang
+              }}</span>
+            </dd>
+          </dl>
+        </mat-list-item>
+        <mat-list-item class="intro" style="height: auto;">
+          <p>
+            {{ $userStaff?.introduction | langFilter: lang }}
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- プラン投稿用メモ -->
+  <!-- <mat-card id="Memo" *ngIf="data.memo">
+    <mat-card-content>
+      <p [innerHTML]="data.memo | replaceNewline"></p>
+    </mat-card-content>
+  </mat-card> -->
+  
+  <!-- 投稿者のプロフィール -->
+  <app-userprofile-panel *ngIf="data.user && data.country" [user]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
+  
+  <!-- このプランを共有する
+  <mat-card id="snslink">
+    <mat-card-content>
+      <label>{{ "ShareThisPlan" | translate }}</label>
+      <button mat-mini-fab class="fb"></button>&nbsp;
+      <button mat-mini-fab class="tw"></button>&nbsp;
+      <button mat-mini-fab class="line"></button>
+    </mat-card-content>
+  </mat-card> -->
+  
+  <mat-card id="otherSpot" class="pics" *ngIf="!data.spotToGoList">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "RecommendedSpotsInTheSameArea" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <owl-carousel-o [options]="customOptions">
+        <ng-container *ngFor="let item of data.spotToGoList; index as i">
+          <ng-template carouselSlide id="item.spotPlanID">
+            <div class="thumbnail">
+              <a href="{{ lang }}/spots/detail/{{ item.spotPlanID }}">
+                <img [src]="item.pictureUrl" alt="" />
+              </a>
+            </div>
+            <div class="content">
+              <p>{{ item.name | langFilter: lang }}</p>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card id="specialpage" class="pics" *ngIf="!features">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "FeaturedLink" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <owl-carousel-o [options]="specialPageOptions">
+        <ng-container *ngFor="let item of features; index as i">
+          <ng-template carouselSlide id="item.feature_id">
+            <div class="wrap">
+              <div class="thumbnail">
+                <a href="{{ item.url }}">
+                  <img [src]="item.picture_url" alt="" />
+                </a>
+              </div>
+              <div class="content">
+                <p>{{ item.title }}</p>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </mat-card-content>
+  </mat-card>
+</div>
+

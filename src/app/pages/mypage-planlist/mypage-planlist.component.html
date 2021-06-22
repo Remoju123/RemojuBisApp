@@ -1,0 +1,86 @@
+<!-- マイページプラン一覧 -->
+<div class="box">
+  <ng-container *ngFor="let row of rows">
+    <mat-card>
+      <mat-card-content>
+        <div class="card-box">
+          <mat-list>
+            <mat-list-item class="top">
+              <div class="lt">
+                <div class="areaName">{{ row.areaName | langFilter: lang }}</div>
+              </div>
+              <div class="rt">
+                <div class="release" (click)="onClickRelease(row)">
+                  <img *ngIf="row.isRelease" src="../../../assets/img/sw_release_on.svg" alt="">
+                  <img *ngIf="!row.isRelease" src="../../../assets/img/sw_release_off.svg" alt="">
+                </div>
+                <div class="delete">
+                  <button class="deletePlan" (click)="onClickDeletePlan(row)">
+                    <i class="material-icons">clear</i>
+                  </button>
+                </div>
+              </div>
+            </mat-list-item>
+            <mat-list-item class="planname">
+              <span>{{ row.planName }}</span>
+            </mat-list-item>
+            <mat-list-item class="timereq">
+              <span *ngIf="row.timeRequiredHour !== '0'"
+                >{{ "TimeRequired" | translate }}：{{ row.timeRequiredHour }}{{ "Hour" | translate }}</span>
+              <span *ngIf="row.timeRequiredMin !== '0'"
+                >{{ row.timeRequiredMin }}{{ "Minute" | translate }}</span>
+              <span class="spotqty">
+                {{ "NumberOfSpots" | translate }} : {{ row.spots?.length }}
+              </span>
+            </mat-list-item>
+          </mat-list>
+
+          <owl-carousel-o class="pics" [options]="customOptions">
+            <ng-container *ngFor="let item of row.spots; index as i">
+              <ng-template carouselSlide id="i+1">
+                  <div class="thumbspots">
+                    <a href="/{{ currentlang }}/spots/detail/{{ item.spotId }}">
+                    <div class="thumbnum">
+                      <span>{{ i + 1 }}</span>
+                    </div>
+                    <img
+                      *ngIf="item.pictures && item.pictures.length > 0"
+                      [src]="item.pictures[0]"
+                      [alt]="item.spotId"
+                      [title]="item.spotId"
+                    />
+                    </a>
+                  </div>
+                  <div class="thumbname">
+                    <!-- 掲載OK -->
+                    <span *ngIf="!item.isEndOfPublication">
+                      {{ item.spotName }}
+                    </span>
+                    <!-- 掲載終了スポットの場合 -->
+                    <span *ngIf="item.isEndOfPublication">{{ "EndOfPublication" | translate }}</span>
+                  </div>
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+          <mat-list>
+            <mat-list-item class="row bottom">
+              <span>
+                {{ "LastUpdated" | translate }} : {{ row.updateDatetime | date:"yyyy/MM/dd" }}<br />
+              </span>
+              <button  mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
+                {{ "EditPlan" | translate }}
+              </button>
+            </mat-list-item>
+          </mat-list>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>
+
+<!--pagination-controls
+  (pageChange)="p = $event; pageChange()"
+  previousLabel="{{ 'Previous' | translate }}"
+  nextLabel="{{ 'Next' | translate }}"
+></pagination-controls-->

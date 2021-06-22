@@ -1,0 +1,30 @@
+<h2 mat-dialog-title *ngIf="data[1]">{{ "StartSearch" | translate }}</h2>
+<h2 mat-dialog-title *ngIf="!data[1]">{{ "EndSearch" | translate }}</h2>
+<mat-dialog-content>
+  <div class="form">
+    <mat-form-field appearance="outline" style="width: 100%;">
+      <input 
+        matInput 
+        id="keyword"
+        placeholder="{{ 'GoogleKeyword' | translate }}"
+        value="{{ place ? place.name : '' }}" />
+    </mat-form-field>
+  </div>
+  <div class="mapDiv">
+    <agm-map
+      class="map"
+      [scrollwheel]="false"
+      [streetViewControl]="false"
+      [zoom]="zoom"
+      (mapReady)="mapReady($event)">
+    </agm-map>
+    <div class="map-center-overlay" *ngIf="place">
+      <img src="../../../assets/img/pin_mypos.svg" height="48">
+    </div> 
+  </div> 
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button type="button" class="cancel" mat-dialog-close="cancel">{{ "Return" | translate }}</button>
+  <button mat-button type="button" class="setting" (click)="onClickOK()">{{ "Set" | translate }}</button>
+</mat-dialog-actions>

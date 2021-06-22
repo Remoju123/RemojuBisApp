@@ -7,6 +7,7 @@ import { RootComponent } from './layout/root/root.component';
 import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
+import { SpotListComponent } from './pages/spot-list/spot-list.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
       component:RootComponent,
       children:[
         { path: "top", component: TopComponent },
-        // { path: "spots", component: SpotListComponent },
+        { path: "spots", component: SpotListComponent },
         // { path: "keihankyoto/spots", component: SpotListComponent },
         // {
         //   path: "spots/detail",

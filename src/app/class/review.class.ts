@@ -1,43 +1,43 @@
 export class ReviewResult{
-    qty!: number;
-    reviews!: Review[];
-    avgEvaluation!: number;
+    qty: number;
+    reviews: Review[];
+    avgEvaluation: number;
   }
   
   export class Review {
-    id!: number;
-    userId!: number;
-    displayOrder!: number;
-    parentDisplayOrder!: number;
-    title!: string;
-    contents!: string;
-    evaluation!: number;
-    visitDate!: string;
-    postedDate!: string;
-    objectId!: string;
-    userName!: string;
-    pictures!: ReviewPicture[];
-    reviews!: Review[];
+    id: number;
+    userId: number;
+    displayOrder: number;
+    parentDisplayOrder: number;
+    title: string;
+    contents: string;
+    evaluation: number;
+    visitDate: string;
+    postedDate: string;
+    objectId: string;
+    userName: string;
+    pictures: ReviewPicture[];
+    reviews: Review[];
     // 表示時に取得
     // 表示時に取得
-    age!: number;
-    gender!: string;
+    age: number;
+    gender: string;
     // expantion flag & label
     // expantion flag & label
-    ismore!: boolean;
-    label!: string;
+    ismore: boolean;
+    label: string;
   }
   
   export class ReviewPicture {
-    picturedisplayOrder!: number;
-    pictureUrl!: string;
-    picturePreviewUrl!: string;
-    pictureFile!: File;
+    picturedisplayOrder: number;
+    pictureUrl: string;
+    picturePreviewUrl: string;
+    pictureFile: File;
   }
   
   export class RegistReviewResult{
-    displayOrder!: number;
-    reviewResult!: ReviewResult;
+    displayOrder: number;
+    reviewResult: ReviewResult;
   }
 
   // スポット

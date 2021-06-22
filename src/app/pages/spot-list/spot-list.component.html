@@ -1,0 +1,52 @@
+<div class="tab">
+  <mat-tab-group (selectedIndexChange)="selectedChange($event)">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="bg">Spot</span>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span class="bg">model Plan</span>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+
+  <mat-card class="pt0">
+    <mat-card-content class="hit">
+      <input type="search" placeholder="{{ 'SearchByKeyword' | translate }}" class="keyword"
+        [(ngModel)]="keyword"
+        (keyup.enter)="updateFilter($event)"
+        (blur)="updateFilter($event)"
+        (search)="updateFilter($event)"
+      />
+      <button mat-button class="spot-search" (click)="openDialog(0)">
+        {{ 'AreaAndCommitment' | translate }}
+      </button>
+      
+      <mat-card-content class="badge">
+        <dl>
+          <dd *ngFor="let item of optionKeywords">
+            {{ item }}
+          </dd>
+        </dl>
+      </mat-card-content>
+      
+      <div class="bottom-line">
+        <div class="count">{{ rows?.length }}<span class="sm">&nbsp;{{ "Count" | translate }}</span></div>
+        <mat-form-field class="condition">
+          <mat-select (selectionChange)="sortChange($event)" [(value)]="sortval">
+            <mat-option *ngFor="let item of $mSort" [value]="item.id">
+              {{ item.name | langFilter: lang }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-divider class="rj-linecolor"></mat-divider>
+
+<app-spot-list-panel [rows]="details" [myPlanSpots]="myPlanSpots" [isFavoriteList]="false"
+(scrolled)="onScrollDownSpot()" (event)="linktoSpot($event)"></app-spot-list-panel>

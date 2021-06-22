@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>{{ 'Memo' | translate }}</h2>
+<mat-dialog-content>
+  <textarea matInput placeholder="{{ 'Memo' | translate }}" [(ngModel)]="data"></textarea>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="onClickOK()">{{ 'OK' | translate }}</button>
+  <button mat-raised-button mat-dialog-close="cancel">{{ 'Cancel' | translate }}</button>
+</mat-dialog-actions>

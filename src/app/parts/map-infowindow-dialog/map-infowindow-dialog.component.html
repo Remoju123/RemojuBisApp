@@ -1,0 +1,74 @@
+<mat-card>
+  <mat-card-content>
+    <div class="card-box">
+      <div class="card-header" (click)="onClickSpotDetail()">
+        <ng-container class="spotName">
+          <div class="photo">
+            <img [src]="data.pictureUrl"
+            [alt]="data.spotId"
+            [title]="data.spotId" />
+          </div>
+          <div class="info">
+            <div class="name">
+              {{ data.spotName }}
+            </div>
+            <div class="sub">
+              {{ data.subheading }}
+            </div>
+          </div>
+        </ng-container>
+<!--        <ng-container class="spotName" *ngIf="data.spotId === 0">
+          <div class="photo">
+            <img [src]="data.googleSpot.picture_url" />
+          </div>
+          <div class="info">
+            <div class="spotName">
+              {{ data.googleSpot.spot_name }}
+            </div>
+            <div class="subheading">
+              
+            </div>
+          </div>
+        </ng-container>-->
+      </div>
+      <div class="card-bottom">
+        <button mat-raised-button
+                class="myplan-icon-btn"
+                (click)="onClickMapApp()">
+          <span class="button">
+            <img src="../../../assets/img/icon_direction_ov.svg" alt="">
+          </span>      
+          <span class="button-text">
+            {{ "Directions3" | translate }}
+          </span>
+        </button>
+        <button class="add-to-favorite" (click)="onClickFavorite()">
+          <span class="button" *ngIf="!data.isFavorite">
+            <img src="../../../assets/img/icon_addtofav.svg" alt="">
+          </span>
+          <span class="button" *ngIf="data.isFavorite">
+            <img src="../../../assets/img/icon_fav_r.svg" alt="">
+          </span>
+          <span class="button-text">
+            {{ "Favorite" | translate }}
+          </span>
+        </button>
+        <button class="add-to-plan" *ngIf="data.type !== 3 && (data.isDetail || data.isOhterSpot)" (click)="onClickAddToPlan()">
+          {{ "AddToPlan" | translate }}
+        </button>
+        <button class="add-to-plan" *ngIf="!data.isDetail && !data.isOhterSpot" (click)="onClickDelSpot()">
+          {{ "RemoveFromPlan" | translate }}
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+  <button
+    mat-button
+    aria-label="close"
+    class="close"
+    color="white"
+    [mat-dialog-close]
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-card>

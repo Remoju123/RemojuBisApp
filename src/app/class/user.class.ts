@@ -1,48 +1,48 @@
 // ログイン
 export class LoginParam {
   rjGuid: any;
-  email!: string;
-  name!: string;
-  objectId!: string;
-  idp!: string;
-  picture!: string;
+  email: string;
+  name: string;
+  objectId: string;
+  idp: string;
+  picture: string;
 }
 
 // ユーザ
 export class User {
-  user_id!: number;
-  login_id!: string;
-  object_id!: string;
-  gender!: string;
-  user_staff_id!: boolean;
-  last_login_datetime!: string;
+  user_id: number;
+  login_id: string;
+  object_id: string;
+  gender: string;
+  user_staff_id: boolean;
+  last_login_datetime: string;
 
   // 以下、ADの項目
   // 自己紹介
   // 以下、ADの項目
   // 自己紹介
-  aboutMe!: string;
+  aboutMe: string;
   // 年代
   // 年代
-  age!: number;
+  age: number;
   // 誕生日
   // 誕生日
-  birthday!: string;
+  birthday: string;
   // 国名
   // 国名
-  countryName!: string;
+  countryName: string;
   // 国コード
   // 国コード
-  country!: number;
+  country: number;
   // ユーザ名
   // ユーザ名
-  displayName!: string;
+  displayName: string;
   // ユーザの名
   // ユーザの名
-  givenName!: string;
+  givenName: string;
   // ユーザの姓
   // ユーザの姓
-  surname!: string;
+  surname: string;
   // プロフィール画像プレビューURL
   picturePreviewUrl: any;
   // プロフィール写真URL

@@ -1,0 +1,246 @@
+@import "../../../assets/scss/vars";
+#review{ //mat-card
+  .mat-card-header{
+    position: relative;
+    padding: 0 16px;
+    // ::ng-deep.mat-card-header-text{
+    //   padding: 8px;
+    // }
+    display: flex;
+
+    button.edit{
+      margin-top: 5px;
+      line-height: 25px;
+      height: 27px;
+      border-radius: 12.5px;
+      font-size: 13px;
+      border-color: $color-pnk04;
+      color: $color-pnk04;
+
+      position: absolute;
+      right: 16px;
+      bottom: 4px;
+    }
+  }
+  .mat-card-content{
+    margin-top: 1px;
+    .mat-accordion{
+      .mat-expansion-panel{
+        //background-color: rgba(255,255,255,0);
+        border-radius: 0;
+        box-shadow: none;
+
+        .header{
+          padding: 8px;
+        }
+
+        .mat-expansion-panel-header{
+          //padding: 0 8px!important;
+          .container{
+            display: inline-flex;
+            align-items: baseline;
+            .star-ratings-sprite {
+              background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+              background-size: 14px;
+              font-size: 0;
+              height: 14px;
+              line-height: 0;
+              overflow: hidden;
+              text-indent: -999em;
+              width: 70px;
+              margin: 0 auto;
+              .star-ratings-sprite-rating {
+                background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+                background-size: 14px;
+                background-position: 0 100%;
+                float: left;
+                height: 14px;
+                display: block;
+              }
+            }
+            .counter{
+              font-size: 17px;
+              margin-left: 0.7em;
+            }
+          }
+
+          ::ng-deep.mat-expansion-indicator::after{
+            padding: 4px;
+            vertical-align: 5px;
+          }
+
+          span.item{
+            font-size: 14px;
+          }
+        }
+
+        ::ng-deep.mat-expansion-panel-content{
+          background-color: #f6f6f6;
+          .mat-expansion-panel-body{
+            padding: 0 16px 16px;
+            .mat-list{
+              padding-top: 0;
+              .mat-list-item{
+                margin-top: 10px;
+                background-color: #fff;
+                border-radius: 10px;
+                height: auto!important;
+                padding-bottom: 8px;
+                ::ng-deep.mat-list-item-content{
+                  flex-direction: column;
+                  .header{
+                    width: 100%;
+                    display: flex;
+                    justify-content:space-between;
+                    align-items: center;
+                    padding-bottom: 0;
+                    padding-right: 0;
+                    .date{
+                      font-size: 11px;
+                      color: $color-gry06;
+                      min-width: 192px;
+                    }
+
+                    
+                    ::ng-deep .mat-icon-button{
+                      position: absolute;
+                      right: 0;
+                    }
+
+                  }
+                  .title{
+                    width: 100%;
+                    font-size: 15px;
+                    border-bottom: 1px solid $color-gry01;
+                    padding-bottom: 4px;
+                  }
+
+                  .content{
+                    width: 100%;
+                    font-size: 12px;
+                    line-height: 1.8;
+                    color: #4d4d4d;
+                    margin: 8px auto 16px;
+                    overflow-wrap: break-word;
+                    // display: -webkit-box;
+                    // -webkit-box-orient: vertical;
+                    // -webkit-line-clamp: 3;
+                    // overflow: hidden;
+
+                    &.more{
+                      -webkit-box-orient: unset;
+                      -webkit-line-clamp: unset;
+                    }
+                  }
+
+                  .line2{
+                    width: 100%;
+                    display: inline-flex;
+                    justify-content: space-between;
+                    .visit{
+                      font-size: 12px;
+                      color: $color-gry06;
+                    }
+                    a{
+                      text-decoration: none;
+                      font-size: 12px;
+                      color: $color-gld04;
+
+                      &::after{
+                        content: "keyboard_arrow_down";
+                        font-family: "Material Icons";
+                        font-size: 16px;
+                        vertical-align: sub;
+                      }
+
+                      &.off{
+                        &::after{
+                          content: "keyboard_arrow_up";
+                        }
+                      }
+                    }
+                  }
+
+                  .pic{
+                    width: 100%;
+                    margin-top: 5px;
+                    ::ng-deep.owl-item{
+                      width: 74px!important;
+                    }
+                    .thumbnail{
+                      display: inline-flex !important;
+                      height: 50px;
+                      width: 74px;
+                      //border-radius: 6px;
+                      overflow: hidden;
+                      img{
+                        object-fit: cover;
+                      }
+                    }
+                  }
+
+                  .btnedit{
+                    width: 100%;
+                    display: flex;
+                    justify-content: left;
+
+                    button{
+                      margin-top: 5px;
+                      line-height: 25px;
+                      border-radius: 12.5px;
+                      font-size: 13px;
+                      border-color: $color-gld04;
+                      color: $color-gld04;
+
+                      &.remove{
+                        margin-left: 0.5em;
+                      }
+                    }
+                  }
+                  .deletePlan{
+                    position: absolute;
+                    z-index: 1;
+                    top: -13px;
+                    right: 6px;
+                    background-color: rgba(0, 0, 0, 0.3);
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    width: 24px;
+                    height: 24px;
+              
+                    > i {
+                      color: #fff;
+                      font-size: 15px;
+                    }
+                  }
+                }
+              }
+            }
+            .more{
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              button{
+                margin-top: 18px;
+                margin-bottom: 10px;
+                line-height: 25px;
+                border-radius: 12.5px;
+                font-size: 13px;
+                border-color: $color-pnk04;
+                color: $color-pnk04;
+              }
+            }
+            
+          }
+        }
+      }
+    }
+
+    .alert{
+      padding: 0 16px;
+    }
+  }
+}

@@ -1,0 +1,156 @@
+@import "../../../assets/scss/vars";
+.mat-expansion-panel {
+  border-radius: 0;
+  box-shadow: none;
+  padding-bottom: 24px;
+
+  .mat-expansion-panel-header {
+    padding: 0;
+    background-color: #f7f6f6!important;
+    z-index: 10;
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      text-align: center;
+      justify-content: space-between;
+      margin: auto 16px;
+
+      .rt{
+        display: flex;
+        .times{
+          &::before{
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid $color-gld01;
+            border-right: 2px solid $color-gld01;
+            transform: rotate(135deg);
+            transition: all 0.3s;
+            margin-right: 5px;
+          }
+        }
+      }
+      @include routeIcons();
+    }
+
+    &.mat-expanded{
+      .container{
+        .rt{
+          .times{
+            &::before{
+              transform: rotate(-45deg);
+            }
+          }
+        }
+      }
+    }
+
+    ::ng-deep .mat-expansion-indicator {
+      width: 0;
+
+      &::after {
+        color: #fff;
+      }
+    }
+
+    .mat-expansion-panel-header-title,
+    .mat-expansion-panel-header-description {
+      margin-right: 0;
+      color: #9c864f;
+      font-size: 1.5rem;
+    }
+
+    .mat-expansion-panel-header-title {
+      position: relative;
+      margin-left: 16px;
+    }
+
+    .mat-expansion-panel-header-description {
+      margin-top: 2px;
+    }
+  }
+
+  ::ng-deep .mat-expansion-panel-content {
+    .mat-expansion-panel-body{
+      padding: 0;
+      background-color: #f7f6f6;
+      border-top: 1px solid #fff;
+
+      .point-of-dept{
+        position: absolute;
+        top: 58px;
+        display: flex;
+        width: 100%;
+        span.times{
+          flex-basis: 28%;
+          display: flex;
+          justify-content: center;
+        }
+        span.dept{
+          font-size: 16px;
+          font-weight: bolder;
+          margin-left: 1em;
+          color: #555;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 64vw;
+        }
+        
+      }
+
+      .point-of-arrival{
+        position: absolute;
+        bottom: 34px;
+        left: 119px;
+        font-size: 16px;
+        font-weight: bolder;
+        color: #555;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 64vw;
+      }
+
+      @media screen and (min-width: 415px) and (max-width: 1024px) { 
+        .point-of-dept{
+          span.times{
+            flex-basis: 18%;
+          }
+        }
+      }
+    }
+
+    
+  }
+
+  @include transfer-style();
+
+  &::after{
+    content: "";
+    width: 16px;
+    height: 8px;
+    background: url(../../../assets/img/allow_down_fill.svg) no-repeat;
+    position: absolute;
+    margin: auto;
+    right: 0;
+    left: 0;
+    bottom: 4px;
+  }
+}
+
+.blank{
+  &::after{
+    content: "";
+    width: 16px;
+    height: 8px;
+    background: url("../../../assets/img/allow_down_fill.svg") no-repeat;
+    position: absolute;
+    margin: auto;
+    right: 0;
+    left: 0;
+  }
+}

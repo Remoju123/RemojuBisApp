@@ -1,0 +1,53 @@
+<mat-accordion *ngIf="item.transfer;else nontrans">
+  <mat-expansion-panel #mep class="transfer">
+    <mat-expansion-panel-header
+      [@.disabled]="true"
+      expandedHeight="48px"
+      collapsedHeight="48px"
+    >
+      <div class="container">
+        <div class="rt">
+          <div class="times">{{ "DisplayRoute" | translate }}
+          </div>
+          <dl class="route">
+            <dd *ngFor="let t of item.line; index as i" [ngClass]="i < 3 ? t.Init : null"></dd>
+          </dl>
+        </div>
+        <div class="lt">
+          {{ item.transtime }}
+        </div>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="point-of-dept">
+      <span class="times">{{ item.line[0].TimeFrom }}</span>
+      <span class="dept">{{ item.spotName }} {{ "SpotStart" | translate }}</span>
+    </div>
+    <mat-list class="pt40">
+      <mat-list-item
+        *ngFor="let t of item.line; index as i"
+        [ngClass]="t.Init"
+      >
+        <dl [ngClass]="t.Pos">
+          <dd>
+            <span class="icon">
+              <img src="../../../assets/img/move_{{ item.transflow[i]}}_r.svg" style="height: 20px;"/>
+            </span>
+            <span class="line">
+              {{ t.LineName }} {{ t.Minute }}&nbsp;{{ "Minute" | translate }}
+            </span>
+          </dd>
+          <dd>
+            <div class="times">
+              <span class="arrival">{{t.TimeTo}}</span>
+            </div>
+            <div class="station">{{ t.StationNameTo  }}</div>
+          </dd>
+        </dl>
+      </mat-list-item>
+    </mat-list>
+    <div class="point-of-arrival">{{ item.destination }} {{ "SpotEnd" | translate }}</div>
+  </mat-expansion-panel>
+</mat-accordion>
+<ng-template #nontrans>
+  <div class="blank"></div>
+</ng-template>

@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <app-map-panel *ngIf="data.planSpots || data.startPlanSpot || data.endPlanSpot"
+  [isFull]="true" [planId]="data.planId"
+  [isDetail]="data.isDetail"
+  [planSpots]="data.planSpots"
+  [startPlanSpot]="data.startPlanSpot"
+  [endPlanSpot]="data.endPlanSpot"></app-map-panel>
+</mat-dialog-content>
+
+<button
+    mat-mini-fab
+    aria-label="close"
+    class="close"
+    color="white"
+    mat-dialog-close="close"
+  >
+  <mat-icon>clear</mat-icon>
+</button>
+
+  
+

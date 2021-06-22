@@ -1,0 +1,29 @@
+.header{
+  height: 45px;
+  display: flex;
+  align-items: center;
+  background-color: #bfa060;
+  position: relative;
+  margin: 0;
+  
+  .close{
+    margin-left: 14px;
+    color: #fff;
+    font-size: 18px;
+    &::before{
+      content: '';
+      width: 6px;
+      height: 6px;
+      border: 0px;
+      border-top: solid 2px #fff;
+      border-right: solid 2px #fff;
+      -ms-transform: rotate(225deg);
+      -webkit-transform: rotate(225deg);
+      transform: rotate(225deg);
+      position: absolute;
+      top: 50%;
+      left: 4px;
+      margin-top: -4px;
+    }
+  }
+}

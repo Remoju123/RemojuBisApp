@@ -1,0 +1,106 @@
+<mat-card id="review" class="p0">
+  <mat-card-header>
+    <h4 class="header">
+      {{ "Review" | translate }}
+    </h4>
+    <button
+      mat-stroked-button class="edit"
+      (click)="onClickPosted()">
+      {{ "ReviewPosted" | translate }}
+    </button>
+  </mat-card-header>
+  <mat-divider class="rj-linecolor"></mat-divider>
+  <mat-card-content *ngIf="reviewResult && reviewResult.reviews && reviewResult.reviews.length > 0;else noReview">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header
+          expandedHeight="48px"
+          collapsedHeight="48px"
+        >
+          <div class="container">
+            <div class="star-ratings-sprite">
+              <span [style.width]="avgEvaluation/5*100 + '%'" class="star-ratings-sprite-rating">
+              {{avgEvaluation/5*100}}
+              </span>
+            </div>
+            <div class="counter">
+              {{avgEvaluation}}
+            </div>
+            <span class="item">
+              ( {{ reviewResult.reviews.length }} {{ "Results" | translate }})
+            </span>
+          </div>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item *ngFor="let item of reviewResult.reviews | slice: 0:dispQty">
+            <div class="header">
+              <app-rating-comp [rating]="item.evaluation" [size]=12></app-rating-comp>
+              <div class="date">
+                <span *ngIf="item.age">{{ item.age }}{{ "Age" | translate }} /</span>
+                <span *ngIf="item.gender==='femail'">{{ "Female" | translate }}</span>
+                <span *ngIf="item.gender==='male'">{{ "Male" | translate }}</span>
+                <span *ngIf="item.gender==='other'">{{ "Other" | translate }}</span>
+                {{ "PostedDate" | translate }} : {{ item.postedDate | date:"yyyy/MM/dd" }}
+                <span>
+                  <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menu">
+                    <mat-icon>
+                      more_vert</mat-icon>
+                  </button>
+                </span>
+              </div>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onClickReport(item)">{{ "ReportReview" | translate }}</button>
+              </mat-menu>
+            </div>
+            <div class="title">
+              {{ item.title }}
+            </div>
+            <!-- <div class="content" [ngClass]="{'more':item.ismore}" #elm> -->
+            <div class="content">
+              {{ item.contents }}
+            </div>
+            <div class="line2">
+              <div class="visit">
+                {{ "VisitDate" | translate }} : 
+                <ng-container *ngIf="lang==='ja';else den" >{{ item.visitDate | date:"yyyy/MM/dd" }}</ng-container>
+                <ng-template #den >{{ item.visitDate | date:"MM/dd/yyyy" }}</ng-template>
+              </div>
+              <!-- <a href="javascript:void(0)" class="continue" [ngClass]="{'off':item.ismore}" (click)="onIsmore(item)">
+                {{item.label}}
+              </a> -->
+            </div>
+            <div class="pic">
+              <owl-carousel-o [options]="reviewOptions">
+                <ng-container *ngFor="let picture of item.pictures; index as i">
+                  <ng-template carouselSlide>
+                    <div class="thumbnail">
+                      <img [src]="picture.pictureUrl" alt="" lightbox [backgroundOpacity]="0.8" />
+                    </div>
+                  </ng-template>
+                </ng-container>
+              </owl-carousel-o>
+            </div>
+            <div class="btnedit">
+              <button class="edit" *ngIf="objectId === item.objectId" mat-stroked-button (click)="onClickPosted(item)">
+                {{ "Edit" | translate }}
+              </button>
+              <button class="remove" *ngIf="objectId === item.objectId" mat-stroked-button (click)="onClickDelete(item)">
+                {{ "Remove" | translate }}
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="more">
+          <button mat-stroked-button *ngIf="reviewResult.reviews.length > dispQty"
+            (click)="onClickMore()">{{reviewbtnName()}}
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <ng-template #noReview>
+    <mat-card-content class="mt16">
+      <div class="alert">{{ "NoReview" | translate}}</div>
+    </mat-card-content>
+  </ng-template>
+</mat-card>

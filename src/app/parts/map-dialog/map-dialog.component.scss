@@ -1,0 +1,25 @@
+::ng-deep mat-dialog-container#fullmap{
+  padding: 0;
+  position: relative;
+  // touch-action: manipulation;
+  button.close {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    background-color: #fff;
+    z-index: 10;
+  
+    box-shadow: 0 1px 2px -1px rgba(0,0,0,.2), 0 -1px 3px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+  
+    .mat-icon{
+      font-size: 21px;
+    }
+  }
+
+  .mat-dialog-content{
+    margin: 0;
+    padding: 0;
+    max-height: max-content;
+    // max-height: 94vh;
+  }
+}

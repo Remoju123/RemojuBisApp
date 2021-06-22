@@ -4,82 +4,82 @@ import { ReviewResult } from "../class/review.class";
 export class PlanApp {
   // バージョンNo
   // バージョンNo
-  versionNo!: number;
+  versionNo: number;
   // プランID
   // プランID
-  planId!: number;
+  planId: number;
   // プラン名
   // プラン名
-  planName!: string;
+  planName: string;
   // プラン説明
   // プラン説明
-  planExplanation!: string;
+  planExplanation: string;
   // エリアID
   // エリアID
-  areaId!: number;
+  areaId: number;
   // お気に入り
   // お気に入り
-  isFavorite!: boolean;
+  isFavorite: boolean;
   // プラン写真リスト
   // プラン写真リスト
-  pictures!: string[];
+  pictures: string[];
   // sigle or multi pic
   // sigle or multi pic
-  picCnt!: number;
+  picCnt: number;
   // true:CT作成プラン false:ユーザ作成プラン
   // true:CT作成プラン false:ユーザ作成プラン
-  isRemojuPlan!: boolean;
+  isRemojuPlan: boolean;
   // true:プラン作成 false:プラン投稿
   // true:プラン作成 false:プラン投稿
-  isCreation!: boolean;
+  isCreation: boolean;
   // エリア名
   // エリア名
-  areaName!: string;
+  areaName: string;
   // 所用時間(時)
   // 所用時間(時)
-  timeRequiredHour!: number;
+  timeRequiredHour: number;
   // 所用時間(分)
   // 所用時間(分)
-  timeRequiredMin!: number;
+  timeRequiredMin: number;
   // 開始時間
   // 開始時間
-  startTime!: string;
+  startTime: string;
   // 終了時間
   // 終了時間
-  endTime!: string;
+  endTime: string;
   // カテゴリ
   // カテゴリ
-  searchCategories!: DataSelected[];
+  searchCategories: DataSelected[];
   // プランスポット
   // プランスポット
-  spots!: PlanSpotCommon[];
+  spots: PlanSpotCommon[];
   // レビュー
   // レビュー
-  reviewResult!: ReviewResult;
+  reviewResult: ReviewResult;
   // プラン作成者
   // プラン作成者
-  userStaff!: UserStaff;
+  userStaff: UserStaff;
   // ユーザ
   // ユーザ
-  user!: OtherUser;
+  user: OtherUser;
   // 国リスト
   // 国リスト
-  country!: DataSelected[];
+  country: DataSelected[];
   // メモ
   // メモ
-  memo!: string;
+  memo: string;
   // 近くのおすすめスポット(同一小エリア・PVAll降順)
   // 近くのおすすめスポット(同一小エリア・PVAll降順)
-  spotToGoList!: Recommended[];
+  spotToGoList: Recommended[];
   // 
   // 
-  spotToGoCnt!: number;
+  spotToGoCnt: number;
   // 特集
   // 特集
-  featureList!: mFeature[];
+  featureList: mFeature[];
   // SEO
   // SEO
-  seo!: Seo;
+  seo: Seo;
 
   // おすすめプラン
   // recommendedPlanList: Recommended[];
@@ -88,89 +88,89 @@ export class PlanApp {
 }
 
 export class Langary {
-  lang!: string;
-  text!: string;
+  lang: string;
+  text: string;
 }
 
 export class Trans {
-  line!: Line;
-  transtime!: Number;
-  transflow!: string[];
+  line: Line;
+  transtime: Number;
+  transflow: string[];
 }
 
 export class Line {
-  LineName!: string;
-  Minute!: number;
-  StationNameFrom!: string;
-  StationNameTo!: string;
-  LatitudeFrom!: number;
-  LongitudeFrom!: number;
-  TimeFrom!: string;
-  LatitudeTo!: number;
-  LongitudeTo!: number;
-  TimeTo!: string;
-  Type!: string;
-  Init!: string;
-  Pos!: string;
+  LineName: string;
+  Minute: number;
+  StationNameFrom: string;
+  StationNameTo: string;
+  LatitudeFrom: number;
+  LongitudeFrom: number;
+  TimeFrom: string;
+  LatitudeTo: number;
+  LongitudeTo: number;
+  TimeTo: string;
+  Type: string;
+  Init: string;
+  Pos: string;
 }
 
 export class Seo {
-  version_no!: number;
-  plan_id!: number;
-  subtitle!: string;
-  keyword!: string;
-  description!: string;
+  version_no: number;
+  plan_id: number;
+  subtitle: string;
+  keyword: string;
+  description: string;
 }
 
 export class mFeature {
-  feature_id!: number;
-  title!: string;
-  picture_url!: string;
-  url!: string;
-  langulage_cd!: string;
+  feature_id: number;
+  title: string;
+  picture_url: string;
+  url: string;
+  langulage_cd: string;
 }
 
 export class UserStaff {
-  pictureUrl!: string;
-  romanLetterName!: string;
-  departmentName!: string;
-  introduction!: string;
+  pictureUrl: string;
+  romanLetterName: string;
+  departmentName: string;
+  introduction: string;
 }
 
 export class OtherUser {
-  user_id!: number;
-  login_id!: string;
-  object_id!: string;
-  gender!: string;
-  user_staff_id!: boolean;
-  last_login_datetime!: string;
+  user_id: number;
+  login_id: string;
+  object_id: string;
+  gender: string;
+  user_staff_id: boolean;
+  last_login_datetime: string;
 
   // 以下、ADの項目
   // 自己紹介
   // 以下、ADの項目
   // 自己紹介
-  aboutMe!: string;
+  aboutMe: string;
   // 年代
   // 年代
-  age!: number;
+  age: number;
   // 誕生日
   // 誕生日
-  birthday!: string;
+  birthday: string;
   // 国名
   // 国名
-  countryName!: string;
+  countryName: string;
   // 国コード
   // 国コード
-  country!: number;
+  country: number;
   // ユーザ名
   // ユーザ名
-  displayName!: string;
+  displayName: string;
   // ユーザの名
   // ユーザの名
-  givenName!: string;
+  givenName: string;
   // ユーザの姓
   // ユーザの姓
-  surname!: string;
+  surname: string;
   // プロフィール画像プレビューURL
   picturePreviewUrl: any;
   // プロフィール写真URL

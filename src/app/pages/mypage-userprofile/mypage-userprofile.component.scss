@@ -1,0 +1,284 @@
+.mat-card{
+  .card-box{
+    .card-header{
+      height: 159px;
+      position: relative;
+      .cover{
+        background-color: #717171;
+        height: 120px;
+        .wrap{
+          display: flex;
+          justify-content: center;
+
+          img{
+            height: 120px;
+            width: 100%;
+            object-fit: cover;
+          }
+
+          span{
+            font-size: 13px;
+            margin-top: 31px;
+          }
+        }
+        
+
+        button.return{
+          position: absolute;
+          color: #fff;
+          font-size: 11px;
+          &::before{
+            content: '';
+            width: 6px;
+            height: 6px;
+            border: 0px;
+            border-top: solid 2px #fff;
+            border-right: solid 2px #fff;
+            -ms-transform: rotate(225deg);
+            -webkit-transform: rotate(225deg);
+            transform: rotate(225deg);
+            position: absolute;
+            top: 50%;
+            left: 9px;
+            margin-top: -4px;
+          }
+        }
+
+        button.edit{
+          position: absolute;
+          font-size: 10px;
+          color: #fff;
+          top: 11px;
+          right: 11px;
+          border: 1px solid #fff;
+          line-height: 20px;
+          border-radius: 10px;
+        }
+      }
+      .user{
+        .wrap{
+          background-color: #bdbab8;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: 2px sok;
+          border: 2px solid #fff;
+          position: absolute;
+          left: 0;
+          right: 0;
+          margin: auto;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          img{
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: fill;
+          }
+        }
+
+        button.edit{
+          position: absolute;
+          font-size: 10px;
+          color: #989898;
+          bottom: -9px;
+          right: 18px;
+
+          &::before{
+            content: url("../../../assets/img/btn_add.svg");
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            vertical-align: text-bottom;
+          }
+        }
+      }
+    }
+
+    .card-info{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      margin: 10px 20px;
+
+      .username{
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .gender{
+        font-size: 11px;
+        line-height: 30px;
+        span{
+          width: 75px;
+          display: inline-block;
+          &.country{
+            &::before{
+              content: url("../../../assets/img/icon_place.svg");
+              width: 8px;
+              height: 10px;
+              display: inline-block;
+              vertical-align: -1px;
+              margin-right: 4px;
+            }
+          }
+        }
+        
+      }
+
+      .about{
+        font-size: 13px;
+      }
+
+      .bottom{
+        text-align: right;
+        margin: 14px 0;
+        button{
+          box-shadow: none;
+          width: 134px;
+          height: 28px;
+          border: 1px solid #bfa060;
+          border-radius: 14px;
+          padding: 0;
+          line-height: 26px;
+          font-size: 13px;
+          color: #bfa060;
+        }
+      }
+
+    }
+  }
+
+  .mat-card-header{
+    border-bottom: 1px solid #bfa060;
+    margin-bottom: 20px;
+    h4{
+      font-size: 13px;
+      font-weight: normal;
+      margin-left: 12px;
+      margin-bottom: 1px;
+    }
+  }
+
+  .mat-list{
+    .mat-list-item{
+      height: auto;
+      ::ng-deep.mat-list-item-content{
+        padding: 0 12px;
+  
+        .mat-form-field{
+          width: 100%;
+          .mat-form-field-wrapper{
+            .mat-form-field-flex{
+  
+              .mat-form-field-infix{
+                padding: 0;
+                height: 27px;
+
+                .mat-input-element{
+                  font-size: 16px;
+                }
+
+                .mat-select{
+                  font-size: 16px;
+                }
+
+                textarea.mat-input-element{
+                  margin-top: 0;
+                  margin-bottom: 10px;
+                  height: 116px;
+                  font-size: 16px;
+                  padding-top: 10px;
+                  line-height: 1.7;
+                }
+              }
+              
+            }
+            .mat-form-field-subscript-wrapper{
+              margin-top: -3px;
+              font-size: 9px;
+            }
+          }
+
+          .mat-select-arrow-wrapper{
+            vertical-align: bottom;
+            
+          }
+
+          .mat-form-field-label-wrapper{
+            top:-1.05em;
+          }
+
+          &.mat-form-field-hide-placeholder{
+            .mat-form-field-label-wrapper{
+              top: -1.6em;
+              padding-top: 1em;
+            }
+          }
+
+
+        }
+
+        
+      }
+      
+      //パスワードフィールド
+      &.pw{
+        ::ng-deep.mat-list-item-content{
+          align-items: baseline;
+          .mat-form-field{
+            width: 50%;
+          }
+  
+          button.pwchange{
+            background-color: #e48d8f;
+            color: #fff;
+            margin-left: 10px;
+          }
+        }
+      }
+
+      // 最下部
+      &.bottom{
+        ::ng-deep.mat-list-item-content{
+          justify-content: flex-end;
+          margin-bottom: 35px;
+          // 保存ボタン
+          button.save{
+            width: 80px;
+            height: 32px;
+            background-color: #bfa060;
+            color: #fff;
+            border-radius: 16px;
+            line-height: 32px;
+          }
+        }
+      }
+    }
+    
+  }
+}
+
+
+::ng-deep.mat-datepicker-popup{
+  .mat-calendar-table{
+    tbody{
+      tr{
+        height: 40px;
+
+        td{
+          width: 14.3%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 415px) and (max-width: 1024px) { 
+  form#uprof{
+    margin: auto 98px;
+  }
+}

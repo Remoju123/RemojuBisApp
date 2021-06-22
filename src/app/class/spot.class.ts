@@ -5,155 +5,155 @@ import { SpotBudget, SpotBusinessHours, SpotSearchCategory } from "./spotlist.cl
 import { ReviewResult } from "./review.class";
 export class Spot {
   accesses: Accesses[] = [];
-  address!: string;
-  area_id!: number;
-  area_id_2!: number;
-  main_search_category_id!: number;
-  average_stay_time!: number;
+  address: string;
+  area_id: number;
+  area_id_2: number;
+  main_search_category_id: number;
+  average_stay_time: number;
   budgets: Budgets[] = [];
   businessDay: DataSelected[] = [];
-  cleak_comment!: string;
-  clerk_picture_url!: string;
-  creation_status!: string;
-  hp!: string;
+  cleak_comment: string;
+  clerk_picture_url: string;
+  creation_status: string;
+  hp: string;
   isCopy: boolean = false;
   is_required_indication_1: boolean = false;
   is_required_indication_2: boolean = false;
   is_urgent_response: boolean = false;
-  language_id!: string;
-  latitude!: number;
-  longitude!: number;
-  memo!: string;
-  overview!: string;
+  language_id: string;
+  latitude: number;
+  longitude: number;
+  memo: string;
+  overview: string;
   pictures: Pictures[] = [];
-  regular_holiday!: string;
-  release_create_datetime!: string;
-  release_datetime!: string;
-  release_status!: number;
-  release_update_datetime!: string;
-  release_update_user_id!: number;
+  regular_holiday: string;
+  release_create_datetime: string;
+  release_datetime: string;
+  release_status: number;
+  release_update_datetime: string;
+  release_update_user_id: number;
   searchCategories: SpotSearchCategory[] = [];
   seo: Seo[] = [];
-  spot_id!: number;
-  spot_memo!: string;
-  spot_name!: string;
-  staff!: string;
-  staff_comment!: string;
-  staff_picture_url!: string;
-  subheading!: string;
-  tel!: string;
+  spot_id: number;
+  spot_memo: string;
+  spot_name: string;
+  staff: string;
+  staff_comment: string;
+  staff_picture_url: string;
+  subheading: string;
+  tel: string;
   toll: Toll[] = [];
   userSpot: UserSpot[] = [];
-  verification_status!: number;
-  verification_update_datetime!: string;
-  verification_update_user_id!: string;
-  version_no!: number;
-  areaName!: string;
-  pictureUrl!: string;
+  verification_status: number;
+  verification_update_datetime: string;
+  verification_update_user_id: string;
+  version_no: number;
+  areaName: string;
+  pictureUrl: string;
   isFavorite: boolean = false;
-  categoryIcon!: string;
-  pvQty!: number;
+  categoryIcon: string;
+  pvQty: number;
 }
 
 export class Accesses {
-  version_no!: number;
-  spot_id!: number;
-  display_order!: number;
-  access!: number;
-  nearest!: string;
+  version_no: number;
+  spot_id: number;
+  display_order: number;
+  access: number;
+  nearest: string;
 }
 
 export class Budgets {
-  version_no!: number;
-  spot_id!: number;
-  budget_frame_id!: number;
-  budget_id!: number;
+  version_no: number;
+  spot_id: number;
+  budget_frame_id: number;
+  budget_id: number;
 }
 
 export class Businesshours {
-  version_no!: number;
-  spot_id!: number;
-  display_order!: number;
+  version_no: number;
+  spot_id: number;
+  display_order: number;
   business_hours: BusinessHour[] = [];
 }
 
 export class BusinessHour {
-  business_days!: string;
-  business_hours_from!: string;
-  business_hours_to!: string;
+  business_days: string;
+  business_hours_from: string;
+  business_hours_to: string;
   comment: Langary[] = [];
 }
 
 export class Pictures {
-  version_no!: number;
-  spot_id!: number;
-  display_order!: number;
-  picture_url!: string;
+  version_no: number;
+  spot_id: number;
+  display_order: number;
+  picture_url: string;
   is_main: boolean = false;
   subheading: Langary[] = [];
   comment: Langary[] = [];
 }
 
 export class SearchCategories {
-  version_no!: number;
-  spot_id!: number;
-  search_category_id!: number;
+  version_no: number;
+  spot_id: number;
+  search_category_id: number;
 }
 
 export class Seo {
-  version_no!: number;
-  spot_id!: number;
-  subtitle!: string;
-  keyword!: string;
-  description!: string;
+  version_no: number;
+  spot_id: number;
+  subtitle: string;
+  keyword: string;
+  description: string;
 }
 
 export class Toll {
-  version_no!: number;
-  spot_id!: number;
-  url!: string;
+  version_no: number;
+  spot_id: number;
+  url: string;
 }
 
 export class UserSpot {
-  spot_id!: number;
-  login_id!: number;
-  password!: string;
-  user_name!: string;
-  published_id!: number;
-  visitor!: string;
-  picture_id!: number;
-  draft_id!: number;
-  report_id!: number;
+  spot_id: number;
+  login_id: number;
+  password: string;
+  user_name: string;
+  published_id: number;
+  visitor: string;
+  picture_id: number;
+  draft_id: number;
+  report_id: number;
   is_active: boolean = false;
-  create_datetime!: string;
-  create_user_id!: number;
-  update_datetime!: string;
-  update_user_id!: number;
+  create_datetime: string;
+  create_user_id: number;
+  update_datetime: string;
+  update_user_id: number;
 }
 
 export class SpotList {
-  release_datetime!: string;
-  spot_id!: number;
-  status!: number;
-  spot_name!: string;
-  crate_user_name!: string;
+  release_datetime: string;
+  spot_id: number;
+  status: number;
+  spot_name: string;
+  crate_user_name: string;
 }
 
 export class SearchCondition {
-  releasestatus!: string;
+  releasestatus: string;
   isUrgentResponse: boolean = false;
   isAreaControl1: boolean = false;
   isAreaControl2: boolean = false;
-  spotId!: number;
-  spotName!: string;
+  spotId: number;
+  spotName: string;
   areas: FormControl = new FormControl;
   authors: FormControl = new FormControl;
   isStatusSelect1: boolean = false;
-  StatusSelect1!: string;
+  StatusSelect1: string;
   isStatusSelect2: boolean = false;
-  StatusSelect2!: string;
+  StatusSelect2: string;
   isStatusSelect3: boolean = false;
-  StatusSelect3!: string;
+  StatusSelect3: string;
   creationStatus_selected: string[] = [];
 }
 
@@ -204,70 +204,70 @@ export interface Langary {
 export class SpotApp {
   // バージョンNo
   // バージョンNo
-  versionNo!: number;
+  versionNo: number;
   // スポットID
   // スポットID
-  spotId!: number;
+  spotId: number;
   // エリアID(都道府県)
   // エリアID(都道府県)
-  area1!: string;
+  area1: string;
   // エリア(都道府県)
   // エリア(都道府県)
-  areaName1!: string;
+  areaName1: string;
   // エリアID(地区)
   // エリアID(地区)
-  area2!: string;
+  area2: string;
   // エリア(地区)
   // エリア(地区)
-  areaName2!: string;
+  areaName2: string;
   // 小見出し
   // 小見出し
-  subheading!: string;
+  subheading: string;
   // スポット名
   // スポット名
-  spotName!: string;
+  spotName: string;
   // 定休日
   // 定休日
   isRegularHoliday: boolean = false;
   // 定休日
   // 定休日
-  regularHoliday!: string;
+  regularHoliday: string;
   // PV数
   // PV数
-  pvQty!: number;
+  pvQty: number;
   // Thanks数
   // Thanks数
-  thanksQty!: number;
+  thanksQty: number;
   // お気に入り true:登録済み false:登録していない
   // お気に入り true:登録済み false:登録していない
   isFavorite: boolean = false;
   // スポット概要
   // スポット概要
-  spotOverview!: string;
+  spotOverview: string;
   // 住所
   // 住所
-  address!: string;
+  address: string;
   // TEL
   // TEL
-  tel!: string;
+  tel: string;
   // HP
   // HP
-  hp!: string;
+  hp: string;
   // 緯度
   // 緯度
-  latitude!: string;
+  latitude: string;
   // 経度
   // 経度
-  longitude!: string;
+  longitude: string;
   // 予算備考欄
   // 予算備考欄
-  budgetRemarks!: string;
+  budgetRemarks: string;
   // 平均滞在時間
   // 平均滞在時間
-  averageStayTime!: number;
+  averageStayTime: number;
   // 営業時間備考
   // 営業時間備考
-  businessHoursRemarks!: string;
+  businessHoursRemarks: string;
   // SEO
   // SEO
   seo: Seo = new Seo;
@@ -331,17 +331,17 @@ export interface ReservationDay {
 }
 
 export class SpotThanks {
-  spot_id!: number;
-  guid!: string;
+  spot_id: number;
+  guid: string;
   is_delete: boolean = false;
 
-  objectId!: string;
+  objectId: string;
 }
 
 export class SpotThumb{
-  spot_name!: string;
-  picture_url!: string;
-  latitude!: number;
-  longitude!: number;
-  start_time!: string;
+  spot_name: string;
+  picture_url: string;
+  latitude: number;
+  longitude: number;
+  start_time: string;
 }

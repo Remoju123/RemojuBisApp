@@ -1,0 +1,144 @@
+@import "../../../assets/scss/vars";
+
+.plan-panel {
+  opacity: 0;
+  height: 0;
+  transition: all 0.2s ease-in-out;
+
+  &.show-panel {
+    opacity: 1;
+    height: 74px;
+  }
+
+  // ::ng-deep.mat-card-header-text {
+  //   display: flex;
+  //   flex-flow: row;
+  //   width: 100%;
+
+  //   .mat-card-title {
+  //     font-size: 4.2vw;
+  //     font-weight: bold;
+  //     position: relative;
+  //     margin-bottom: 6px;
+  //     white-space: nowrap;
+
+  //     .mat-badge {
+  //       position: absolute;
+  //       top: 12px;
+
+  //       .mat-badge-content {
+  //         width: 20px;
+  //         height: 20px;
+  //         line-height: 19px;
+  //       }
+  //     }
+  //   }
+
+  //   .mat-card-subtitle {
+  //     // margin-left: auto;
+  //     // margin-top: 0 !important;
+  //     // background-color: #7E7E7E;
+  //     // padding: 3px 5px;
+  //     // border-radius: 2px;
+  //     // font-size: 12px;
+  //     // color: #fff;
+  //     margin-bottom: 0;
+  //     margin-left: 1em;
+
+  //     .time {
+  //       font-size: 16px;
+  //       padding-right: 5px;
+  //       font-weight: bold;
+  //     }
+
+  //     .msg {
+  //       background-color: #7e7e7e;
+  //       padding: 3px 15px;
+  //       border-radius: 2px;
+  //       font-size: 12px;
+  //       color: #fff;
+  //     }
+  //   }
+  // }
+
+  .card-header {
+    .btn-show {
+      margin-left: auto;
+      height: 36px;
+      background-color: #c0a080;
+      font-weight: bold;
+      color: #fff;
+      padding: 0 8px;
+      font-size: 13px;
+    }
+  }
+
+  .card-content {
+    //display: inline-flex;
+    display: flex;
+    flex-flow: row;
+    min-height: 36px;
+    flex-wrap: wrap;
+
+    .planinfo {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin: 4px auto;
+      font-size: 12px;
+    }
+
+    ul.planlist {
+      list-style: none;
+      display: flex;
+      padding-inline-start: 0;
+      margin: 0;
+      width: 100%;
+      justify-content: space-between;
+
+      > li {
+        // margin-right: 15px;
+        // margin-right: 40px;
+        position: relative;
+
+        > img {
+          height: 36px;
+        }
+
+        &::after {
+          font-family: "Material Icons";
+          content: "more_horiz";
+          position: absolute;
+          top: 10px;
+          left: 48px;
+          color: #a5a5a5;
+          font-size: 110%;
+          font-weight: bold;
+        }
+
+        &:last-child::after {
+          content: "";
+        }
+      }
+    }
+
+    .btn-show {
+      margin-left: auto;
+      height: 36px;
+      background-color: #b52b3b;
+      font-weight: bold;
+      color: #fff;
+    }
+  }
+
+  // ::ng-deep.mat-progress-bar-fill::before{
+  //   font-family: "Material Icons";
+  //   content: 'place';
+  //   position: absolute;
+  //   top: -20px;
+  //   right: 0;
+  //   width: 20px;
+  //   height: 20px;
+  //   background-color: gray;
+  // }
+}

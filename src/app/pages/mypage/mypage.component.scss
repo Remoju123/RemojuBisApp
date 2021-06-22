@@ -1,0 +1,74 @@
+@import "../../../assets/scss/vars";
+.title{
+  display: flex;
+  justify-content: center;
+  height: 36px;
+  font-size: 14px;
+  align-items: center;
+  color: #bfa060;
+}
+
+.mat-tab-group{
+  ::ng-deep.mat-tab-header{
+      background-color: #ece9e7;
+      height: 55px;
+      border-bottom: none;
+      .mat-tab-labels{
+        justify-content: space-between;
+        .mat-tab-label{
+          height: 55px;
+          padding: 0;
+          width: 33.3vw;
+          .mat-tab-label-content{
+            font-size: 12px;
+            padding: 6px 0;
+            width: 112px;
+            background-color: #fff;
+            border-radius: 25px;
+            color: #bfa060;
+          }
+          &.mat-tab-label-active{
+            .mat-tab-label-content{
+              background-color: $color-gld01;
+              color: #fff;
+            }
+          }
+
+          &:nth-of-type(1){
+            .mat-tab-label-content::before{
+              content: url("../../../assets/img/icon_myprof.svg"); 
+              width: 14px;
+              height: 15px;
+              margin-right: 6px;
+              
+            }
+          }
+          &:nth-of-type(2){
+            .mat-tab-label-content::before{
+              content: url("../../../assets/img/icon_myfavo.svg"); 
+              width: 14px;
+              height: 15px;
+              margin-right: 6px;
+            }
+          }
+          &:nth-of-type(3){
+            .mat-tab-label-content::before{
+              content: url("../../../assets/img/icon_myplan.svg"); 
+              width: 14px;
+              height: 15px;
+              margin-right: 6px;
+            }
+          }
+        }
+      }
+
+      ::ng-deep.mat-ink-bar{
+        background-image: url("../../../assets/img/tab_alt.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 10px;
+        background-color: transparent;
+      }
+      
+  }
+}

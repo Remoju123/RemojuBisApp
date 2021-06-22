@@ -1,0 +1,159 @@
+@import "../../../assets/scss/vars";
+
+// @font-face {
+//   font-weight: 400;
+//   font-family: "Material Icons";
+//   font-style: normal;
+//   src: url(../../../assets/icons/material-icon.woff2) format("woff2");
+// }
+
+::ng-deep mat-dialog-container#mapinfo{
+  padding: 0;
+}
+
+.mat-card{
+  padding: 0;
+
+  ::ng-deep.mat-card-content{
+    margin-bottom: 0;
+  }
+
+  .card-box{
+    // border-radius: 10px;
+    overflow: hidden;
+    box-sizing: border-box;
+
+    .card-header{
+      position: relative;
+      height: 135px;
+      overflow: hidden;
+      display: flex;
+
+      .photo{
+        img{
+          height: 135px;
+          width: 135px;
+          object-fit: cover;
+          @include copy-protect;
+        }
+      }
+
+      .info{
+        margin: 20px 15px;
+        .name{
+          font-size: 17px;
+        }
+        .sub{
+          font-size: 13px;
+          margin-top: 18px;
+        }
+      }
+    }
+
+    .card-bottom{
+      height: 55px;
+      background-color: #f3f3f3;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      .myplan-icon-btn{
+        box-shadow: none;
+        padding: 0;
+        border:none;
+        background: none;
+        line-height: 1;
+
+        span.button{
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          width: 32px;
+          height: 32px;
+          padding: 7px;
+          box-sizing: border-box;
+          img{
+            width: 30px;
+            height: auto;
+          }
+        }
+    
+        span.button-text{
+          color: #aaaaaa;
+          display: block;
+          font-size: 10px;
+          margin-top: 2px;
+          font-weight: bold;
+          line-height: 1;
+          width: auto;
+          height: auto;
+          padding: unset;
+        }
+      }
+      .add-to-favorite{
+        box-shadow: none;
+        padding: 0;
+        border:none;
+        background: none;
+        line-height: 1;
+
+        span.button{
+          display: inline-flex;
+          justify-content: center;
+          align-items: center;
+          /* border-radius: 50%; */
+          width: 32px;
+          height: 32px;
+          padding: 7px;
+          box-sizing: border-box;
+          img{
+            width: 30px;
+            height: auto;
+          }
+        }
+    
+        span.button-text{
+          color: #aaaaaa;
+          display: block;
+          font-size: 10px;
+          margin-top: 2px;
+          font-weight: bold;
+          line-height: 1;
+          width: auto;
+          height: auto;
+          padding: unset;
+        }
+      }
+      .add-to-plan{
+        background-color: #de7274;
+        color: #fff;
+        border-radius: 6px;
+        font-size: 15px;
+        height: 35px;
+        margin-left: 26px;
+        width: 160px;
+        vertical-align: -webkit-baseline-middle;
+        margin-top: 2px;
+        border:none;
+      }
+    }
+  }
+
+  button.close{
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    background-color: #fff;
+    z-index: inherit;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    min-width: initial;
+    ::ng-deep.mat-button-wrapper{
+      padding: 0;
+      .mat-icon{
+        font-size: 20px;
+      }
+    }
+  }
+}
+

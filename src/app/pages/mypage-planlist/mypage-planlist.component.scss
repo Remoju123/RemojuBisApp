@@ -1,0 +1,861 @@
+//spot-list.component.scssと同じ
+@import "../../../assets/scss/vars";
+
+// @font-face {
+//   font-weight: 400;
+//   font-family: "Material Icons";
+//   font-style: normal;
+//   src: url(../../../assets/icons/material-icon.woff2) format("woff2");
+// }
+
+.search {
+  background: transparent;
+  font-size: 16px;
+  color: #fff;
+  background-color: $color-remoju;
+  border-radius: 5px;
+  padding: 6px 8px;
+}
+
+.area {
+  font-size: 14px;
+  outline: 1px solid #707070;
+  outline-offset: -2px;
+}
+
+.bussinessHour {
+  font-size: 12px;
+}
+
+.spotName {
+  color: #707070;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.link {
+  height: 24px;
+  color: $color-remoju;
+}
+
+.freesearch {
+  width: 100%;
+  // font-size: 75%;
+  ::ng-deep .mat-form-field-placeholder {
+    color: red;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+
+  :nth-child(1),
+  :nth-child(2) {
+    border-right: none;
+  }
+
+  button {
+    font-size: 90%;
+    border-radius: 0;
+
+    .count {
+      margin-left: 0.3em;
+      font-size: 90%;
+      color: rgb(148, 148, 148);
+    }
+
+    &.butArea {
+      flex: 28%;
+    }
+
+    &.butCate {
+      flex: 28%;
+    }
+
+    &.butOther {
+      flex: 44%;
+    }
+  }
+}
+
+.btg-searchCondition {
+  font-size: 90%;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+  .mat-button-toggle:nth-child(1),
+  .mat-button-toggle:nth-child(2) {
+    width: 28%;
+  }
+
+  .mat-button-toggle:nth-child(3) {
+    width: 44%;
+  }
+
+  ::ng-deep.mat-button-toggle-label-content {
+    line-height: 40px !important;
+  }
+}
+
+.mat-card-content.sort {
+  font-size: 12px;
+  display: flex;
+
+  h2.left {
+    align-self: flex-end;
+    color: #707070;
+  }
+
+  .right {
+    margin-left: auto;
+  }
+}
+
+// spot detailからコピー ここから
+// #spotHeaderは削除
+// #spot-detailのpaddingを8→2に変更
+#mainPictures {
+  height: 66.6vw;
+
+  ::ng-deep .owl-prev,
+  ::ng-deep .owl-next {
+    position: absolute;
+    top: 60%;
+    display: block !important;
+    width: 14px;
+    height: 100px;
+    background-color: transparent;
+    border: 0 solid black;
+    transform: translateY(-50%);
+  }
+
+  ::ng-deep .owl-prev {
+    left: -14px;
+  }
+
+  ::ng-deep .owl-next {
+    right: 0;
+  }
+
+  ::ng-deep .owl-prev i,
+  ::ng-deep .owl-next i {
+    color: #ccc;
+    transform: scale(1);
+  }
+
+  ::ng-deep .owl-dots {
+    position: absolute;
+    top: 12px;
+    right: 6px;
+
+    .owl-dot span {
+      width: 6px;
+      height: 6px;
+      margin: 3px 4px;
+    }
+  }
+
+  .inline {
+    position: absolute;
+    bottom: 0; // 8px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    padding-bottom: 4px;
+
+    .title {
+      height: auto;
+    }
+
+    .category {
+      // height: auto;
+      height: 16px;
+      font-size: 60%;
+      color: #fff;
+    }
+
+    .spotName {
+      color: rgba(255, 255, 255, 1);
+      font-size: 16px;
+      font-weight: bold;
+      text-shadow: 1px 1px 1px #888;
+    }
+  }
+
+  .areaName {
+    position: absolute;
+    top: -0.6rem;
+    left: 0.6rem;
+    z-index: 1;
+    width: 36px;
+    height: 36px;
+    // line-height: 48px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    padding: 4px;
+    white-space: pre-wrap;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .buttons {
+    position: absolute;
+    bottom: 1.2em;
+    right: 0;
+    z-index: 1;
+
+    .list-horizontal {
+      padding: 0;
+      float: right;
+      // margin-top: -10px;
+      margin-top: 10px;
+      // opacity: 0.5;
+      .mat-list-item {
+        display: inline-block;
+        height: auto;
+        // width: auto;
+        width: 36px;
+
+        ::ng-deep.mat-list-item-content {
+          padding: 0 8px;
+        }
+
+        .material-icons,
+        .material-icons-outlined {
+          font-size: 16px;
+          // color: #999;
+          color: #fff;
+          // padding-right: 4px;
+        }
+
+        .val {
+          font-size: 14px;
+          color: #999;
+        }
+
+        .label {
+          position: absolute;
+          margin: auto;
+          top: -15px;
+          left: 0;
+          right: 0;
+          font-size: 10px;
+          font-weight: bold;
+          text-align: center;
+          color: #fff;
+        }
+
+        .item {
+          position: absolute;
+          margin: auto;
+          top: 0;
+          left: 0;
+          right: 0;
+          font-size: 10px;
+          text-align: center;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.thumbmain {
+  //display: inline-flex !important;
+
+  > img {
+    width: 100%;
+    // height: 66.6vw;
+    object-fit: cover;
+    @include copy-protect;
+  }
+}
+
+.thumbnail {
+  display: inline-flex !important;
+  height: 12vh;
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    @include copy-protect;
+  }
+}
+
+.content {
+  margin-right: 10px;
+  margin-bottom: 10px;
+
+  > p {
+    line-height: 1.5;
+  }
+}
+
+::ng-deep .mat-card {
+  box-shadow: none !important;
+}
+
+#spot-detail {
+  font-family: "Noto Sans JP", sans-serif;
+  line-height: 1.8;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  // color: #4d4d4d;
+  // font-size: 14px;
+  table {
+    width: 100%;
+
+    tr {
+      td {
+        padding: 2px 0;
+        line-height: 1.5;
+        border-bottom: 1px solid #ddd;
+      }
+
+      td:first-child {
+        width: 17vw;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+#spot-view {
+  ::ng-deep .mat-figure {
+    flex-direction: column;
+  }
+
+  .val {
+    margin-bottom: 4px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .item {
+    font-size: 12px;
+    line-height: 1;
+  }
+}
+// spot detailからコピー ここまで
+
+::ng-deep .ngx-pagination {
+  font-family: "Noto Sans JP";
+  font-size: 70%;
+  padding: 10px 0;
+  margin-left: 0;
+  margin-bottom: 0!important;
+
+  background-color: #f6f6f6;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  li{
+    background: #fff;
+    border-radius: 18px!important;
+    color: #bebbb9;
+    width: 25px;
+    text-align: center;
+
+    a{
+      color: #bebbb9;
+      padding: 0.1875rem;
+    }
+  }
+    
+    
+  .current {
+    padding: 0.2rem !important;
+    border-radius: 50%;
+    height: 18px;
+    width: 18px;
+    text-align: center;
+    font-weight: bold;
+    background: #f6f6f6 !important;
+    color: #5e5e5e!important;
+    margin-top: 1px;
+  }
+
+  .ellipsis{
+    background: #f6f6f6 !important;
+  }
+
+  .pagination-next a::after,
+  .pagination-previous a::before {
+    font-size: 20px;
+  }
+
+  .pagination-previous a::before{
+    content:url('../../../assets/img/&lts.svg')!important;
+    width: 4px;
+    height: 10px;
+  }
+
+  .pagination-next a::after{
+    content:url('../../../assets/img/&gts.svg')!important;
+    width: 4px;
+    height: 10px;
+  }
+
+  .pagination-previous,.pagination-next{
+    padding: 0.2rem !important;
+    border-radius: 18px;
+    height: 18px;
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+    background: #fff;
+    position: relative;
+
+    >a{
+      padding: 0.1875rem 0.375rem;
+      position: absolute;
+      top: -10px;
+    }
+  }
+}
+
+.spotDetail {
+  .row {
+    height: auto;
+    line-height: 1.8;
+
+    &.sub {
+      ::ng-deep .mat-list-item-content {
+        width: 100%;
+
+        p {
+          line-height: 1.5;
+          // font-size: 1.1rem;
+          font-size: 14px;
+          margin-top: 3px;
+          margin-bottom: 3px;
+          // color: rgb(114, 105, 83);
+          color: rgba(0, 0, 0, 0.87);
+        }
+      }
+    }
+
+    &.list {
+      font-size: 90%;
+      color: rgb(114, 105, 83);
+    }
+  }
+
+  .list-horizontal {
+    padding: 0;
+    float: right;
+    // margin-top: -10px;
+    margin-top: 10px;
+    opacity: 0.5;
+
+    .mat-list-item {
+      display: inline-block;
+      height: auto;
+      // width: auto;
+      width: 36px;
+
+      ::ng-deep.mat-list-item-content {
+        padding: 0 8px;
+      }
+
+      .material-icons,
+      .material-icons-outlined {
+        font-size: 16px;
+        color: #999;
+        // padding-right: 4px;
+      }
+
+      .val {
+        font-size: 14px;
+        color: #999;
+      }
+
+      .item {
+        position: absolute;
+        margin: auto;
+        top: 15px;
+        left: 0;
+        right: 0;
+        font-size: 10px;
+        text-align: center;
+      }
+    }
+  }
+
+  ::ng-deep .morning {
+    padding-right: 3px;
+    padding-left: 2px;
+
+    &::before {
+      display: inline-block;
+      content: url("../../../assets/img/budget-morning.svg");
+      width: 16px;
+      height: 16px;
+      padding-right: 3px;
+      vertical-align: sub;
+    }
+  }
+
+  ::ng-deep .lunch {
+    padding-right: 3px;
+    padding-left: 2px;
+
+    &::before {
+      display: inline-block;
+      content: url("../../../assets/img/budget-lunch.svg");
+      width: 16px;
+      height: 16px;
+      padding-right: 3px;
+      vertical-align: sub;
+    }
+  }
+
+  ::ng-deep .dinner {
+    padding-right: 3px;
+    padding-left: 2px;
+
+    &::before {
+      display: inline-block;
+      content: url("../../../assets/img/budget-dinner.svg");
+      width: 16px;
+      height: 16px;
+      padding-right: 3px;
+      vertical-align: sub;
+    }
+  }
+}
+
+.spotFooter {
+  .mat-grid-tile {
+    overflow: visible;
+  }
+
+  .add-to-plan {
+    // padding: 6px 8px;
+    color: #fff;
+    font-size: 16px;
+    // background: transparent;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background: #c0a080;
+    // background: #ee86a3;
+    // height: 34px;
+    line-height: 28px;
+    // padding-bottom: 34px;
+    white-space: nowrap;
+    width: 100%;
+
+    .mat-icon {
+      vertical-align: text-bottom;
+
+      img {
+        width: 20px;
+      }
+    }
+  }
+
+  .staytime {
+    ::ng-deep .mat-figure {
+      font-family: "Noto Sans JP";
+      font-size: 0.9rem;
+      justify-content: left;
+      margin-left: 16px;
+    }
+  }
+
+  .addbutton {
+    ::ng-deep .mat-figure {
+      justify-content: flex-end;
+      margin-right: 16px;
+    }
+
+    .menu {
+      font-size: 1em;
+      white-space: nowrap;
+      color: #999;
+    }
+  }
+
+  .add-to-favorite {
+    @include ios-reset;
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      width: 41px;
+      justify-content: center;
+
+      .bottom {
+        width: 20px;
+      }
+    }
+
+    padding-right: 0;
+
+    .push-pin {
+      display: inline-block;
+      content: url("../../../assets/img/heart.svg");
+      width: 24px;
+      height: 24px;
+      margin: auto;
+    }
+
+    .push-pin-over {
+      display: inline-block;
+      content: url("../../../assets/img/heart-over.svg");
+      width: 24px;
+      height: 24px;
+      margin: auto;
+    }
+  }
+}
+
+.mat-divider.section {
+  // border: 1px solid #eeeee294;
+  margin: auto 16px;
+  border-color: #eee;
+}
+
+.mat-divider.divid2 {
+  height: 1.2em;
+  // border-top: 1px solid #cdbf9c;
+  // border-bottom: 1px solid #cdbf9c;
+  background-color: #fff;
+  margin-top: 0.3em;
+  box-shadow: 0 4px 12px -7px inset;
+}
+
+.sortselect {
+  font-size: 12px;
+}
+
+span.sortlink {
+  padding-right: 1em;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.mat-card.result {
+  background-color: $color-gold;
+  border-radius: 0;
+  padding: 10px 16px;
+
+  .mat-card-content {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 2px;
+    // font-size: 110%;
+    cursor: pointer;
+
+    &.badge {
+      background-color: $color-gold;
+      padding-top: 0;
+    }
+
+    .keyword {
+      padding-right: 0.5em;
+    }
+  }
+
+  .mat-standard-chip {
+    padding: 2px 5px;
+    border-radius: 10px;
+    min-height: 27px;
+    font-size: 80%;
+  }
+}
+
+.box{
+  margin-top: 16px;
+  ::ng-deep .mat-card{
+    padding: 0;
+  
+    .card-box{
+      border: #edeae8 solid 1px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      // border: #edeae8 solid 2px;
+      box-sizing: border-box;
+      margin-right: 12px;
+      margin-left: 12px;
+
+      .pics{
+        ::ng-deep.owl-carousel{
+          margin: 2px 0px 12px 10px;
+          padding: 0;
+
+
+          ::ng-deep.owl-item {
+            position: relative;
+        
+            .thumbspots {
+              .thumbnum {
+                position: absolute;
+                height: 25px;
+                width: 20px;
+                left: 5px;
+                line-height: 18px;
+                text-align: center;
+                background-image: url("../../../assets/img/pin_red.svg");
+                background-repeat: no-repeat;
+                
+                span {
+                  color: white;
+                  font-size: 12px;
+                }
+              }
+        
+              display: inline-flex !important;
+        
+              img {
+                margin-top: 10px;
+                width: 100%;
+                height: 24.5vw;
+                object-fit: cover;
+                border-radius: 5px;
+                @include copy-protect;
+              }
+            }
+        
+            .thumbname {
+              overflow: hidden;
+        
+              span {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 11px;
+                color: #baa169;
+              }
+            }
+          }
+        }
+
+        ::ng-deep .owl-carousel .owl-stage {
+          padding-left: 0 !important;
+        
+        }
+      }
+
+      .mat-list{
+        padding-top: 0;
+
+        ::ng-deep .mat-list-item{
+          height: auto;
+          font-size: 11px;
+          color: #5e5e5e;
+
+          .mat-list-item-content{
+            padding: 0 10px;
+          }
+          
+          &.top{
+            margin: 10px 0 4px;
+            .mat-list-item-content{
+              justify-content: space-between;
+              align-items:end;
+              .lt{
+                .areaName{
+                  border: 1px solid #5e5e5e;
+                  padding: 0 4px;
+                  border-radius: 3px;
+                  margin-right: 10px;
+                }
+              }
+              .rt{
+                display: flex;
+                align-items: center;
+                .release{
+                  width: 80px;
+                }
+                .delete{
+                  margin-left: 0.5em;
+                  .deletePlan{
+                    //position: absolute;
+                    //z-index: 1;
+                    // top: -13px;
+                    // right: 6px;
+                    background-color: rgba(0, 0, 0, 0.3);
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border: none;
+                    width: 24px;
+                    height: 24px;
+              
+                    > i {
+                      color: #fff;
+                      font-size: 15px;
+                    }
+                  }
+                }
+              }
+              
+            }
+          }
+
+          &.planname{
+            span{
+              font-size: 13px;
+              color: #232323;
+            }
+          }
+
+          &.timereq{
+            margin: 3px 0 6px;
+            .spotqty{
+              margin-left: 15px;
+            }
+          }
+  
+          &.bottom{
+            font-size: 10px;
+            line-height: 2;
+            .mat-list-item-content{
+              padding: 0 12px 12px;
+              justify-content: space-between;
+            }
+  
+            .edit-to-plan{
+              color: #fff;
+              font-size: 13px;
+              font-weight: 700;
+              border: 1px solid #fff;
+              border-radius: 5px;
+              background: #bfa060;
+              // padding: 0 25px;
+              line-height: 27px;
+              width: 100px;
+              white-space: nowrap;
+            }
+          }
+
+
+        }
+      }
+    }
+    
+  }
+
+
+}

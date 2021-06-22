@@ -1,0 +1,133 @@
+<form [formGroup]="searchForm">
+  <mat-dialog-actions>
+    <button
+      mat-mini-fab
+      aria-label="close"
+      class="close"
+      color="white"
+      [mat-dialog-close]="result"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+    <!-- <button class="set" mat-raised-button [mat-dialog-close]="result">
+        スポット数 ( {{ result?.length }} )
+      </button> -->
+  </mat-dialog-actions>
+  <mat-dialog-content>
+    <mat-tab-group [selectedIndex]="tabIndex">
+      <mat-tab translate label="{{ 'Areas' | translate }}">
+        <mat-accordion [multi]="true" formArrayName="areas">
+          <mat-expansion-panel
+            *ngFor="let item of areas.controls; let i = index"
+            [formGroupName]="i"
+            (opened)="onAreaCollapseOpen(i)"
+            (closed)="onAreaCollapseClose(i)"
+            [expanded]="isExpended(i)"
+            [@.disabled]="true"
+          >
+            <mat-expansion-panel-header
+              [collapsedHeight]="'45px'"
+              [expandedHeight]="'45px'"
+            >
+              <div class="box">
+                <span class="pref" [ngClass]="{'bold':item.value.isHighlight}">{{ item.value.parentName | langFilter: lang }}</span> <span class="qty" *ngIf="data.isList">({{ item.value.qty }})</span>
+              </div>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+              <div class="all" *ngIf="item.value.dataSelecteds.length !== 1">
+                <input
+                  type="checkbox"
+                  [id]="item.value.parentId"
+                  [value]="item.value.parentId"
+                  [checked]="item.value.selected"
+                  formControlName="selected"
+                  (click)="onAreaAllClick(i)"
+                  [attr.disabled]="item.value.qty === 0 ? true : null"
+                />
+                <!-- <label for="{{ item.value.parentId }}">
+                  {{ "All" | translate }}<span class="qty">({{ item.value.qty }})</span>
+                </label> -->
+              </div>
+              <div formArrayName="dataSelecteds">
+                <ul style="list-style: none;">
+                  <li
+                    *ngFor="
+                      let sub of item['controls'].dataSelecteds['controls'];
+                      let j = index
+                    "
+                    [formGroupName]="j"
+                    class="list_item"
+                  >
+                    <input
+                      [id]="sub.value.id"
+                      type="checkbox"
+                      [value]="sub.value.id"
+                      [checked]="sub.value.selected"
+                      formControlName="selected"
+                      (change)="onAreaSelection(i, j)"
+                      [attr.disabled]="sub.value.qty === 0 ? true : null"
+                    />
+                    <label for="{{ sub.value.id }}">
+                      {{ sub.value.name | langFilter: lang
+                      }}<span class="qty" *ngIf="data.isList">({{ sub.value.qty }})</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </ng-template>
+          </mat-expansion-panel>
+          <div class="spacer6em"></div>
+        </mat-accordion>
+      </mat-tab>
+      <mat-tab label="{{ 'Categories' | translate }}">
+        <mat-card formArrayName="cates" class="card">
+          <div
+            *ngFor="let item of cates.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <mat-card-title>
+              {{ item.value.parentName | langFilter: lang }}
+            </mat-card-title>
+            <mat-card-content formArrayName="dataSelecteds">
+              <ul style="list-style: none;">
+                <li
+                  *ngFor="
+                    let sub of item['controls'].dataSelecteds['controls'];
+                    let j = index
+                  "
+                  [formGroupName]="j"
+                  class="list_item"
+                >
+                  <input
+                    [id]="sub.value.id"
+                    type="checkbox"
+                    [value]="sub.value.id"
+                    [checked]="sub.value.selected"
+                    formControlName="selected"
+                    (change)="onCategoryChange($event)"
+                    [attr.disabled]="sub.value.qty === 0 && data.isList ? true : null"
+                  />
+                  <label for="{{ sub.value.id }}">
+                    {{ sub.value.name | langFilter: lang
+                    }}<span class="qty" *ngIf="data.isList">({{ sub.value.qty }})</span>
+                  </label>
+                </li>
+              </ul>
+            </mat-card-content>
+          </div>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+  <div class="footer">
+    <div class="row">
+      <button mat-raised-button (click)="onReset()" class="cancel">
+        {{ "Reset" | translate }}
+      </button>
+      <button mat-raised-button [mat-dialog-close]="result" class="submit">
+        <i class="material-icons"> add </i>{{ "Setting" | translate }}&nbsp;
+        <span *ngIf="data.isList">( {{ result?.length }} {{"PaginationItem"|translate}})</span>
+      </button>
+    </div>
+  </div>
+</form>

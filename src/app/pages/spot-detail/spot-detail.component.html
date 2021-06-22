@@ -1,0 +1,277 @@
+<div class="spotdtl">
+  <mat-card id="header" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
+    <mat-card-header>
+      <div class="lt">
+        <span class="spotName">
+          {{ data.spotName | langFilter: lang }}
+        </span>
+      </div>
+      <div class="rt">
+        <button mat-icon-button class="plan_fav" (click)="onClickFavorite()">
+          <img src="../../../assets/img/hart_small.svg" alt="">
+        </button>
+        <button mat-icon-button (click)="onClickAddToPlan()">
+          <img src="{{addplanbtn_src}}" alt="add to plan">
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+  
+  <mat-card id="mainPictures">
+    <mat-card-content class="mt10">
+      <owl-carousel-o *ngIf="isMulti; else singlePict" [options]="mainOptions">
+        <ng-container *ngFor="let item of mainPictures; index as i">
+          <ng-template carouselSlide id="item.spot_id">
+            <div class="thumbmain">
+              <img
+                [src]="item.picture_url"
+                [alt]="item.spot_id"
+                [title]="item.spot_id"
+              />
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+  
+      <ng-template #singlePict>
+        <ng-container *ngFor="let item of mainPictures; index as i">
+          <div class="thumbmain">
+            <img
+              [src]="item.picture_url"
+              [alt]="item.spot_id"
+              [title]="item.spot_id"
+            />
+          </div>
+        </ng-container>
+      </ng-template>
+    </mat-card-content>
+    
+  </mat-card>
+  
+  <mat-card class="p0" id="spotHeader">
+    <mat-card-content>    
+      <mat-list class="spot-info">
+        <mat-list-item class="title">
+          <span class="spotName">{{ data.spotName | langFilter: lang }}</span>
+        </mat-list-item>
+        <mat-list-item
+          class="row view">
+          <span>
+            {{data.pvQty?.toLocaleString()}}&nbsp;View
+          </span>
+        </mat-list-item>
+        <mat-list-item
+          class="row"
+          *ngIf="($nearest | langFilter: lang) !== ''"
+        >
+          <span class="{{ $access}}">
+            {{ $nearest | langFilter: lang }}
+          </span>
+        </mat-list-item>
+        <mat-list-item class="row">
+          <div [innerHTML]="$budgetFrameHead"></div>
+        </mat-list-item>
+        <mat-list-item class="row">
+          <span class="businesshour" *ngIf="$businessHourMain !== ''">
+            {{ $businessHourHead }}
+          </span>
+        </mat-list-item>
+        <!-- <mat-list-item class="row moreinfo">
+          <button mat-stroked-button class="more" (click)="scrollToDetail()">
+            {{ "ContinuationOfInfomation" | translate }}
+          </button>
+        </mat-list-item> -->
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card id="content">
+    <mat-card-content>
+      <p [innerHTML]="data.spotOverview | langFilter: lang | replaceNewline"></p>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card class="p0">
+    <mat-card-content>
+      <ng-container *ngFor="let item of spotPictures; index as i">
+        <h4
+          class="subheading mt28"
+          [innerHTML]="item.subheading | langFilter: lang | replaceNewline"
+        ></h4>
+        <div class="thumbmain">
+          <img
+            [src]="item.picture_url"
+            [alt]="item.spot_id"
+            [title]="item.spot_id"
+          />
+        </div>
+        <p
+          class="pl16 pr16"
+          [innerHTML]="item.comment | langFilter: lang | replaceNewline"
+        ></p>
+      </ng-container>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card id="spot-detail">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "BasicInfomation" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <table>
+        <tbody>
+          <tr>
+            <td class="title" translate>SpotName</td>
+            <td style="word-break: break-all;">
+              {{ data.spotName | langFilter: lang }}
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>Address</td>
+            <td>
+              <span class="addr">{{ data.address | langFilter: lang }}</span>
+              <a class="map" href="{{$mapUrl}}" target="_blank"></a>
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>TEL</td>
+            <td>
+              <a href="tel:{{ data.tel | langFilter }}">{{ data.tel | langFilter: lang }}</a>
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>Businesshours</td>
+            <td class="line" [innerHTML]="$businessDay"></td>
+          </tr>
+          <tr>
+            <td class="title" translate>Holiday</td>
+            <td>
+              {{ $regularHoliday }}</td>
+          </tr>
+          <tr>
+            <td class="title" translate>URL</td>
+            <td style="word-break: break-all;" [innerHTML]="$hpUrl">            
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>Note</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="title" translate>Budget</td>
+            <td class="line" [innerHTML]="$budgetFrame"></td>
+          </tr>
+          <tr>
+            <td class="title" translate>SuggestedTime</td>
+            <td>
+              {{ $averageStayTime }}
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>Areas</td>
+            <td class="line">
+              <span class="feature" *ngIf="$areaName1" (click)="onClickArea(true)">{{ $areaName1 | langFilter:lang }}</span>
+              <span class="feature" *ngIf="$areaName2" (click)="onClickArea(false)">{{ $areaName2 | langFilter:lang }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="title" translate>Options</td>
+            <td class="line">
+              <ng-container *ngFor="let item of $searchCategories">
+                <span class="feature" (click)="onClickCategory(item)">{{ item.name | langFilter:lang }}</span>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+  
+  <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId" [spotplanName]="data.spotName"></app-review-list-panel>
+  
+  <mat-card id="nearbySpot" class="pics">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "NearbySpots" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <owl-carousel-o [options]="customOptions">
+        <ng-container *ngFor="let item of nearbySpots; index as i">
+          <ng-template carouselSlide id="item.spotPlanID">
+            <a href="{{ lang }}/spots/detail/{{ item.spotPlanID }}">
+              <div class="thumbnail">
+                <img [src]="item.pictureUrl" alt="" />
+              </div>
+              <div class="content">
+                <p>{{ item.name | langFilter: lang }}</p>
+              </div>
+            </a>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card id="recommendPlan" class="pics" *ngIf="modePlanshow">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "RecommendedPlanwithSpot" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <owl-carousel-o [options]="customOptions">
+        <ng-container *ngFor="let item of modelPlans; index as i">
+          <ng-template carouselSlide id="item.spotPlanID">
+            <!-- <a [routerLink]="['/PlanDetail', item.spotPlanID]"> -->
+            <a href="{{ lang }}/plans/detail/{{ item.spotPlanID }}">
+              <div class="thumbnail">
+                <img [src]="item.pictureUrl" alt="" />
+              </div>
+              <div class="content">
+                <p>{{ item.name }}</p>
+              </div>
+            </a>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card id="writer" *ngIf="$userStaff">
+    <mat-card-header>
+      <h4 class="header">
+        {{ "Article" | translate }}
+      </h4>
+    </mat-card-header>
+    <mat-divider class="rj-linecolor"></mat-divider>
+    <mat-card-content class="mt16">
+      <mat-list>
+        <mat-list-item style="height: auto;">
+          <dl class="profile">
+            <dt>
+              <img
+                src="{{ $userStaff?.pictureUrl }}"
+                alt="{{ $userStaff?.romanLetterName | langFilter }}"
+              />
+            </dt>
+            <dd>
+              {{ $userStaff?.romanLetterName | langFilter: lang }}<br />
+              <span class="division">{{ $userStaff?.departmentName | langFilter: lang }}</span>
+            </dd>
+          </dl>
+        </mat-list-item>
+        <mat-list-item class="intoro" style="height: auto;">
+          <p>
+            {{ $userStaff?.introduction | langFilter: lang }}
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>

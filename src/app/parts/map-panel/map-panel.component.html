@@ -1,0 +1,79 @@
+<agm-map [class]="isFull ? 'mapFull' : 'map'"
+         [scrollwheel]="false"
+         [streetViewControl]="false"
+         (mapReady)="mapReady($event)"
+         (zoomChange)="zoomChange($event)">
+  <agm-marker *ngFor="let mapSpot of mapSpotsDisp; index as i"
+              [latitude]="mapSpot.latitude"
+              [label]="mapSpot.spotNameLangDisp"
+              [longitude]="mapSpot.longitude"
+              [iconUrl]="mapSpot.iconUrl"
+              [visible]="mapSpot.visible"
+              [zIndex]="mapSpot.zIndex"
+              (markerClick)="onClickMarker(mapSpot)">
+  </agm-marker>
+  <!--スポット間の線-->
+  <ng-container *ngFor="let mapSpot of mapSpotsDisp; index as i">
+    <agm-polyline *ngIf="i < mapSpotsDisp.length - 1"
+                  [strokeColor]="mapSpot.polylineColor"
+                  [strokeWeight]="6"
+                  [strokeOpacity]="0.8">
+      <agm-polyline-point [latitude]="mapSpotsDisp[i].latitude" [longitude]="mapSpotsDisp[i].longitude">
+      </agm-polyline-point>
+      <agm-polyline-point [latitude]="mapSpotsDisp[i + 1].latitude" [longitude]="mapSpotsDisp[i + 1].longitude">
+      </agm-polyline-point>
+    </agm-polyline>
+  </ng-container>
+  <!-- 他のスポット -->
+  <agm-marker *ngFor="let otherMapSpot of otherMapSpotsDisp; index as i"
+              [latitude]="otherMapSpot.latitude"
+              [label]="otherMapSpot.spotNameLangDisp"
+              [longitude]="otherMapSpot.longitude"
+              [iconUrl]="otherMapSpot.iconUrl"
+              [zIndex]="otherMapSpot.zIndex"
+              (markerClick)="onClickMarker(otherMapSpot)">
+  </agm-marker>  
+  <!--ユーザの位置-->
+  <agm-marker *ngIf="userLocation"
+              [latitude]="userLocation.latitude"
+              [longitude]="userLocation.longitude">
+  </agm-marker>
+  
+  <button id="fullScreenButton" class="fsbtn" (click)="onClickFullScreen()">
+    <span>{{ "FullScreen" | translate }}</span>
+  </button>
+</agm-map>
+
+<div id="routeDiv" *ngIf="isFull && spotNameFrom">
+  <div class="route">
+    <div class="spot from" (click)="onClickSpotDetail(true)">
+      <img *ngIf="spotSrcFrom" _ngcontent-qld-c345="" src="{{spotSrcFrom}}">
+      <div class="name">{{spotNameFrom}}</div>
+      <span class="marker">
+        <img [src]="spotMarkerFrom" />
+      </span>
+    </div>
+    <div class="line">
+      <span class="time">{{transtime}}</span>
+    </div>
+    <div class="spot to" (click)="onClickSpotDetail(false)">
+      <img *ngIf="mapSpotsDisp.length > 1 && spotSrcTo" _ngcontent-qld-c345="" src="{{spotSrcTo}}">
+      <div *ngIf="mapSpotsDisp.length > 1" class="name">{{spotNameTo}}</div>
+      <span class="marker">
+        <img *ngIf="mapSpotsDisp.length > 1" [src]="spotMarkerTo" />
+      </span>
+    </div>
+    <a href="javascript:void(0);" class="prev" (click)="onClickPrevSpot()"></a>
+    <a href="javascript:void(0);" class="next" (click)="onClickNextSpot()"></a>
+  </div>
+  <div class="dir">
+    <div class="label">
+      <span>{{ "Route" | translate }}</span>
+    </div>
+    <span class="data" *ngIf="directions" [innerHTML]="directions"></span>
+  </div>
+  <div class="bottom">
+    <img src="../../../assets/img/powered_by_google_on_white.png" alt=""/>
+  </div>
+</div>
+

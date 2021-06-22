@@ -64,10 +64,13 @@ import { LanguageComponent } from './language/language.component';
 import { TopComponent } from './pages/top/top.component';
 import { AuthGuard } from './auth.guard';
 
-
+import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.component';
 import { PullToRefreshComponent } from './parts/pull-to-refresh/pull-to-refresh.component';
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
+import { SpotListComponent } from './pages/spot-list/spot-list.component';
+import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
+import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -102,7 +105,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     FooterComponent,
     BlankComponent,
     TopComponent,
-    // SpotListComponent,
+    SpotListComponent,
     // SpotDetailComponent,
     NavMenuComponent,
     // PlanListComponent,
@@ -112,12 +115,12 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // MyplanComponent,
     // MypagePlanListComponent,
     // MypageFavoriteListComponent,
-    // SearchDialogFormComponent,
+    SearchDialogFormComponent,
     // SearchDialogFormPlanComponent,
     // SystemErrorComponent,
     LanguageComponent,
     // MemoDialogComponent,
-    // UrlcopyDialogComponent,
+    UrlcopyDialogComponent,
     // MessageDialogComponent,
     // MapPanelComponent,
     // SpotDetailDialogComponent,
@@ -136,7 +139,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // RatingCompComponent,
     // TransferPanelComponent,
     // MapDialogComponent,
-    // SpotListPanelComponent,
+    SpotListPanelComponent,
     // PlanListPanelComponent,
     // PlanDetailPanelComponent,
     PullToRefreshComponent,
@@ -214,7 +217,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // SearchDialogFormComponent,
     // SearchDialogFormPlanComponent,
     // MemoDialogComponent,
-    // UrlcopyDialogComponent,
+    UrlcopyDialogComponent,
     // MessageDialogComponent,
     // SpotDetailComponent,
     // MapPanelComponent,

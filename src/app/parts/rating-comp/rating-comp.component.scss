@@ -1,0 +1,43 @@
+
+.container{
+  display: inline-flex;
+  align-items: baseline;
+  .star-ratings-sprite {
+    background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+    background-size: 14px;
+    font-size: 0;
+    height: 14px;
+    line-height: 0;
+    overflow: hidden;
+    text-indent: -999em;
+    width: 70px;
+    margin: 0 auto;
+    .star-ratings-sprite-rating {
+      background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+      background-size: 14px;
+      background-position: 0 100%;
+      float: left;
+      height: 14px;
+      display: block;
+    }
+  }
+  .counter{
+    font-size: 17px;
+    margin-left: 0.7em;
+  }
+
+  &.small{
+    .star-ratings-sprite {
+      background-size: 12px;
+      height: 12px;
+      width: 61px;
+      .star-ratings-sprite-rating {
+        background-size: 12px;
+        height: 12px;
+      }
+    }
+    .counter{
+      font-size: 15px;
+    }
+  }
+}

@@ -1,0 +1,151 @@
+@import "../../../assets/scss/vars";
+#isBlank{
+  &.mat-card{
+    background-color: #f6f6f6;
+    box-shadow: 0 4px 4px 0 rgba(44, 44, 44, 0.15) !important;
+    border-radius: 0;
+    padding: 0 0 5px 0;
+    margin-top: -16px;
+    min-height: 50px;
+    background-image: url("../../../assets/img/ppbg.svg");
+    background-repeat: no-repeat;
+    background-size: 95% auto;
+    background-position: center;
+  
+    .mat-card-actions{
+      padding-top: 27px;
+      display: flex;
+      justify-content: center;
+      
+      button.create{
+        line-height: 19px;
+        border-radius: 19px;
+        background-color: #de7274;
+        color:#fff;
+        width: 160px;
+        
+        ::ng-deep.mat-button-wrapper{
+          vertical-align: 1px;
+  
+          &::after{
+            content: url("../../../assets/img/toRight.svg");
+            display: inline-block;
+            width: 11px;
+            height: 11px;
+            vertical-align: -1px;
+          }
+        }
+      }
+    }
+  }
+}
+
+#isPlan{
+  &.mat-card{
+    box-shadow: 0 4px 4px 0 rgba(44, 44, 44, 0.15) !important;
+    border-radius: 0;
+    padding: 0;
+    // margin-top: -16px;
+    min-height: 50px;
+    border-top:1px solid #edeae8;
+
+    .mat-card-content{
+      width: 78%;
+      margin-bottom: 5px;
+      margin-left: 20px;
+      margin-top: 5px;
+      height: 35px;
+
+      .thumbspots{
+        width: 35px;
+        height: 35px;
+        background: #ccc;
+        border-radius: 5px;
+        display: flex;
+        img{
+          border-radius: 5px;
+        }
+
+        &::after{
+          content: "";
+          background: url("../../../assets/img/allow_right.svg") no-repeat;
+          width: 5px;
+          height: 10px;
+          position: absolute;
+          right: -15px;
+          bottom: 11px;
+        }
+      }
+    }
+
+    .mat-card-actions{
+      padding: 0;
+      margin-bottom: 5px;
+      button.mat-mini-fab{
+        position: absolute;
+        right: 10px;
+        bottom: 13px;
+        z-index: 2;
+        box-shadow: none;
+        background-color: $color-pnk04;
+        font-size: 11px;
+        letter-spacing: 2px;
+      }
+    }
+    .mat-card-footer{
+      background-color: #f6f6f6;
+      height: 20px;
+      margin:0;
+      position: relative;
+
+      .container{
+        position: absolute;
+        top:-4px;
+
+        span.label{
+          background-color: $color-pnk04;
+          border-radius: 3px;
+          color: #fff;
+          padding: 0px 6px;
+          display: inline-flex;
+          position: relative;
+          align-items: center;
+          margin-right: 6px;
+          font-size: 12px;
+          margin-left: 13px;
+          margin-right: 10px;
+        }
+  
+        dl.planinfo{
+          display: inline-flex;
+          font-size: 12px;
+          margin: 0;
+          color: $color-gry06;
+  
+          dt::before{
+            content: url("../../../assets/img/&lt.svg");
+            display: inline-block;
+            width: 4px;
+            vertical-align: middle;
+          }
+  
+          dt::after{
+            content: url("../../../assets/img/&gt.svg");
+            display: inline-block;
+            width: 4px;
+            vertical-align: middle;
+          }
+
+          dd{
+            margin-inline-start: 5px;
+            margin-inline-end: 15px;
+          }
+  
+          
+        }
+      }
+
+      
+    }
+  }
+}

@@ -2,15 +2,15 @@ import { Seo } from "./plan.class";
 
 export class searchResult{
   list: PlanAppList[] = [];
-  searchTarm!: string;
-  searchParams!: string;
+  searchTarm: string;
+  searchParams: string;
   searchParamsObj: SearchParamsObj = new SearchParamsObj;
 }
 
 export class SearchParamsObj{
-  aid!: string;
-  era!: string;
-  cat!: string;
+  aid: string;
+  era: string;
+  cat: string;
   rep: boolean = false;
   usp: boolean = false;
 }
@@ -18,13 +18,13 @@ export class SearchParamsObj{
 export class PlanAppListSearchResult {
   // 1ページあたりの表示件数
   // 1ページあたりの表示件数
-  pageViewQty!: number;
+  pageViewQty: number;
   // 検索結果
   // 検索結果
   planAppList: PlanAppList[] = [];
   // 有料スポットのエリアID
   // 有料スポットのエリアID
-  tollSpotAreaId!: number;
+  tollSpotAreaId: number;
 }
 
 export class PlanAppList {
@@ -36,34 +36,34 @@ export class PlanAppList {
   isRemojuPlan: boolean = false;
   // バージョンNo
   // バージョンNo
-  versionNo!: number;
+  versionNo: number;
   // プランID
   // プランID
-  planId!: number;
+  planId: number;
   // SEOキーワード
   // SEOキーワード
-  seoKeyword!: string;
+  seoKeyword: string;
   // エリアID
   // エリアID
-  areaId!: number;
+  areaId: number;
   // エリアID2
   // エリアID2
-  areaId2!: number;
+  areaId2: number;
   // ソート項目：人気順(歴代)
   // ソート項目：人気順(歴代)
-  pvQtyAll!: number;
+  pvQtyAll: number;
   // ソート項目：人気順(今週)
   // ソート項目：人気順(今週)
-  pvQtyWeek!: number;
+  pvQtyWeek: number;
   // ソート項目：プランに採用した回数
   // ソート項目：プランに採用した回数
-  planSpotQty!: number;
+  planSpotQty: number;
   // ソート項目：レビュー評価
   // ソート項目：レビュー評価
-  reviewAvg!: number;
+  reviewAvg: number;
   // ソート項目：投稿日時
   // ソート項目：投稿日時
-  releaseCreateDatetime!: string;
+  releaseCreateDatetime: string;
   // ソート項目：有料スポット用プラン優先表示
   // ソート項目：有料スポット用プラン優先表示
   isTollSpot: boolean = false;
@@ -73,52 +73,52 @@ export class PlanAppList {
   searchCategories: PlanSearchCategory[] = [];
   // オブジェクトID
   // オブジェクトID
-  objectId!: string;
+  objectId: string;
   // GUID
   // GUID
-  guid!: string;
+  guid: string;
   // 掲載終了の場合true
   // 掲載終了の場合true
   isEndOfPublication: boolean = false;
   // エリア名
   // エリア名
-  areaName!: string;
+  areaName: string;
   // エリア名2
   // エリア名2
-  areaName2!: string;
+  areaName2: string;
   // プラン名
   // プラン名
-  planName!: string;
+  planName: string;
   // お気に入り登録 true:している false:していない
   // お気に入り登録 true:している false:していない
   isFavorite: boolean = false;
   // お気に入りを登録している人数
   // お気に入りを登録している人数
-  favoriteQty!: number;
+  favoriteQty: number;
   // 周遊時間(時間)
   // 周遊時間(時間)
-  timeRequiredHour!: string;
+  timeRequiredHour: string;
   // 周遊時間(分)
   // 周遊時間(分)
-  timeRequiredMin!: string;
+  timeRequiredMin: string;
   // 予算
   // 予算
-  budget!: string;
+  budget: string;
   // 旅行予定日
   // 旅行予定日
-  travelDate!: string;
+  travelDate: string;
   // 作成日時
   // 作成日時
-  createDate!: string;
+  createDate: string;
   // スポット数
   // スポット数
-  spotQty!: number;
+  spotQty: number;
   // ユーザ名(スタッフ名)
   // ユーザ名(スタッフ名)
-  userName!: string;
+  userName: string;
   // プロフィール画像
   // プロフィール画像
-  userPictureUrl!: string;
+  userPictureUrl: string;
   // SEO
   // SEO
   seo: Seo = new Seo;
@@ -140,32 +140,32 @@ export class PlanAppList {
 
 export class PlanSpotName{
   isRemojuSpot: boolean = false;
-  spotName!: string;
-  spotId!: number;
+  spotName: string;
+  spotId: number;
 }
 
 export class PlanSearchCategory {
-  version_no!: number;
-  plan_id!: number;
-  search_category_id!: number;
-  name!: string;
-  icon!: string;
+  version_no: number;
+  plan_id: number;
+  search_category_id: number;
+  name: string;
+  icon: string;
 }
 
 export class PlanFavorite {
-  plan_id!: number;
-  guid!: string;
+  plan_id: number;
+  guid: string;
   is_delete: boolean = false;
 
-  objectId!: string;
+  objectId: string;
 }
 
 export class PlanUserFavorite {
-  plan_user_id!: number;
-  guid!: string;
+  plan_user_id: number;
+  guid: string;
   is_delete: boolean = false;
 
-  objectId!: string;
+  objectId: string;
 }
 
 export interface Langary {

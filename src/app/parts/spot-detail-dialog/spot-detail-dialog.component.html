@@ -1,0 +1,9 @@
+<mat-dialog-actions>
+  <button aria-label="close" class="close" [mat-dialog-close]="null">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+    {{ "Return" | translate }}
+  </button>
+</mat-dialog-actions>
+<mat-dialog-content>
+  <app-spot-detail [spotId]="data"></app-spot-detail>
+</mat-dialog-content>

@@ -1,0 +1,7 @@
+<div class="header">
+  <button mat-button aria-label="close" class="close" (click)="onClickBack()">
+    {{ "Return" | translate }}
+  </button>
+</div>
+<app-map-panel *ngIf="planSpots" [planSpots]="planSpots" [isFull]="true" [planId]="planid" [isDetail]="planid ? true : false"
+  [startPlanSpot]="startPlanSpot" [endPlanSpot]="endPlanSpot"></app-map-panel>
