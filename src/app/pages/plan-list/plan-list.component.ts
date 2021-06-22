@@ -104,28 +104,30 @@ export class PlanListComponent implements OnInit, OnDestroy {
       this.getPlanList();
     });
     
-    this.planListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
-      this.rows = result.list;
-      this.temp = [...this.rows];
-      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
-      if(result.searchParams.length>14){
-        history.replaceState(
-          "search_key",
-          "",
-          location.pathname.substring(1) + "?" + result.searchParams
-        );
-      } else {
-        history.replaceState("search_key", "", location.pathname.substring(1));
-      }
-      // 条件更新
-      this.recoveryQueryParams(result.searchParamsObj);
-      // 詳細データを初期化
-      this.p = 1;
-      // キーワードをクリア
-      this.keyword = "";
-      // ソート->詳細取得
-      this.listsort(this.sortval);
-    })
+    if(isPlatformBrowser(this.platformId)){
+      this.planListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
+        this.rows = result.list;
+        this.temp = [...this.rows];
+        this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+        if(result.searchParams.length>14){
+          history.replaceState(
+            "search_key",
+            "",
+            location.pathname.substring(1) + "?" + result.searchParams
+          );
+        } else {
+          history.replaceState("search_key", "", location.pathname.substring(1));
+        }
+        // 条件更新
+        this.recoveryQueryParams(result.searchParamsObj);
+        // 詳細データを初期化
+        this.p = 1;
+        // キーワードをクリア
+        this.keyword = "";
+        // ソート->詳細取得
+        this.listsort(this.sortval);
+      })
+    }
   }
 
   ngAfterViewChecked(){

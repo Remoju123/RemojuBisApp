@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - dev001
+      - dev002
 
 env:
   AZURE_WEBAPP_NAME: remojuapp-v3u    # set this to your application's name

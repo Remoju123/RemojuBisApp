@@ -71,6 +71,9 @@ import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/co
 import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
 import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
+import { PlanListComponent } from './pages/plan-list/plan-list.component';
+import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
+import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -108,15 +111,14 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     SpotListComponent,
     // SpotDetailComponent,
     NavMenuComponent,
-    // PlanListComponent,
     // PlanDetailComponent,
-    // PlanListComponent,
+    PlanListComponent,
     // PlanPanelComponent,
     // MyplanComponent,
     // MypagePlanListComponent,
     // MypageFavoriteListComponent,
     SearchDialogFormComponent,
-    // SearchDialogFormPlanComponent,
+    SearchDialogFormPlanComponent,
     // SystemErrorComponent,
     LanguageComponent,
     // MemoDialogComponent,
@@ -140,7 +142,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // TransferPanelComponent,
     // MapDialogComponent,
     SpotListPanelComponent,
-    // PlanListPanelComponent,
+    PlanListPanelComponent,
     // PlanDetailPanelComponent,
     PullToRefreshComponent,
     // NotfoundComponent,
@@ -214,8 +216,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   ],
   entryComponents:[
     MatSpinner,
-    // SearchDialogFormComponent,
-    // SearchDialogFormPlanComponent,
+    SearchDialogFormComponent,
+    SearchDialogFormPlanComponent,
     // MemoDialogComponent,
     UrlcopyDialogComponent,
     // MessageDialogComponent,

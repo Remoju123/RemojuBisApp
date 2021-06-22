@@ -8,6 +8,7 @@ import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
 import { SpotListComponent } from './pages/spot-list/spot-list.component';
+import { PlanListComponent } from './pages/plan-list/plan-list.component';
 
 const routes: Routes = [
   {
@@ -29,7 +30,7 @@ const routes: Routes = [
         //   component: SpotDetailComponent
         // },
         // // { path: "keihankyoto/plans", component: PlanListComponent },
-        // { path: "plans", component: PlanListComponent },
+        { path: "plans", component: PlanListComponent },
         // { path: "plans/detail", component: PlanDetailComponent },
         // { path: "plans/detail/:id", component: PlanDetailComponent },
         // { path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
