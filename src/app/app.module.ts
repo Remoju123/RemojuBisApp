@@ -11,6 +11,9 @@ import { environment } from '../environments/environment';
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
+import { AgmCoreModule } from "@agm/core";
+import { AgmDirectionModule } from "agm-direction";
+
 // Materialモジュール
 import { MaterialModule } from "./material/material.module";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -78,6 +81,15 @@ import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
 import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
 import { RatingCompComponent } from './parts/rating-comp/rating-comp.component';
+import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
+import { MapPanelComponent } from './parts/map-panel/map-panel.component';
+import { TransferPanelComponent } from './parts/transfer-panel/transfer-panel.component';
+import { UserprofilePanelComponent } from './parts/userprofile-panel/userprofile-panel.component';
+import { MapDialogComponent } from './parts/map-dialog/map-dialog.component';
+import { GoogleSpotDialogComponent } from './parts/google-spot-dialog/google-spot-dialog.component';
+import { MemoDialogComponent } from './parts/memo-dialog/memo-dialog.component';
+import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-infowindow-dialog.component';
+import { MapComponent } from './pages/map/map.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -115,7 +127,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     SpotListComponent,
     SpotDetailComponent,
     NavMenuComponent,
-    // PlanDetailComponent,
+    PlanDetailComponent,
     PlanListComponent,
     // PlanPanelComponent,
     // MyplanComponent,
@@ -125,15 +137,15 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     SearchDialogFormPlanComponent,
     // SystemErrorComponent,
     LanguageComponent,
-    // MemoDialogComponent,
+    MemoDialogComponent,
     UrlcopyDialogComponent,
     // MessageDialogComponent,
-    // MapPanelComponent,
+    MapPanelComponent,
     // SpotDetailDialogComponent,
     // MypageUserprofileComponent,
-    // MapComponent,
+    MapComponent,
     AppComponent,
-    // MapInfowindowDialogComponent,
+    MapInfowindowDialogComponent,
     // MypageComponent,
     // HeaderPlanPanelComponent,
     // SpinnerLoadingIndicatorComponent,
@@ -143,15 +155,15 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
     RatingCompComponent,
-    // TransferPanelComponent,
-    // MapDialogComponent,
+    TransferPanelComponent,
+    MapDialogComponent,
     SpotListPanelComponent,
     PlanListPanelComponent,
     // PlanDetailPanelComponent,
     PullToRefreshComponent,
     // NotfoundComponent,
-    // GoogleSpotDialogComponent,
-    // UserprofilePanelComponent,
+    GoogleSpotDialogComponent,
+    UserprofilePanelComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -172,10 +184,10 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     NgxPageScrollModule,
     AppRoutingModule,
     // Angular GoogleMapの登録
-    // AgmCoreModule.forRoot({
-    //   apiKey: "AIzaSyBLOda6eH_CRFBbZbdnpvPGDaHieIVa5RE"
-    // }),
-    // AgmDirectionModule,
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyBLOda6eH_CRFBbZbdnpvPGDaHieIVa5RE"
+    }),
+    AgmDirectionModule,
     // Service Workerの登録
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -192,6 +204,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     UtilsModule,
     SharedModule,
     MaterialModule,
+    MatDialogModule,
     MatTooltipModule,
     NgMultiSelectDropDownModule.forRoot(),
     FilterPipeModule,
@@ -222,22 +235,22 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MatSpinner,
     SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
-    // MemoDialogComponent,
+    MemoDialogComponent,
     UrlcopyDialogComponent,
     // MessageDialogComponent,
     SpotDetailComponent,
-    // MapPanelComponent,
+    MapPanelComponent,
     // SpotDetailDialogComponent,
-    // MapInfowindowDialogComponent,
+    MapInfowindowDialogComponent,
     AppComponent,
     // SpinnerLoadingIndicatorComponent,
     ConfirmMessageDialogComponent,
-    // GoogleSpotDialogComponent,
-    // UserprofilePanelComponent,
+    GoogleSpotDialogComponent,
+    UserprofilePanelComponent,
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
-    // TransferPanelComponent,
-    // MapDialogComponent,
+    TransferPanelComponent,
+    MapDialogComponent,
   ],
   bootstrap: [AppComponent]
 })

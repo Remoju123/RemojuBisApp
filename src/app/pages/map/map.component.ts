@@ -1,4 +1,4 @@
-import { Component, OnInit ,OnDestroy} from "@angular/core";
+import { Component, OnInit} from "@angular/core";
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import { MyPlanApp, PlanSpotCommon } from "../../class/common.class";
 import { TranslateService } from "@ngx-translate/core";
@@ -11,7 +11,6 @@ import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Xliff } from '@angular/compiler';
 
 @Component({
   selector: "app-map",
