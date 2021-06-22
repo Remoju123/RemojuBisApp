@@ -74,6 +74,10 @@ import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dia
 import { PlanListComponent } from './pages/plan-list/plan-list.component';
 import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
 import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
+import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
+import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
+import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
+import { RatingCompComponent } from './parts/rating-comp/rating-comp.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -109,7 +113,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     BlankComponent,
     TopComponent,
     SpotListComponent,
-    // SpotDetailComponent,
+    SpotDetailComponent,
     NavMenuComponent,
     // PlanDetailComponent,
     PlanListComponent,
@@ -136,9 +140,9 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // UserComponent,
     // ConfirmMessageDialogComponent,
     // UserplanPostComponent,
-    // ReviewListPanelComponent,
-    // ReviewPostDialogComponent,
-    // RatingCompComponent,
+    ReviewListPanelComponent,
+    ReviewPostDialogComponent,
+    RatingCompComponent,
     // TransferPanelComponent,
     // MapDialogComponent,
     SpotListPanelComponent,
@@ -221,7 +225,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     // MemoDialogComponent,
     UrlcopyDialogComponent,
     // MessageDialogComponent,
-    // SpotDetailComponent,
+    SpotDetailComponent,
     // MapPanelComponent,
     // SpotDetailDialogComponent,
     // MapInfowindowDialogComponent,
@@ -230,8 +234,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ConfirmMessageDialogComponent,
     // GoogleSpotDialogComponent,
     // UserprofilePanelComponent,
-    // ReviewListPanelComponent,
-    // ReviewPostDialogComponent,
+    ReviewListPanelComponent,
+    ReviewPostDialogComponent,
     // TransferPanelComponent,
     // MapDialogComponent,
   ],

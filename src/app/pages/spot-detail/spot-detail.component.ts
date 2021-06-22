@@ -176,7 +176,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
       window.scrollTo(0,0);
     });
-    // this.connectionSettings();
+    this.connectionSettings();
     // console.log(this.lang);
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe((v)=>{
