@@ -252,7 +252,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     param.isDetail = true;
     param.planId = this.planId;
     param.planSpots = this.planSpots;
-    const dialog = this.dialog.open(MapDialogComponent, {
+    this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",
       height:"100vh",//
@@ -658,6 +658,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
   // 地図の中心を指定された緯度経度で設定(プラン詳細)
   setMapCenter(latitude: number, longitude: number) {
+    //console.log(latitude + " " + longitude);
     this.map.setCenter({ lat: Number(latitude), lng: Number(longitude) });
   }
 

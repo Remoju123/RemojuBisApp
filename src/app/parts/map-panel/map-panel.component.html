@@ -57,10 +57,10 @@
       <span class="time">{{transtime}}</span>
     </div>
     <div class="spot to" (click)="onClickSpotDetail(false)">
-      <img *ngIf="mapSpotsDisp.length > 1 && spotSrcTo" _ngcontent-qld-c345="" src="{{spotSrcTo}}">
-      <div *ngIf="mapSpotsDisp.length > 1" class="name">{{spotNameTo}}</div>
+      <img *ngIf="mapSpotsDisp?.length > 1 && spotSrcTo" _ngcontent-qld-c345="" src="{{spotSrcTo}}">
+      <div *ngIf="mapSpotsDisp?.length > 1" class="name">{{spotNameTo}}</div>
       <span class="marker">
-        <img *ngIf="mapSpotsDisp.length > 1" [src]="spotMarkerTo" />
+        <img *ngIf="mapSpotsDisp?.length > 1" [src]="spotMarkerTo" />
       </span>
     </div>
     <a href="javascript:void(0);" class="prev" (click)="onClickPrevSpot()"></a>

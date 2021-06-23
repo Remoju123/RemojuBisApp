@@ -19,7 +19,6 @@
   <!-- プランメイン写真 -->
   <mat-card class="p0">
     <mat-card-content>
-      <span>{{data.pictures}}</span>
       <owl-carousel-o *ngIf="data.picCnt > 1; else singlePict">
         <ng-container *ngFor="let item of data.pictures; index as i">
           <ng-template carouselSlide id="i + 1">
