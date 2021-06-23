@@ -90,6 +90,8 @@ import { GoogleSpotDialogComponent } from './parts/google-spot-dialog/google-spo
 import { MemoDialogComponent } from './parts/memo-dialog/memo-dialog.component';
 import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-infowindow-dialog.component';
 import { MapComponent } from './pages/map/map.component';
+import { PlanPanelComponent } from './parts/plan-panel/plan-panel.component';
+import { MyplanComponent } from './pages/myplan/myplan.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -129,8 +131,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     NavMenuComponent,
     PlanDetailComponent,
     PlanListComponent,
-    // PlanPanelComponent,
-    // MyplanComponent,
+    PlanPanelComponent,
+    MyplanComponent,
     // MypagePlanListComponent,
     // MypageFavoriteListComponent,
     SearchDialogFormComponent,

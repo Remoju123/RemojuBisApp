@@ -40,6 +40,7 @@
     "domino": "^2.1.6",
     "express": "^4.15.2",
     "guid-typescript": "^1.0.9",
+    "moment": "^2.29.1",
     "ng-multiselect-dropdown": "^0.3.4",
     "ngx-filter-pipe": "^2.1.2",
     "ngx-infinite-scroll": "^10.0.1",
