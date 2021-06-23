@@ -2,10 +2,7 @@ import { DataSelected, MyPlanApp, PlanSpotCommon, ListSelectedPlan } from "./com
 
 export class MypagePlanAppListSearchResult {
   // 1ページあたりの表示件数
-  // 1ページあたりの表示件数
-  pageV: any
-  iewQty: number;
-  // 検索結果
+  pageViewQty: number;
   // 検索結果
   mypagePlanAppList: MypagePlanAppList[];
 }

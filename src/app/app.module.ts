@@ -92,6 +92,19 @@ import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-
 import { MapComponent } from './pages/map/map.component';
 import { PlanPanelComponent } from './parts/plan-panel/plan-panel.component';
 import { MyplanComponent } from './pages/myplan/myplan.component';
+import { MessageDialogComponent } from './parts/message-dialog/message-dialog.component';
+import { SystemErrorComponent } from './pages/system-error/system-error.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
+import { PlanDetailPanelComponent } from './pages/plan-detail-panel/plan-detail-panel.component';
+import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
+import { SpotDetailDialogComponent } from './parts/spot-detail-dialog/spot-detail-dialog.component';
+import { UserComponent } from './pages/user/user.component';
+import { UserplanPostComponent } from './pages/userplan-post/userplan-post.component';
+import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
+import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-favoritelist.component';
+import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
+import { MypageUserprofileComponent } from './pages/mypage-userprofile/mypage-userprofile.component';
+import { MypageComponent } from './pages/mypage/mypage.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -133,27 +146,27 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     PlanListComponent,
     PlanPanelComponent,
     MyplanComponent,
-    // MypagePlanListComponent,
-    // MypageFavoriteListComponent,
+    MypagePlanListComponent,
+    MypageFavoriteListComponent,
     SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
-    // SystemErrorComponent,
+    SystemErrorComponent,
     LanguageComponent,
     MemoDialogComponent,
     UrlcopyDialogComponent,
-    // MessageDialogComponent,
+    MessageDialogComponent,
     MapPanelComponent,
-    // SpotDetailDialogComponent,
-    // MypageUserprofileComponent,
+    SpotDetailDialogComponent,
+    MypageUserprofileComponent,
     MapComponent,
     AppComponent,
     MapInfowindowDialogComponent,
-    // MypageComponent,
-    // HeaderPlanPanelComponent,
-    // SpinnerLoadingIndicatorComponent,
-    // UserComponent,
-    // ConfirmMessageDialogComponent,
-    // UserplanPostComponent,
+    MypageComponent,
+    HeaderPlanPanelComponent,
+    SpinnerLoadingIndicatorComponent,
+    UserComponent,
+    ConfirmMessageDialogComponent,
+    UserplanPostComponent,
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
     RatingCompComponent,
@@ -161,9 +174,9 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MapDialogComponent,
     SpotListPanelComponent,
     PlanListPanelComponent,
-    // PlanDetailPanelComponent,
+    PlanDetailPanelComponent,
     PullToRefreshComponent,
-    // NotfoundComponent,
+    NotfoundComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
   ],
@@ -239,13 +252,13 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     SearchDialogFormPlanComponent,
     MemoDialogComponent,
     UrlcopyDialogComponent,
-    // MessageDialogComponent,
+    MessageDialogComponent,
     SpotDetailComponent,
     MapPanelComponent,
-    // SpotDetailDialogComponent,
+    SpotDetailDialogComponent,
     MapInfowindowDialogComponent,
     AppComponent,
-    // SpinnerLoadingIndicatorComponent,
+    SpinnerLoadingIndicatorComponent,
     ConfirmMessageDialogComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,

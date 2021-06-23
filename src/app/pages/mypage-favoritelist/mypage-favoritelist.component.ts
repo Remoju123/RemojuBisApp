@@ -10,7 +10,6 @@ import { SpotAppList } from "../../class/spotlist.class";
 import { PlanAppList } from "../../class/planlist.class";
 import { Catch } from "../../class/log.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { Local } from "protractor/built/driverProviders";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
