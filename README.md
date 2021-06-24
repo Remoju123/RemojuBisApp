@@ -1,6 +1,7 @@
 # RemojuAppV3U
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
+[Node.js](https://nodejs.org/ja/) version 14.x/Azure Default version 14.16.0
 
 ## Development server
 
