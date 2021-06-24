@@ -176,7 +176,7 @@ export class SpotService {
 
   // 曜日取得
   setBusinessDay(v: any) {
-    let r: string;
+    let r: string = "";
     if (v !== null) {
       switch (v) {
         case "1,2,3,4,5,6,7,8":
@@ -323,7 +323,7 @@ export class SpotService {
   ) {
     const formData = new FormData();
     formData.append("param" , file, fileName);
-    formData.append("objectId", "sr" + spotId.toString());
+    formData.append("objectId", spotId.toString());
     const url = this.host + "/api/User/SaveFile";
     return this.http.post<boolean>(url, formData, { headers: {}});
   }

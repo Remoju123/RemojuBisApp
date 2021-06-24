@@ -81,13 +81,12 @@
                   matInput 
                   #planExplanation
                   name="planExplanation" 
-                  maxlength="100"
                   rows="5"
                   placeholder="{{ 'PlanExplanationEx' | translate }}" 
                   #inputinfo="ngModel" 
                   [(ngModel)]="row.planExplanation" 
                   (change)="onChange(false)"></textarea>
-                  <mat-hint align="end">{{planExplanation.value?.length || 0}}/100{{ "Characters" | translate }}</mat-hint>
+                  <mat-hint align="end">{{planExplanation.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
               <!-- フリー文章 -->
               <mat-form-field appearance="outline">
@@ -96,13 +95,12 @@
                   matInput
                   #memo
                   name="memo" 
-                  maxlength="100"
                   rows="5"
                   placeholder="{{ 'FreeMemoEx' | translate }}" 
                   #inputinfo="ngModel" 
                   [(ngModel)]="row.memo" 
                   (change)="onChange(false)"></textarea>
-                  <mat-hint align="end">{{memo.value?.length || 0}}/100{{ "Characters" | translate }}</mat-hint>
+                  <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
               <!-- カテゴリー選択ボタン -->
               <button mat-stroked-button (click)="onClickAreaCategory()">
@@ -247,14 +245,13 @@
                         matInput
                         #memo
                         name="memo{{i}}"
-                        maxlength="100"
                         rows="5"
                         placeholder="{{ 'SpotExplanationEx' | translate }}" 
                         #inputinfo="ngModel" 
                         rows="5"
                         [(ngModel)]="item.memo" 
                         (change)="onChange(false)"></textarea>
-                        <mat-hint align="end">{{memo.value?.length || 0}}/100{{ "Characters" | translate }}</mat-hint>
+                        <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
                     </mat-form-field>
                     <!-- 滞在時間 -->
                     <div class="select">

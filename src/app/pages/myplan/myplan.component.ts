@@ -829,7 +829,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   async setUserPicture(myPlanApp: MyPlanApp){
-    if (this.row) {
+    if (this.row && this.row.planUserId === myPlanApp.planUserId) {
       // 画像ファイル、プレビューURLを設定
       myPlanApp.picturePreviewUrl = this.row.picturePreviewUrl;
       myPlanApp.pictureFile = this.row.pictureFile;

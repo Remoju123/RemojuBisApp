@@ -326,6 +326,11 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     this.guid = await this.commonService.getGuid();
 
     this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      if (!r) {
+        this.router.navigate(["/" + this.lang + "/notfound"]);
+        return;
+      }
+
       const langpipe = new LangFilterPipe();
 
       this.$spotId = r.spotId;
@@ -395,7 +400,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       // URL
       const _url = langpipe.transform(r.hp,this.lang);
       if(_url!==""){
-        this.$hpUrl = "<a href=" + _url + "target='_brank'>" + _url + "</a>";
+        this.$hpUrl = "<a href='" + _url + "' target='_brank'>" + _url + "</a>";
       }else{
         this.$hpUrl = "<span>------</span>"
       }

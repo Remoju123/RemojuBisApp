@@ -146,6 +146,7 @@ export class MyplanService  {
   }
 
   private SetItem(myPlanApp: MyPlanApp){
+    myPlanApp.planSpots.forEach(x => x.stayTime = Number(x.stayTime));
     myPlanApp.languageCd1 = [ this.translate.currentLang ];
     myPlanApp.objectId = this.commonService.objectId;
     if (myPlanApp.travelDate) {

@@ -19,28 +19,19 @@ export class User {
 
   // 以下、ADの項目
   // 自己紹介
-  // 以下、ADの項目
-  // 自己紹介
   aboutMe: string;
-  // 年代
   // 年代
   age: number;
   // 誕生日
-  // 誕生日
   birthday: string;
-  // 国名
   // 国名
   countryName: string;
   // 国コード
-  // 国コード
   country: number;
-  // ユーザ名
   // ユーザ名
   displayName: string;
   // ユーザの名
-  // ユーザの名
   givenName: string;
-  // ユーザの姓
   // ユーザの姓
   surname: string;
   // プロフィール画像プレビューURL

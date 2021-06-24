@@ -104,7 +104,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
     // コンテナ名設定
     let container: string;
     if (this.type ===1) {
-      container = "sr";
+      container = "";
     } else {
       container = "pr";
     }
@@ -113,7 +113,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
       if (this.review.pictures[i].pictureFile) {
         // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
         this.review.pictures[i].pictureUrl = environment.blobUrl + "/" + container + this.review.id + "/" +
-          "{0}_" + this.review.pictures[i].picturedisplayOrder
+          "r{0}_" + this.review.pictures[i].picturedisplayOrder
           + this.review.pictures[i].pictureFile.name.substring(
             this.review.pictures[i].pictureFile.name.lastIndexOf(".")
           ,this.review.pictures[i].pictureFile.name.length);

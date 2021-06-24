@@ -19,10 +19,8 @@ export class ReviewResult{
     pictures: ReviewPicture[];
     reviews: Review[];
     // 表示時に取得
-    // 表示時に取得
     age: number;
     gender: string;
-    // expantion flag & label
     // expantion flag & label
     ismore: boolean;
     label: string;

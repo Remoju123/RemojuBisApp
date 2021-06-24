@@ -307,6 +307,11 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.guid = await this.commonService.getGuid();
 
     this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      if (!r) {
+        this.router.navigate(["/" + this.lang + "/notfound"]);
+        return;
+      }
+      
       const langpipe = new LangFilterPipe();
 
       this.$isRemojuPlan = r.isRemojuPlan;
