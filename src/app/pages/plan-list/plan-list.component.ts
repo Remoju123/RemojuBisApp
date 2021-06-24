@@ -281,7 +281,6 @@ export class PlanListComponent implements OnInit, OnDestroy {
       const cache = sessionStorage.getItem("cachep");
       if(cache){
         let d: CachePlans = JSON.parse(cache);
-        console.log(d);
         this.rows = d.data;
         this.p = Math.floor(d.count/this.pageSize);
         this.end = d.count;

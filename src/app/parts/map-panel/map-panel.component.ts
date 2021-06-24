@@ -356,10 +356,12 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
       // 出発地がある場合、追加
       if (this.startPlanSpot){
+        if (this.startPlanSpot.spotName)
         this.mapSpots.unshift(this.convMapSpot(true));
       }
       // 到着地がある場合、追加
       if (this.endPlanSpot){
+        if(this.endPlanSpot.spotName)
         this.mapSpots.push(this.convMapSpot(false));
       }
     }
@@ -462,6 +464,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       }
     }
 
+    
+
     // 全画面表示かつユーザ作成プランの場合、その他Remojuスポットを表示
     if (this.isFull && !this.isDetail) {
       // マーカー用のスポットを取得し、ストレージから取得したスポット情報にマージ
@@ -506,7 +510,6 @@ export class MapPanelComponent implements OnInit,OnDestroy {
           }
         });
     }
-
     // 地図の中心を設定
     this.setMapFitBounds(false);
     // プランのスポットの地図内の表示切替
