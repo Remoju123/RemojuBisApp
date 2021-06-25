@@ -265,7 +265,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
   // スポット一覧詳細取得
   getSpotListDetail() {
     
-    if(isPlatformBrowser(this.platformId)){
+    //if(isPlatformBrowser(this.platformId)){
       let startidx = 0;
 
       // 前回の表示位置を取得
@@ -303,7 +303,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
       if(this.rows.length - startidx < this.pageSize){
         this.end = this.rows.length;
       }      
-    }
+    //}
 
     // 詳細取得判定用（初期化）
     if (this.rows.length > 0){

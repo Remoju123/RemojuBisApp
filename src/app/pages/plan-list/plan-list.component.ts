@@ -275,7 +275,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
   }
 
   getDetails(){
-    if(isPlatformBrowser(this.platformId)){
+    //if(isPlatformBrowser(this.platformId)){
       let startidx = 0;
 
       const cache = sessionStorage.getItem("cachep");
@@ -348,7 +348,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
           }
         }
       });
-    }
+    //}
     
   }
 
