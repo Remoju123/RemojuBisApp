@@ -135,7 +135,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
       window.scrollTo(0,this.offset); 
       setTimeout(() => {
         this.offset = 0;
-      }, 300);
+      }, 900);
     }
   }
 
