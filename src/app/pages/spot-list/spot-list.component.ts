@@ -239,7 +239,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
       // GUID取得
       this.guid = await this.commonService.getGuid();
       // ローディング開始
-      this.ref = this.loading.show();
+      // this.ref = this.loading.show();
 
       this.spotListService.getSpotList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         // 有料スポットの場合、エリアIDを設定
@@ -332,8 +332,8 @@ export class SpotListComponent implements OnInit, OnDestroy {
                 this.rows[idx] = d;
               }
               this.details = this.rows.slice(0,this.end);
-              arr.push("x");
-              this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length ? true : false);
+              // arr.push("x");
+              // this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length ? true : false);
           });
         } else {
           this.details = this.rows.slice(0,this.end);

@@ -250,7 +250,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
       // GUID取得
       this.guid = await this.commonService.getGuid();
       // // ローディング開始
-      this.ref = this.loading.show();
+      // this.ref = this.loading.show();
 
       this.planListService.getPlanList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         if (r.tollSpotAreaId){
@@ -330,8 +330,8 @@ export class PlanListComponent implements OnInit, OnDestroy {
                   this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
                 }
                 this.details = this.rows.slice(0,this.end);
-                arr.push("x");
-                this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length?true:false);
+                // arr.push("x");
+                // this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length?true:false);
             });
           }
         }
