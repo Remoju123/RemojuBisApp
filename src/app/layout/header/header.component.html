@@ -4,7 +4,7 @@
         <span style="flex-basis: 80%;">
           <!-- Remoju -->
           <a *ngIf="!tollSpotLogo" href="/{{ currentLang }}/spots" style="min-height:54px;">
-            <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" />
+            <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" />
           </a>
           <!-- Keihan -->
           <a *ngIf="tollSpotLogo" href="/{{ currentLang }}/top" style="min-height:54px;">
@@ -13,11 +13,11 @@
         </span>
         <span class="feature">
           <button mat-icon-button aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
-            <img src="../../../assets/img/icon_fav.svg">
+            <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
           </button>
           <button mat-icon-button aria-label="mypage" class="user"
           matTooltip="{{userName}}" (click)="linktoProfile()">
-            <img src="{{pictureUrl}}">
+            <img src="{{pictureUrl}}" alt="user">
           </button>
         </span>
         <span class="menu">
