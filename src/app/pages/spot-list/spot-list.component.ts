@@ -265,45 +265,43 @@ export class SpotListComponent implements OnInit, OnDestroy {
   // スポット一覧詳細取得
   getSpotListDetail() {
     
-    //if(isPlatformBrowser(this.platformId)){
-      let startidx = 0;
+    let startidx = 0;
 
-      // 前回の表示位置を取得
-      const cache = sessionStorage.getItem("caches");
+    // 前回の表示位置を取得
+    const cache = sessionStorage.getItem("caches");
 
-      // 表示位置を復元する場合
-      if (cache){
-        let d :CacheSpots = JSON.parse(cache);
-        // 一覧の内容を復元
-        this.rows = d.data;// Object.assign(this.rows, d.data);
-        // 表示グループ
-        this.p = Math.floor(d.count/this.pageSize);
-        // 最終表示位置
-        this.end = d.count;
-        // 表示する一覧を復元
-        this.details = this.rows.slice(0,this.end);
-        // スクロール位置
-        this.offset = d.offset;
-        // キーワード
-        this.keyword = d.keyword;
-        // 復元したら削除
-        sessionStorage.removeItem("caches");
-        // ローディングを閉じる
-        if(this.ref){
-          this.ref.close();
-        }
-        
-      } else {
-      // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
-      startidx = (this.p - 1) * this.pageSize;
-      // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
-      this.end = startidx + this.pageSize;
-      // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
-      // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
-      if(this.rows.length - startidx < this.pageSize){
-        this.end = this.rows.length;
-      }      
-    //}
+    // 表示位置を復元する場合
+    if (cache){
+      let d :CacheSpots = JSON.parse(cache);
+      // 一覧の内容を復元
+      this.rows = d.data;// Object.assign(this.rows, d.data);
+      // 表示グループ
+      this.p = Math.floor(d.count/this.pageSize);
+      // 最終表示位置
+      this.end = d.count;
+      // 表示する一覧を復元
+      this.details = this.rows.slice(0,this.end);
+      // スクロール位置
+      this.offset = d.offset;
+      // キーワード
+      this.keyword = d.keyword;
+      // 復元したら削除
+      sessionStorage.removeItem("caches");
+      // ローディングを閉じる
+      if(this.ref){
+        this.ref.close();
+      }
+      
+    } else {
+    // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
+    startidx = (this.p - 1) * this.pageSize;
+    // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
+    this.end = startidx + this.pageSize;
+    // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
+    // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
+    if(this.rows.length - startidx < this.pageSize){
+      this.end = this.rows.length;
+    }      
 
     // 詳細取得判定用（初期化）
     if (this.rows.length > 0){

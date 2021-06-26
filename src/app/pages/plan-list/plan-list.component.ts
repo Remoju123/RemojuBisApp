@@ -275,80 +275,78 @@ export class PlanListComponent implements OnInit, OnDestroy {
   }
 
   getDetails(){
-    //if(isPlatformBrowser(this.platformId)){
-      let startidx = 0;
+    let startidx = 0;
 
-      const cache = sessionStorage.getItem("cachep");
-      if(cache){
-        let d: CachePlans = JSON.parse(cache);
-        this.rows = d.data;
-        this.p = Math.floor(d.count/this.pageSize);
-        this.end = d.count;
-        this.details = this.rows.slice(0,this.end);
-        this.offset = d.offset;
-        this.keyword = d.keyword;
-        sessionStorage.removeItem("cachep");
+    const cache = sessionStorage.getItem("cachep");
+    if(cache){
+      let d: CachePlans = JSON.parse(cache);
+      this.rows = d.data;
+      this.p = Math.floor(d.count/this.pageSize);
+      this.end = d.count;
+      this.details = this.rows.slice(0,this.end);
+      this.offset = d.offset;
+      this.keyword = d.keyword;
+      sessionStorage.removeItem("cachep");
+      if(this.ref){
+        this.ref.close();
+      }
+    } else {
+      startidx = (this.p - 1) * this.pageSize;
+      this.end = startidx + this.pageSize;
+      // Residual processing
+      if(this.rows.length - startidx < this.pageSize){
+        this.end = this.rows.length;
+      }      
+    }
+
+    // 詳細取得判定用（初期化）
+    if(this.rows.length>0){
+      let arr = [];
+      for (let i = startidx; i < this.end; i++) {
+        if (!this.rows[i].isDetail) {
+          this.rows[i].guid = this.guid;
+          this.planListService
+            .getPlanListDetail(
+              this.rows[i])
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(d => {
+              let ids: number[] = [];
+              d.planSpotNames.map(x=>{
+                ids.push(x.spotId);
+              });
+              d.planSpotIds = ids;
+              const idx = this.rows.findIndex(v => v.planId === d.planId);
+              // 掲載終了の場合、削除する
+              if (d.isEndOfPublication) {
+                this.temp.splice(this.temp.findIndex(x => x.planId = this.rows[idx].planId), 1);
+                this.rows.splice(idx, 1);
+                if(this.rows.length - startidx < this.pageSize){
+                  this.end = this.rows.length;
+                }
+              } else {
+                this.planListService.dataFormat(d);
+                this.rows[idx] = d;
+                this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+              }
+              this.details = this.rows.slice(0,this.end);
+              // arr.push("x");
+              // this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length?true:false);
+          });
+        }
+      }
+      this.p++;
+    } else {
+      this.details = this.rows.slice(0,0);
+    }
+  
+    // ローディング終了処理
+    this.commonService.isloadfin$.subscribe(r=>{
+      if(r){
         if(this.ref){
           this.ref.close();
         }
-      } else {
-        startidx = (this.p - 1) * this.pageSize;
-        this.end = startidx + this.pageSize;
-        // Residual processing
-        if(this.rows.length - startidx < this.pageSize){
-          this.end = this.rows.length;
-        }      
       }
-  
-      // 詳細取得判定用（初期化）
-      if(this.rows.length>0){
-        let arr = [];
-        for (let i = startidx; i < this.end; i++) {
-          if (!this.rows[i].isDetail) {
-            this.rows[i].guid = this.guid;
-            this.planListService
-              .getPlanListDetail(
-                this.rows[i])
-              .pipe(takeUntil(this.onDestroy$))
-              .subscribe(d => {
-                let ids: number[] = [];
-                d.planSpotNames.map(x=>{
-                  ids.push(x.spotId);
-                });
-                d.planSpotIds = ids;
-                const idx = this.rows.findIndex(v => v.planId === d.planId);
-                // 掲載終了の場合、削除する
-                if (d.isEndOfPublication) {
-                  this.temp.splice(this.temp.findIndex(x => x.planId = this.rows[idx].planId), 1);
-                  this.rows.splice(idx, 1);
-                  if(this.rows.length - startidx < this.pageSize){
-                    this.end = this.rows.length;
-                  }
-                } else {
-                  this.planListService.dataFormat(d);
-                  this.rows[idx] = d;
-                  this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-                }
-                this.details = this.rows.slice(0,this.end);
-                // arr.push("x");
-                // this.commonService.onNotifyIsLoadingFinish(this.pageSize >= arr.length?true:false);
-            });
-          }
-        }
-        this.p++;
-      } else {
-        this.details = this.rows.slice(0,0);
-      }
-    
-      // ローディング終了処理
-      this.commonService.isloadfin$.subscribe(r=>{
-        if(r){
-          if(this.ref){
-            this.ref.close();
-          }
-        }
-      });
-    //}
+    });
     
   }
 
