@@ -574,20 +574,21 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
-    responsive: {
-      0: {
-        items: 1
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 2
-      },
-      940: {
-        items: 3
-      }
-    },
+    // responsive: {
+    //   0: {
+    //     items: 1
+    //   },
+    //   400: {
+    //     items: 1
+    //   },
+    //   740: {
+    //     items: 2
+    //   },
+    //   940: {
+    //     items: 3
+    //   }
+    // },
+    items:1,
     nav: true
   };
 
