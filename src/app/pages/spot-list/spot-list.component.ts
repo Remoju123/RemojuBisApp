@@ -68,7 +68,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
   // ページング
   p: number;
   // スクロールした時に表示更新する件数
-  pageSize: number = 6;
+  pageSize: number = 8;
   // 最終表示位置
   end:number;
   // window.pageYOffset(詳細から戻ったときの位置復元時に使用)

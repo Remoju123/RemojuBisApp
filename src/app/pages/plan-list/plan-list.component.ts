@@ -60,7 +60,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
   // ページング
   p: number;
   // スクロールした時に表示更新する件数
-  pageSize: number = 4;
+  pageSize: number = 6;
   // 最終表示位置
   end: number;
   // window.pageYOffset
