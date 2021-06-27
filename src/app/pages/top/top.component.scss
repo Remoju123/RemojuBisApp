@@ -1,0 +1,84 @@
+
+// LoadingIndicator
+.app-loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-loading-indicator-backdrop {
+  background-color: rgba(0, 0, 0, .28);
+}
+
+.spinner {
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.navclose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 22px;
+}
+
+.menu{
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#content{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  height: 100vh;
+  .frame{
+    display: flex;
+    margin-top: 38px;
+    flex-direction: column;
+    height: 200px;
+    flex-shrink: 0;
+    justify-content: flex-end;
+    min-height: 70px;
+
+    h1{
+      font-size: 0.9rem;
+      font-weight: normal;
+      text-align: center;
+      color: #4d4d4d;
+    }
+    .logo{
+      background-image: url("../../../assets/img/remoju-logo-b.svg");
+      height: 58px;
+      width: 227px;
+    }
+    .catch{
+      text-align: center;
+      font-size: 0.8rem;
+      margin-top: 2em;
+    }
+  }
+
+  .inputWrapper{
+    display: flex;
+    height: 200px;
+    justify-content: flex-end;
+    align-items: center;
+
+    input{
+      height: 44px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+      width: 80vw;
+      padding: 0 16px;
+    }
+  }
+  
+}

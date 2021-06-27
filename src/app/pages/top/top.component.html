@@ -1,1 +1,46 @@
-<p>top works!</p>
+<mat-sidenav-container autosize>
+  <!-- app-menu -->
+  <mat-sidenav
+    #sidenav
+    [mode]="mode"
+    [(opened)]="opened"
+    [fixedInViewport]="true"
+  >
+    <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
+    <img
+      src="../../../assets/img/nav-close.svg"
+      alt=""
+      class="navclose"
+      (click)="onhandleSiteNav(true)"
+    />
+  </mat-sidenav>
+
+  <!-- main section -->
+  <section>
+    <div id="content">
+      <div class="frame">
+        <h1>旅プランを作ろう！</h1>
+        <div class="logo"></div>
+        <div class="catch">
+          みんなのおすすめを参考に、<br>
+          オリジナルの旅プランが作れます。
+        </div>
+      </div>
+      
+      <div class="inputWrapper">
+        <input type="search" 
+        placeholder="地域 カテゴリー キーワードなど" 
+        class="keyword"/>
+      </div>
+      
+    </div>
+
+    <div class="menu">
+      <button mat-icon-button color="primary" aria-label="menu" (click)="toggleactive()">
+        <mat-icon>
+          more_vert</mat-icon>
+      </button>
+    </div>
+    
+  </section>
+</mat-sidenav-container>

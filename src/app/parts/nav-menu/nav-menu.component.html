@@ -29,9 +29,9 @@
       <mat-nav-list>
         <div>{{ "MakeATripPlan" | translate }}</div>
         <mat-nav-list class="sub">
-          <a mat-list-item routerLink="./spots">{{ "SearchBySpot" | translate }}</a>
-          <a mat-list-item routerLink="./plans">{{ "SearchByModelPlan" | translate }}</a>
-          <a mat-list-item routerLink="./mypage" fragment="favorite">{{ "SearchByFavorite" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('mypage','favorite')">{{ "SearchByFavorite" | translate }}</a>
         </mat-nav-list>
       </mat-nav-list>
       <mat-divider></mat-divider>
@@ -48,9 +48,9 @@
         <mat-divider></mat-divider>
         <div>{{ "ViewMyPage" | translate }}</div>
         <mat-nav-list class="sub">
-          <a mat-list-item routerLink="./mypage">{{ "EditProfile" | translate }}</a>
-          <a mat-list-item routerLink="./mypage" fragment="list">{{ "ViewSavedPlans" | translate }}</a>
-          <a mat-list-item routerLink="./mypage" fragment="favorite">{{ "ViewFavorite" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('mypage')">{{ "EditProfile" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('mypage','list')">{{ "ViewSavedPlans" | translate }}</a>
+          <a mat-list-item  (click)="onNavgate('mypage','favorite')">{{ "ViewFavorite" | translate }}</a>
         </mat-nav-list>
         
       </div>

@@ -1,7 +1,8 @@
 import { Component, Input } from "@angular/core";
-// import { MenuItems } from "../../shared/menu-items/menu-items";
+import { MenuItems } from "../../shared/menu-items/menu-items";
 import { CommonService } from "../../service/common.service";
 import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-nav-menu",
@@ -15,13 +16,18 @@ export class NavMenuComponent {
   loggedIn: boolean = false;
   userName!: string;
 
+  get lang() {
+    return this.translate.currentLang;
+  }
+
   @Input()
   currentlang!: string;
 
   constructor(
     private router: Router,
     public common: CommonService, 
-    // public menuItems: MenuItems
+    public menuItems: MenuItems,
+    private translate: TranslateService
     ) {
   }
 
@@ -35,5 +41,13 @@ export class NavMenuComponent {
 
   isShow(flg: any) {
     return flg === null || flg === this.isAuthenticated;
+  }
+
+  onNavgate(page:string,frag?:string){
+    if(frag===""){
+      this.router.navigate(["/" + this.lang + "/" + page + "/"]);
+    }else{
+      this.router.navigate(["/" + this.lang + "/" + page + "/"],{fragment:frag});
+    }
   }
 }
