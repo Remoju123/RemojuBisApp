@@ -16,7 +16,7 @@ import {
   SearchParamsObj
 } from "../class/spotlist.class";
 import { CommonService } from "./common.service";
-// import { IndexedDBService } from "./indexeddb.service";
+import { IndexedDBService } from "./indexeddb.service";
 import { SpotService } from "./spot.service";
 import { TranslateService } from "@ngx-translate/core";
 import { FilterPipe } from "ngx-filter-pipe";
@@ -42,7 +42,7 @@ export class SpotListService implements OnDestroy {
     private commonService: CommonService,
     private spotService: SpotService,
     private translate: TranslateService,
-    // private indexedDBService: IndexedDBService,
+    private indexedDBService: IndexedDBService,
     @Inject("BASE_API_URL") private host: string,
     private filterPipe: FilterPipe
   ) { }
@@ -175,8 +175,7 @@ export class SpotListService implements OnDestroy {
   // プランに追加する
   async addSpot(spotId: number, type: number = 1, googleSpot: GoogleSpot = null) {
     // 作成中プラン取得
-    //let myPlan: any = await this.indexedDBService.getEditPlan(true);
-    let myPlan: any;
+    let myPlan: any = await this.indexedDBService.getEditPlan(true);
     if (!myPlan){
       myPlan = new MyPlanApp();
     }
@@ -358,16 +357,16 @@ export class SpotListService implements OnDestroy {
       return x;
     }, []);
   }
-  
+
 
   /*----------------------------------------
    *
-   * 検索処理 
+   * 検索処理
    * 2020.5.25 MM UPDATE
    *
    *  -------------------------------------*/
-  // 
-  
+  //
+
   public result = new searchResult();
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
@@ -455,7 +454,7 @@ export class SpotListService implements OnDestroy {
     if(condition.searchCategories.length){
       condition.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
-      })  
+      })
     }
 
     if(condition.searchOptions.length){
