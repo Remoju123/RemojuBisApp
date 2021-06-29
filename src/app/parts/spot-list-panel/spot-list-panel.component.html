@@ -1,8 +1,8 @@
 <div class="box"
   infinite-scroll
-  [infiniteScrollDistance]="3"
+  [infiniteScrollDistance]="5"
   [infiniteScrollUpDistance]="1.5"
-  [infiniteScrollThrottle]="300"
+  [infiniteScrollThrottle]="150"
   (scrolled)="onScrollDownSpot()">
   <!-- <ng-container *ngFor="let row of rows | paginate: { itemsPerPage: pageSize, currentPage: p, id: 'spot' }"> -->
   <ng-container *ngFor="let row of rows">

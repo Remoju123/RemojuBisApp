@@ -19,6 +19,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 import { isPlatformBrowser } from "@angular/common";
+import { platformBrowser } from "@angular/platform-browser";
 @Component({
   selector: "app-plan-list",
   templateUrl: "./plan-list.component.html",
@@ -104,11 +105,12 @@ export class PlanListComponent implements OnInit, OnDestroy {
       this.getPlanList();
     });
     
-    if(isPlatformBrowser(this.platformId)){
-      this.planListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
-        this.rows = result.list;
-        this.temp = [...this.rows];
-        this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+    this.planListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
+      this.rows = result.list;
+      this.temp = [...this.rows];
+      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+      /* --only browser task: browser object history,location -- */
+      if(isPlatformBrowser(this.platformId)){
         if(result.searchParams.length>14){
           history.replaceState(
             "search_key",
@@ -118,16 +120,19 @@ export class PlanListComponent implements OnInit, OnDestroy {
         } else {
           history.replaceState("search_key", "", location.pathname.substring(1));
         }
-        // 条件更新
-        this.recoveryQueryParams(result.searchParamsObj);
-        // 詳細データを初期化
-        this.p = 1;
-        // キーワードをクリア
-        this.keyword = "";
-        // ソート->詳細取得
-        this.listsort(this.sortval);
-      })
-    }
+      }
+      /* --only browser task: browser object history,location -- */
+
+      // 条件更新
+      this.recoveryQueryParams(result.searchParamsObj);
+      // 詳細データを初期化
+      this.p = 1;
+      // キーワードをクリア
+      this.keyword = "";
+      // ソート->詳細取得
+      this.listsort(this.sortval);
+    })
+  
   }
 
   ngAfterViewChecked(){
@@ -276,28 +281,31 @@ export class PlanListComponent implements OnInit, OnDestroy {
 
   getDetails(){
     let startidx = 0;
-
-    const cache = sessionStorage.getItem("cachep");
-    if(cache){
-      let d: CachePlans = JSON.parse(cache);
-      this.rows = d.data;
-      this.p = Math.floor(d.count/this.pageSize);
-      this.end = d.count;
-      this.details = this.rows.slice(0,this.end);
-      this.offset = d.offset;
-      this.keyword = d.keyword;
-      sessionStorage.removeItem("cachep");
-      if(this.ref){
-        this.ref.close();
+    /* --only browser task: browser object sessionStorage -- */
+    if(isPlatformBrowser(this.platformId)){
+      const cache = sessionStorage.getItem("cachep");
+      if(cache){
+        let d: CachePlans = JSON.parse(cache);
+        this.rows = d.data;
+        this.p = Math.floor(d.count/this.pageSize);
+        this.end = d.count;
+        this.details = this.rows.slice(0,this.end);
+        this.offset = d.offset;
+        this.keyword = d.keyword;
+        sessionStorage.removeItem("cachep");
+        if(this.ref){
+          this.ref.close();
+        }
+      } else {
+        startidx = (this.p - 1) * this.pageSize;
+        this.end = startidx + this.pageSize;
+        // Residual processing
+        if(this.rows.length - startidx < this.pageSize){
+          this.end = this.rows.length;
+        }      
       }
-    } else {
-      startidx = (this.p - 1) * this.pageSize;
-      this.end = startidx + this.pageSize;
-      // Residual processing
-      if(this.rows.length - startidx < this.pageSize){
-        this.end = this.rows.length;
-      }      
     }
+    /* --only browser task: browser object sessionStorage -- */
 
     // 詳細取得判定用（初期化）
     if(this.rows.length>0){

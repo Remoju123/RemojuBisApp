@@ -94,35 +94,36 @@ export class SpotListComponent implements OnInit, OnDestroy {
    * -----------------------------*/
 
   ngOnInit() {
+  // URLパラメータ判定(外部リンク対応)
+    this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params: Params) => {
+      if ((params.aid && params.aid.length > 0)
+      || (params.era && params.era.length > 0)
+      || (params.cat && params.cat.length > 0)
+      || (params.opt && params.opt.length > 0)) {
+        this.recoveryQueryParams(params);
+      }
+      this.getSpotList();
+    });
 
-    if(isPlatformBrowser(this.platformId)){
-      // URLパラメータ判定(外部リンク対応)
-      this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params: Params) => {
-        if ((params.aid && params.aid.length > 0)
-        || (params.era && params.era.length > 0)
-        || (params.cat && params.cat.length > 0)
-        || (params.opt && params.opt.length > 0)) {
-          this.recoveryQueryParams(params);
-        }
-        this.getSpotList();
-      });
+    // 共有プランの場合
+    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
+      const id = params.get("id");
+      if (id){
+        // 編集中のプランを確認して共有プランを開く
+        this.checkPlan(id);
+      }
+    });
 
-      // 共有プランの場合
-      this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
-        const id = params.get("id");
-        if (id){
-          // 編集中のプランを確認して共有プランを開く
-          this.checkPlan(id);
-        }
-      });
-
+    
+    this.spotListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
+      this.rows = result.list;
+      this.temp = [...this.rows];
+      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+      // location.pathname　/言語/spots～　または　/言語/sharedplan～ ⇒/を抜くためのsubstring(1)
+      let url = location.pathname.substring(1);
       
-      this.spotListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
-        this.rows = result.list;
-        this.temp = [...this.rows];
-        this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
-        // location.pathname　/言語/spots～　または　/言語/sharedplan～ ⇒/を抜くためのsubstring(1)
-        let url = location.pathname.substring(1);
+      /* --only browser task: browser object history,location -- */
+      if(isPlatformBrowser(this.platformId)){
         // 共有プランの場合、spotsにする
         if(location.pathname.includes("sharedplan")){
           // 共有プランのURL：/言語/sharedplan/XXXXXXXXXXXXXXXXXXX　言語/を抜き出し、＋spotsを付ける
@@ -138,24 +139,27 @@ export class SpotListComponent implements OnInit, OnDestroy {
         } else {
           history.replaceState("search_key", "", url);
         }
-        // 条件更新
-        this.recoveryQueryParams(result.searchParamsObj);
-        
-        // 詳細データを初期化
-        this.p = 1;
-        // キーワードをクリア
-        this.keyword = "";
-        // ソート
-        this.listsort(this.rows, this.sortval);
-      });
+      }
+      /* --only browser task: browser object history,location -- */
 
-      ////---- TDB: NG0100 Cause 202106051835MM ------
-      this.myplanService.FetchMyplanSpots();
-      this.myplanService.MySpots$.subscribe((v)=>{
-        this.myPlanSpots = v;
-      });
-    }
+      // 条件更新
+      this.recoveryQueryParams(result.searchParamsObj);
+      
+      // 詳細データを初期化
+      this.p = 1;
+      // キーワードをクリア
+      this.keyword = "";
+      // ソート
+      this.listsort(this.rows, this.sortval);
+    });
+
+    ////---- TDB: NG0100 Cause 202106051835MM ------
+    this.myplanService.FetchMyplanSpots();
+    this.myplanService.MySpots$.subscribe((v)=>{
+      this.myPlanSpots = v;
+    });
   }
+
 
   ngAfterViewChecked(){
     if(this.offset>0){
@@ -267,41 +271,46 @@ export class SpotListComponent implements OnInit, OnDestroy {
     
     let startidx = 0;
 
-    // 前回の表示位置を取得
-    const cache = sessionStorage.getItem("caches");
+    /* --only browser task: browser object sessionStorage -- */
+    if(isPlatformBrowser(this.platformId)){
 
-    // 表示位置を復元する場合
-    if (cache){
-      let d :CacheSpots = JSON.parse(cache);
-      // 一覧の内容を復元
-      this.rows = d.data;// Object.assign(this.rows, d.data);
-      // 表示グループ
-      this.p = Math.floor(d.count/this.pageSize);
-      // 最終表示位置
-      this.end = d.count;
-      // 表示する一覧を復元
-      this.details = this.rows.slice(0,this.end);
-      // スクロール位置
-      this.offset = d.offset;
-      // キーワード
-      this.keyword = d.keyword;
-      // 復元したら削除
-      sessionStorage.removeItem("caches");
-      // ローディングを閉じる
-      if(this.ref){
-        this.ref.close();
+      // 前回の表示位置を取得
+      const cache = sessionStorage.getItem("caches");
+
+      // 表示位置を復元する場合
+      if (cache){
+        let d :CacheSpots = JSON.parse(cache);
+        // 一覧の内容を復元
+        this.rows = d.data;// Object.assign(this.rows, d.data);
+        // 表示グループ
+        this.p = Math.floor(d.count/this.pageSize);
+        // 最終表示位置
+        this.end = d.count;
+        // 表示する一覧を復元
+        this.details = this.rows.slice(0,this.end);
+        // スクロール位置
+        this.offset = d.offset;
+        // キーワード
+        this.keyword = d.keyword;
+        // 復元したら削除
+        sessionStorage.removeItem("caches");
+        // ローディングを閉じる
+        if(this.ref){
+          this.ref.close();
+        }
+        
+      } else {
+      // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
+      startidx = (this.p - 1) * this.pageSize;
+      // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
+      this.end = startidx + this.pageSize;
+      // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
+      // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
+      if(this.rows.length - startidx < this.pageSize){
+        this.end = this.rows.length;
       }
-      
-    } else {
-    // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
-    startidx = (this.p - 1) * this.pageSize;
-    // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
-    this.end = startidx + this.pageSize;
-    // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
-    // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
-    if(this.rows.length - startidx < this.pageSize){
-      this.end = this.rows.length;
-    }      
+    }
+    /* --only browser task: browser object sessionStorage -- */
 
     // 詳細取得判定用（初期化）
     if (this.rows.length > 0){
