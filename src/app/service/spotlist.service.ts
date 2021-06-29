@@ -357,16 +357,16 @@ export class SpotListService implements OnDestroy {
       return x;
     }, []);
   }
-  
+
 
   /*----------------------------------------
    *
-   * 検索処理 
+   * 検索処理
    * 2020.5.25 MM UPDATE
    *
    *  -------------------------------------*/
-  // 
-  
+  //
+
   public result = new searchResult();
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
@@ -454,7 +454,7 @@ export class SpotListService implements OnDestroy {
     if(condition.searchCategories.length){
       condition.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
-      })  
+      })
     }
 
     if(condition.searchOptions.length){
