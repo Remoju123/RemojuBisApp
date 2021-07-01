@@ -22,7 +22,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { Subject } from 'rxjs';
-import { resolve } from 'url';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -138,7 +137,7 @@ export class PlanListService {
 
   /*----------------------------------------
    *
-   * プラン検索＆結果処理 
+   * プラン検索＆結果処理
    * 2020.6.4 MM UPDATE
    *
    *  -------------------------------------*/
@@ -222,7 +221,7 @@ export class PlanListService {
     if(condition.searchCategories.length){
       condition.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
-      })  
+      })
     }
 
     let kw = [..._areaNums, ..._areaId2Nums, ..._category];

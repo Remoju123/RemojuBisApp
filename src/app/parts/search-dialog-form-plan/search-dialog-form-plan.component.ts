@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ListSelectedPlan } from "../../class/common.class";
+import { ListSelectedPlan, NestDataSelected } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { PlanAppList, searchResult} from "../../class/planlist.class";
 import { CommonService } from "../../service/common.service";
@@ -88,7 +88,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
     this.condition.areaId = Array.from(new Set(this.condition.areaId));
     this.condition.areaId2 = Array.from(new Set(this.condition.areaId2));
     // this.condition.isOpens = Array.from(new Set(this.condition.isOpens));
-   
+
     // 検索条件選択値を更新
     if (this.data.isList) {
       this.idx.registListSearchConditionPlan(this.condition);
@@ -188,7 +188,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
 
     this.filteringData();
   }
-  
+
   /*----------------------------
    *
    * エリア
@@ -199,7 +199,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
     // subエリアを再現する場合にExpression has changed after it was checked.となることを防止する。
     setTimeout(() => {
       // 複数選択可
-      if (this.data.isList) {      
+      if (this.data.isList) {
         this.areas.controls[i].get("selected")?.patchValue(true);
         const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
 
@@ -358,7 +358,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
     const areaIds = [];
     this.condition.areaId = [];
     this.condition.areaId2 = [];
-    
+
     // エリアIDを一括りにする
     this.areas.value.map((x: { selected: any; parentId: number; dataSelecteds: any[]; }) => {
       if (x.selected) {
@@ -422,9 +422,9 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
   }
 
   // フォーム作成 sub
-  setFbArray(data: any) {
+  setFbArray(data: NestDataSelected[]) {
     return this.fb.array(
-      data.map((p: { parentId: any; parentName: any; qty: any; isHighlight: any; selected: any; dataSelecteds: any[]; }) => {
+      data.map(p => {
         return this.fb.group({
           parentId: p.parentId,
           parentName: p.parentName,
@@ -432,7 +432,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
           isHighlight:p.isHighlight,
           selected: p.selected,
           dataSelecteds: this.fb.array(
-            p.dataSelecteds.map((q: { id: any; name: any; qty: any; selected: any; }) => {
+            p.dataSelecteds.map(q => {
               return this.fb.group({
                 id: q.id,
                 name: q.name,
