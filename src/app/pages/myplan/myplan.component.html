@@ -9,7 +9,7 @@
         <div id="swImg"></div>
       </div>
     </div>
-    
+
     <!--*----------- 編集 -----------*-->
     <mat-card *ngIf="isEdit" class="myplan-edit">
       <mat-card-content>
@@ -32,7 +32,7 @@
                       <img src="/assets/img/bus.svg" alt="Bωus">
                     </span>
                   </button>
-              
+
                   <!-- 最短ルート -->
                   <button class="option" (click)="onClickAuto()">
                     <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
@@ -40,7 +40,7 @@
                       <img src="/assets/img/keiro.svg" alt="Auto">
                     </span>
                   </button>
-              
+
                 </div>
               </div>
             </mat-expansion-panel-header>
@@ -48,15 +48,15 @@
             <ng-container *ngIf="row">
               <mat-form-field appearance="outline" hintLabel="{{ 'Required' | translate }}" class="pname">
                 <mat-label>{{ "PlanName" | translate }}</mat-label>
-                <input 
+                <input
                   matInput
                   #planName
-                  name="planName" 
+                  name="planName"
                   maxlength="30"
-                  placeholder="{{ 'PlanNameEx' | translate }}" 
-                  required 
-                  #inputinfo="ngModel" 
-                  [(ngModel)]="row.planName" 
+                  placeholder="{{ 'PlanNameEx' | translate }}"
+                  required
+                  #inputinfo="ngModel"
+                  [(ngModel)]="row.planName"
                   (change)="onChange(false)"/>
                   <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
@@ -69,7 +69,7 @@
                 class="selectPhoto"
                 (change)="onClickSelectPhotoPlan($event)" />
               </div>
-              
+
               <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
                 <img width="100%" height="100%" [src]="row.picturePreviewUrl ? row.picturePreviewUrl : row.pictureUrl" />
                 <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
@@ -77,28 +77,28 @@
               <!-- プラン概要 -->
               <mat-form-field appearance="outline">
                 <mat-label>{{ "PlanExplanationEx" | translate }}</mat-label>
-                <textarea 
-                  matInput 
+                <textarea
+                  matInput
                   #planExplanation
-                  name="planExplanation" 
+                  name="planExplanation"
                   rows="5"
-                  placeholder="{{ 'PlanExplanationEx' | translate }}" 
-                  #inputinfo="ngModel" 
-                  [(ngModel)]="row.planExplanation" 
+                  placeholder="{{ 'PlanExplanationEx' | translate }}"
+                  #inputinfo="ngModel"
+                  [(ngModel)]="row.planExplanation"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{planExplanation.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
               <!-- フリー文章 -->
               <mat-form-field appearance="outline">
                 <mat-label>{{ "FreeMemoEx" | translate }}</mat-label>
-                <textarea 
+                <textarea
                   matInput
                   #memo
-                  name="memo" 
+                  name="memo"
                   rows="5"
-                  placeholder="{{ 'FreeMemoEx' | translate }}" 
-                  #inputinfo="ngModel" 
-                  [(ngModel)]="row.memo" 
+                  placeholder="{{ 'FreeMemoEx' | translate }}"
+                  #inputinfo="ngModel"
+                  [(ngModel)]="row.memo"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
@@ -116,7 +116,7 @@
             </ng-container>
           </mat-expansion-panel>
         </mat-accordion>
-        
+
         <div class="set depart">
           <div class="lt">
             <!-- 出発地を設定 -->
@@ -142,7 +142,7 @@
             <ng-template #blanktravel>
               <a href="javascript:void(0);" class="picker"></a>
             </ng-template>
-            <!-- 出発時間 -->        
+            <!-- 出発時間 -->
             <label class="time-label">{{"StartTime"|translate}}</label>
             <div class="startTime" *ngIf="row;else blankstart">
               <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChange(true)">
@@ -162,11 +162,11 @@
             </ng-template>
           </div>
         </div>
-  
+
         <!-- スポットを表示 -->
         <div class="spots"  *ngIf="row || spotZero"
           cdkDropList
-          [cdkDropListData]="row && row.planSpots ? row.planSpots : spotZero" 
+          [cdkDropListData]="row && row.planSpots ? row.planSpots : spotZero"
           (cdkDropListDropped)="cdkDropListDroppedSpot($event)"
           >
           <dl class="th">
@@ -189,7 +189,7 @@
                       <div class="lt">
                         <span class="order">{{ item.displayOrder }}</span>
                         <ng-container *ngIf="item.planUserpictures && item.planUserpictures.length > 0; else spotPicture">
-                          <img 
+                          <img
                           [src]="item.planUserpictures[0].picturePreviewUrl ? item.planUserpictures[0].picturePreviewUrl : item.planUserpictures[0].picture_url"
                           [alt]="item.spotId" [title]="item.spotId" />
                         </ng-container>
@@ -201,8 +201,8 @@
                         <span class="spotName" [innerHTML]="item.spotName"></span>
                         <span class="areaName">
                           <ng-container *ngIf="item.areaName">{{ item.areaName | langFilter: lang }}</ng-container>
-                          <ng-container *ngIf="item.categoryName">
-                            / {{ item.categoryName | langFilter: lang }}
+                          <ng-container *ngIf="item.categoryText">
+                            / {{ item.categoryText | langFilter: lang }}
                           </ng-container>
                         </span>
                       </div>
@@ -210,15 +210,15 @@
                     <!-- スポット名 -->
                     <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline">
                       <mat-label>{{ "SpotNameEx" | translate }}</mat-label>
-                      <textarea 
+                      <textarea
                         matInput
                         #spotName
-                        name="spotName{{i}}" 
+                        name="spotName{{i}}"
                         maxlength="30"
-                        placeholder="{{ 'SpotNameEx' | translate }}" 
+                        placeholder="{{ 'SpotNameEx' | translate }}"
                         required
-                        #inputinfo="ngModel" 
-                        [(ngModel)]="item.spotName" 
+                        #inputinfo="ngModel"
+                        [(ngModel)]="item.spotName"
                         (change)="onChange(false)"></textarea>
                         <mat-hint align="end">{{spotName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
                     </mat-form-field>
@@ -232,24 +232,24 @@
                       accept="image/*"
                       (change)="onClickSelectPhotoSpot($event, item)" />
                     </div>
-                    
+
                     <div *ngFor="let picture of item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">
                       <img width="100%" height="100%" [src]="picture.picturePreviewUrl ? picture.picturePreviewUrl : picture.picture_url" />
                       <button type="button" class="delete" (click)="onClickPhotoDeleteSpot(item, picture)"></button>
                     </div>
-                  
+
                     <!-- スポット概要 -->
                     <mat-form-field appearance="outline">
                       <mat-label>{{ "SpotExplanationEx" | translate }}</mat-label>
-                      <textarea 
+                      <textarea
                         matInput
                         #memo
                         name="memo{{i}}"
                         rows="5"
-                        placeholder="{{ 'SpotExplanationEx' | translate }}" 
-                        #inputinfo="ngModel" 
+                        placeholder="{{ 'SpotExplanationEx' | translate }}"
+                        #inputinfo="ngModel"
                         rows="5"
-                        [(ngModel)]="item.memo" 
+                        [(ngModel)]="item.memo"
                         (change)="onChange(false)"></textarea>
                         <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
                     </mat-form-field>
@@ -262,7 +262,7 @@
                             {{ sTime.id }}{{ "Minute" | translate }}
                           </option>
                         </select>
-                      </div>                                     
+                      </div>
                     </div>
                   </mat-expansion-panel>
                 </mat-accordion>
@@ -297,7 +297,7 @@
             </ng-template>
           </div>
         </div>
-  
+
         <div class="footer">
           <!-- 破棄(DB未保存)-->
           <div *ngIf="row?.planUserId === 0" class="clear">
@@ -327,11 +327,11 @@
         </div>
       </mat-card-content>
     </mat-card>
-  
+
     <!--*----------- プレビュー ----------*-->
     <div class="myplan-preview" *ngIf="!isEdit">
       <mat-card>
-        <mat-card-content>      
+        <mat-card-content>
           <div class="preview-box">
             <div class="lt">
               <!-- プラン名 -->
@@ -346,7 +346,7 @@
               <button mat-fab [ngClass] ="{'isList':isMapDisp}" class="myplan-map" (click)="onClickMap() "></button>
             </div>
           </div>
-        </mat-card-content>      
+        </mat-card-content>
       </mat-card>
       <div class="set">
         <div class="date">
@@ -378,7 +378,7 @@
         </div>
         <span class="label">{{ "PointOfDeparture" | translate }}</span>
       </div>
-      <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" 
+      <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer"
       [item]="row.startPlanSpot"></app-transfer-panel>
       <div class="box">
         <ng-container *ngFor="let item of row.planSpots; index as i">
@@ -449,7 +449,7 @@
                     <span class="item">{{ item.pvAllQty.toLocaleString() }}</span>
                   </div>
                 </div>
-  
+
                 <div class="card-bottom">
                   <mat-list class="pt0">
                     <mat-list-item class="subheading">
@@ -471,13 +471,13 @@
                   </mat-list>
                 </div>
               </div>
-              
+
               <mat-list>
                 <mat-list-item class="outtime" *ngIf="item.transfer">
                   <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
                 </mat-list-item>
               </mat-list>
-  
+
               <app-transfer-panel [item]="item"></app-transfer-panel>
             </mat-card-content>
             <!-- 掲載終了スポットの場合 -->
@@ -515,7 +515,7 @@
           <span class="sufix">{{ "EndTime" | translate  }}</span>{{ endTime }}
         </mat-list-item>
       </mat-list>
-  
+
       <!-- パネルフッタ -->
       <div class="footer">
         <div class="share">
@@ -524,7 +524,6 @@
           <label for="planshare">{{ "SharePlan" | translate }}</label>
         </div>
       </div>
-  
+
     </div>
   </form>
-  

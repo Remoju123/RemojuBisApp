@@ -7,7 +7,7 @@ import { SpotListService } from "../../service/spotlist.service";
 import { SpotService } from "../../service/spot.service";
 import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
-import { 
+import {
   DataSelected,
   ComfirmDialogParam,
   MyPlanApp,
@@ -15,7 +15,7 @@ import {
   PlanUserPicture,
   MapFullScreenParam,
   ListSelectedPlan } from "../../class/common.class";
-import { ListSearchCondition } from "../../class/indexeddb.class";  
+import { ListSearchCondition } from "../../class/indexeddb.class";
 import { searchResult, PlanAppList } from "../../class/planlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
@@ -94,11 +94,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // エリア・カテゴリ(マスタ)
   listSelectedPlan: ListSelectedPlan;
   // エリア・カテゴリ選択値(表示用)
-  optionKeywords = [];
-  
+  optionKeywords: string[] = [];
+
   $stayTime: DataSelected[];
 
-  $startTime = [];
+  $startTime: string[] = [];
 
   isMapDisp = false;
 
@@ -126,14 +126,14 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     if(this.currentlang!=="ja"){
       this.dateAdapter.setLocale('en-EN'); //暫定、日本語以外は英語表記に
     }
-    
+
     //出発時間リストを生成
     this.genStartTimes();
 
     // エリア・カテゴリの選択内容を表示
     this.planListService.searchFilterNoList.pipe(takeUntil(this.onDestroy$)).subscribe((result: searchResult)=>{
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
-    });    
+    });
 
     // 追加通知
     this.myplanService.PlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
@@ -241,7 +241,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.onChange(false);
     });
   }
-    
+
   // スポット写真
   async onClickSelectPhotoSpot(e:any, planSpot: PlanSpotCommon) {
     if (e.target.files) {
@@ -268,7 +268,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       }
       this.onChange(false);
     }
-  }  
+  }
 
   // スポット写真削除
   onClickPhotoDeleteSpot(planSpot: PlanSpotCommon, picture: PlanUserPicture){
@@ -343,13 +343,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     }
     // 保存
     this.registPlan(false);
-  }
-
-  selectValue;
-
-  onChangeSelect(value){
-    this.selectValue=value;
-    console.log("value is "+this.selectValue);
   }
 
   // スポットを追加する
@@ -483,7 +476,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
               , r.pictureUrl,
               r.planUserId);
           }
-        
+
           // スポット写真
           for (let i = 0; i < this.row.planSpots.length; i++) {
             if (this.row.planSpots[i].planUserpictures) {
@@ -587,7 +580,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         for (let i = 0; i < this.spotZero.length; i++) {
           // 多言語項目の使用言語で設定
           this.commonService.setAddPlanLang(this.spotZero[i], this.lang);
-        }    
+        }
         resolve(true);
       });
     });
@@ -712,20 +705,20 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     if (this.row.startTime) {
       this.row.startTime = this.row.startTime.substring(0, 5);
     }
-    
+
     // 終了時間(出発時間＋所要時間)
     if (this.row.startTime && this.row.timeRequired){
       // 所要時間を設定
       const hour = Number(this.row.timeRequired.substring(0, 2));
       const minute = Number(this.row.timeRequired.substring(3, 5));
       this.row.timeRequiredDisp =
-        (hour > 0 ? hour + " " + this.translate.instant("Hour") + " " : "") + 
+        (hour > 0 ? hour + " " + this.translate.instant("Hour") + " " : "") +
         minute + " " + this.translate.instant("Minute");
 
       // 出発時間＋所要時間
       let startTime = new Date("1970/1/1 " + this.row.startTime);
       startTime.setMinutes(startTime.getMinutes() + hour * 60 + minute);
-      this.endTime = startTime.getHours().toString() + ":" 
+      this.endTime = startTime.getHours().toString() + ":"
         + (startTime.getMinutes() < 10 ? "0" + startTime.getMinutes() : startTime.getMinutes()).toString();
     }
 
@@ -736,7 +729,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       // 最終スポットの到着地を到着地に設定
       this.row.planSpots[this.row.planSpots.length - 1].destination = this.row.endPlanSpot.spotName;
     }
-      
+
     for (let i = 0; i < this.row.planSpots.length; i++) {
       // 多言語項目の使用言語で設定
       this.commonService.setAddPlanLang(this.row.planSpots[i], this.lang);
@@ -784,7 +777,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             this.row.planSpots[i].transfer,
             this.lang
           )
-        );        
+        );
       }
     }
   }
@@ -840,7 +833,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         }
       }
     }
-    
+
     this.row = myPlanApp;
     if (this.$stayTime){
       this.dataFormat();

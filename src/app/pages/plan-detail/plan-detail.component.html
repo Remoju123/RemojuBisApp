@@ -32,7 +32,7 @@
           </ng-template>
         </ng-container>
       </owl-carousel-o>
-  
+
       <ng-template #singlePict>
         <ng-container *ngFor="let item of data.pictures; index as i">
           <div class="thumbmain">
@@ -46,7 +46,7 @@
       </ng-template>
     </mat-card-content>
   </mat-card>
-  
+
   <!-- プラン概要 -->
   <mat-card id="planExplanation" *ngIf="data.planExplanation">
     <mat-card-content>
@@ -176,7 +176,7 @@
                     </ng-template>
                   </ng-container>
                 </owl-carousel-o>
-  
+
                 <ng-template #singlePict>
                   <ng-container *ngFor="let pict of item.pictures">
                     <div class="thumbmain">
@@ -188,7 +188,7 @@
                     </div>
                   </ng-container>
                 </ng-template>
-  
+
                 <div class="info">
                   <div class="lt">
                     <div class="spotname">
@@ -203,7 +203,7 @@
                   </div>
                 </div>
               </div>
-            </div>    
+            </div>
           </div>
           <!-- 掲載終了スポット -->
           <div *ngIf="item.isEndOfPublication">
@@ -213,8 +213,8 @@
               </div>
             </div>
             <span>{{ "EndOfPublication" | translate }}</span>
-          </div>  
-  
+          </div>
+
           <mat-list>
             <mat-list-item class="subheading" *ngIf="item.subheading">
               <p>{{ item.subheading }}</p>
@@ -233,17 +233,17 @@
               <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
             </mat-list-item>
           </mat-list>
-  
+
           <!-- 移動方法 -->
           <app-transfer-panel *ngIf="i + 1 < spots.length" [item]="item"></app-transfer-panel>
         </mat-card-content>
       </mat-card>
     </ng-container>
   </div>
-  
+
   <!-- レビュー投稿 -->
   <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3" [id]="data.planId" [spotplanName]="data.planName"></app-review-list-panel>
-  
+
   <!-- スタッフ -->
   <mat-card id="writer" *ngIf="$userStaff">
     <mat-card-header>
@@ -277,17 +277,17 @@
       </mat-list>
     </mat-card-content>
   </mat-card>
-  
+
   <!-- プラン投稿用メモ -->
   <!-- <mat-card id="Memo" *ngIf="data.memo">
     <mat-card-content>
       <p [innerHTML]="data.memo | replaceNewline"></p>
     </mat-card-content>
   </mat-card> -->
-  
+
   <!-- 投稿者のプロフィール -->
-  <app-userprofile-panel *ngIf="data.user && data.country" [user]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
-  
+  <app-userprofile-panel *ngIf="data.user && data.country" [otherUser]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
+
   <!-- このプランを共有する
   <mat-card id="snslink">
     <mat-card-content>
@@ -297,7 +297,7 @@
       <button mat-mini-fab class="line"></button>
     </mat-card-content>
   </mat-card> -->
-  
+
   <mat-card id="otherSpot" class="pics" *ngIf="!data.spotToGoList">
     <mat-card-header>
       <h4 class="header">
@@ -322,7 +322,7 @@
       </owl-carousel-o>
     </mat-card-content>
   </mat-card>
-  
+
   <mat-card id="specialpage" class="pics" *ngIf="!features">
     <mat-card-header>
       <h4 class="header">
