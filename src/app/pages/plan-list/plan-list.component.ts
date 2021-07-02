@@ -236,7 +236,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
       this.sortval = 20;
     }
 
-    // ロゴ変更通知
+    // ロゴ変更通知kick
     this.commonService.onlogoChange();
 
     this.planListService.getPlanListSearchCondition(isTollSpot).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
@@ -253,29 +253,29 @@ export class PlanListComponent implements OnInit, OnDestroy {
       }
 
       // GUID取得
-      this.guid = await this.commonService.getGuid();
+      // this.guid = await this.commonService.getGuid();
       // // ローディング開始
       // this.ref = this.loading.show();
 
-      this.planListService.getPlanList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (r.tollSpotAreaId){
-          // 有料スポットの場合、エリアIDを設定、1ページ目を表示
-          this.recoveryQueryParams({ aid: String(r.tollSpotAreaId) , era: "", cat: "", rep: 1});
-        }
-        this.rows = this.planListService.filteringPlan(
-          r.planAppList,
-          this.condition
-        );
-        this.temp = [...this.rows];
-        this.p = 1;
-        this.keyword = "";        
+      // this.planListService.getPlanList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      //   if (r.tollSpotAreaId){
+      //     // 有料スポットの場合、エリアIDを設定、1ページ目を表示
+      //     this.recoveryQueryParams({ aid: String(r.tollSpotAreaId) , era: "", cat: "", rep: 1});
+      //   }
+      //   this.rows = this.planListService.filteringPlan(
+      //     r.planAppList,
+      //     this.condition
+      //   );
+      //   this.temp = [...this.rows];
+      //   this.p = 1;
+      //   this.keyword = "";        
 
-        // 検索処理用にlistSelected_classにプランリストデータを追加
-        this.listSelectedPlan.planList = r.planAppList;
+      //   // 検索処理用にlistSelected_classにプランリストデータを追加
+      //   this.listSelectedPlan.planList = r.planAppList;
         
-        // 検索結果フィルタリング処理
-        this.planListService.getSearchFilter(this.listSelectedPlan,this.condition);
-      });
+      //   // 検索結果フィルタリング処理
+      //   this.planListService.getSearchFilter(this.listSelectedPlan,this.condition);
+      // });
     });
   }
 
