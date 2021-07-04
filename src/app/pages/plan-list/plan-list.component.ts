@@ -19,7 +19,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 import { isPlatformBrowser } from "@angular/common";
-import { platformBrowser } from "@angular/platform-browser";
 @Component({
   selector: "app-plan-list",
   templateUrl: "./plan-list.component.html",
@@ -253,29 +252,33 @@ export class PlanListComponent implements OnInit, OnDestroy {
       }
 
       // GUID取得
-      // this.guid = await this.commonService.getGuid();
+      this.guid = await this.commonService.getGuid();
       // // ローディング開始
       // this.ref = this.loading.show();
 
-      // this.planListService.getPlanList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      //   if (r.tollSpotAreaId){
-      //     // 有料スポットの場合、エリアIDを設定、1ページ目を表示
-      //     this.recoveryQueryParams({ aid: String(r.tollSpotAreaId) , era: "", cat: "", rep: 1});
-      //   }
-      //   this.rows = this.planListService.filteringPlan(
-      //     r.planAppList,
-      //     this.condition
-      //   );
-      //   this.temp = [...this.rows];
-      //   this.p = 1;
-      //   this.keyword = "";        
+      this.planListService.getPlanList(tollSpotUrl).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (r.tollSpotAreaId){
+          // 有料スポットの場合、エリアIDを設定、1ページ目を表示
+          this.recoveryQueryParams({ aid: String(r.tollSpotAreaId) , era: "", cat: "", rep: 1});
+        }
+        this.rows = this.planListService.filteringPlan(
+          r.planAppList,
+          this.condition
+        );
+        this.temp = [...this.rows];
+        this.p = 1;
+        this.keyword = "";        
 
-      //   // 検索処理用にlistSelected_classにプランリストデータを追加
-      //   this.listSelectedPlan.planList = r.planAppList;
+        // 検索処理用にlistSelected_classにプランリストデータを追加
+        this.listSelectedPlan.planList = r.planAppList;
         
-      //   // 検索結果フィルタリング処理
-      //   this.planListService.getSearchFilter(this.listSelectedPlan,this.condition);
-      // });
+        /* 検索条件の絞り込み・結合処理　処理結果はsearchSubjectで保持する
+          1.絞り込み
+          2.検索条件文字列結合
+          3.検索パラメータ結合
+        */
+        this.planListService.getSearchFilter(this.listSelectedPlan,this.condition);
+      });
     });
   }
 
