@@ -105,6 +105,7 @@ import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-
 import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
 import { MypageUserprofileComponent } from './pages/mypage-userprofile/mypage-userprofile.component';
 import { MypageComponent } from './pages/mypage/mypage.component';
+import { PlanspotModule } from './modules/planspot/planspot.module';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -230,6 +231,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     InfiniteScrollModule,
     HammerModule,
     CrystalLightboxModule,
+    PlanspotModule,
   ],
   providers: [
     DataService,
