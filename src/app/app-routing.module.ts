@@ -25,8 +25,9 @@ const routes: Routes = [
       path:"",
       component:RootComponent,
       children:[
+        { path: "planspot",loadChildren:() => import('./modules/planspot/planspot.module').then(m => m.PlanspotModule)}
         // { path: "top", component: TopComponent },
-        { path: "spots", component: SpotListComponent },
+        /*{ path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent        },
         { path: "spots/detail/:id", component: SpotDetailComponent},
         { path: "plans", component: PlanListComponent },
@@ -34,12 +35,12 @@ const routes: Routes = [
         { path: "plans/detail/:id", component: PlanDetailComponent },
         { path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
         { path: "sharedplan/:id", component: SpotListComponent },
-        { path: "user/:id", component: UserComponent },
+        { path: "user/:id", component: UserComponent },*/
         // { path: "**", redirectTo: "404", pathMatch: "full" },
-        { path: "home", component: TopComponent },
+        /*{ path: "home", component: TopComponent },
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/top",pathMatch:"full" },
-        { path: '404', component: NotfoundComponent },
+        { path: '404', component: NotfoundComponent },*/
         // { path: "keihankyoto/spots", component: SpotListComponent },
         // { path: "keihankyoto/plans", component: PlanListComponent },
       ]
