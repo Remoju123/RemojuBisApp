@@ -1,6 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule, HammerModule, HammerGestureConfig, 
-  HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState } from '@angular/platform-browser';
+  HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClient,  HttpClientModule} from "@angular/common/http";
 
@@ -196,6 +196,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
         deps: [HttpClient,TransferState]
       }
     }),
+    BrowserTransferStateModule,
     NgxPageScrollCoreModule,
     NgxPageScrollModule,
     AppRoutingModule,

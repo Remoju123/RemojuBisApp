@@ -7,15 +7,15 @@ import { RootComponent } from './layout/root/root.component';
 import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
-import { SpotListComponent } from './pages/spot-list/spot-list.component';
-import { PlanListComponent } from './pages/plan-list/plan-list.component';
-import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
-import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
-import { MapComponent } from './pages/map/map.component';
-import { MypageComponent } from './pages/mypage/mypage.component';
-import { NotfoundComponent } from './pages/notfound/notfound.component';
-import { SystemErrorComponent } from './pages/system-error/system-error.component';
-import { UserComponent } from './pages/user/user.component';
+// import { SpotListComponent } from './pages/spot-list/spot-list.component';
+// import { PlanListComponent } from './pages/plan-list/plan-list.component';
+// import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
+// import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
+// import { MapComponent } from './pages/map/map.component';
+// import { MypageComponent } from './pages/mypage/mypage.component';
+// import { NotfoundComponent } from './pages/notfound/notfound.component';
+// import { SystemErrorComponent } from './pages/system-error/system-error.component';
+// import { UserComponent } from './pages/user/user.component';
 
 const routes: Routes = [
   {
@@ -50,7 +50,7 @@ const routes: Routes = [
       component:BlankComponent,
       children:[
         { path: "top", component: TopComponent },
-        { path: "map", component: MapComponent }
+        // { path: "map", component: MapComponent }
       ]
     }]
   },

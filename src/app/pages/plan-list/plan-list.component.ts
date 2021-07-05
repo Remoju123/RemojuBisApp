@@ -19,7 +19,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 import { isPlatformBrowser } from "@angular/common";
-import { platformBrowser } from "@angular/platform-browser";
 @Component({
   selector: "app-plan-list",
   templateUrl: "./plan-list.component.html",
@@ -236,7 +235,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
       this.sortval = 20;
     }
 
-    // ロゴ変更通知
+    // ロゴ変更通知kick
     this.commonService.onlogoChange();
 
     this.planListService.getPlanListSearchCondition(isTollSpot).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
@@ -273,7 +272,11 @@ export class PlanListComponent implements OnInit, OnDestroy {
         // 検索処理用にlistSelected_classにプランリストデータを追加
         this.listSelectedPlan.planList = r.planAppList;
         
-        // 検索結果フィルタリング処理
+        /* 検索条件の絞り込み・結合処理　処理結果はsearchSubjectで保持する
+          1.絞り込み
+          2.検索条件文字列結合
+          3.検索パラメータ結合
+        */
         this.planListService.getSearchFilter(this.listSelectedPlan,this.condition);
       });
     });
