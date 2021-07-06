@@ -39,11 +39,11 @@ export class User {
   // プロフィール写真URL
   pictureUrl: any;
   // プロフィール写真ファイル
-  pictureFile: any;
+  pictureFile: File;
   // カバー画像プレビューURL
   coverPreviewUrl: any;
   // カバー写真URL
   coverUrl: any;
   // カバー写真ファイル
-  coverFile: any;
+  coverFile: File;
 }
