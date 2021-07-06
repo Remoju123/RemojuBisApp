@@ -6,8 +6,10 @@ import { PlanspotComponent } from './planspot.component';
 import { PlanspotSelectorComponent } from './components/planspot-selector/planspot-selector.component';
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 import { PlanspotListItemComponent } from './components/planspot-list-item/planspot-list-item.component';
-import { MatCardModule } from '@angular/material/card';
 
+import { MatCardModule } from '@angular/material/card';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { UtilsModule } from "../../utils/utils.module";
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { MatCardModule } from '@angular/material/card';
   imports: [
     CommonModule,
     PlanspotRoutingModule,
-    MatCardModule
+    MatCardModule,
+    InfiniteScrollModule,
+    UtilsModule
   ],
   exports: [
     PlanspotComponent

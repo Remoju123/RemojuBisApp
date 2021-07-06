@@ -13,4 +13,8 @@ export class PlanspotListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onScrollDown(){
+    
+  }
+
 }

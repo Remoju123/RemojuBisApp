@@ -9,7 +9,8 @@ import { PlanAppList } from 'src/app/class/planlist.class';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanspotListItemComponent implements OnInit {
-  @Input() planapplist: PlanAppList;
+  @Input() item: PlanAppList;
+  @Input() lang: string;
   @Input() isFavorite: boolean;
 
   @Output() linked = new EventEmitter<Number>();

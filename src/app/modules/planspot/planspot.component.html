@@ -2,5 +2,6 @@
 <app-planspot-list>
   <app-planspot-list-item
     *ngFor="let item of details$ | async"
+    [item]="item"
   ></app-planspot-list-item>
 </app-planspot-list>
