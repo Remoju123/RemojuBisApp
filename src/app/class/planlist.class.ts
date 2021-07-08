@@ -1,10 +1,13 @@
 import { Seo } from "./plan.class";
 
 export class searchResult{
-  list: PlanAppList[] = [];
+  constructor(){
+    this.searchParamsObj = new SearchParamsObj;
+  }
+  list: PlanAppList[];
   searchTarm: string;
   searchParams: string;
-  searchParamsObj: SearchParamsObj = new SearchParamsObj;
+  searchParamsObj: SearchParamsObj;
 }
 
 export class SearchParamsObj{

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ListSelected } from "../class/common.class";
+import { ListSelected, ListSelectedPlan } from "../class/common.class";
 import { PlanSpotListSearchResult, PlanSpotList } from "../class/planspotlist.class";
 import { PlanAppList } from "../class/planlist.class";
 import { SpotAppList } from "../class/spotlist.class";
@@ -19,7 +19,7 @@ import { CommonService } from "./common.service";
     // 検索条件を取得
     getPlanSpotListSearchCondition() {
       const url = this.host + "/api/PlanSpotList/ListSelected";
-      return this.http.get<ListSelected>(url);
+      return this.http.get<ListSelectedPlan>(url);
     }
   
     // プランスポット一覧を取得

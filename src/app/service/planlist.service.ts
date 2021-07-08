@@ -144,8 +144,10 @@ export class PlanListService {
    *  -------------------------------------*/
 
   public result = new searchResult();
+  
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
+
   public searchSubjectNoList = new Subject<searchResult>();
   public searchFilterNoList = this.searchSubjectNoList.asObservable();
 

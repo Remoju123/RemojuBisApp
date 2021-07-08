@@ -9,6 +9,7 @@ import { Line } from "./plan.class";
 import { PlanAppList } from "./planlist.class";
 import { ListSearchCondition } from "./indexeddb.class";
 import { PlanSpotList } from "./planspotlist.class";
+import { Observable } from "rxjs";
 
 // 選択
 export interface DataSelected {
@@ -70,27 +71,22 @@ export class ListSelected {
 export class ListSelectedPlan {
   constructor() {
     this.isList = true;
+    this.condition = new ListSearchCondition();
   }
-  // エリア
   // エリア
   mArea: NestDataSelected[] = [];
   // 検索カテゴリ
-  // 検索カテゴリ
   mSearchCategory: NestDataSelected[] = [];
-  // ソート順
   // ソート順
   mSort: DataSelected[] = [];
   // tabIndex
-  // tabIndex
   tabIndex!: number;
   // source(list)
-  // source(list)
-  planList: PlanAppList[] = [];
+  planList:　PlanAppList[];
   // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
-  // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
-  condition: ListSearchCondition = new ListSearchCondition;
+  condition: ListSearchCondition;
 }
 
 // お気に入り登録

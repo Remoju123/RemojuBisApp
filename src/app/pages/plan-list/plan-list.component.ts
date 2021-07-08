@@ -104,6 +104,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
       this.getPlanList();
     });
     
+    // 検索フィルタ処理された一覧データ(subject)を取得
     this.planListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
       this.rows = result.list;
       this.temp = [...this.rows];
@@ -261,6 +262,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
           // 有料スポットの場合、エリアIDを設定、1ページ目を表示
           this.recoveryQueryParams({ aid: String(r.tollSpotAreaId) , era: "", cat: "", rep: 1});
         }
+        /* ここは不要なはずMM
         this.rows = this.planListService.filteringPlan(
           r.planAppList,
           this.condition
@@ -268,6 +270,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
         this.temp = [...this.rows];
         this.p = 1;
         this.keyword = "";        
+        */
 
         // 検索処理用にlistSelected_classにプランリストデータを追加
         this.listSelectedPlan.planList = r.planAppList;
