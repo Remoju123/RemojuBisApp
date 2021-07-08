@@ -134,7 +134,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       .subscribe(r => {
         this.rowsPlan =r.planAppList;
 
-        this.pageSizePlan = r.pageViewQty;
+        // this.pageSizePlan = r.pageViewQty;
+        this.pageSizePlan = 20;
         this.pPlan = 1;
 
         // ソート
@@ -206,7 +207,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       .subscribe(r => {
         this.rowsSpot = r.spotAppList;
 
-        this.pageSizeSpot = r.pageViewQty;
+        // this.pageSizeSpot = r.pageViewQty;
+        this.pageSizeSpot = 20;
         this.pSpot = 1;
 
         // 予算枠
