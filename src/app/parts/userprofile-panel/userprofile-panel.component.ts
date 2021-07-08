@@ -50,6 +50,7 @@ export class UserprofilePanelComponent implements OnInit, OnDestroy {
       this.user.coverUrl = this.otherUser.coverUrl;
       this.user.displayName = this.otherUser.displayName;
       this.user.pictureUrl = this.otherUser.pictureUrl;
+      this.user.gender = this.otherUser.gender;
     } else {
       // 年代計算
       this.user.age = this.commonService.getAge(this.user.birthday);

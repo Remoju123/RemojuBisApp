@@ -122,4 +122,6 @@ export class OtherUser {
   pictureUrl: string;
   // カバー写真URL
   coverUrl: string;
+  // 性別
+  gender: string;
 }
