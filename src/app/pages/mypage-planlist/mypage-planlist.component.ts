@@ -194,7 +194,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         }
         this.rows = r.mypagePlanAppList;
         //this.pageSize = r.pageViewQty;
-        this.pageSize = 20;
+        this.pageSize = 40;
         this.p = 1;
 
         // ソート
