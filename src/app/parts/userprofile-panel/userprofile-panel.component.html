@@ -6,7 +6,7 @@
     <div class="memo" *ngIf="memo">
       <p [innerHTML]="memo | replaceNewline"></p>
     </div>
-  </mat-card-header>  
+  </mat-card-header>
   <mat-card-content *ngIf="user">
     <div class="card-box">
       <div class="card-header" [ngClass]="{'detail':detail}">
@@ -34,12 +34,11 @@
           {{ user.displayName }}
         </div>
         <div class="gender">
-          <span *ngIf="user.countryName" class="country">{{ user.countryName }}/</span>
-          <span *ngIf="user.age">{{ user.age }}{{ "Age" | translate }}/</span>
-          <span *ngIf="user.gender==='femail'">{{ "Female" | translate }}</span>
-          <span *ngIf="user.gender==='male'">{{ "Male" | translate }}</span>
-          <span *ngIf="user.gender==='other'">{{ "Other" | translate }}</span>
-          
+          <span *ngIf="user.countryName" class="country">{{ user.countryName }}</span>
+          <span *ngIf="user.age">/{{ user.age }}{{ "Age" | translate }}</span>
+          <span *ngIf="user.gender==='femail'">/{{ "Female" | translate }}</span>
+          <span *ngIf="user.gender==='male'">/{{ "Male" | translate }}</span>
+
         </div>
         <div class="about">
           <p>{{ user.aboutMe }}</p>
@@ -47,7 +46,7 @@
         <div *ngIf="edit" class="bottom">
           <button mat-raised-button (click)="onClickEdit()">
             {{ "EditUserProfile" | translate }}
-          </button>          
+          </button>
         </div>
       </div>
     </div>
