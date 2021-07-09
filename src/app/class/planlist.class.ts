@@ -14,24 +14,24 @@ export class SearchParamsObj{
   aid: string;
   era: string;
   cat: string;
-  rep: boolean = false;
-  usp: boolean = false;
+  rep: boolean;
+  usp:boolean;
 }
 
 export class PlanAppListSearchResult {
   // 1ページあたりの表示件数
   pageViewQty: number;
   // 検索結果
-  planAppList: PlanAppList[] = [];
+  planAppList: PlanAppList[];
   // 有料スポットのエリアID
   tollSpotAreaId: number;
 }
 
 export class PlanAppList {
   // 詳細取得済み:true
-  isDetail: boolean = false;
+  isDetail: boolean;
   // Remojuプラン:true ユーザ作成プラン:false
-  isRemojuPlan: boolean = false;
+  isRemojuPlan: boolean;
   // バージョンNo
   versionNo: number;
   // プランID
@@ -53,16 +53,16 @@ export class PlanAppList {
   // ソート項目：投稿日時
   releaseCreateDatetime: string;
   // ソート項目：有料スポット用プラン優先表示
-  isTollSpot: boolean = false;
+  isTollSpot: boolean;
 
   // 検索カテゴリ
-  searchCategories: PlanSearchCategory[] = [];
+  searchCategories: PlanSearchCategory[];
   // オブジェクトID
   objectId: string;
   // GUID
   guid: string;
   // 掲載終了の場合true
-  isEndOfPublication: boolean = false;
+  isEndOfPublication: boolean;
   // エリア名
   areaName: string;
   // エリア名2
@@ -70,7 +70,7 @@ export class PlanAppList {
   // プラン名
   planName: string;
   // お気に入り登録 true:している false:していない
-  isFavorite: boolean = false;
+  isFavorite: boolean;
   // お気に入りを登録している人数
   favoriteQty: number;
   // 周遊時間(時間)
@@ -90,22 +90,22 @@ export class PlanAppList {
   // プロフィール画像
   userPictureUrl: string;
   // SEO
-  seo: Seo = new Seo;
+  seo: Seo;
   // true:プラン作成 false:プラン投稿
-  isCreation: boolean = false;
+  isCreation: boolean;
   // 複数取得
   // スポット写真リスト
-  pictures: string[] = [];
+  pictures: string[];
   // プランスポット名
-  planSpotNames: PlanSpotName[] = [];
+  planSpotNames: PlanSpotName[];
   // プランスポットID
-  planSpotIds: number[] = [];
+  planSpotIds:number[];
 }
 
 export class PlanSpotName{
-  isRemojuSpot: boolean = false;
+  isRemojuSpot: boolean;
   spotName: string;
-  spotId: number;
+  spotId:number;
 }
 
 export class PlanSearchCategory {
@@ -119,7 +119,7 @@ export class PlanSearchCategory {
 export class PlanFavorite {
   plan_id: number;
   guid: string;
-  is_delete: boolean = false;
+  is_delete: boolean;
 
   objectId: string;
 }
@@ -127,7 +127,7 @@ export class PlanFavorite {
 export class PlanUserFavorite {
   plan_user_id: number;
   guid: string;
-  is_delete: boolean = false;
+  is_delete: boolean;
 
   objectId: string;
 }

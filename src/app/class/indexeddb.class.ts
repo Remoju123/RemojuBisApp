@@ -30,120 +30,83 @@ export class ListSearchCondition {
 // 作成・編集中のプラン
 export class MyPlan {
   // 保存ステータス
-  // 保存ステータス
-  isSaved: boolean = false;
+  isSaved: boolean;
   // 駅探検索フラグ
-  // 駅探検索フラグ
-  isTransferSearch: boolean = false;
+  isTransferSearch: boolean;
   // プランユーザID
-  // プランユーザID
-  planUserId!: number;
+  planUserId: number;
   // バス検索フラグ
-  // バス検索フラグ
-  isBus: boolean = false;
+  isBus: boolean;
   // 旅行予定日
-  // 旅行予定日
-  travelDate!: string;
+  travelDate: string;
   // プラン名
-  // プラン名
-  planName!: string;
+  planName: string;
   // プレビュー画像URL
-  // プレビュー画像URL
-  picturePreviewUrl!: string;
+  picturePreviewUrl: string;
   // 写真
-  pictureFile: any;
+  pictureFile: File;
   // 写真拡張子
-  // 写真拡張子
-  pictureFileExt!: string;
+  pictureFileExt: string;
   // 写真URL
-  // 写真URL
-  pictureUrl!: string;
+  pictureUrl: string;
   // プラン概要
-  // プラン概要
-  planExplanation!: string;
+  planExplanation: string;
   // フリー文章
-  // フリー文章
-  memo!: string;
+  memo: string;
   // エリアID
-  // エリアID
-  areaId!: number;
-  areaId2!: number;
+  areaId: number;
+  areaId2: number;
   // カテゴリ
-  // カテゴリ
-  categories: number[] = [];  
+  categories: number[];
   // 所要時間
-  // 所要時間
-  timeRequired!: string;
+  timeRequired: string;
   // 共有フラグ
-  // 共有フラグ
-  isShare: boolean = false;
+  isShare: boolean;
   // ベースになったプランID
-  // ベースになったプランID
-  basePlanId!: number;
+  basePlanId: number;
   // 所要時間(表示用)
-  // 所要時間(表示用)
-  timeRequiredDisp!: string;
+  timeRequiredDisp: string;
   // 出発時間
-  // 出発時間
-  startTime!: string;
+  startTime: string;
   // 最終更新日時
-  // 最終更新日時
-  lastUpdatetime!: string;
+  lastUpdatetime: string;
   // スポットリスト
-  // スポットリスト
-  planSpots: PlanUserSpot[] = [];
+  planSpots: PlanUserSpot[];
   // 出発地
-  // 出発地
-  startPlanSpot: PlanUserSpot = new PlanUserSpot;
+  startPlanSpot: PlanUserSpot;
   // 到着地
-  // 到着地
-  endPlanSpot: PlanUserSpot = new PlanUserSpot;
+  endPlanSpot: PlanUserSpot;
 }
-  
+
 export class PlanUserSpot{
   // タイプ 1:Remoju 2:Google 3:手入力
-  // タイプ 1:Remoju 2:Google 3:手入力
-  type: number | undefined;
+  type: number;
   // 表示順
-  // 表示順
-  displayOrder: number | undefined;
+  displayOrder: number;
   // スポットID
-  // スポットID
-  spotId: number | undefined;
+  spotId: number;
   // 緯度
-  // 緯度
-  latitude: string | undefined;
+  latitude: string;
   // 経度
-  // 経度
-  longitude: string | undefined;
+  longitude: string;
   // スポット名
-  // スポット名
-  spotName: string | undefined;
+  spotName: string;
   // スポット概要
-  // スポット概要
-  memo: string | undefined;
+  memo: string;
   // 開始時間(到着時間)
-  // 開始時間(到着時間)
-  startTime: string | undefined;
+  startTime: string;
   // 滞在時間
-  // 滞在時間
-  stayTime: number | undefined;
+  stayTime: number;
   // 移動経路(駅探)
-  // 移動経路(駅探)
-  transfer: string | undefined;
+  transfer: string;
   // ベースになったプランID
-  // ベースになったプランID
-  basePlanId: number | undefined;
+  basePlanId: number;
   // 移動経路
-  // 移動経路
-  line: Line[] = [];
+  line: Line[];
   // 移動時間
-  // 移動時間
-  transtime: string | undefined;
+  transtime: string;
   // 移動手段
-  // 移動手段
-  transflow: string[] = [];
+  transflow: string[];
   // 画像
-  // 画像
-  planUserpictures: PlanUserPicture[] = [];
+  planUserpictures: PlanUserPicture[];
 }

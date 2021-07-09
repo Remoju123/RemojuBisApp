@@ -4,42 +4,41 @@ import { PlanSearchCategory } from "./planlist.class";
 
 export class PlanSpotListSearchResult {
     // 1ページあたりの表示件数
-  pageViewQty: number;
+    pageViewQty: number;
     // 検索結果
-  planSpotList: PlanSpotList[];
+    planSpotList: PlanSpotList[];
     // 営業曜日
-  businessDay: DataSelected[];
-}
+    businessDay: DataSelected[];
+  }
 
 // プラン/スポット一覧
 export class PlanSpotList {
     // 詳細取得済み:true
-  isDetail: boolean;
+    isDetail: boolean;
     // プラン:true スポット:false
-  isPlan: boolean;
+    isPlan: boolean;
     // true:CT作成プラン false:ユーザ作成プラン
-  isRemojuPlan: boolean;    
+    isRemojuPlan: boolean;
     // バージョンNo
-  versionNo: number;
+    versionNo: number;
     // プラン/スポットID
-  id: number;
+    id: number;
     // キーワード
-  keyword: string;
+    keyword: string;
     // エリアID
-  areaId: number;
+    areaId: number;
     // エリアID2
-  areaId2: number;
+    areaId2: number;
     // ソート項目：人気順(歴代)
-  pvQtyAll: number;
+    pvQtyAll: number;
     // ソート項目：プランに採用した回数
-  planSpotQty: number;
+    planSpotQty: number;
     // ソート項目：レビュー評価
-  reviewAvg: number;
+    reviewAvg: number;
     // ソート項目：投稿日時
-  releaseCreateDatetime: string;
-    // 検索カテゴリ
-  spotSearchCategories: SpotSearchCategory[];
+    releaseCreateDatetime: string;
 
-  planSearchCategories: PlanSearchCategory[];
-}
-  
+    // 検索カテゴリ
+    spotSearchCategories: SpotSearchCategory[];
+    planSearchCategories: PlanSearchCategory[];
+  }

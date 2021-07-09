@@ -138,9 +138,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   }
 
 
-  getQueryParams(): Observable<Params>{
-    return this.activatedRoute.queryParams;
-  }
   ///
   getCondition(): Observable<ListSelectedPlan>{
     return this.planspot.getPlanSpotListSearchCondition();
