@@ -183,6 +183,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserTransferStateModule,
     TransferHttpCacheModule,
     BrowserAnimationsModule,
     FormsModule,

@@ -46,24 +46,17 @@ export interface Recommended {
 // 一覧　選択値(共通)
 export class ListSelected {
   // エリア
-  // エリア
   mArea: NestDataSelected[] = [];
-  // 検索カテゴリ(スポット)
   // 検索カテゴリ(スポット)
   mSearchCategory: NestDataSelected[] = [];
   // 検索カテゴリ(プラン)
-  // 検索カテゴリ(プラン)
   mSearchCategoryPlan: NestDataSelected[] = [];
-  // ソート順
   // ソート順
   mSort: DataSelected[] = [];
   // tabIndex
-  // tabIndex
   tabIndex!: number;
   // source(list) 削除予定★★★
-  // source(list) 削除予定★★★
   spotList: SpotAppList[] = [];
-  // プランスポット一覧
   // プランスポット一覧
   planSpotList: PlanSpotList[] = [];
 }

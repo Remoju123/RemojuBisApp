@@ -315,7 +315,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
 
     // 詳細取得判定用（初期化）
     if(this.rows.length>0){
-      let arr = [];
+      // let arr = [];
       for (let i = startidx; i < this.end; i++) {
         if (!this.rows[i].isDetail) {
           this.rows[i].guid = this.guid;

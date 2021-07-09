@@ -20,12 +20,9 @@ export class SearchParamsObj{
 
 export class PlanAppListSearchResult {
   // 1ページあたりの表示件数
-  // 1ページあたりの表示件数
   pageViewQty: number;
   // 検索結果
-  // 検索結果
   planAppList: PlanAppList[] = [];
-  // 有料スポットのエリアID
   // 有料スポットのエリアID
   tollSpotAreaId: number;
 }
