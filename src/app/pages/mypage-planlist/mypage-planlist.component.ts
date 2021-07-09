@@ -105,7 +105,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
           }
         });
       }
-    });        
+    });
   }
 
   // 削除する
@@ -142,13 +142,13 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
             this.router.navigate(["/" + this.currentlang + "/systemerror"]);
             return;
           }
-  
+
           // プラン削除通知
           this.myplanService.onPlanUserRemoved();
         });
       }
     });
-    
+
   }
 
   onClickEditPlan(row: MypagePlanAppList){
@@ -234,7 +234,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
                 return x;
               }, []);
             }
-   
+
           }
         });
     }
@@ -263,7 +263,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     }
   }
 
-  // 
+  //
   async checkEditPlan(planUserId: number){
     // 編集中のプランを取得
     let myPlan: any = await this.indexedDBService.getEditPlan();
@@ -302,6 +302,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
         // return;
       }
+      // プラン作成　一旦削除
+      this.myplanService.onPlanUserRemoved();
       // プラン作成に反映
       this.myplanService.onPlanUserChanged(r);
       // プラン保存
@@ -318,7 +320,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     // 編集中のプランを取得
     let myPlan: any = await this.indexedDBService.getEditPlan();
     const myPlanApp: MyPlanApp = myPlan;
-    
+
     // 削除したプランと表示しているプランが同じ場合、クリアする
     if (myPlanApp && delPlanUserId === myPlanApp.planUserId){
       this.indexedDBService.clearMyPlan();
