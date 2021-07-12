@@ -8,7 +8,7 @@
   background-color: #fff;
   .navbar-header {
     // padding: 15px 10px;
-    padding: 8px;
+    padding: 8px 8px 0;
     // background-color: $color-remoju;
     // background-color: #cdbf9c;
     height: 41px;
@@ -29,13 +29,19 @@
   }
 
   .nav-wrap {
-    padding: 10px 20px;
+    padding: 0 20px;
 
     .mat-nav-list{
       padding-top: 0;
+      .header{
+        font-size: 16px;
+        line-height: 40px;
+        margin-top: 12px;
+        border-bottom: 1px solid $color-gold;
+      }
       .mat-list-item {
-        font-size: 14px;
-        height: 36px;
+        font-size: 13px;
+        height: 31px;
   
         .mat-list-item-content {
           padding: 0;
