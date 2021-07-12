@@ -119,6 +119,15 @@ export class CommonService implements OnDestroy{
     return String(guid);
   }
 
+  getGuidStatic(){
+    let guid = this.indexedDBService.getGuid();
+    if (!guid) {
+      let guid = Guid.create().toString();
+      this.indexedDBService.registGuid(String(guid));
+    }
+    return String(guid);
+  }
+
   // スポットまたはプラン追加時のチェック
   // 戻り値 true: プランを追加する false:エラーなのでプランを追加しない
   async checkAddPlan(addSpotQty: number){

@@ -43,7 +43,21 @@ export interface Recommended {
   pictureUrl: string;
 }
 
-// 一覧　選択値(共通)
+export class ListSelectMaster{
+  // エリア
+  mArea: NestDataSelected[];
+  // 検索カテゴリ
+  mSearchCategory: NestDataSelected[];
+  // 検索カテゴリ(プラン)
+  mSearchCategoryPlan: NestDataSelected[];
+  // ソート順
+  mSort: DataSelected[];
+  // 営業曜日
+  businessDay: DataSelected[];
+  // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
+  isList: boolean;
+}
+
 export class ListSelected {
   // エリア
   mArea: NestDataSelected[];
@@ -59,28 +73,45 @@ export class ListSelected {
   spotList: SpotAppList[];
   // プランスポット一覧
   planSpotList: PlanSpotList[];
-}
 
-export class ListSelectedPlan {
-  constructor() {
-    this.isList = true;
-    this.condition = new ListSearchCondition();
-  }
-  // エリア
-  mArea: NestDataSelected[];
-  // 検索カテゴリ
-  mSearchCategory: NestDataSelected[];
-  // ソート順
-  mSort: DataSelected[];
-  // tabIndex
-  tabIndex: number;
-  // source(list)
-  planList: PlanAppList[];
+  businessDay: DataSelected[];
+
   // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
   condition: ListSearchCondition;
 }
+
+export class ListSelectedPlan {
+  constructor() {
+    this.isList = true;
+  }
+  // エリア
+  mArea: NestDataSelected[];
+  // 検索カテゴリ
+  mSearchCategory: NestDataSelected[];
+  // 検索カテゴリ(プラン)
+  mSearchCategoryPlan: NestDataSelected[];
+  // ソート順
+  mSort: DataSelected[];
+  // 営業曜日
+  businessDay: DataSelected[];
+  // tabIndex
+  tabIndex: number;
+  // source(list)
+  planList: PlanAppList[];
+  // source(list) 削除予定★★★
+  spotList: SpotAppList[];
+  // プランスポット一覧
+  planSpotList: PlanSpotList[];
+  // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
+  isList: boolean;
+  // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
+  condition: ListSearchCondition;
+}
+
+
+
 
 // お気に入り登録
 export class RegistFavorite {

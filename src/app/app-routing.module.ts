@@ -25,7 +25,7 @@ const routes: Routes = [
       path:"",
       component:RootComponent,
       children:[
-        { path: "planspot",loadChildren:() => import('./modules/planspot/planspot.module').then(m => m.PlanspotModule)},
+        { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
         { path: "plans", component: PlanListComponent },
         // { path: "top", component: TopComponent },
         /*{ path: "spots", component: SpotListComponent },
