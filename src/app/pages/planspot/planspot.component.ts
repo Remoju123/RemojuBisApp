@@ -209,22 +209,22 @@ export class PlanspotComponent implements OnInit,OnDestroy {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
 
-            // 非同期で戻された結果セットの順番を維持するための処理
-            let $id: number;
-            if(d['spotId']){$id = d['spotId'];} else if(d['planId']){$id = d['planId'];}
-            const idx = this.rows.findIndex(v => v.id === $id);
+            // // 非同期で戻された結果セットの順番を維持するための処理
+            // let $id: number;
+            // if(d['spotId']){$id = d['spotId'];} else if(d['planId']){$id = d['planId'];}
+            // const idx = this.rows.findIndex(v => v.id === $id);
 
-            // 掲載終了の場合は削除　isEndOfPublication
-            if(d.isEndOfPublication){
-              // 削除処理
-            }else{
-              this.rows[idx] = d;
-            }
-            
+            // // 掲載終了の場合は削除　isEndOfPublication
+            // if(d.isEndOfPublication){
+            //   // 削除処理
+            // }else{
+            //   this.rows[idx] = d;
+            // }
+            console.log(d)
           })
       }
       
-      this.details$ = this.rows.slice(0,this.end);
+      //this.details$ = this.rows.slice(0,this.end);
 
 
       this.p++;
