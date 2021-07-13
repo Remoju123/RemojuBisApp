@@ -10,10 +10,10 @@ import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
-import { searchResult } from 'src/app/class/spotlist.class';
-import { flatten } from '@angular/compiler';
+
 
 const STATE_KEY_ITEMS = makeStateKey('items');
+const STATE_KEY_DETAIL = makeStateKey('details');
 
 @Component({
   selector: 'app-planspot',
@@ -31,7 +31,9 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
 
-  details$:any = new Array();
+  details$:PlanSpotList[] = [];
+
+  result:Observable<PlanSpotList>[] = [];
 
   p: number;
   limit: number;
@@ -68,57 +70,26 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
       result[1].isList = true;
+      //　1.検索条件でフィルタリングした結果セットをsearchFilter(subject)に格納する
       this.planspots.filteringData(result[0],this.condition,result[1])
     })
 
+    // 2.searchFilterから結果セットを取り出す
     this.planspots.searchFilter
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        console.log(result);
-        this.rows = result.list;
-
-        this.listsort(11);
-        this.loadNextDetails();
-      })
-
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(result => {
+      this.rows = result.list;
+      this.listsort(this.sortval);
+      this.loadNextDetails();
+      
+    })
     
+      
+      
   }
 
   ngOnDestroy(){
     this.onDestroy$.next();
-  }
-
-
-
-  getItems():void {
-    this.loaded = false;
-
-    this.items = this.state.get(STATE_KEY_ITEMS,<any>[]);
-
-    if(!this.state.hasKey(STATE_KEY_ITEMS)){
-      this.planspots.getPlanSpotList().subscribe(
-        items => {
-          const platform = isPlatformBrowser(this.platformId) ?
-              'in the browser' : 'on the server';
-          console.log(`getItems : Running ${platform} with appId=${this.appId}`);
-          this.items = items;
-          this.loaded = true;
-          this.state.set(STATE_KEY_ITEMS,<any> items);
-        }
-      )
-    } else {
-      this.loaded = true;
-    }
-  }
-
-  resetItems():void {
-    
-    this.state.remove(STATE_KEY_ITEMS);
-
-    this.items = null;
-    this.loaded = true;
-
-    console.log(this.items);
   }
 
   recoveryQueryParams() {
@@ -164,6 +135,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     return this.planspots.getPlanSpotList();
   }
 
+
   listsort(v:number):void{
     switch (v) {
       case 7:
@@ -171,16 +143,16 @@ export class PlanspotComponent implements OnInit,OnDestroy {
           return a.pvQtyAll < b.pvQtyAll ? 1 : -1
         })
         break;
-      case 8:
-        this.rows.sort((a, b) => {
-          return a.pvQtyWeek < b.pvQtyWeek ? 1 : -1;
-        });
-        break;
-      case 9:
-        this.rows.sort((a, b) => {
-          return a.planSpotQty < b.planSpotQty ? 1 : -1;
-        });
-        break;
+      // case 8:
+      //   this.rows.sort((a, b) => {
+      //     return a.pvQtyWeek < b.pvQtyWeek ? 1 : -1;
+      //   });
+      //   break;
+      // case 9:
+      //   this.rows.sort((a, b) => {
+      //     return a.planSpotQty < b.planSpotQty ? 1 : -1;
+      //   });
+      //   break;
       case 10:
         this.rows.sort((a, b) => {
           return a.reviewAvg < b.reviewAvg ? 1 : -1;
@@ -191,6 +163,12 @@ export class PlanspotComponent implements OnInit,OnDestroy {
           return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1;
         });
         break;
+      case 12:
+        this.rows.sort((a, b) => {
+          return a.id < b.id ? 1 : -1;
+        });
+        break;
+      
     }
   }
 
@@ -203,8 +181,28 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     if(this.rows.length - startIndex < this.limit)
       this.end = this.rows.length;
 
+    // const _rows = this.rows.slice(startIndex,this.end);
+    
+    // _rows.map(async (m,i) => {
+    //   (await this.planspots.fetchDetails(m))
+    //     .pipe(takeUntil(this.onDestroy$))
+    //     .subscribe(d => {
+    //       this.details$.push(d);
+    //     })
+    // })
+
+    //this.details$ = this.details$.sort((a,b)=>{return a.releaseCreateDatetime > b.releaseCreateDatetime ? 1 : -1;})
+    //console.log(this.details$);
+
+
+    // forkJoin(observable).subscribe(responce => {
+    //   console.log(responce);
+    // })
+
     if(this.rows.length > 0){
       for (let i = startIndex; i < this.end; i++){
+      //for (let i = 95; i < 105; i++){
+        
         (await this.planspots.fetchDetails(this.rows[i]))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
@@ -212,7 +210,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
             // // 非同期で戻された結果セットの順番を維持するための処理
             // let $id: number;
             // if(d['spotId']){$id = d['spotId'];} else if(d['planId']){$id = d['planId'];}
-            // const idx = this.rows.findIndex(v => v.id === $id);
+            const idx = this.rows.findIndex(v => v.id === d.id);
 
             // // 掲載終了の場合は削除　isEndOfPublication
             // if(d.isEndOfPublication){
@@ -220,16 +218,51 @@ export class PlanspotComponent implements OnInit,OnDestroy {
             // }else{
             //   this.rows[idx] = d;
             // }
-            console.log(d)
+
+            //console.log(this.rows[idx])
+            //d.sort = i;
+            
+            this.rows[idx] = d;
+            //this.details$.push(d);
+
           })
       }
+      this.details$ = this.rows.slice(startIndex,this.end);
       
-      //this.details$ = this.rows.slice(0,this.end);
-
-
       this.p++;
+    }
+
+  }
+  
+  getItems():void {
+    this.loaded = false;
+
+    this.items = this.state.get(STATE_KEY_ITEMS,<any>[]);
+
+    if(!this.state.hasKey(STATE_KEY_ITEMS)){
+      this.planspots.getPlanSpotList().subscribe(
+        items => {
+          const platform = isPlatformBrowser(this.platformId) ?
+              'in the browser' : 'on the server';
+          console.log(`getItems : Running ${platform} with appId=${this.appId}`);
+          this.items = items;
+          this.loaded = true;
+          this.state.set(STATE_KEY_ITEMS,<any> items);
+        }
+      )
     } else {
-      this.details$ = this.rows.slice(0,0);
+      this.loaded = true;
     }
   }
+
+  resetItems():void {
+    
+    this.state.remove(STATE_KEY_ITEMS);
+
+    this.items = null;
+    this.loaded = true;
+
+    //console.log(this.items);
+  }
+  
 }

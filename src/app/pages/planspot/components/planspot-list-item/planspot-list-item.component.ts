@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { PlanAppList } from 'src/app/class/planlist.class';
+import { PlanSpotList } from 'src/app/class/planspotlist.class';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { PlanAppList } from 'src/app/class/planlist.class';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanspotListItemComponent implements OnInit {
-  @Input() item: PlanAppList;
+  @Input() item: PlanSpotList;
   @Input() lang: string;
   @Input() isFavorite: boolean;
 

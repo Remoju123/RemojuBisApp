@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ListSelectMaster } from "../class/common.class";
 import { PlanSpotList,searchResult,
   SearchParamsObj } from "../class/planspotlist.class";
@@ -9,6 +9,13 @@ import { ListSearchCondition } from "../class/indexeddb.class";
 import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    Accept: "application/json, text/plain, */*",
+    "Content-Type": "application/json;charset=utf-8"
+  })
+};
   
   @Injectable({
     providedIn: "root"
@@ -74,31 +81,19 @@ import { TranslateService } from "@ngx-translate/core";
       });
     }
 
-    async fetchDetails(planSpotList: PlanSpotList){
-      const guid = await this.commonService.getGuid();
+    async fetchDetails(options: PlanSpotList){
       const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
       const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
-      if(planSpotList.isPlan){
-        return this.http.get<PlanSpotList>(plan_url,{
-          params: {
-            isRemojuPlan: String(planSpotList.isRemojuPlan),
-            versionNo: String(planSpotList.versionNo),
-            planId: String(planSpotList.id),
-            objectId: this.commonService.objectId,
-            guid: guid
-          }
-        })
+      options.objectId = this.commonService.objectId;
+      options.guid = await this.commonService.getGuid();
+      
+      if(options.isPlan){
+        return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
       }else{
-        return this.http.get<PlanSpotList>(spot_url,{
-          params: {
-            versionNo: String(planSpotList.versionNo),
-            spotId: String(planSpotList.id),
-            objectId: this.commonService.objectId,
-            guid: guid
-          }
-        })
+        return this.http.post<PlanSpotList>(spot_url, options, httpOptions);
       }
     }
+
 
 
     async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){

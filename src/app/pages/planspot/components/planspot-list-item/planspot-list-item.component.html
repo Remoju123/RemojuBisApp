@@ -5,15 +5,17 @@
 
         <div class='info'>
           <div class='lt'>
-            <span class="areaName" *ngIf="item.areaName">
+            <!-- <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter: lang }}
             </span>
             <span class="category" *ngIf="item.areaName2">
               {{ item.areaName2 | langFilter: lang }}
-            </span>
+            </span> -->
+            <p>{{item.id}} {{item.planName}} {{item.spotName}}</p>
           </div>
           <div class='rt'>
-            
+            <div>{{item.releaseCreateDatetime}}</div>
+            <div>{{item.pvQtyAll}}</div>
           </div>
           
         </div>

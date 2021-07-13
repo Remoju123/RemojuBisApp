@@ -1,8 +1,9 @@
 import { DataSelected } from "./common.class";
 import { SpotSearchCategory } from "./spotlist.class";
-import { PlanSearchCategory } from "./planlist.class";
+import { PlanSearchCategory, PlanSpotName } from "./planlist.class";
 
 import { ListSearchCondition } from "./indexeddb.class";
+import { Businesshours } from "./spot.class";
 
 
 // 選択(エリア・カテゴリ用)
@@ -24,7 +25,7 @@ export class PlanSpotListSearchResult {
   }
 
 // プラン/スポット一覧
-export class PlanSpotList {
+export class PlanSpotList_bk {
   // 詳細取得済み:true
   isDetail: boolean;
   // プラン:true スポット:false
@@ -59,6 +60,57 @@ export class PlanSpotList {
   pictures: string[];
 
   isEndOfPublication: boolean;
+
+  objectId:string;
+  
+  guid:string;
+}
+
+export class PlanSpotList {
+  address: string;
+  areaId: number;
+  areaId2: number;
+  areaName: string;
+  areaName2: string;
+  averageStayTime: number;
+  budgets: Budgets[];//
+  businessHours: Businesshours[];//
+  createDate: string;
+  favoriteQty: number;
+  googleSpot: null
+  guid: string;
+  id: number;
+  isCreation: boolean;
+  isEndOfPublication: boolean;
+  isFavorite: boolean;
+  isPlan: boolean;
+  isRegularHoliday: boolean;
+  isRemojuPlan: boolean
+  keyword: string;
+  objectId: string;
+  overview: null;//
+  pictures: string[];
+  planName: string;
+  planSpotNames: PlanSpotName[];//
+  pvQtyAll: number;
+  regularHoliday: string;
+  releaseCreateDatetime: string;
+  reviewAvg: number;
+  searchCategories: DataSelected[];
+  searchCategoryIds: number[];
+  seo: Seo[];
+  spotAccess: SpotAccesses;
+  spotName: string;
+  spotQty: number;
+  subheading: string;
+  timeRequiredHour: number;
+  timeRequiredMin: number;
+  travelDate: string;
+  userName: string;
+  userPictureUrl: string;
+  versionNo: number;
+  /*-----*/
+  sort:number;
 }
 
 
@@ -104,4 +156,27 @@ export class ListSelected {
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
   condition: ListSearchCondition;
+}
+
+export class Budgets {
+  version_no: number;
+  spot_id: number;
+  budget_frame_id: number;
+  budget_id: number;
+}
+
+export class Seo {
+  version_no: number;
+  spot_id: number;
+  subtitle: string;
+  keyword: string;
+  description: string;
+}
+
+export class SpotAccesses {
+  version_no: number;
+  spot_id: number;
+  display_order: number;
+  access: number;
+  nearest: string;
 }
