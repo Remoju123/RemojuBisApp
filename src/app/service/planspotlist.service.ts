@@ -94,6 +94,21 @@ const httpOptions = {
       }
     }
 
+    fetchDetails2(options: PlanSpotList){
+      const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
+      const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
+      options.objectId = this.commonService.objectId;
+      options.guid = this.commonService.getGuidStatic();
+      
+      if(options.isPlan){
+        return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
+      }else{
+        return this.http.post<PlanSpotList>(spot_url, options, httpOptions);
+      }
+    }
+
+
+
 
 
     async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){

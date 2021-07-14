@@ -23,20 +23,18 @@
       </mat-nav-list>
   
       <mat-nav-list class="status">
-        
       </mat-nav-list>
-      <div class="title">Menu</div>
+      
       <mat-nav-list>
-        <div>{{ "MakeATripPlan" | translate }}</div>
+        <div class="header">{{ "MakeATripPlan" | translate }}</div>
         <mat-nav-list class="sub">
           <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
           <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','favorite')">{{ "SearchByFavorite" | translate }}</a>
         </mat-nav-list>
       </mat-nav-list>
-      <mat-divider></mat-divider>
       <mat-nav-list>
-        <div>{{ "ViewFeaturedArticles" | translate }}</div>
+        <div class="header">{{ "ViewFeaturedArticles" | translate }}</div>
         <mat-nav-list class="sub">
           <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto/jyoshitabi.html">{{ "RecommendedTripForGirls" | translate }}</a>
           <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto_guidemap.html">{{ "LetsGoToKyotoNow" | translate }}</a>
@@ -44,21 +42,20 @@
           <a mat-list-item href="">{{ "SeeOther" | translate }}</a>
         </mat-nav-list>
       </mat-nav-list>
-      <div *ngIf="common.loggedIn">
-        <mat-divider></mat-divider>
-        <div>{{ "ViewMyPage" | translate }}</div>
+      <mat-nav-list *ngIf="common.loggedIn">
+        <div class="header">{{ "ViewMyPage" | translate }}</div>
         <mat-nav-list class="sub">
           <a mat-list-item (click)="onNavgate('mypage')">{{ "EditProfile" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','list')">{{ "ViewSavedPlans" | translate }}</a>
           <a mat-list-item  (click)="onNavgate('mypage','favorite')">{{ "ViewFavorite" | translate }}</a>
         </mat-nav-list>
         
-      </div>
-      <mat-divider></mat-divider>
+      </mat-nav-list>
       <mat-nav-list>
-        <a mat-list-item href="{{ currentlang }}/sharedplan/ae61Ttioyve7DaVEOTcw"
-          >プラン作成(確認用)</a
-        >
+        <div class='header'>その他</div>
+        <mat-nav-list class="sub">
+          
+        </mat-nav-list>
       </mat-nav-list>
     </div>
   </nav>

@@ -83,7 +83,7 @@ export class PlanSpotList {
   isCreation: boolean;
   isEndOfPublication: boolean;
   isFavorite: boolean;
-  isPlan: boolean;
+  isPlan: number;
   isRegularHoliday: boolean;
   isRemojuPlan: boolean
   keyword: string;
@@ -109,8 +109,6 @@ export class PlanSpotList {
   userName: string;
   userPictureUrl: string;
   versionNo: number;
-  /*-----*/
-  sort:number;
 }
 
 

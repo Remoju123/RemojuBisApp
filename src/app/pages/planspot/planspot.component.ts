@@ -15,6 +15,8 @@ import { isPlatformBrowser } from '@angular/common';
 const STATE_KEY_ITEMS = makeStateKey('items');
 const STATE_KEY_DETAIL = makeStateKey('details');
 
+export const BODY_KEY = makeStateKey<string>('BODY_KEY');
+
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -43,6 +45,9 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   
   items: any = [];
   loaded: boolean;
+
+  title:string;
+  body:string;
 
   constructor(
     private planspots: PlanSpotListService,
@@ -81,9 +86,65 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.rows = result.list;
       this.listsort(this.sortval);
       this.loadNextDetails();
-      
     })
+
     
+
+    if (this.state.hasKey(STATE_KEY_DETAIL)) {
+      this.details$ = this.state.get<PlanSpotList[]>(STATE_KEY_DETAIL, null);
+    } else {
+      const details:PlanSpotList[] = [ {
+        address: null,
+areaId: 13,
+areaId2: 0,
+areaName: "[{\"lang\":\"ja\",\"text\":\"東京都\"},{\"lang\":\"en\",\"text\":\"Tokyo\"}]",
+areaName2: null,
+averageStayTime: null,
+budgets: null,
+businessHours: null,
+createDate: "2021-06-07T12:51:55.77",
+favoriteQty: 0,
+googleSpot: null,
+guid: "21a29e46-5f3c-0752-b851-1c3071d8067e",
+id: 1492,
+isCreation: true,
+isEndOfPublication: false,
+isFavorite: false,
+isPlan: 1,
+isRegularHoliday: false,
+isRemojuPlan: false,
+keyword: "【テスト】都内の最狂スポットテスト[{\"lang\":\"ja\",\"text\":\"東京都\"},{\"lang\":\"en\",\"text\":\"Tokyo\"}]",
+objectId: "c4d558b5-f7f1-4aa4-a6a9-7be021b992b8",
+overview: null,
+pictures: [],
+planName: "【テスト】都内の最狂スポット",
+planSpotNames: [],
+pvQtyAll: 0,
+regularHoliday: null,
+releaseCreateDatetime: "2021-07-07T11:36:22.07",
+reviewAvg: 0,
+searchCategories: [],
+searchCategoryIds: [],
+seo: null,
+spotAccess: null,
+spotName: null,
+spotQty: 5,
+subheading: null,
+timeRequiredHour: 5,
+timeRequiredMin: 40,
+travelDate: null,
+userName: "Yuri",
+userPictureUrl: "https://remoju.blob.core.windows.net/e4a0da98-215c-4c98-86ee-623203b6b9d0/161889047129398e3f6fb438c3711a360cc777f093e44.jpg",
+versionNo: 1
+      }];
+      
+      this.state.set<PlanSpotList[]>(STATE_KEY_DETAIL, details);
+      this.details$ = details;
+    }
+
+    console.log(this.state);
+    
+
       
       
   }
@@ -172,6 +233,34 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     }
   }
 
+  getDetails():PlanSpotList[]{
+    let startIndex = 0;
+
+    startIndex = (this.p - 1) * this.limit;
+    this.end = startIndex + this.limit;
+
+    if(this.rows.length - startIndex < this.limit)
+      this.end = this.rows.length;
+
+    let _details:PlanSpotList[];
+
+    if(this.rows.length > 0){
+      for (let i = startIndex; i < this.end; i++){
+        this.planspots.fetchDetails2(this.rows[i])
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            console.log(d);
+            const idx = this.rows.findIndex(v => v.id === d.id);
+            _details = this.rows.slice(startIndex,this.end);
+          });
+      }
+      this.p ++;
+    }else{
+      _details = this.rows.slice(0,0);
+    }
+    return _details;
+  }
+
   async loadNextDetails(){
     let startIndex = 0;
 
@@ -181,35 +270,12 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     if(this.rows.length - startIndex < this.limit)
       this.end = this.rows.length;
 
-    // const _rows = this.rows.slice(startIndex,this.end);
-    
-    // _rows.map(async (m,i) => {
-    //   (await this.planspots.fetchDetails(m))
-    //     .pipe(takeUntil(this.onDestroy$))
-    //     .subscribe(d => {
-    //       this.details$.push(d);
-    //     })
-    // })
-
-    //this.details$ = this.details$.sort((a,b)=>{return a.releaseCreateDatetime > b.releaseCreateDatetime ? 1 : -1;})
-    //console.log(this.details$);
-
-
-    // forkJoin(observable).subscribe(responce => {
-    //   console.log(responce);
-    // })
-
     if(this.rows.length > 0){
       for (let i = startIndex; i < this.end; i++){
-      //for (let i = 95; i < 105; i++){
-        
         (await this.planspots.fetchDetails(this.rows[i]))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
-
             // // 非同期で戻された結果セットの順番を維持するための処理
-            // let $id: number;
-            // if(d['spotId']){$id = d['spotId'];} else if(d['planId']){$id = d['planId'];}
             const idx = this.rows.findIndex(v => v.id === d.id);
 
             // // 掲載終了の場合は削除　isEndOfPublication
@@ -221,19 +287,18 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
             //console.log(this.rows[idx])
             //d.sort = i;
-            
+            console.log(d);
             this.rows[idx] = d;
-            //this.details$.push(d);
 
+            this.details$ = this.rows.slice(startIndex,this.end);
           })
       }
-      this.details$ = this.rows.slice(startIndex,this.end);
-      
       this.p++;
+    } else {
+      this.details$ = this.rows.slice(0,0);
     }
-
   }
-  
+  /*
   getItems():void {
     this.loaded = false;
 
@@ -264,5 +329,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
     //console.log(this.items);
   }
+  */
   
 }
