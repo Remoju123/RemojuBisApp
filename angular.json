@@ -3,7 +3,7 @@
   "cli": {
     "analytics": "2a2ac621-8aaa-411e-aac3-5be106234bcf"
   },
-  "version": 1.2,
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "RemojuApp-V3U": {
