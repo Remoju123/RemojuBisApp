@@ -12,11 +12,8 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 
 
-const STATE_KEY_ITEMS = makeStateKey('items');
-const STATE_KEY_DETAIL = makeStateKey('details');
-
-export const BODY_KEY = makeStateKey<string>('BODY_KEY');
-
+export const STATE_KEY_ITEMS = makeStateKey('items');
+export const STATE_KEY_DETAIL = makeStateKey('details');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -53,9 +50,8 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
-    private state: TransferState,
-    @Inject(PLATFORM_ID) private platformId: object,
-    @Inject(APP_ID) private appId: string
+    private transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: object
     ) {
       this.loaded = false;
       this.condition = new ListSearchCondition();
@@ -68,6 +64,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
     this.recoveryQueryParams(); //get listSearchCondition -> this.condition
 
+    
     forkJoin([
       this.getData(), //get listData
       this.getConditionMaster() //get listSelectMaster
@@ -88,8 +85,12 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.loadNextDetails();
     })
 
-    
-
+    /* --only browser task: browser object history,location -- */
+    if(isPlatformBrowser(this.platformId)){
+      
+    }
+    /* --only browser task: browser object history,location -- */
+/*
     if (this.state.hasKey(STATE_KEY_DETAIL)) {
       this.details$ = this.state.get<PlanSpotList[]>(STATE_KEY_DETAIL, null);
     } else {
@@ -141,8 +142,8 @@ versionNo: 1
       this.state.set<PlanSpotList[]>(STATE_KEY_DETAIL, details);
       this.details$ = details;
     }
-
-    console.log(this.state);
+*/
+    console.log(this.transferState);
     
 
       
@@ -291,12 +292,19 @@ versionNo: 1
             this.rows[idx] = d;
 
             this.details$ = this.rows.slice(startIndex,this.end);
+            
           })
       }
       this.p++;
-    } else {
-      this.details$ = this.rows.slice(0,0);
     }
+
+    // if (this.transferState.hasKey(STATE_KEY_DETAIL)) {
+    //   this.details$ = this.transferState.get<PlanSpotList[]>(STATE_KEY_DETAIL, null);
+    // } else {
+    //   const _details = this.rows.slice(startIndex,this.end);
+    //   this.transferState.set<PlanSpotList[]>(STATE_KEY_DETAIL, _details);
+    //   this.details$ = _details;
+    // }
   }
   /*
   getItems():void {
