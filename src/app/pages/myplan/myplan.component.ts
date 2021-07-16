@@ -851,7 +851,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
     items: 1,
-    nav: true,
-    // autoplay:true
+    nav: true
   };
 }
