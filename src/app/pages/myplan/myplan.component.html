@@ -363,10 +363,16 @@
           <span>{{"EndTime"|translate}}：{{ endTime }}</span>
         </div>
       </div>
-      <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
-        <img width="100%" height="100%" [src]="row.picturePreviewUrl ? row.picturePreviewUrl : (row.pictureUrl ? row.pictureUrl : row.refPictureUrl)" />
+      <div class='planhead'>
+        <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
+          <img width="100%" height="100%" [src]="row.picturePreviewUrl ? row.picturePreviewUrl : (row.pictureUrl ? row.pictureUrl : row.refPictureUrl)" />
+        </div>
+        <mat-list class="planex">
+          <mat-list-item>
+            <p *ngIf="row.planExplanation">{{ row.planExplanation }}</p>
+          </mat-list-item>
+        </mat-list>
       </div>
-      <span *ngIf="row.planExplanation">{{ row.planExplanation }}</span>
       <!-- 出発地 -->
       <div class="startSpot" *ngIf="row.startPlanSpot">
         <div class="lt">
