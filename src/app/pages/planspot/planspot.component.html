@@ -1,5 +1,5 @@
 <app-planspot-selector></app-planspot-selector>
-<app-planspot-list>
+<app-planspot-list (scrolled)="onScrollDown()">
   <app-planspot-list-item
     *ngFor="let item of details$"
     [item]="item"

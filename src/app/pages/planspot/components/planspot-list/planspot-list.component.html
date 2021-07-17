@@ -1,8 +1,10 @@
-<div class='box'
+<div class='box' style="min-height: 1640px;"
   infinite-scroll 
   [infiniteScrollDistance]="5"
   [infiniteScrollUpDistance]="1.5"
   [infiniteScrollThrottle]="150"
   (scrolled)="onScrollDown()">
-  <ng-content></ng-content>
+  <ng-content>
+    
+  </ng-content>
 </div>

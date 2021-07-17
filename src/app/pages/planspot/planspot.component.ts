@@ -9,7 +9,8 @@ import { ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser,isPlatformServer } from '@angular/common';
+
 
 
 export const STATE_KEY_ITEMS = makeStateKey('items');
@@ -186,6 +187,10 @@ versionNo: 1
     this.indexedDBService.registListSearchConditionPlan(this.condition);
   }
 
+  onScrollDown() {
+    console.log("scrolled!")
+  }
+
 
   ///
   getConditionMaster(): Observable<ListSelectMaster>{
@@ -270,6 +275,7 @@ versionNo: 1
 
     if(this.rows.length - startIndex < this.limit)
       this.end = this.rows.length;
+  
 
     if(this.rows.length > 0){
       for (let i = startIndex; i < this.end; i++){
@@ -288,11 +294,10 @@ versionNo: 1
 
             //console.log(this.rows[idx])
             //d.sort = i;
-            console.log(d);
             this.rows[idx] = d;
-
-            this.details$ = this.rows.slice(startIndex,this.end);
-            
+            const _details = this.rows.slice(startIndex,this.end);
+            this.transferState.set<PlanSpotList[]>(STATE_KEY_DETAIL, _details);   
+            this.details$ = _details;
           })
       }
       this.p++;
