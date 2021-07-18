@@ -10,6 +10,8 @@ import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformBrowser,isPlatformServer } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
+import { TranslateService } from '@ngx-translate/core';
 
 
 
@@ -47,7 +49,13 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   title:string;
   body:string;
 
+  get lang() {
+    return this.translate.currentLang;
+  }
+
   constructor(
+    private translate: TranslateService,
+    private commonService: CommonService,
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
@@ -75,6 +83,9 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       result[1].isList = true;
       //　1.検索条件でフィルタリングした結果セットをsearchFilter(subject)に格納する
       this.planspots.filteringData(result[0],this.condition,result[1])
+      this.p = 1;
+      this.listsort(this.sortval);
+      this.loadNextDetails();
     })
 
     // 2.searchFilterから結果セットを取り出す
@@ -82,8 +93,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
       this.rows = result.list;
-      this.listsort(this.sortval);
-      this.loadNextDetails();
     })
 
     /* --only browser task: browser object history,location -- */
@@ -91,63 +100,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       
     }
     /* --only browser task: browser object history,location -- */
-/*
-    if (this.state.hasKey(STATE_KEY_DETAIL)) {
-      this.details$ = this.state.get<PlanSpotList[]>(STATE_KEY_DETAIL, null);
-    } else {
-      const details:PlanSpotList[] = [ {
-        address: null,
-areaId: 13,
-areaId2: 0,
-areaName: "[{\"lang\":\"ja\",\"text\":\"東京都\"},{\"lang\":\"en\",\"text\":\"Tokyo\"}]",
-areaName2: null,
-averageStayTime: null,
-budgets: null,
-businessHours: null,
-createDate: "2021-06-07T12:51:55.77",
-favoriteQty: 0,
-googleSpot: null,
-guid: "21a29e46-5f3c-0752-b851-1c3071d8067e",
-id: 1492,
-isCreation: true,
-isEndOfPublication: false,
-isFavorite: false,
-isPlan: 1,
-isRegularHoliday: false,
-isRemojuPlan: false,
-keyword: "【テスト】都内の最狂スポットテスト[{\"lang\":\"ja\",\"text\":\"東京都\"},{\"lang\":\"en\",\"text\":\"Tokyo\"}]",
-objectId: "c4d558b5-f7f1-4aa4-a6a9-7be021b992b8",
-overview: null,
-pictures: [],
-planName: "【テスト】都内の最狂スポット",
-planSpotNames: [],
-pvQtyAll: 0,
-regularHoliday: null,
-releaseCreateDatetime: "2021-07-07T11:36:22.07",
-reviewAvg: 0,
-searchCategories: [],
-searchCategoryIds: [],
-seo: null,
-spotAccess: null,
-spotName: null,
-spotQty: 5,
-subheading: null,
-timeRequiredHour: 5,
-timeRequiredMin: 40,
-travelDate: null,
-userName: "Yuri",
-userPictureUrl: "https://remoju.blob.core.windows.net/e4a0da98-215c-4c98-86ee-623203b6b9d0/161889047129398e3f6fb438c3711a360cc777f093e44.jpg",
-versionNo: 1
-      }];
-      
-      this.state.set<PlanSpotList[]>(STATE_KEY_DETAIL, details);
-      this.details$ = details;
-    }
-*/
     console.log(this.transferState);
-    
-
-      
       
   }
 
@@ -239,34 +192,6 @@ versionNo: 1
     }
   }
 
-  getDetails():PlanSpotList[]{
-    let startIndex = 0;
-
-    startIndex = (this.p - 1) * this.limit;
-    this.end = startIndex + this.limit;
-
-    if(this.rows.length - startIndex < this.limit)
-      this.end = this.rows.length;
-
-    let _details:PlanSpotList[];
-
-    if(this.rows.length > 0){
-      for (let i = startIndex; i < this.end; i++){
-        this.planspots.fetchDetails2(this.rows[i])
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            console.log(d);
-            const idx = this.rows.findIndex(v => v.id === d.id);
-            _details = this.rows.slice(startIndex,this.end);
-          });
-      }
-      this.p ++;
-    }else{
-      _details = this.rows.slice(0,0);
-    }
-    return _details;
-  }
-
   async loadNextDetails(){
     let startIndex = 0;
 
@@ -295,9 +220,10 @@ versionNo: 1
             //console.log(this.rows[idx])
             //d.sort = i;
             this.rows[idx] = d;
-            const _details = this.rows.slice(startIndex,this.end);
-            this.transferState.set<PlanSpotList[]>(STATE_KEY_DETAIL, _details);   
-            this.details$ = _details;
+            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+            //const _details = this.rows.slice(startIndex,this.end);
+            //this.transferState.set<PlanSpotList[]>(STATE_KEY_DETAIL, _details);   
+            this.details$ = this.rows.slice(startIndex,this.end);
           })
       }
       this.p++;

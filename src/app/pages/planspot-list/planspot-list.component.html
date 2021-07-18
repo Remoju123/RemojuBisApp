@@ -1,0 +1,13 @@
+<div class="box"
+infinite-scroll
+  [infiniteScrollDistance]="5"
+  [infiniteScrollUpDistance]="1.5"
+  [infiniteScrollThrottle]="150"
+  (scrolled)="onScrollDown()">
+
+  <ng-container *ngFor="let row of details">
+    <ul>
+      <li>{{row.id}} {{row.planName}}</li>
+    </ul>
+  </ng-container>
+</div>
