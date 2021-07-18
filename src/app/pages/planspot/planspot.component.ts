@@ -37,6 +37,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   end: number;
 
   sortval:number;
+  optionKeywords: string[];
   
   get lang() {
     return this.translate.currentLang;
@@ -58,9 +59,9 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   async ngOnInit() {
 
     // QueryParam判定して検索条件取得
-    this.recoveryQueryParams(); //get listSearchCondition -> this.condition
+    this.recoveryQueryParams(); //get listSearchCondition
 
-    // プランスポット一覧データ（スケルトン）を取得してフィルタ、並べ替え処理
+    // プランスポット一覧スキーマを取得してフィルタ、並べ替え処理
     this.getPlanSpotList();
     
     // Subjectから結果セットをFetch
@@ -68,13 +69,10 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
       this.rows = result.list;
+      this.temp = [...this.rows];
+      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+      this.historyReplace(result.searchParams);
     })
-
-    /* --only browser task: browser object history,location -- */
-    if(isPlatformBrowser(this.platformId)){
-      
-    }
-    /* --only browser task: browser object history,location -- */
   }
 
   ngOnDestroy(){
@@ -107,7 +105,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
         // ソート->詳細取得
         this.loadDetailsAfterSorting(this.sortval);
       });
-
     })
   }
 
@@ -141,6 +138,20 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       }
     })
     this.indexedDBService.registListSearchConditionPlan(this.condition);
+  }
+
+  historyReplace(searchParams:string):void{
+    if(isPlatformBrowser(this.platformId)){
+      if(searchParams.length>14){
+        history.replaceState(
+          "search_key",
+          "",
+          location.pathname.substring(1) + "?" + searchParams
+        );
+      } else {
+        history.replaceState("search_key", "", location.pathname.substring(1));
+      }
+    }
   }
 
   loadDetailsAfterSorting(v:number){
