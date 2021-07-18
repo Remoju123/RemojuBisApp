@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, PLATFORM_ID, APP_ID, Inject} from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { forkJoin, of, Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
@@ -8,15 +8,9 @@ import { IndexedDBService } from "../../service/indexeddb.service";
 import { ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { isPlatformBrowser,isPlatformServer } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
-
-
-
-export const STATE_KEY_ITEMS = makeStateKey('items');
-export const STATE_KEY_DETAIL = makeStateKey('details');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -44,12 +38,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
   sortval:number;
   
-  // items: any = [];
-  // loaded: boolean;
-
-  // title:string;
-  // body:string;
-
   get lang() {
     return this.translate.currentLang;
   }
@@ -60,7 +48,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
-    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
     ) {
       this.limit = 6;
@@ -70,13 +57,13 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
   async ngOnInit() {
 
-    // 1.QueryParam判定して検索条件取得
+    // QueryParam判定して検索条件取得
     this.recoveryQueryParams(); //get listSearchCondition -> this.condition
 
-    // 2.
+    // プランスポット一覧データ（スケルトン）を取得してフィルタ、並べ替え処理
     this.getPlanSpotList();
     
-    // 3.searchFilterから結果セットを取り出す
+    // Subjectから結果セットをFetch
     this.planspots.searchFilter
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
@@ -118,7 +105,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
         // 詳細データを初期化
         this.p = 1;
         // ソート->詳細取得
-        this.getDetailsAfterSorting(this.sortval);
+        this.loadDetailsAfterSorting(this.sortval);
       });
 
     })
@@ -156,7 +143,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     this.indexedDBService.registListSearchConditionPlan(this.condition);
   }
 
-  getDetailsAfterSorting(v:number){
+  loadDetailsAfterSorting(v:number){
     switch (v) {
       case 7:
         this.rows.sort((a, b) => {
@@ -211,36 +198,4 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.p++;
     }
   }
-
-
-  /* sample
-  getItems():void {
-    this.loaded = false;
-
-    this.items = this.state.get(STATE_KEY_ITEMS,<any>[]);
-
-    if(!this.state.hasKey(STATE_KEY_ITEMS)){
-      this.planspots.getPlanSpotList().subscribe(
-        items => {
-          const platform = isPlatformBrowser(this.platformId) ?
-              'in the browser' : 'on the server';
-          console.log(`getItems : Running ${platform} with appId=${this.appId}`);
-          this.items = items;
-          this.loaded = true;
-          this.state.set(STATE_KEY_ITEMS,<any> items);
-        }
-      )
-    } else {
-      this.loaded = true;
-    }
-  }
-
-  resetItems():void {
-    
-    this.state.remove(STATE_KEY_ITEMS);
-    this.items = null;
-    this.loaded = true;
-  }
-  */
-  
 }
