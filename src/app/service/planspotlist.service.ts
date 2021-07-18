@@ -107,10 +107,6 @@ const httpOptions = {
       }
     }
 
-
-
-
-
     async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
       /*-----------------------------------------
       * 1.絞り込み処理
@@ -225,11 +221,10 @@ const httpOptions = {
     }
 
 
-    // スポット詳細を整形
-    
-
-    // プラン詳細を整形
-
+    // プラン一覧(詳細)を整形
+    dataFormat(row: PlanSpotList){
+      row.planName = this.commonService.isValidJson(row.planName, this.translate.currentLang);
+    }
 
 
 
