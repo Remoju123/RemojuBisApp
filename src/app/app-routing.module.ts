@@ -16,7 +16,6 @@ import { PlanListComponent } from './pages/plan-list/plan-list.component';
 // import { NotfoundComponent } from './pages/notfound/notfound.component';
 // import { SystemErrorComponent } from './pages/system-error/system-error.component';
 // import { UserComponent } from './pages/user/user.component';
-import { PlanspotListComponent } from './pages/planspot-list/planspot-list.component';
 
 const routes: Routes = [
   {
@@ -27,7 +26,6 @@ const routes: Routes = [
       component:RootComponent,
       children:[
         { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
-        { path: "planspotlist",component:PlanspotListComponent},
         { path: "plans", component: PlanListComponent },
         // { path: "top", component: TopComponent },
         /*{ path: "spots", component: SpotListComponent },

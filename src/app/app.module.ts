@@ -107,7 +107,6 @@ import { MypageUserprofileComponent } from './pages/mypage-userprofile/mypage-us
 import { MypageComponent } from './pages/mypage/mypage.component';
 import { PlanspotModule } from './pages/planspot/planspot.module';
 import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
-import { PlanspotListComponent } from './pages/planspot-list/planspot-list.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -181,8 +180,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
-    UserprofilePanelComponent,
-    PlanspotListComponent,
+    UserprofilePanelComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

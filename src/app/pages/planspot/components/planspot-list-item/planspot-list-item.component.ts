@@ -25,4 +25,22 @@ export class PlanspotListItemComponent implements OnInit {
     this.linked.emit(id);
   }
 
+  mainOptions: any = {
+    rewindSpeed:0,
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    dots: false,
+    navSpeed: 700,
+    navText: [
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+    ],
+    stagePadding:40,
+    margin:0,
+    items: 1,
+    nav: true
+  };
+
 }

@@ -54,6 +54,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.limit = 6;
       this.p = 1;
       this.sortval = 11;
+      this.condition = new ListSearchCondition();
     }
 
   async ngOnInit() {
@@ -92,8 +93,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       let condition: any = await this.indexedDBService.getListSearchConditionPlan();
       if (condition){
         this.condition = condition;
-      } else {
-        this.condition = new ListSearchCondition();
       }
 
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
