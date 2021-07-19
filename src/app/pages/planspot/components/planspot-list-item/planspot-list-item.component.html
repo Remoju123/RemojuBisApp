@@ -4,12 +4,12 @@
       <div class='card-header'>
         <div class='picture'>
           <owl-carousel-o *ngIf="item.pictures && item.pictures.length > 1; else single" [options]="mainOptions">
-            <ng-container *ngFor="let pic of item.pictures; index as i">
+            <ng-container *ngFor="let src of item.pictures; index as i">
               <ng-template carouselSlide id="row.planId">
                 <a class="link" (click)="linktoPlan(item.id)">
                   <div class="thumbmain">
                     <img
-                      [src]="pic"
+                      [src]="src"
                       [alt]="item.id"
                       [title]="item.id"
                     />
@@ -19,7 +19,15 @@
             </ng-container>
           </owl-carousel-o>
           <ng-template #single>
-
+            <ng-container *ngFor="let src of item.pictures; index as i">
+              <div class="thumbmain fullwidth">
+                <img
+                  [src]="src"
+                  [alt]="item.id"
+                  [title]="item.id"
+                />
+              </div>
+            </ng-container>
           </ng-template>
         </div>
         <div class='info'>

@@ -62,10 +62,10 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     // QueryParam判定して検索条件取得
     this.recoveryQueryParams(); //get listSearchCondition
 
-    // プランスポット一覧スキーマを取得してフィルタ、並べ替え処理
+    // プランスポット一覧データセットを取得してフィルタ、並べ替え処理
     this.getPlanSpotList();
     
-    // Subjectから結果セットをFetch
+    // マージセットSubjectの中継開始
     this.planspots.searchFilter
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
