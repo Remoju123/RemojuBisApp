@@ -35,6 +35,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   p: number;
   limit: number;
   end: number;
+  offset:number;
 
   sortval:number;
   optionKeywords: string[];
@@ -63,7 +64,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     this.recoveryQueryParams(); //get listSearchCondition
 
     // プランスポット一覧データセットを取得してフィルタ、並べ替え処理
-    this.getPlanSpotList();
+    this.getPlanSpotDataSet();
     
     // マージセットSubjectの中継開始
     this.planspots.searchFilter
@@ -80,38 +81,16 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  onScrollDown() {
-    this.loadNextDetails();
+  ngAfterViewChecked(){
+    //window.scrollTo(0,500);
   }
 
-  async getPlanSpotList() {
-    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-      this.listSelectMaster = r;
-      this.listSelectMaster.isList = true;
-
-      // 検索条件を取得
-      let condition: any = await this.indexedDBService.getListSearchConditionPlan();
-      if (condition){
-        this.condition = condition;
-      }
-
-      this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        // フィルタリング処理
-        this.planspots.filteringData(r,this.condition,this.listSelectMaster);
-
-        // 詳細データを初期化
-        this.p = 1;
-        // ソート->詳細取得
-        this.loadDetailsAfterSorting(this.sortval);
-      });
-    })
+  onScrollDown() {
+    this.offset = 0;
+    this.mergeNextDataSet();
   }
 
   recoveryQueryParams() {
-    /*********************************
-      idxDBに検索条件を保持する
-      QueryStringにパラメータがあれば検索条件に反映（生成）
-    *********************************/
     this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params:Params) => {
       if ((params.aid && params.aid.length > 0)
        || (params.era && params.era.length > 0)
@@ -134,26 +113,35 @@ export class PlanspotComponent implements OnInit,OnDestroy {
         //　ボタン用フラグ
         this.isRemojuRecommended = params.rep ? true : false;
         this.isUserPost =  params.usp ? true : false;
+        this.indexedDBService.registListSearchConditionPlan(this.condition);
       }
     })
-    this.indexedDBService.registListSearchConditionPlan(this.condition);
   }
+  
+  async getPlanSpotDataSet() {
+    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+      this.listSelectMaster = r;
+      this.listSelectMaster.isList = true;
 
-  historyReplace(searchParams:string):void{
-    if(isPlatformBrowser(this.platformId)){
-      if(searchParams.length>14){
-        history.replaceState(
-          "search_key",
-          "",
-          location.pathname.substring(1) + "?" + searchParams
-        );
-      } else {
-        history.replaceState("search_key", "", location.pathname.substring(1));
+      // 検索条件を再取得
+      let condition: any = await this.indexedDBService.getListSearchConditionPlan();
+      if (condition){
+        this.condition = condition;
       }
-    }
+
+      this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        // フィルタリング処理
+        this.planspots.filteringData(r,this.condition,this.listSelectMaster);
+
+        // 詳細データを初期化
+        this.p = 1;
+        // ソート->詳細取得
+        this.mergeNextDataSetAfterSorting(this.sortval);
+      });
+    })
   }
 
-  loadDetailsAfterSorting(v:number){
+  mergeNextDataSetAfterSorting(v:number){
     switch (v) {
       case 7:
         this.rows.sort((a, b) => {
@@ -171,10 +159,10 @@ export class PlanspotComponent implements OnInit,OnDestroy {
         });
         break;
     }
-    this.loadNextDetails();
+    this.mergeNextDataSet();
   }
 
-  async loadNextDetails(){
+  async mergeNextDataSet(){
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
 
@@ -207,5 +195,23 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       }
       this.p++;
     }
+  }
+
+  historyReplace(searchParams:string):void{
+    if(isPlatformBrowser(this.platformId)){
+      if(searchParams.length>14){
+        history.replaceState(
+          "search_key",
+          "",
+          location.pathname.substring(1) + "?" + searchParams
+        );
+      } else {
+        history.replaceState("search_key", "", location.pathname.substring(1));
+      }
+    }
+  }
+
+  linktoDetail(id:number){
+    console.log(`this p = ${this.p}`);
   }
 }

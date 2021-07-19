@@ -138,9 +138,10 @@ export class PlanListComponent implements OnInit, OnDestroy {
   ngAfterViewChecked(){
     if(this.offset>0){
       window.scrollTo(0,this.offset); 
-      setTimeout(() => {
-        this.offset = 0;
-      }, 900);
+      // flag for scroll stopped release 
+      // setTimeout(() => {
+      //   this.offset = 0;
+      // }, 900);
     }
   }
 
@@ -365,6 +366,7 @@ export class PlanListComponent implements OnInit, OnDestroy {
   }
 
   onScrollDown() {
+    this.offset = 0;
     this.getDetails();
   }
 

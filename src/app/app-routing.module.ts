@@ -10,7 +10,7 @@ import { TopComponent } from './pages/top/top.component';
 // import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { PlanListComponent } from './pages/plan-list/plan-list.component';
 // import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
-// import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
+import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
 // import { MapComponent } from './pages/map/map.component';
 // import { MypageComponent } from './pages/mypage/mypage.component';
 // import { NotfoundComponent } from './pages/notfound/notfound.component';
@@ -26,15 +26,14 @@ const routes: Routes = [
       component:RootComponent,
       children:[
         { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
-        { path: "plans", component: PlanListComponent },
         // { path: "top", component: TopComponent },
         /*{ path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent        },
-        { path: "spots/detail/:id", component: SpotDetailComponent},
+        { path: "spots/detail/:id", component: SpotDetailComponent},*/
         { path: "plans", component: PlanListComponent },
         { path: "plans/detail", component: PlanDetailComponent },
         { path: "plans/detail/:id", component: PlanDetailComponent },
-        { path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
+        /*{ path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
         { path: "sharedplan/:id", component: SpotListComponent },
         { path: "user/:id", component: UserComponent },*/
         // { path: "**", redirectTo: "404", pathMatch: "full" },
