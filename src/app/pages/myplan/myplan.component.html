@@ -87,6 +87,7 @@
                   [(ngModel)]="row.planExplanation"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{planExplanation.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
+                  <button (click)="row.planExplanation='';">clear</button>
               </mat-form-field>
               <!-- フリー文章 -->
               <mat-form-field appearance="outline">
@@ -101,7 +102,8 @@
                   [(ngModel)]="row.memo"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
-              </mat-form-field>
+                  <button (click)="row.memo='';">clear</button>
+                </mat-form-field>
               <!-- カテゴリー選択ボタン -->
               <button mat-stroked-button (click)="onClickAreaCategory()">
                 {{ "SelectAnAreaCategory" | translate }}
@@ -252,7 +254,7 @@
                         [(ngModel)]="item.memo"
                         (change)="onChange(false)"></textarea>
                         <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
-                    </mat-form-field>
+                        <button (click)="item.memo='';">clear</button>                    </mat-form-field>
                     <!-- 滞在時間 -->
                     <div class="select">
                       <label>{{ "SuggestedTime" | translate }}</label>
