@@ -180,8 +180,9 @@ export class SpotAccesses {
 }
 
 export class CacheStore {
-  details: PlanSpotList[];
-  page:number;
+  data: PlanSpotList[];
+  p:number;
+  end:number;
   offset:number;
   keyword:string;
 }

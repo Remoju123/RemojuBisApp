@@ -80,8 +80,6 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
       this.historyReplace(result.searchParams);
     })
-
-    console.log(this.transferState)
   }
 
   ngOnDestroy(){
@@ -89,8 +87,12 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   }
 
   ngAfterViewChecked(){
-    //window.scrollTo(0,this.offset);
-    console.log(window.pageYOffset);
+    if(this.offset>0){
+      window.scrollTo(0,this.offset);
+      setTimeout(() => {
+        this.offset = 0;
+      }, 500);
+    }
   }
 
   onScrollDown() {
@@ -170,14 +172,24 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   }
 
   async mergeNextDataSet(){
-    let startIndex = (this.p - 1) * this.limit;
-    this.end = startIndex + this.limit;
+    let startIndex = 0;
 
-    if(this.rows.length - startIndex < this.limit){
-      this.end = this.rows.length;
-    }
+    if(this.transferState.hasKey(PLANSPOT_KEY)){
+      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY,null);
+      this.rows = cache.data;
+      this.end = cache.end;
+      this.offset = cache.offset;
+      this.details$ = this.rows.slice(0,this.end);
+      this.p = cache.p;
 
-    if(this.rows.length > 0){
+      this.transferState.remove(PLANSPOT_KEY);
+    }else{
+      startIndex = (this.p - 1) * this.limit;
+      this.end = startIndex + this.limit;
+      if(this.rows.length - startIndex < this.limit){
+        this.end = this.rows.length;
+      }
+
       for (let i = startIndex; i < this.end; i++){
         (await this.planspots.fetchDetails(this.rows[i]))
           .pipe(takeUntil(this.onDestroy$))
@@ -201,6 +213,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
           })
       }
       this.p++;      
+    
     }
   }
 
@@ -220,12 +233,13 @@ export class PlanspotComponent implements OnInit,OnDestroy {
 
   linktoDetail(id:number){
     const c = new CacheStore();
-    c.details = this.details$;
-    c.page = this.p - 1;
+    c.data = this.rows;
+    c.p = this.p;
+    c.end = this.end;
     c.offset = window.pageYOffset;
     c.keyword = "";
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
-
+    
     this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
 }
