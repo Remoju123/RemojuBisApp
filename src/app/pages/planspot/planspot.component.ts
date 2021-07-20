@@ -89,11 +89,11 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   }
 
   ngAfterViewChecked(){
-    //window.scrollTo(0,500);
+    //window.scrollTo(0,this.offset);
+    console.log(window.pageYOffset);
   }
 
   onScrollDown() {
-    this.offset = 0;
     this.mergeNextDataSet();
   }
 
@@ -222,7 +222,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     const c = new CacheStore();
     c.details = this.details$;
     c.page = this.p - 1;
-    c.offset = this.offset;
+    c.offset = window.pageYOffset;
     c.keyword = "";
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
 
