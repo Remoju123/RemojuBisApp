@@ -22,7 +22,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { Subject } from 'rxjs';
-import { resolve } from 'url';
+import { PlanSpotList } from "../class/planspotlist.class";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -138,16 +138,22 @@ export class PlanListService {
 
   /*----------------------------------------
    *
-   * プラン検索＆結果処理 
+   * プラン検索＆結果処理
    * 2020.6.4 MM UPDATE
    *
    *  -------------------------------------*/
 
   public result = new searchResult();
+  
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
+
   public searchSubjectNoList = new Subject<searchResult>();
   public searchFilterNoList = this.searchSubjectNoList.asObservable();
+
+  getSearchFilter2(planlist:PlanSpotList[],searchMaster:ListSelectedPlan,condition:ListSearchCondition){
+
+  }
 
   getSearchFilter(listSelected:ListSelectedPlan,condition:ListSearchCondition){
     /*-----------------------------------------
@@ -222,7 +228,7 @@ export class PlanListService {
     if(condition.searchCategories.length){
       condition.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
-      })  
+      })
     }
 
     let kw = [..._areaNums, ..._areaId2Nums, ..._category];
@@ -320,8 +326,9 @@ export class PlanListService {
       return item.isRemojuPlan ? item.isRemojuPlan === condition.isRemojuRecommended
       : !item.isRemojuPlan === condition.isUserPost;
     })
-      return filterd3;
-    }
+    
+    return filterd3;
+  }
 
     //return filterd2;
   //}

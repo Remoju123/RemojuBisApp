@@ -1,0 +1,9 @@
+<app-planspot-selector></app-planspot-selector>
+<app-planspot-list (scrolled)="onScrollDown()">
+  <app-planspot-list-item
+    *ngFor="let item of details$"
+    [item]="item"
+    (linked)="linktoDetail($event)"
+  >
+  </app-planspot-list-item>
+</app-planspot-list>

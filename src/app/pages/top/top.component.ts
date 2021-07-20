@@ -22,6 +22,8 @@ export class TopComponent implements OnInit {
 
   _url: any = `${window.location.origin}`;
 
+  pictureUrl:string = "../../../assets/img/icon_who.svg";
+
   ngOnInit() {
     // // this.authService.profile.subscribe(p => (this.profile = p));
     // if (this.authService.getUser() !== null) {

@@ -267,16 +267,12 @@ export class SpotListComponent implements OnInit, OnDestroy {
   }
 
   // スポット一覧詳細取得
-  getSpotListDetail() {
-    
+  getSpotListDetail() {    
     let startidx = 0;
-
     /* --only browser task: browser object sessionStorage -- */
     if(isPlatformBrowser(this.platformId)){
-
       // 前回の表示位置を取得
       const cache = sessionStorage.getItem("caches");
-
       // 表示位置を復元する場合
       if (cache){
         let d :CacheSpots = JSON.parse(cache);
@@ -297,17 +293,17 @@ export class SpotListComponent implements OnInit, OnDestroy {
         // ローディングを閉じる
         if(this.ref){
           this.ref.close();
-        }
-        
+        }        
       } else {
-      // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
-      startidx = (this.p - 1) * this.pageSize;
-      // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
-      this.end = startidx + this.pageSize;
-      // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
-      // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
-      if(this.rows.length - startidx < this.pageSize){
-        this.end = this.rows.length;
+        // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
+        startidx = (this.p - 1) * this.pageSize;
+        // 最終表示位置(初回、6、次の更新時　6 + 6 = 12)
+        this.end = startidx + this.pageSize;
+        // 最終グループ表示の場合、最終表示位置を一覧の最大件数にする
+        // 全件が1000件の場合、最終グループ表示時、p=167 startidx=996 end=996+6=1002⇒1000
+        if(this.rows.length - startidx < this.pageSize){
+          this.end = this.rows.length;
+        }
       }
     }
     /* --only browser task: browser object sessionStorage -- */
@@ -359,9 +355,9 @@ export class SpotListComponent implements OnInit, OnDestroy {
         }        
       }
     });
-    }
-    
   }
+    
+  
 
   // スクロール
   onScrollDownSpot() {

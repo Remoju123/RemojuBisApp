@@ -41,7 +41,7 @@
   height: 100vh;
   .frame{
     display: flex;
-    margin-top: 38px;
+    margin-top: 58px;
     flex-direction: column;
     height: 200px;
     flex-shrink: 0;
@@ -49,36 +49,52 @@
     min-height: 70px;
 
     h1{
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       font-weight: normal;
       text-align: center;
-      color: #4d4d4d;
+      color: #000;
     }
     .logo{
       background-image: url("../../../assets/img/remoju-logo-b.svg");
-      background-size: 227px 58px;
-      height: 58px;
-      width: 227px;
+      background-repeat: no-repeat;
+      height: 54px;
+      width: 211px;
     }
     .catch{
       text-align: center;
       font-size: 0.8rem;
-      margin-top: 2em;
+      margin-top: 3.2em;
+      line-height: 2;
     }
   }
 
   .inputWrapper{
     display: flex;
-    height: 200px;
-    justify-content: flex-end;
+    height: 150px;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    position: relative;
+    .title{
+      font-size: 14px;
+      line-height: 2;
+      color: #6F7070;
+    }
 
-    input{
-      height: 44px;
+    input.keyword{
+      height: 58px;
       border: 1px solid #ccc;
-      border-radius: 22px;
-      width: 80vw;
-      padding: 0 16px;
+      border-radius: 29px;
+      width: 85vw;
+      padding: 0 16px 0 54px;
+    }
+
+    img.figure{
+      height: 32px;
+      width: 32px;
+      position: absolute;
+      left: 14px;
+      bottom: 45px;
     }
   }
   

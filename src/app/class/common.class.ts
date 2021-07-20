@@ -9,6 +9,7 @@ import { Line } from "./plan.class";
 import { PlanAppList } from "./planlist.class";
 import { ListSearchCondition } from "./indexeddb.class";
 import { PlanSpotList } from "./planspotlist.class";
+import { Observable } from "rxjs";
 
 // 選択
 export interface DataSelected {
@@ -42,29 +43,43 @@ export interface Recommended {
   pictureUrl: string;
 }
 
-// 一覧　選択値(共通)
+export class ListSelectMaster{
+  // エリア
+  mArea: NestDataSelected[];
+  // 検索カテゴリ
+  mSearchCategory: NestDataSelected[];
+  // 検索カテゴリ(プラン)
+  mSearchCategoryPlan: NestDataSelected[];
+  // ソート順
+  mSort: DataSelected[];
+  // 営業曜日
+  businessDay: DataSelected[];
+  // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
+  isList: boolean;
+}
+
 export class ListSelected {
   // エリア
-  // エリア
-  mArea: NestDataSelected[] = [];
+  mArea: NestDataSelected[];
   // 検索カテゴリ(スポット)
-  // 検索カテゴリ(スポット)
-  mSearchCategory: NestDataSelected[] = [];
+  mSearchCategory: NestDataSelected[];
   // 検索カテゴリ(プラン)
-  // 検索カテゴリ(プラン)
-  mSearchCategoryPlan: NestDataSelected[] = [];
+  mSearchCategoryPlan: NestDataSelected[];
   // ソート順
-  // ソート順
-  mSort: DataSelected[] = [];
+  mSort: DataSelected[];
   // tabIndex
-  // tabIndex
-  tabIndex!: number;
+  tabIndex: number;
   // source(list) 削除予定★★★
-  // source(list) 削除予定★★★
-  spotList: SpotAppList[] = [];
+  spotList: SpotAppList[];
   // プランスポット一覧
-  // プランスポット一覧
-  planSpotList: PlanSpotList[] = [];
+  planSpotList: PlanSpotList[];
+
+  businessDay: DataSelected[];
+
+  // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
+  isList: boolean;
+  // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
+  condition: ListSearchCondition;
 }
 
 export class ListSelectedPlan {
@@ -72,26 +87,31 @@ export class ListSelectedPlan {
     this.isList = true;
   }
   // エリア
-  // エリア
-  mArea: NestDataSelected[] = [];
+  mArea: NestDataSelected[];
   // 検索カテゴリ
-  // 検索カテゴリ
-  mSearchCategory: NestDataSelected[] = [];
+  mSearchCategory: NestDataSelected[];
+  // 検索カテゴリ(プラン)
+  mSearchCategoryPlan: NestDataSelected[];
   // ソート順
-  // ソート順
-  mSort: DataSelected[] = [];
+  mSort: DataSelected[];
+  // 営業曜日
+  businessDay: DataSelected[];
   // tabIndex
-  // tabIndex
-  tabIndex!: number;
+  tabIndex: number;
   // source(list)
-  // source(list)
-  planList: PlanAppList[] = [];
+  planList: PlanAppList[];
+  // source(list) 削除予定★★★
+  spotList: SpotAppList[];
+  // プランスポット一覧
+  planSpotList: PlanSpotList[];
   // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
-  // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
-  condition: ListSearchCondition = new ListSearchCondition;
+  condition: ListSearchCondition;
 }
+
+
+
 
 // お気に入り登録
 export class RegistFavorite {
@@ -111,14 +131,11 @@ export class AddSpot {
     this.googleSpot = new GoogleSpot();
   }
   // 作成中のプラン
-  // 作成中のプラン
-  MyPlan: MyPlanApp = new MyPlanApp;
+  MyPlan: MyPlanApp;
   // 追加するスポットID
-  // 追加するスポットID
-  spotId!: number;
+  spotId: number;
   // 1:Remojuスポット 2:Googleスポット 3:手入力スポット(指定しない場合のデフォルト：1)
-  // 1:Remojuスポット 2:Googleスポット 3:手入力スポット(指定しない場合のデフォルト：1)
-  type!: number;
+  type: number;
   // Googleスポット(登録時のみ指定)
   googleSpot: GoogleSpot;
 }
@@ -126,226 +143,183 @@ export class AddSpot {
 // 現在地
 export class Location {
   // 緯度
-  // 緯度
-  latitude!: number;
+  latitude: number;
   // 経度
-  // 経度
-  longitude!: number;
+  longitude: number;
   // エラーコード
-  // エラーコード
-  errorCd!: number;
+  errorCd: number;
 }
 
 // プランに追加する(プラン)
 export class AddPlan {
   // 作成中のプラン
-  // 作成中のプラン
-  MyPlan: MyPlanApp = new MyPlanApp;
+  MyPlan: MyPlanApp;
   // true: Remojuプラン、プラン作成 false: プラン投稿
-  // true: Remojuプラン、プラン作成 false: プラン投稿
-  isRemojuPlan: boolean = false;
+  isRemojuPlan: boolean;
   // 追加するプランID
-  // 追加するプランID
-  planId!: number;
+  planId: number;
 }
 
 export class MyPlanApp {
-  isSaved: boolean = false;
-  isTransferSearch: boolean = false;
-  planUserId!: number;
-  isBus: boolean = false;
-  isAuto: boolean = false;
-  travelDate: any;
-  planName!: string;
-  planExplanation!: string;
-  memo!: string;
-  timeRequired!: string;
-  isRelease: boolean = false;
+  isSaved: boolean;
+  isTransferSearch: boolean;
+  planUserId: number;
+  isBus: boolean;
+  isAuto: boolean;
+  travelDate: string;
+  planName: string;
+  planExplanation: string;
+  memo: string;
+  timeRequired: string;
+  isRelease: boolean;
 //  isAnonymous: boolean;
-  //  isAnonymous: boolean;
-  isShare: boolean = false;
-  shareUrl!: string;
-  isCreation: boolean = false;
-  basePlanId!: number;
+  isShare: boolean;
+  shareUrl: string;
+  isCreation: boolean;
+  basePlanId: number;
   // 所要時間(表示用)
-  // 所要時間(表示用)
-  timeRequiredDisp!: string;
+  timeRequiredDisp: string;
   // 出発時間
-  // 出発時間
-  startTime!: string;
+  startTime: string;
   // オブジェクトID
-  // オブジェクトID
-  objectId!: string;
+  objectId: string;
   // プランユーザスポットリスト
-  // プランユーザスポットリスト
-  planSpots: PlanSpotCommon[] = [];
+  planSpots: PlanSpotCommon[];
   // 出発地
-  // 出発地
-  startPlanSpot: PlanSpotCommon = new PlanSpotCommon;
+  startPlanSpot: PlanSpotCommon;
   // 到着地
-  // 到着地
-  endPlanSpot: PlanSpotCommon = new PlanSpotCommon;
+  endPlanSpot: PlanSpotCommon;
   // 写真(編集用)
-  // 写真(編集用)
-  refPictureUrl!: string;
+  refPictureUrl: string;
   // 写真(登録用)
-  // 写真(登録用)
-  pictureUrl!: string;
+  pictureUrl: string;
   // プレビュー画像URL
-  // プレビュー画像URL
-  picturePreviewUrl!: string;
+  picturePreviewUrl: string;
   // 写真
-  // 写真
-  pictureFile!: File;
+  pictureFile: File;
   // 写真拡張子
-  // 写真拡張子
-  pictureFileExt!: string;
+  pictureFileExt: string;
   // エリアID(登録用)
-  // エリアID(登録用)
-  areaId!: number;
-  areaId2!: number;
+  areaId: number;
+  areaId2: number;
   // カテゴリ(登録用)
-  // カテゴリ(登録用)
-  categories: number[] = [];
+  categories: number[];
   // url言語コード(m_language.language_cd_1と同様)
-  // url言語コード(m_language.language_cd_1と同様)
-  languageCd1: string[] = [];
+  languageCd1: string[];
   // 駅探検索結果ステータス
-  // 駅探検索結果ステータス
-  ekitanStatus!: string;
+  ekitanStatus: string;
 }
 
 // プランスポット
 export class PlanSpotCommon {
   // タイプ 1:Remojuスポット 2:Googleスポット 3:手入力スポット
-  // タイプ 1:Remojuスポット 2:Googleスポット 3:手入力スポット
-  type!: number;
-  displayOrder!: number;
-  spotId!: number;
-  spotName!: string;
-  subheading!: string;
-  overview!: string;
-  latitude!: string;
-  longitude!: string;
-  pictureUrl!: string;
+  type: number;
+  displayOrder: number;
+  spotId: number;
+  spotName: string;
+  subheading: string;
+  overview: string;
+  latitude: string;
+  longitude: string;
+  pictureUrl: string;
   // プラン投稿用動画
-  // プラン投稿用動画
-  videos: string[] = [];
-  startTime!: string;
-  stayTime!: number;
-  isFavorite: boolean = false;
+  videos: string[];
+  startTime: string;
+  stayTime: number;
+  isFavorite: boolean;
   // スポット写真またはプラン投稿写真
-  // スポット写真またはプラン投稿写真
-  pictures: string[] = [];
+  pictures: string[];
   // PV数
-  // PV数
-  pvAllQty!: number;
+  pvAllQty: number;
   // true:掲載終了
-  // true:掲載終了
-  isEndOfPublication: boolean = false;
-  memo!: string;
-  transfer!: string;
-  basePlanId!: number;
+  isEndOfPublication: boolean;
+  memo: string;
+  transfer: string;
+  basePlanId: number;
 
-  line: Line[] = [];
-  transtime: any;
-  transflow: any;
+  line: Line[];
+  transtime: string;
+  transflow: string[];
   // plan-detail overview expantion flag
-  // plan-detail overview expantion flag
-  ismore: boolean = false;
+  ismore:boolean;
   // plan-detail overview expantion button label
-  // plan-detail overview expantion button label
-  label!: string;
-  destination!: string;
+  label:string;
+  destination: string;
 
   // 以下、プラン作成で使用
-  // 以下、プラン作成で使用
-  areaName!: string;
-  categoryText!: string;
-  categoryIcon!: string;
-  spotAccess: SpotAccesses = new SpotAccesses;
-  businessHours: Businesshours[] = [];
-  regularHoliday!: string;
+  areaName: string;
+  categoryText: string;
+  categoryIcon: string;
+  spotAccess: SpotAccesses;
+  businessHours: Businesshours[];
+  regularHoliday: string;
   // 営業時間ヘッダ表示用
-  // 営業時間ヘッダ表示用
-  businessHourHead!: string;
+  businessHourHead: string;
   // 定休日
-  // 定休日
-  holiday!: string;
+  holiday: string;
   // 画像
-  // 画像
-  planUserpictures: PlanUserPicture[] = [];
+  planUserpictures: PlanUserPicture[];
   // プレビュー画像
-  // プレビュー画像
-  previewPictures: string[] = [];
+  previewPictures: string[];
 
   // 以下、プラン投稿で使用
   // 撮影日時
-  // 以下、プラン投稿で使用
-  // 撮影日時
-  dateTimeOriginal!: string;
+  dateTimeOriginal: string;
 // Googleスポット候補
-  // Googleスポット候補
-  googleSpotNearBySerach: GoogleNearBySearch[] = [];
+  googleSpotNearBySerach: GoogleNearBySearch[];
 
   // Googleスポット
-  // Googleスポット
-  googleSpot: GoogleSpot = new GoogleSpot;
+  googleSpot: GoogleSpot;
   // GoogleプレイスID(選択値)
-  // GoogleプレイスID(選択値)
-  place_id!: string;
-
-  categoryName!: string;
+  place_id: string;
 }
 
 export class PlanUserPicture {
-  plan_user_id!: number;
-  display_order!: number;
-  picture_display_order!: number;
-  picture_url!: string;
-  is_video: boolean = false;
-  is_main: boolean = false;
+  plan_user_id: number;
+  display_order: number;
+  picture_display_order: number;
+  picture_url: string;
+  is_video: boolean;
+  is_main: boolean;
   // プレビュー画像URL
-  // プレビュー画像URL
-  picturePreviewUrl!: string;
+  picturePreviewUrl: string;
   // 写真
-  pictureFile: any;
+  pictureFile: File;
   // 写真拡張子
-  // 写真拡張子
-  pictureFileExt!: string;
+  pictureFileExt: string;
 }
 
 export class GoogleNearBySearch {
-  business_status!: string;
-  geometry: Geometry = new Geometry;
-  icon!: string;
-  name!: string;
-  photos: Photo[] = [];
-  place_id!: string;
-  plus_code: PlusCode = new PlusCode;
-  rating!: number;
-  types: string[] = [];
-  user_ratings_total!: number;
-  vicinity!: string;
+  business_status: string;
+  geometry: Geometry;
+  icon: string;
+  name: string;
+  photos: Photo[];
+  place_id: string;
+  plus_code: PlusCode;
+  rating: number;
+  types: string[];
+  user_ratings_total: number;
+  vicinity: string;
 }
 
 export class GoogleTextSearch {
-  business_status!: string;
-  formatted_address!: string;
-  geometry: Geometry = new Geometry;
-  icon!: string;
-  name!: string;
-  photos: Photo[] = [];
-  place_id!: string;
-  plus_code: PlusCode = new PlusCode;
-  rating!: number;
-  types: string[] = [];
-  user_ratings_total!: number;
+  business_status: string;
+  formatted_address: string;
+  geometry: Geometry;
+  icon: string;
+  name: string;
+  photos: Photo[];
+  place_id: string;
+  plus_code: PlusCode;
+  rating: number;
+  types: string[];
+  user_ratings_total: number;
 }
 
 export class Geometry{
-  location: GoogleLocation = new GoogleLocation;
-  viewport: Viewport = new Viewport;
+  location: GoogleLocation;
+  viewport: Viewport;
 }
 
 export class GoogleLocation{
@@ -354,78 +328,75 @@ export class GoogleLocation{
 }
 
 export class Viewport{
-  northeast: GoogleLocation = new GoogleLocation;
-  southwest: GoogleLocation = new GoogleLocation;
+  northeast: GoogleLocation;
+  southwest: GoogleLocation;
 }
 
 export class Photo{
-  height!: number;
-  html_attributions: string[] = [];
-  photo_reference!: string;
-  width!: number;
+  height: number;
+  html_attributions: string[];
+  photo_reference: string;
+  width: number;
 }
 
 export class PlusCode{
-  compound_code!: string;
-  global_code!: string;
+  compound_code: string;
+  global_code: string;
 }
 
 // 全画面Mapパラメータ
 export class MapFullScreenParam{
-  planId!: number;
-  isDetail: boolean = false;
-  planSpots: PlanSpotCommon[] = [];
-  startPlanSpot: PlanSpotCommon = new PlanSpotCommon;
-  endPlanSpot: PlanSpotCommon = new PlanSpotCommon;
+  planId: number;
+  isDetail: boolean;
+  planSpots: PlanSpotCommon[];
+  startPlanSpot: PlanSpotCommon;
+  endPlanSpot: PlanSpotCommon;
 }
 
 // Mapスポット
 export class MapSpot {
-  type!: number;
-  spotId!: number;
-  spotName!: string;
+  type: number;
+  spotId: number;
+  spotName: string;
   spotNameLangDisp: any;
-  subheading!: string;
-  latitude!: number;
-  longitude!: number;
-  pictureUrl!: string;
-  stayTime!: number;
-  memo!: string;
-  isFavorite: boolean = false;
-  transfer!: string;
-  polylineColor!: string;
+  subheading: string;
+  latitude: number;
+  longitude: number;
+  pictureUrl: string;
+  stayTime: number;
+  memo: string;
+  isFavorite: boolean;
+  transfer: string;
+  polylineColor: string;
   iconUrl: any;
-  visible: boolean = false;
-  zIndex!: number;
-  directions!: string;
-  displayOrder!: number;
-  planId!: number;
-  isStart: boolean = false;
-  isEnd: boolean = false;
+  visible: boolean;
+  zIndex:number;
+  directions: string;
+  displayOrder: number;
+  planId: number;
+  isStart: boolean;
+  isEnd: boolean;
   // true:掲載終了
-  // true:掲載終了
-  isEndOfPublication: boolean = false;
+  isEndOfPublication: boolean;
   // プラン詳細から遷移した場合、true
-  // プラン詳細から遷移した場合、true
-  isDetail: boolean = false;
+  isDetail: boolean;
   // その他Remojuスポットの場合、true
-  // その他Remojuスポットの場合、true
-  isOhterSpot: boolean = false;
+  isOhterSpot: boolean;
 }
 
 // お気に入り数
 export class FavoriteCount{
-  SpotCount!: number;
-  PlanCount!: number;
+  SpotCount: number;
+  PlanCount: number;
 }
 
 // 確認ダイアログパラメータ
 export class ComfirmDialogParam{
-  title!: string;
-  text!: string;
-  subText!: string;
-  leftButton!: string;
-  rightButton!: string;
+  title: string;
+  text: string;
+  subText: string;
+  leftButton: string;
+  rightButton: string;
 }
 
 export interface OAuthErrorEventParams {
@@ -436,20 +407,26 @@ export interface OAuthErrorEventParams {
 
 // 画像サイズ変換戻り値
 export class ImageSize {
-  file!: File;
-  previewUrl!: string;
+  file: File;
+  previewUrl: string;
 }
 
 export class CachePlans{
-  count!: number;
-  offset!: number;
-  data: PlanAppList[] = [];
-  keyword!: string;
+  count:number;
+  offset:number;
+  data:PlanAppList[];
+  keyword: string;
 }
 
 export class CacheSpots{
-  count!: number;
-  offset!: number;
-  data: SpotAppList[] = [];
-  keyword!: string;
+  count:number;
+  offset:number;
+  data:SpotAppList[];
+  keyword: string;
+}
+
+export class CacheStore{
+  page:number;
+  offset:number;
+  keyword:string;
 }

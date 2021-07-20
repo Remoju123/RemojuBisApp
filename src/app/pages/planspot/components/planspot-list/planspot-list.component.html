@@ -1,0 +1,9 @@
+<div class="box"
+infinite-scroll
+[infiniteScrollDistance]="2"
+[infiniteScrollUpDistance]="1.5"
+[infiniteScrollThrottle]="150"
+(scrolled)="scrolledEmit()">
+  <ng-content>
+  </ng-content>
+</div>

@@ -1,0 +1,64 @@
+<mat-card>
+  <mat-card-content>
+    <div class='header'>
+      <p>{{item.id}}</p>
+    </div>
+    <div class='card-box'>
+      <div class='card-header'>
+        <div class='picture'>
+          <owl-carousel-o *ngIf="item.pictures && item.pictures.length > 1; else single" [options]="mainOptions">
+            <ng-container *ngFor="let src of item.pictures; index as i">
+              <ng-template carouselSlide id="row.planId">
+                <a class="link" (click)="linktoDetail(item.id)">
+                  <div class="thumbmain">
+                    <img
+                      [src]="src"
+                      [alt]="item.id"
+                      [title]="item.id"
+                    />
+                  </div>
+                </a>
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+          <ng-template #single>
+            <ng-container *ngFor="let src of item.pictures; index as i">
+              <div class="thumbmain fullwidth">
+                <img
+                  [src]="src"
+                  [alt]="item.id"
+                  [title]="item.id"
+                />
+              </div>
+            </ng-container>
+          </ng-template>
+        </div>
+        <div class='info'>
+          <div class='lt'>
+            <!-- <span class="areaName" *ngIf="item.areaName">
+              {{ item.areaName | langFilter: lang }}
+            </span>
+            <span class="category" *ngIf="item.areaName2">
+              {{ item.areaName2 | langFilter: lang }}
+            </span> -->
+            
+          </div>
+          <div class='rt'>
+            
+          </div>
+          
+        </div>
+      </div>
+
+      <div class='card-bottom'>
+        <mat-list>
+          <mat-list-item>
+            <p>{{item.id}} {{item.planName}} {{item.spotName}}</p>
+            <div>{{item.releaseCreateDatetime}}</div>
+            <div>{{item.pvQtyAll}}</div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
