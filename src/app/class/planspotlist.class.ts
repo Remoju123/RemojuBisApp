@@ -178,3 +178,10 @@ export class SpotAccesses {
   access: number;
   nearest: string;
 }
+
+export class CacheStore {
+  details: PlanSpotList[];
+  page:number;
+  offset:number;
+  keyword:string;
+}

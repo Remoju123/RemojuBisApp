@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject} from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,10 +7,13 @@ import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
-import { PlanSpotList } from 'src/app/class/planspotlist.class';
+import { CacheStore, PlanSpotList } from 'src/app/class/planspotlist.class';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -50,6 +53,8 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
+    private transferState: TransferState,
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: object
     ) {
       this.limit = 6;
@@ -75,6 +80,8 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
       this.historyReplace(result.searchParams);
     })
+
+    console.log(this.transferState)
   }
 
   ngOnDestroy(){
@@ -193,7 +200,7 @@ export class PlanspotComponent implements OnInit,OnDestroy {
             this.details$ = this.rows.slice(0,this.end);
           })
       }
-      this.p++;
+      this.p++;      
     }
   }
 
@@ -212,6 +219,13 @@ export class PlanspotComponent implements OnInit,OnDestroy {
   }
 
   linktoDetail(id:number){
-    console.log(`this p = ${this.p}`);
+    const c = new CacheStore();
+    c.details = this.details$;
+    c.page = this.p - 1;
+    c.offset = this.offset;
+    c.keyword = "";
+    this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
+
+    this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
 }

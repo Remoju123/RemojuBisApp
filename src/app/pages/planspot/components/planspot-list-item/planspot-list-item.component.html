@@ -9,7 +9,7 @@
           <owl-carousel-o *ngIf="item.pictures && item.pictures.length > 1; else single" [options]="mainOptions">
             <ng-container *ngFor="let src of item.pictures; index as i">
               <ng-template carouselSlide id="row.planId">
-                <a class="link" (click)="linktoPlan(item.id)">
+                <a class="link" (click)="linktoDetail(item.id)">
                   <div class="thumbmain">
                     <img
                       [src]="src"

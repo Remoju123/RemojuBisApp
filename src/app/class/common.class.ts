@@ -424,3 +424,9 @@ export class CacheSpots{
   data:SpotAppList[];
   keyword: string;
 }
+
+export class CacheStore{
+  page:number;
+  offset:number;
+  keyword:string;
+}

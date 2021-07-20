@@ -14,14 +14,14 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() lang: string;
   @Input() isFavorite: boolean;
 
-  @Output() linked = new EventEmitter<Number>();
+  @Output() linked = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  linktoPlan(id:number){
+  linktoDetail(id:number){
     this.linked.emit(id);
   }
 
