@@ -91,7 +91,9 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       window.scrollTo(0,this.offset);
       setTimeout(() => {
         this.offset = 0;
-      }, 500);
+      }, 600);
+    }else{
+      this.offset = 0; 
     }
   }
 
