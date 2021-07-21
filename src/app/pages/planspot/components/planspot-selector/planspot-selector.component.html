@@ -1,2 +1,30 @@
 <mat-card>
+  <mat-card-content>
+    <div class='row title'>
+      みんなのおすすめを探す
+    </div>
+    <div class='row'>
+      <input type="search" 
+        placeholder="「京都女子旅」「スカイツリー」..." 
+        class="keyword"/>
+    </div>
+    <div class='row button'>
+      <button mat-button class="spot-search">
+        {{ 'AreaAndCommitment' | translate }}
+      </button>
+    </div>
+    <div class='row info'>
+      <div class='count'>
+        120<span class="sm">&nbsp;{{ "Count" | translate }}</span>
+      </div>
+      <mat-form-field class='condition'>
+        <mat-select></mat-select>
+      </mat-form-field>
+      <button mat-fab class="spot"></button>
+      <button mat-fab class="plan"></button>
+    </div>
+    
+  </mat-card-content>
+  
+
 </mat-card>

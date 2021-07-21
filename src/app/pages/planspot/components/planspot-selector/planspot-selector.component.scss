@@ -1,0 +1,96 @@
+@import "../../../../../assets/scss/vars";
+
+.mat-card{
+  padding: 0;
+  .mat-card-content{
+    margin: 0 16px;
+    .row{
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      &.title{
+        font-size: 14px;
+        padding: 12px;
+      }
+      
+      input{
+        width: 100%;
+        height: 34px;
+        line-height: 34px;
+        border: 1px solid #B7B7B7;
+        border-radius: 17px;
+        padding: 0 17px;
+        font-size: 16px;
+      }
+
+      &.button{
+        display: flex;
+        justify-content: flex-end;
+        button.spot-search{
+          font-size: 12px;
+          color: $color-gld02;
+          padding: 0 8px 0 16px;
+      
+          &::before{
+            content: url("../../../../../assets/img/searchplus.svg");
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            padding-right: 3px;
+            vertical-align: sub;
+          }
+      
+          ::ng-deep.mat-button-focus-overlay{
+            background-color: transparent!important; 
+          }
+        }
+      }
+      
+    
+      &.info{
+        display: flex;
+        justify-content: space-between;
+        .count{
+          font-size: 17px;
+          color: $color-gry06;
+          margin-right: 5px;
+
+          .sm{
+            font-size: 10px;
+          }
+        }
+
+        .mat-form-field.condition{
+          ::ng-deep.mat-form-field-flex{
+            width: 90px;
+          }
+        }
+
+        button{
+          border: none;
+
+          width: 96px;
+          height: 23px;
+          background-color: transparent;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center center;
+        }
+
+        button.spot{
+          background-image: url("../../../../../assets/img/btn_spot.svg");
+          background-repeat: no-repeat;
+        }
+
+        button.plan{
+          background-image: url("../../../../../assets/img/btn_plan.svg");
+          background-repeat: no-repeat;
+        }
+      }
+
+
+    
+    }
+
+  }
+}

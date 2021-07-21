@@ -11,6 +11,7 @@ import { PlanspotListItemComponent } from './components/planspot-list-item/plans
 import { MaterialModule } from "../../material/material.module";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UtilsModule } from "../../utils/utils.module";
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { UtilsModule } from "../../utils/utils.module";
     //MatCardModule,
     MaterialModule,
     InfiniteScrollModule,
-    UtilsModule
+    UtilsModule,
+    TranslateModule
   ],
   exports: [
     PlanspotComponent
