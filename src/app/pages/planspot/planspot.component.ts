@@ -71,9 +71,9 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       }, 1500);
     }
     
-    // if(this.offset === window.pageYOffset){
-    //   this.offset = 0;
-    // }
+    if(this.offset === window.pageYOffset){
+      this.offset = 0;
+    }
   
   }
 
