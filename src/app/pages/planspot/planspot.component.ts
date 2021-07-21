@@ -64,11 +64,11 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
 
   ngAfterViewChecked(): void {
+    if(this.offset > 0){
+      window.scrollTo(0,this.offset);
+    }
     if(this.offset === window.pageYOffset){
       this.offset = 0;
-    }
-    if(this.offset>0){
-      window.scrollTo(0,this.offset);
     }
   }
 
@@ -101,6 +101,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   recoveryQueryParams() {
+    
     this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params:Params) => {
       if ((params.aid && params.aid.length > 0)
        || (params.era && params.era.length > 0)
