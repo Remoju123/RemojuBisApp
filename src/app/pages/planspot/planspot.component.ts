@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject} from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject,AfterViewInit,AfterViewChecked} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
   templateUrl: './planspot.component.html',
   styleUrls: ['./planspot.component.scss']
 })
-export class PlanspotComponent implements OnInit,OnDestroy {
+export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
 
   condition: ListSearchCondition;
@@ -63,6 +63,16 @@ export class PlanspotComponent implements OnInit,OnDestroy {
       this.condition = new ListSearchCondition();
     }
 
+  ngAfterViewChecked(): void {
+    let y = window.pageYOffset;
+    if(this.offset>0){
+      window.scrollTo(0,this.offset);
+      if(this.offset === y){
+        this.offset = 0;
+      }
+    }
+  }
+
   async ngOnInit() {
 
     // QueryParam判定して検索条件取得
@@ -86,18 +96,8 @@ export class PlanspotComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  ngAfterViewChecked(){
-    if(this.offset>0){
-      window.scrollTo(0,this.offset);
-      setTimeout(() => {
-        this.offset = 0;
-      }, 600);
-    }else{
-      this.offset = 0; 
-    }
-  }
-
   onScrollDown() {
+    this.offset = 0;
     this.mergeNextDataSet();
   }
 
