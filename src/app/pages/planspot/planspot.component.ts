@@ -80,8 +80,14 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.recoveryQueryParams(); //get listSearchCondition
 
     // プランスポット一覧データセットを取得してフィルタ、並べ替え処理
-    this.getPlanSpotDataSet();
     
+    if(this.transferState.hasKey(PLANSPOT_KEY)){
+      this.cacheRecoveryDataSet();
+    }else{
+      this.getPlanSpotDataSet();
+    }
+
+
     // マージセットSubjectの中継開始
     this.planspots.searchFilter
     .pipe(takeUntil(this.onDestroy$))
@@ -98,7 +104,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   onScrollDown() {
-    this.offset = 0;
     this.mergeNextDataSet();
   }
 
@@ -146,8 +151,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         // フィルタリング処理
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
 
-        // 詳細データを初期化
-        this.p = 1;
         // ソート->詳細取得
         this.mergeNextDataSetAfterSorting(this.sortval);
       });
@@ -176,49 +179,47 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async mergeNextDataSet(){
-    let startIndex = 0;
-
-    if(this.transferState.hasKey(PLANSPOT_KEY)){
-      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY,null);
-      this.rows = cache.data;
-      this.end = cache.end;
-      this.offset = cache.offset;
-      this.details$ = this.rows.slice(0,this.end);
-      this.p = cache.p;
-
-      this.transferState.remove(PLANSPOT_KEY);
-    }else{
-      startIndex = (this.p - 1) * this.limit;
-      this.end = startIndex + this.limit;
-      if(this.rows.length - startIndex < this.limit){
-        this.end = this.rows.length;
-      }
-
-      for (let i = startIndex; i < this.end; i++){
-        (await this.planspots.fetchDetails(this.rows[i]))
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            // 非同期で戻された結果セットの順番を維持するための処理
-            const idx = this.rows.findIndex(v => v.id === d.id);
-
-            // 掲載終了の場合は削除
-            if(d.isEndOfPublication){
-              // 削除処理
-              this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
-              this.rows.splice(idx, 1);
-                if(this.rows.length - startIndex < this.limit){
-                  this.end = this.rows.length;
-                }
-            }else{
-              this.rows[idx] = d;
-              this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-            }
-            this.details$ = this.rows.slice(0,this.end);
-          })
-      }
-      this.p++;      
-    
+    //let startIndex = 0;
+    let startIndex = (this.p - 1) * this.limit;
+    this.end = startIndex + this.limit;
+    if(this.rows.length - startIndex < this.limit){
+      this.end = this.rows.length;
     }
+
+    for (let i = startIndex; i < this.end; i++){
+      (await this.planspots.fetchDetails(this.rows[i]))
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(d => {
+          // 非同期で戻された結果セットの順番を維持するための処理
+          const idx = this.rows.findIndex(v => v.id === d.id);
+
+          // 掲載終了の場合は削除
+          if(d.isEndOfPublication){
+            // 削除処理
+            this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+            this.rows.splice(idx, 1);
+              if(this.rows.length - startIndex < this.limit){
+                this.end = this.rows.length;
+              }
+          }else{
+            this.rows[idx] = d;
+            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+          }
+          this.details$ = this.rows.slice(0,this.end);
+        })
+    }
+    this.p++;     
+  }
+
+  cacheRecoveryDataSet(){
+    const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY,null);
+    this.rows = cache.data;
+    this.end = cache.end;
+    this.offset = cache.offset;
+    this.details$ = this.rows.slice(0,this.end);
+    this.p = cache.p;
+
+    this.transferState.remove(PLANSPOT_KEY);
   }
 
   historyReplace(searchParams:string):void{
