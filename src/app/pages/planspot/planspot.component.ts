@@ -64,14 +64,15 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
 
   ngAfterViewChecked(): void {
-    if(this.offset > 0){
-      window.scrollTo(0,this.offset);
+    if(this.offset){
+      if(this.offset > 0){
+        window.scrollTo(0,this.offset);
+      }
+      
+      if(this.offset === window.pageYOffset){
+        this.offset = 0;
+      }
     }
-    
-    if(this.offset === window.pageYOffset){
-      this.offset = 0;
-    }
-  
   }
 
   async ngOnInit() {

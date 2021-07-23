@@ -127,6 +127,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
 
     mc.get('pinch').set({enable: true});
     mc.get('rotate').set({enable: true});
+    mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
     for (const eventName in this.overrides) {
       mc.get(eventName).set(this.overrides[eventName]);
