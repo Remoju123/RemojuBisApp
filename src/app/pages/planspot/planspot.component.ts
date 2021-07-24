@@ -77,14 +77,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
 
-    if(isPlatformBrowser(this.platformId)){
-      history.pushState(null,null,null);
-      window.onpopstate = (e) =>{
-        history.pushState(null,null,null);
-      }
-    }
-
-
     // QueryParam判定して検索条件取得
     this.recoveryQueryParams(); //get listSearchCondition
 
@@ -241,10 +233,18 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       } else {
         history.replaceState("search_key", "", location.pathname.substring(1));
       }
+      // history back desabled
+      history.pushState(null,null,null);
+      window.onpopstate = (e) =>{
+        history.pushState(null,null,null);
+      }
     }
   }
 
   linktoDetail(id:number){
+
+    console.log(id);
+
     const c = new CacheStore();
     c.data = this.rows;
     c.p = this.p;
@@ -252,9 +252,14 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.offset = window.pageYOffset;
     c.keyword = "";
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
-    
-    this.router.navigate(["/" + this.lang + "/plans/detail",id]);
-  }
 
+    if(id > 10000){
+      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
+    }else{
+      this.router.navigate(["/" + this.lang + "/plans/detail",id]);
+    }
+    
+    
+  }
   
 }

@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card id="planspot-list-item">
   <mat-card-content>
     <div class='header'>
       <p>{{item.id}}</p>
@@ -9,27 +9,25 @@
           <owl-carousel-o *ngIf="item.pictures && item.pictures.length > 1; else single" [options]="mainOptions">
             <ng-container *ngFor="let src of item.pictures; index as i">
               <ng-template carouselSlide id="row.planId">
-                <a class="link" (click)="linktoDetail(item.id)">
-                  <div class="thumbmain">
-                    <img
-                      [src]="src"
-                      [alt]="item.id"
-                      [title]="item.id"
-                    />
-                  </div>
-                </a>
+                <div class="thumbmain">
+                  <img
+                    [src]="src"
+                    [alt]="item.id"
+                    [title]="item.id"
+                  />
+                </div>
               </ng-template>
             </ng-container>
           </owl-carousel-o>
           <ng-template #single>
             <ng-container *ngFor="let src of item.pictures; index as i">
-              <div class="thumbmain fullwidth">
-                <img
-                  [src]="src"
-                  [alt]="item.id"
-                  [title]="item.id"
-                />
-              </div>
+                <div class="thumbmain fullwidth">
+                  <img
+                    [src]="src"
+                    [alt]="item.id"
+                    [title]="item.id"
+                  />
+                </div>
             </ng-container>
           </ng-template>
         </div>
@@ -59,6 +57,8 @@
           </mat-list-item>
         </mat-list>
       </div>
+
+      <div class='link-area' (click)="linktoDetail(item.id)"></div>
     </div>
   </mat-card-content>
 </mat-card>
