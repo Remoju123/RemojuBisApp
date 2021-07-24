@@ -81,13 +81,11 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.recoveryQueryParams(); //get listSearchCondition
 
     // プランスポット一覧データセットを取得してフィルタ、並べ替え処理
-    
     if(this.transferState.hasKey(PLANSPOT_KEY)){
       this.cacheRecoveryDataSet();
     }else{
       this.getPlanSpotDataSet();
     }
-
 
     // マージセットSubjectの中継開始
     this.planspots.searchFilter
@@ -179,7 +177,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.mergeNextDataSet();
   }
 
-  async mergeNextDataSet(){
+  mergeNextDataSet(){
     //let startIndex = 0;
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
@@ -188,28 +186,30 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
 
     for (let i = startIndex; i < this.end; i++){
-      (await this.planspots.fetchDetails(this.rows[i]))
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(d => {
-          // 非同期で戻された結果セットの順番を維持するための処理
-          const idx = this.rows.findIndex(v => v.id === d.id);
+      this.planspots.fetchDetails2(this.rows[i])
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(d => {
+        // 非同期で戻された結果セットの順番を維持するための処理
+        const idx = this.rows.findIndex(v => v.id === d.id);
 
-          // 掲載終了の場合は削除
-          if(d.isEndOfPublication){
-            // 削除処理
-            this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
-            this.rows.splice(idx, 1);
-              if(this.rows.length - startIndex < this.limit){
-                this.end = this.rows.length;
-              }
-          }else{
-            this.rows[idx] = d;
-            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-          }
-          this.details$ = this.rows.slice(0,this.end);
-        })
+        // 掲載終了の場合は削除
+        if(d.isEndOfPublication){
+          // 削除処理
+          this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+          this.rows.splice(idx, 1);
+            if(this.rows.length - startIndex < this.limit){
+              this.end = this.rows.length;
+            }
+        }else{
+          this.rows[idx] = d;
+          this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+        }
+        this.details$ = this.rows.slice(0,this.end);
+      })
     }
-    this.p++;     
+    this.p++;
+
+    this.mergeDetaCorrection();
   }
 
   cacheRecoveryDataSet(){
@@ -249,16 +249,21 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
 
-  onSwipe(e){
-    if(e.deltaX<0){
-      //console.log(e);
-      const c = new CacheStore();
-      c.data = this.rows;
-      c.p = this.p;
-      c.end = this.end;
-      c.offset = window.pageYOffset;
-      c.keyword = "";
-      this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
+  mergeDetaCorrection(){
+    if(this.details$.length > 0){
+      if(this.details$[0].guid === null){
+        for (let i = 0; i < this.limit; i++){
+          this.planspots.fetchDetails2(this.rows[i])
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            const idx = this.rows.findIndex(v => v.id === d.id);
+            this.rows[idx] = d;
+            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+            this.details$ = this.rows.slice(0,this.end);
+          });
+        }
+      }
     }
   }
+  
 }
