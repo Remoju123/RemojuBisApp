@@ -177,7 +177,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.mergeNextDataSet();
   }
 
-  mergeNextDataSet(){
+  async mergeNextDataSet(){
     //let startIndex = 0;
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
@@ -186,26 +186,26 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
 
     for (let i = startIndex; i < this.end; i++){
-      this.planspots.fetchDetails2(this.rows[i])
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(d => {
-        // 非同期で戻された結果セットの順番を維持するための処理
-        const idx = this.rows.findIndex(v => v.id === d.id);
+      (await this.planspots.fetchDetails(this.rows[i]))
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(d => {
+          // 非同期で戻された結果セットの順番を維持するための処理
+          const idx = this.rows.findIndex(v => v.id === d.id);
 
-        // 掲載終了の場合は削除
-        if(d.isEndOfPublication){
-          // 削除処理
-          this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
-          this.rows.splice(idx, 1);
-            if(this.rows.length - startIndex < this.limit){
-              this.end = this.rows.length;
-            }
-        }else{
-          this.rows[idx] = d;
-          this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-        }
-        this.details$ = this.rows.slice(0,this.end);
-      })
+          // 掲載終了の場合は削除
+          if(d.isEndOfPublication){
+            // 削除処理
+            this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+            this.rows.splice(idx, 1);
+              if(this.rows.length - startIndex < this.limit){
+                this.end = this.rows.length;
+              }
+          }else{
+            this.rows[idx] = d;
+            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+          }
+          this.details$ = this.rows.slice(0,this.end);
+        })
     }
     this.p++;
 
@@ -213,7 +213,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     if(this.details$.length > this.limit){
       if(this.details$[0].guid === null){
         for (let i = 0; i < this.limit; i++){
-          this.planspots.fetchDetails2(this.rows[i])
+          (await this.planspots.fetchDetails(this.rows[i]))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
