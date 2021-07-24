@@ -210,7 +210,20 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.p++;
 
     /*leading merge data mey be missing when history forward/back, recover for that.*/
-    this.mergeDetaRecover();
+    if(this.details$.length > this.limit){
+      if(this.details$[0].guid === null){
+        for (let i = 0; i < this.limit; i++){
+          this.planspots.fetchDetails2(this.rows[i])
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            const idx = this.rows.findIndex(v => v.id === d.id);
+            this.rows[idx] = d;
+            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+            this.details$ = this.rows.slice(0,this.end);
+          });
+        }
+      }
+    }
   }
 
   cacheRecoveryDataSet(){
@@ -250,21 +263,5 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
 
-  mergeDetaRecover():void{
-    if(this.details$.length > 0){
-      if(this.details$[0].guid === null){
-        for (let i = 0; i < this.limit; i++){
-          this.planspots.fetchDetails2(this.rows[i])
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            const idx = this.rows.findIndex(v => v.id === d.id);
-            this.rows[idx] = d;
-            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-            this.details$ = this.rows.slice(0,this.end);
-          });
-        }
-      }
-    }
-  }
   
 }
