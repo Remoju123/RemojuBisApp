@@ -248,4 +248,17 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     
     this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
+
+  onSwipe(e){
+    if(e.deltaX<0){
+      //console.log(e);
+      const c = new CacheStore();
+      c.data = this.rows;
+      c.p = this.p;
+      c.end = this.end;
+      c.offset = window.pageYOffset;
+      c.keyword = "";
+      this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
+    }
+  }
 }
