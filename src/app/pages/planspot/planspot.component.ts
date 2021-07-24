@@ -209,7 +209,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
     this.p++;
 
-    this.mergeDetaCorrection();
+    /*leading merge data mey be missing when history forward/back, recover for that.*/
+    this.mergeDetaRecover();
   }
 
   cacheRecoveryDataSet(){
@@ -249,7 +250,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.router.navigate(["/" + this.lang + "/plans/detail",id]);
   }
 
-  mergeDetaCorrection(){
+  mergeDetaRecover():void{
     if(this.details$.length > 0){
       if(this.details$[0].guid === null){
         for (let i = 0; i < this.limit; i++){
