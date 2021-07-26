@@ -431,7 +431,7 @@ export class CommonService implements OnDestroy{
         const ctx:any = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, dstWidth, dstHeight);
         // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/jpeg");
+        const resized = canvas.toDataURL("image/webp",0.75);
         result.previewUrl = resized;
         // blobに再変換
         var blob = this.base64toBlob(resized);

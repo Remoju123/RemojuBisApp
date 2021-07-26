@@ -273,7 +273,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
         const ctx = canvas.getContext("2d");
         ctx?.drawImage(img, 0, 0, dstWidth, dstHeight);
         // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/jpeg");
+        const resized = canvas.toDataURL("image/webp",0.75);
         reviewPicture.picturePreviewUrl = resized;
         // blobに再変換
         var blob = this.commonService.base64toBlob(resized);

@@ -312,7 +312,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
       const ctx = canvas.getContext("2d");
       ctx?.drawImage(img, 0, 0, dstWidth, dstHeight);
       // Canvas オブジェクトから Data URL を取得
-      const resized = canvas.toDataURL("image/jpeg");
+      const resized = canvas.toDataURL("image/webp",0.75);
       if (isCover){
         this.data.coverPreviewUrl = resized;
       } else{
