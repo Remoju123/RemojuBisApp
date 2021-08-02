@@ -1,7 +1,20 @@
 <mat-card id="planspot-list-item">
   <mat-card-content>
     <div class='header'>
-      <p>{{item.id}}</p>
+      <div class='lt'>
+        <span class='avatar'>
+          <img src="{{item.userPictureUrl}}" alt="{{item.userName}}">
+          <span class="username">{{item.userName}}</span>
+        </span>
+      </div>
+      <div class='rt'>
+        <span class='mark'>
+          <img src="../../../../../assets/img/mark_plan.svg" alt="plan">
+        </span>
+        <span class='title'>
+          {{item.planName}}
+        </span>
+      </div>
     </div>
     <div class='card-box'>
       <div class='card-header'>
@@ -33,27 +46,30 @@
         </div>
         <div class='info'>
           <div class='lt'>
-            <!-- <span class="areaName" *ngIf="item.areaName">
+            <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter: lang }}
             </span>
             <span class="category" *ngIf="item.areaName2">
               {{ item.areaName2 | langFilter: lang }}
-            </span> -->
-            
+            </span>
           </div>
-          <div class='rt'>
-            
-          </div>
-          
         </div>
       </div>
 
       <div class='card-bottom'>
+        <div class='bottom-view'>
+          <span class='date'>
+            {{item.releaseCreateDatetime | date}}
+          </span>
+          <span class='view'>
+            {{item.pvQtyAll}} view
+          </span>
+          <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+          </button>
+        </div>
         <mat-list>
           <mat-list-item>
-            <p>{{item.id}} {{item.planName}} {{item.spotName}}</p>
-            <div>{{item.releaseCreateDatetime}}</div>
-            <div>{{item.pvQtyAll}}</div>
+            
           </mat-list-item>
         </mat-list>
       </div>

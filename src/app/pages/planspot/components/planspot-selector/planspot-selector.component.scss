@@ -1,7 +1,9 @@
 @import "../../../../../assets/scss/vars";
 
-.mat-card{
+#planspot-selector{
   padding: 0;
+  border-bottom: 1px solid $color-gld05;
+  border-radius: 0;
   .mat-card-content{
     margin: 0 16px;
     .row{
@@ -9,7 +11,7 @@
       justify-content: center;
       &.title{
         font-size: 14px;
-        padding: 12px;
+        padding: 12px 12px 16px;
       }
       
       input{
@@ -61,9 +63,13 @@
         }
 
         .mat-form-field.condition{
-          ::ng-deep.mat-form-field-infix{
-            width: 90px;
+          ::ng-deep.mat-form-field-wrapper{
+            padding-bottom: 0.8em;
+            ::ng-deep.mat-form-field-infix{
+              width: 90px;
+            }
           }
+          
         }
 
         button{
