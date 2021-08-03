@@ -7,7 +7,7 @@ import { RootComponent } from './layout/root/root.component';
 import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
-// import { SpotListComponent } from './pages/spot-list/spot-list.component';
+import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { PlanListComponent } from './pages/plan-list/plan-list.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
       children:[
         { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
         // { path: "top", component: TopComponent },
-        /*{ path: "spots", component: SpotListComponent },*/
+        { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent},
         { path: "spots/detail/:id", component: SpotDetailComponent},
         { path: "plans", component: PlanListComponent },

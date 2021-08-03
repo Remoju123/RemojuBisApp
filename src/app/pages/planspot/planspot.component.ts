@@ -30,8 +30,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
-
   details$:PlanSpotList[] = [];
+  count: number;
 
   result:Observable<PlanSpotList>[] = [];
 
@@ -95,6 +95,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.temp = [...this.rows];
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
       this.historyReplace(result.searchParams);
+      this.count = result.list.length;
     })
   }
 

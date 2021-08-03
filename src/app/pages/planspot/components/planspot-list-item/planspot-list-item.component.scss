@@ -15,13 +15,17 @@
         justify-content: center;
         align-items: center;
         img{
-          width: 32px;
-          height: 32px;
+          width: 38px;
+          height: 38px;
           object-fit: cover;
           border-radius: 50%;
         }
         .username{
           font-size: 11px;
+          white-space: nowrap;
+          width: 38px;
+          overflow: hidden;
+          text-align: center;
         }
       }
 
@@ -40,6 +44,7 @@
       .title{
         font-size: 13px;
         color: #000;
+        font-weight: bolder;
       }
     }
   }
@@ -369,21 +374,22 @@
     }
 
     .card-bottom{
-      border-bottom: #707070 solid 1px ;
-      border-left:  #707070 solid 1px ;
-      border-right:  #707070 solid 1px ;
+      border-bottom: $color-gry07 solid 1px ;
+      border-left:  $color-gry07 solid 1px ;
+      border-right:  $color-gry07 solid 1px ;
       border-radius: 0 0 10px 10px;
       min-height: 200px;
       .bottom-view{
-        display: flex;
-        flex-direction: row;
+        // display: flex;
+        // flex-direction: row;
         font-size: 11px;
         color:#8E8E8E;
         height: 34px;
         align-items: center;
+        position: relative;
         .date{
           flex-basis: 84px;
-          padding: 12px;
+          // padding: 12px;
         }
         .view{
           flex-basis: 60px;
@@ -397,6 +403,8 @@
           // margin-right: 12px;
           line-height: initial;
           margin-left: 6px;
+          position: absolute;
+          right: 6px;
 
           &::before{
             content: "";
@@ -454,12 +462,20 @@
           line-height: 2;
 
           &.psname{
-            p{
-              all:unset;
-              font-size: 11px;
-              line-height: 1.7;
-              color: $color-gry06;
-            }
+            font-size: 11px;
+            line-height: 1.6;
+            color: #272727;
+            word-break: break-all;
+          }
+
+          p{
+            font-size: 11px;
+            line-height: 1.6;
+            color: #272727;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
           }
 
           ::ng-deep.mat-list-item-content{
@@ -521,7 +537,7 @@
               content: url("../../../../../assets/img/business-hour.svg");
               width: 16px;
               height: 16px;
-              padding-right: 1px;
+              padding-right: 4px;
               vertical-align: sub;
             }
           }
@@ -597,14 +613,18 @@
             margin-top: 1em;
           }
 
+          &.mt02{
+            margin-top: 0.5em;
+          }
+
           .ml1{
             margin-left: 1em;
           }
 
           &.categories{
             .badge{
-              margin-top: 6px;
-              margin-bottom: -6px;
+              // margin-top: 6px;
+              // margin-bottom: -6px;
 
               dl{
                 display: inline-flex;
@@ -616,7 +636,7 @@
                   background-color: $color-gld01;
                   border-radius: 2px;
                   min-height: 20px;
-                  padding: 0 5px 1px;
+                  padding: 2px 5px 0;
                   line-height: 20px;
                   white-space: nowrap;
                 }
@@ -629,6 +649,8 @@
           display: flex;
           justify-content: flex-end;
           margin-top: 0.8em;
+          position: absolute;
+          bottom: 12px;
 
           .add-to-plan {
             color: #fff;

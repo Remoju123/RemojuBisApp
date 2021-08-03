@@ -163,7 +163,7 @@ export class SpotService {
 
         hours.map((h: { to: string; from: string | any[]; }) => {
           const to =
-            h.to !== "" ? " ~ " + h.to : h.from.length > 0 ? " ~ " : "";
+            h.to !== "" ? " ~ " + h.to : h.from.length > 0 ? " ~ " : "---";
           s2.push(h.from + to);
         });
         //営業時間は最初のひとつを表示に変更 2020.12.22MM

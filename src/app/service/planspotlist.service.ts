@@ -108,6 +108,10 @@ const httpOptions = {
     }
 
     async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
+      /*
+      * 0.プラン／スポット切り替え
+      */
+      
       /*-----------------------------------------
       * 1.絞り込み処理
       -----------------------------------------*/
@@ -143,6 +147,8 @@ const httpOptions = {
         return item.isRemojuPlan ? item.isRemojuPlan === cond.isRemojuRecommended
         : !item.isRemojuPlan === cond.isUserPost;
       });
+
+      _result = _result.filter(item => item.isPlan === 0);
 
       /*-----------------------------------------
       * 2.検索条件文字列結合
@@ -211,6 +217,7 @@ const httpOptions = {
       this.result.searchParamsObj.rep = cond.isRemojuRecommended;
       this.result.searchParamsObj.usp = cond.isUserPost;
 
+      // console.log(this.result);
 
 
       if (master.isList) {

@@ -3,16 +3,16 @@
     <div class='header'>
       <div class='lt'>
         <span class='avatar'>
-          <img src="{{item.userPictureUrl}}" alt="{{item.userName}}">
-          <span class="username">{{item.userName}}</span>
+          <img [src]="genUserPicture()" [alt]="genUserName()">
+          <span class="username">{{genUserName()}}</span>
         </span>
       </div>
       <div class='rt'>
         <span class='mark'>
-          <img src="../../../../../assets/img/mark_plan.svg" alt="plan">
+          <img [src]="genMarkPath()" alt="mark">
         </span>
         <span class='title'>
-          {{item.planName}}
+          {{genTitle()}}
         </span>
       </div>
     </div>
@@ -57,19 +57,67 @@
       </div>
 
       <div class='card-bottom'>
-        <div class='bottom-view'>
-          <span class='date'>
-            {{item.releaseCreateDatetime | date}}
-          </span>
-          <span class='view'>
-            {{item.pvQtyAll}} view
-          </span>
-          <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
-          </button>
-        </div>
+        
         <mat-list>
-          <mat-list-item>
-            
+          <mat-list-item class="bottom-view">
+            <span class='date'>
+              {{item.releaseCreateDatetime | date:'yyyy/MM/dd'}}
+            </span>
+            <span class='view'>
+              {{item.pvQtyAll}} view
+            </span>
+            <span>
+              {{item.id}}
+            </span>
+            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            </button>
+          </mat-list-item>
+          <ng-container *ngIf="item.isPlan; else isSpot" >
+            <mat-list-item class="row psname">
+              {{genPlanSpotNames(item.planSpotNames)}}
+            </mat-list-item>
+            <mat-list-item class="row mt02">
+              <span class="timerequired">
+                <label>{{ "TimeRequired" | translate }}：</label>
+                <span *ngIf="item.timeRequiredHour !== null">{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span>
+                <span *ngIf="item.timeRequiredMin !== null">{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span>
+              </span>
+              <span class="spots">
+                <label>{{ "NumberOfSpots" | translate }}：</label>
+                <span>{{ item.spotQty }}</span>
+              </span>
+            </mat-list-item>
+          </ng-container>
+          <ng-template #isSpot>
+            <mat-list-item class="row">
+              <p>{{item.overview | langFilter:lang}}</p>
+            </mat-list-item>
+            <!-- Remoju spot 最寄駅 -->
+            <mat-list-item
+              class="row">
+              <span class="directions">
+                {{ genSpotAccess()}}
+              </span>
+            </mat-list-item>
+            <mat-list-item class="row">
+              <span class="businesshour" >{{ "Businesshours" | translate }}：{{ genSpotBusinessHour()}}</span>
+              <span class="regularholiday">{{ genSpotHoliday() }}</span>
+            </mat-list-item>
+          </ng-template>
+          <mat-list-item class="row categories" *ngIf="item.searchCategories">
+            <mat-card-content class="badge">
+              <dl>
+                <dd *ngFor="let item of item.searchCategories">
+                  {{ item.name | langFilter:lang }}
+                </dd>
+              </dl>
+            </mat-card-content>
+          </mat-list-item>
+          <!-- Remoju plan プランに追加 -->
+          <mat-list-item class="footer">
+            <button mat-flat-button class="add-to-plan" (click)="onClickAddToPlan(item)">
+              {{ "AddToPlan" | translate }}
+            </button>
           </mat-list-item>
         </mat-list>
       </div>
