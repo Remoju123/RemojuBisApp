@@ -148,7 +148,7 @@ const httpOptions = {
         : !item.isRemojuPlan === cond.isUserPost;
       });
 
-      // _result = _result.filter(item => item.isPlan === 0);
+      _result = _result.filter(item => item.isPlan === 0);
 
       /*-----------------------------------------
       * 2.検索条件文字列結合

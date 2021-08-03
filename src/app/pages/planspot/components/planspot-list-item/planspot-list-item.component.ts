@@ -114,7 +114,8 @@ export class PlanspotListItemComponent implements OnInit {
           arr.push(x.spotName)
         }
       })
-      return arr.join("/");
+      let list = arr.join("</span><span>");
+      return "<span>" + list + "</span>";
     }else{
       return null;
     }
