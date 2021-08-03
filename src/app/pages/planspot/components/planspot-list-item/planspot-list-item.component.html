@@ -57,7 +57,6 @@
       </div>
 
       <div class='card-bottom'>
-        
         <mat-list>
           <mat-list-item class="bottom-view">
             <span class='date'>
@@ -66,7 +65,7 @@
             <span class='view'>
               {{item.pvQtyAll}} view
             </span>
-            <span>
+            <span *ngIf="!isProd">
               {{item.id}}
             </span>
             <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">

@@ -5,6 +5,7 @@ import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
 import { LangFilterPipe } from 'src/app/utils/lang-filter.pipe';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -19,6 +20,8 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() isFavorite: boolean;
 
   @Output() linked = new EventEmitter<number>();
+
+  isProd:boolean;
   
   constructor(
     private commonService: CommonService,
@@ -26,12 +29,14 @@ export class PlanspotListItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isProd = environment.production;
   }
 
   linktoDetail(id:number){
     this.linked.emit(id);
   }
 
+  // スポット：定休日
   genSpotHoliday(){
     if(!this.item.isPlan){
       try{
@@ -43,6 +48,7 @@ export class PlanspotListItemComponent implements OnInit {
     return ""
   }
 
+  // スポット：営業時間
   genSpotBusinessHour(){
     if(!this.item.isPlan){
       try{
@@ -55,6 +61,7 @@ export class PlanspotListItemComponent implements OnInit {
     return ""
   }
 
+  // スポット：アクセス
   genSpotAccess(){
     const langpipe = new LangFilterPipe();
     if(!this.item.isPlan){
@@ -68,30 +75,35 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
+  // ユーザー写真
   genUserPicture(){
     return this.item.userPictureUrl?
       this.item.userPictureUrl:
       '../../../../../assets/img/icon_who.svg'
   }
 
+  // ユーザー名
   genUserName(){
     return this.item.userName?
       this.item.userName:
       '---'
   }
 
+  // スポット、プランマーク
   genMarkPath(){
     return this.item.isPlan?
       '../../../../../assets/img/mark_plan.svg':
       '../../../../../assets/img/mark_spot.svg';
   }
 
+  // タイトル
   genTitle(){
     return this.item.isPlan?
       this.commonService.isValidJson(this.item.planName,this.lang):
       this.commonService.isValidJson(this.item.spotName,this.lang);
   }
 
+  // プラン：スポットリスト
   genPlanSpotNames(item:any){
     if(item){
       const arr: any[] = [];
