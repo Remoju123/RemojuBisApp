@@ -139,7 +139,7 @@
           label{
             text-align: center;
             &.plan{
-              width: 56px;
+              width: 58px;
               &::after{
                 content: "";
                   display: inline-block;
@@ -151,7 +151,7 @@
               }
             }
             &.spot{
-              width: 56px;
+              width: 58px;
               &::before{
                 content: "";
                   display: inline-block;
@@ -163,7 +163,7 @@
               }
             }
             &.all{
-              width: 38px;
+              width: 36px;
             }
           }
         }
