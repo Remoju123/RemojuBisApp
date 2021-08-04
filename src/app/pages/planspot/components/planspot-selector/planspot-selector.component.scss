@@ -107,12 +107,12 @@
             opacity: 0;
             
             + label{
-              padding: 4px;
               color: #fff;
               cursor: pointer;
               display: flex;
               align-items: center;
               justify-content: center;
+              height: inherit;
             }
 
             &#spot{
