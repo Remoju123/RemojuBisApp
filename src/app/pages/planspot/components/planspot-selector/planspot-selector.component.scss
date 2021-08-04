@@ -94,10 +94,12 @@
         }
 
         .switch-toggle {
-          float: left;
           background: #7D9E9F;
           height: 24px;
           border-radius: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           
           input{
             all: unset;
@@ -106,15 +108,30 @@
             
             + label{
               padding: 4px;
-              float:left;
               color: #fff;
               cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
 
-            &:checked{
-              + label{
-                background: #DE7274;
-                border-radius: 12px;
+            &#spot{
+              &:checked + label{
+                background: #ABD9D9;
+                border-radius: 12px 0 0 12px;
+              }
+            }
+
+            &#plan{
+              &:checked + label{
+                background: #F6C57D;
+                border-radius: 0 12px 12px 0;
+              }
+            }
+
+            &#all{
+              &:checked + label{
+                background:#797E86
               }
             }
           }
@@ -149,7 +166,6 @@
               width: 38px;
             }
           }
-
         }
       }
     }
