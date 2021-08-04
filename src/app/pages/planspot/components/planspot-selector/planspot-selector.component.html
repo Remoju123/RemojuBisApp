@@ -20,8 +20,20 @@
       <mat-form-field class='condition'>
         <mat-select></mat-select>
       </mat-form-field>
-      <button class="spot"></button>
-      <button class="plan"></button>
+      <!-- <button class="spot" [attr.data-index]="0" [attr.data-status]="isSpot" [ngClass]="{'on':isSpot}" (click)="onSwitchPlanSpot($event)"></button>
+      <button class="plan" [attr.data-index]="1" [attr.data-status]="isPlan" [ngClass]="{'on':isPlan}" (click)="onSwitchPlanSpot($event)"></button> -->
+      <div class="switch-toggle switch-3 switch-candy">
+
+        <input id="spot" name="state-d" type="radio" checked="" />
+        <label for="spot" class="spot" onclick="">Spot</label>
+      
+        <input id="all" name="state-d" type="radio" checked="checked" />
+        <label for="all" class="all" onclick="">All</label>
+      
+        <input id="plan" name="state-d" type="radio" />
+        <label for="plan" class="plan" onclick="">Plan</label>
+      
+      </div>
     </div>
     
   </mat-card-content>

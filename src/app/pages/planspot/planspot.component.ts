@@ -108,7 +108,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   recoveryQueryParams() {
-    
     this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params:Params) => {
       if ((params.aid && params.aid.length > 0)
        || (params.era && params.era.length > 0)
@@ -134,6 +133,15 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         this.indexedDBService.registListSearchConditionPlan(this.condition);
       }
     })
+  }
+
+  onPlanSpotChange(cond:any){
+    
+    console.log("cond:%o",cond);
+
+    this.p = 1;
+    this.planspots.filteringData(this.temp,cond,this.listSelectMaster);
+    this.mergeNextDataSetAfterSorting(this.sortval);
   }
   
   async getPlanSpotDataSet() {

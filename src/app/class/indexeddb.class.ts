@@ -11,6 +11,9 @@ export class ListSearchCondition {
     // this.isOpens = [];
     this.isRemojuRecommended = true;
     this.isUserPost = true;
+
+    this.isPlan = true;
+    this.isSpot = true;
   }
   // エリアID
   areaId: number[];
@@ -25,6 +28,10 @@ export class ListSearchCondition {
   isRemojuRecommended: boolean;
   // プラン一覧用 ユーザー投稿
   isUserPost: boolean;
+  // スポット選択
+  isSpot: boolean;
+  // プラン選択
+  isPlan: boolean;
 }
 
 // 作成・編集中のプラン

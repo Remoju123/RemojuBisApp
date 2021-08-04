@@ -56,7 +56,7 @@
           font-size: 17px;
           color: $color-gry06;
           margin-right: 5px;
-
+          flex-basis: 51px;
           .sm{
             font-size: 10px;
           }
@@ -74,12 +74,12 @@
 
         button{
           border: none;
-
+          flex-basis: 96px;
           width: 96px;
           height: 23px;
           background-color: transparent;
           background-repeat: no-repeat;
-          background-size: cover;
+          background-size:contain;
           background-position: center center;
         }
 
@@ -92,11 +92,66 @@
           background-image: url("../../../../../assets/img/btn_plan.svg");
           background-repeat: no-repeat;
         }
+
+        .switch-toggle {
+          float: left;
+          background: #7D9E9F;
+          height: 24px;
+          border-radius: 12px;
+          
+          input{
+            all: unset;
+            position: absolute;
+            opacity: 0;
+            
+            + label{
+              padding: 4px;
+              float:left;
+              color: #fff;
+              cursor: pointer;
+            }
+
+            &:checked{
+              + label{
+                background: #DE7274;
+                border-radius: 12px;
+              }
+            }
+          }
+
+          label{
+            text-align: center;
+            &.plan{
+              width: 56px;
+              &::after{
+                content: "";
+                  display: inline-block;
+                  width: 23px;
+                  height: 14px;
+                  background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
+                  vertical-align: middle;
+                  margin-left: 2px;
+              }
+            }
+            &.spot{
+              width: 56px;
+              &::before{
+                content: "";
+                  display: inline-block;
+                  width: 13px;
+                  height: 14px;
+                  background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
+                  vertical-align: middle;
+                  margin-right: 2px;
+              }
+            }
+            &.all{
+              width: 38px;
+            }
+          }
+
+        }
       }
-
-
-    
     }
-
   }
 }
