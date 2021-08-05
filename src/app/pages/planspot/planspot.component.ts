@@ -135,12 +135,19 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     })
   }
 
-  onPlanSpotChange(cond:any){
-    
-    console.log("cond:%o",cond);
-
+  onPlanSpotChange(val:any){
+    let temp = this.temp;
+    switch(val){
+      case 'plan':
+        temp = this.temp.filter(d => d.isPlan === 1);
+        break;
+      case 'spot':
+        temp = this.temp.filter(d => d.isPlan === 0);
+        break;
+    }
     this.p = 1;
-    this.planspots.filteringData(this.temp,cond,this.listSelectMaster);
+    this.count = temp.length;
+    this.rows = temp;
     this.mergeNextDataSetAfterSorting(this.sortval);
   }
   

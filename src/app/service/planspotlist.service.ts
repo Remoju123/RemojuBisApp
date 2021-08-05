@@ -145,11 +145,11 @@ const httpOptions = {
       });
 
       // プラン、スポット切り替え
-      if(cond.isPlan && !cond.isSpot){
-        _result = _result.filter(item => item.isPlan === 1);
-      }else if(!cond.isPlan && cond.isSpot){
-        _result = _result.filter(item => item.isPlan === 0);
-      }
+      // if(cond.isPlan && !cond.isSpot){
+      //   _result = _result.filter(item => item.isPlan === 1);
+      // }else if(!cond.isPlan && cond.isSpot){
+      //   _result = _result.filter(item => item.isPlan === 0);
+      // }
 
       /*-----------------------------------------
       * 2.検索条件文字列結合
