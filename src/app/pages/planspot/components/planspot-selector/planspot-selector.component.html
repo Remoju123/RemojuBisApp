@@ -19,7 +19,11 @@
         {{count}}<span class="sm">&nbsp;{{ "Count" | translate }}</span>
       </div>
       <mat-form-field class='condition'>
-        <mat-select></mat-select>
+        <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval">
+          <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
+            {{ item.name | langFilter:lang}}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
       <div class="switch-toggle">
         <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />

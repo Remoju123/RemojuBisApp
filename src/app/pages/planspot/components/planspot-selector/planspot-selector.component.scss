@@ -52,6 +52,8 @@
       &.info{
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        margin: 0.3em 0;
         .count{
           font-size: 17px;
           color: $color-gry06;
@@ -64,7 +66,7 @@
 
         .mat-form-field.condition{
           ::ng-deep.mat-form-field-wrapper{
-            padding-bottom: 0.8em;
+            padding-bottom: 0;
             ::ng-deep.mat-form-field-infix{
               width: 90px;
             }

@@ -24,6 +24,8 @@ const httpOptions = {
     
     public result: searchResult;
 
+    public masterSubject = new Subject<any>();
+
     public searchSubject = new Subject<searchResult>();
     public searchFilter = this.searchSubject.asObservable();
 
@@ -144,12 +146,35 @@ const httpOptions = {
         : !item.isRemojuPlan === cond.isUserPost;
       });
 
+      // プラン・スポット選択
       switch(cond.select){
         case 'plan':
           _result = _result.filter(d => d.isPlan === 1);  
           break;
         case 'spot':
           _result = _result.filter(d => d.isPlan === 0);  
+          break;
+      }
+
+      // ソート処理
+      switch(parseInt(cond.sortval)){
+        case 7: // 閲覧順
+          _result = _result.sort((a,b) => {
+            return a.pvQtyAll < b.pvQtyAll ? 1 : -1
+          })
+          break;
+        case 10: // レビュー評価
+          _result = _result.sort((a,b) => {
+            return a.reviewAvg < b.reviewAvg ? 1 : -1
+          })
+          break;
+        case 11: // 新着純
+          _result = _result.sort((a,b) => {
+            return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
+          })
+          break;
+        case 9: // プランに追加された件数
+          
           break;
       }
 
@@ -203,6 +228,7 @@ const httpOptions = {
       _params.push("aid=" + cond.areaId.join(","));
       _params.push("era=" + cond.areaId2.join(","));
       _params.push("cat=" + cond.searchCategories.join(","));
+      _params.push("srt=" + cond.sortval);
       _params.push("lst=" + cond.select);
 
       this.result.list = _result;
@@ -212,6 +238,7 @@ const httpOptions = {
       this.result.searchParamsObj.aid = cond.areaId.join(",");
       this.result.searchParamsObj.era = cond.areaId2.join(",");
       this.result.searchParamsObj.cat = cond.searchCategories.join(",");
+      this.result.searchParamsObj.srt = cond.sortval;
       this.result.searchParamsObj.lst = cond.select;
 
       if (master.isList) {
@@ -219,6 +246,8 @@ const httpOptions = {
       } else {
         this.searchSubjectNoList.next(this.result);
       }
+
+      this.masterSubject.next(master.mSort);
     }
 
     // プラン一覧(詳細)を整形

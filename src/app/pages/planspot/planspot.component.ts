@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject,AfterViewInit,AfterViewChecked} from '@angular/core';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject,AfterViewChecked} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
@@ -12,7 +12,6 @@ import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { Template } from '@angular/compiler/src/render3/r3_ast';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');@Component({
   selector: 'app-planspot',
@@ -23,10 +22,11 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
 
   condition: ListSearchCondition;
-  isRemojuRecommended: boolean;
-  isUserPost: boolean;
+  // isRemojuRecommended: boolean;
+  // isUserPost: boolean;
 
   listSelectMaster: ListSelectMaster;
+  master: any;
 
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
@@ -60,8 +60,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     ) {
       this.limit = 6;
       this.p = 1;
-      this.sortval = 11;
       this.condition = new ListSearchCondition();
+      // this.condition.sortval='11';
     }
 
   ngAfterViewChecked(): void {
@@ -77,7 +77,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async ngOnInit() {
-
     // QueryParam判定して検索条件取得
     this.recoveryQueryParams(); //get listSearchCondition
 
@@ -113,6 +112,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       if ((params.aid && params.aid.length > 0)
        || (params.era && params.era.length > 0)
        || (params.cat && params.cat.length > 0)
+       || (params.srt && params.srt.length > 0)
        || (params.lst && params.lst.length > 0)
       )
       {
@@ -124,7 +124,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
           params.cat && params.cat.length > 0 ? params.cat.split(",").map(Number) : [];
         this.condition.searchOptions =
           params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
-        this.condition.select = params.lst  
+        this.condition.sortval = params.srt;
+        this.condition.select = params.lst;
         
         this.indexedDBService.registListSearchCondition(this.condition);
       }
@@ -154,30 +155,10 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
 
         // ソート->詳細取得
-        this.mergeNextDataSetAfterSorting(this.sortval);
+        //this.mergeNextDataSetAfterSorting(this.sortval);
+        this.mergeNextDataSet();
       });
     })
-  }
-
-  mergeNextDataSetAfterSorting(v:number){
-    switch (v) {
-      case 7:
-        this.rows.sort((a, b) => {
-          return a.pvQtyAll < b.pvQtyAll ? 1 : -1
-        })
-        break;
-      case 10:
-        this.rows.sort((a, b) => {
-          return a.reviewAvg < b.reviewAvg ? 1 : -1;
-        });
-        break;
-      case 11:
-        this.rows.sort((a, b) => {
-          return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1;
-        });
-        break;
-    }
-    this.mergeNextDataSet();
   }
 
   async mergeNextDataSet(){
@@ -261,6 +242,14 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }else{
       this.router.navigate(["/" + this.lang + "/plans/detail",id]);
     }
+  }
+
+  // 表示順
+  sortChange(v:any){
+    this.condition.sortval=v;
+    this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
   }
   
 }

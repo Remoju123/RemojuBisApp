@@ -1,4 +1,4 @@
-<app-planspot-selector [count]="count" [condition]="condition" (event)="onPlanSpotChange($event)"></app-planspot-selector>
+<app-planspot-selector [count]="count" [condition]="condition" (event)="onPlanSpotChange($event)" (sort)="sortChange($event)"></app-planspot-selector>
 <app-planspot-list (scrolled)="onScrollDown()">
   <app-planspot-list-item
     *ngFor="let item of details$"

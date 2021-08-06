@@ -126,9 +126,10 @@ export class SearchParamsObj{
   aid: string;
   era: string;
   cat: string;
+  lst: string;
+  srt: string;
   rep: boolean;
   usp:boolean;
-  lst: string;
 }
 
 
