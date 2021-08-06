@@ -144,6 +144,15 @@ const httpOptions = {
         : !item.isRemojuPlan === cond.isUserPost;
       });
 
+      switch(cond.select){
+        case 'plan':
+          _result = _result.filter(d => d.isPlan === 1);  
+          break;
+        case 'spot':
+          _result = _result.filter(d => d.isPlan === 0);  
+          break;
+      }
+
       /*-----------------------------------------
       * 2.検索条件文字列結合
       -----------------------------------------*/

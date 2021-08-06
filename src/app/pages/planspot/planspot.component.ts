@@ -44,10 +44,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   optionKeywords: string[];
 
 
-
-  //cacheからの復元Flag
-  isRecover:boolean;
-  
   get lang() {
     return this.translate.currentLang;
   }
@@ -66,7 +62,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.p = 1;
       this.sortval = 11;
       this.condition = new ListSearchCondition();
-      this.isRecover = false;
     }
 
   ngAfterViewChecked(): void {
@@ -137,56 +132,12 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   onPlanSpotChange(val:any){
-    let temp = this.temp;
-    // cacheがある場合はクリアして再取得する
-    if(this.isRecover){
-      this.getPlanSpotDataSetRecover();
-      this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-        temp = result.list;
-        this.switchList(val,temp);
-      })
-      this.isRecover=false;
-    }else{
-      this.switchList(val,temp);
-    }
-  }
-
-  switchList(val,temp){
-    switch(val){
-      case 'plan':
-        temp = this.temp.filter(d => d.isPlan === 1);
-        break;
-      case 'spot':
-        temp = this.temp.filter(d => d.isPlan === 0);
-        break;
-    }
-    this.p = 1;
-    this.count = temp.length;
-    this.rows = temp;
-    this.mergeNextDataSetAfterSorting(this.sortval);
-
     this.condition.select = val;
     this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
   }
 
-  async getPlanSpotDataSetRecover(){
-    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-      this.listSelectMaster = r;
-      this.listSelectMaster.isList = true;
-
-      // 検索条件を再取得
-      let condition: any = await this.indexedDBService.getListSearchCondition();
-      if (condition){
-        this.condition = condition;
-      }
-
-      this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        // フィルタリング処理
-        this.planspots.filteringData(r,this.condition,this.listSelectMaster);
-      });
-    });
-  }
-  
   async getPlanSpotDataSet() {
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
@@ -260,7 +211,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         })
     }
     this.p++;
-  
   }
 
   cacheRecoveryDataSet(){
@@ -270,7 +220,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.offset = cache.offset;
     this.details$ = this.rows.slice(0,this.end);
     this.p = cache.p;
-    this.isRecover = true;
     this.condition.select = cache.select;
     this.count = cache.data.length;
 
