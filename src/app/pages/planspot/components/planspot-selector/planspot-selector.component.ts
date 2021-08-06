@@ -17,7 +17,7 @@ export class PlanspotSelectorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.condition);
+    // console.log(this.condition);
   }
 
   onSwitchPlanSpot(e){

@@ -131,7 +131,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
           params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
         this.condition.select = params.lst  
         
-        this.indexedDBService.registListSearchConditionPlan(this.condition);
+        this.indexedDBService.registListSearchCondition(this.condition);
       }
     })
   }
@@ -166,7 +166,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.mergeNextDataSetAfterSorting(this.sortval);
 
     this.condition.select = val;
-    this.indexedDBService.registListSearchConditionPlan(this.condition);
+    this.indexedDBService.registListSearchCondition(this.condition);
   }
 
   async getPlanSpotDataSetRecover(){
@@ -175,7 +175,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.listSelectMaster.isList = true;
 
       // 検索条件を再取得
-      let condition: any = await this.indexedDBService.getListSearchConditionPlan();
+      let condition: any = await this.indexedDBService.getListSearchCondition();
       if (condition){
         this.condition = condition;
       }
@@ -193,7 +193,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.listSelectMaster.isList = true;
 
       // 検索条件を再取得
-      let condition: any = await this.indexedDBService.getListSearchConditionPlan();
+      let condition: any = await this.indexedDBService.getListSearchCondition();
       if (condition){
         this.condition = condition;
       }

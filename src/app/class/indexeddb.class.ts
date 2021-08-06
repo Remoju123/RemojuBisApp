@@ -8,10 +8,11 @@ export class ListSearchCondition {
     this.areaId2 = [];
     this.searchCategories = [];
     this.searchOptions = [];
+    this.select = 'all';
+
     // this.isOpens = [];
     this.isRemojuRecommended = true;
     this.isUserPost = true;
-    this.select = 'all';
   }
   // エリアID
   areaId: number[];
@@ -20,14 +21,15 @@ export class ListSearchCondition {
   searchCategories: any[];
   // さらに条件追加
   searchOptions: any[];
+  // プランスポット選択
+  select:string;
+
   // エリアEXPオープン
   // isOpens: number[];
   // プラン一覧用 Remojuおすすめ
   isRemojuRecommended: boolean;
   // プラン一覧用 ユーザー投稿
   isUserPost: boolean;
-  // プランスポット選択
-  select:string;
 }
 
 // 作成・編集中のプラン
