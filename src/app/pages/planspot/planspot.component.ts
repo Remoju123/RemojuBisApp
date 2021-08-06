@@ -12,9 +12,9 @@ import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { Template } from '@angular/compiler/src/render3/r3_ast';
 
-export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
-@Component({
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');@Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
   styleUrls: ['./planspot.component.scss']
@@ -42,6 +42,11 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   sortval:number;
   optionKeywords: string[];
+
+
+
+  //cacheからの復元Flag
+  isRecover:boolean;
   
   get lang() {
     return this.translate.currentLang;
@@ -61,6 +66,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.p = 1;
       this.sortval = 11;
       this.condition = new ListSearchCondition();
+      this.isRecover = false;
     }
 
   ngAfterViewChecked(): void {
@@ -112,8 +118,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       if ((params.aid && params.aid.length > 0)
        || (params.era && params.era.length > 0)
        || (params.cat && params.cat.length > 0)
-       || (params.rep && params.rep.length > 0)
-       || (params.usp && params.usp.length > 0))
+       || (params.lst && params.lst.length > 0)
+      )
       {
         this.condition.areaId =
           params.aid && params.aid.length > 0 ? params.aid.split(",").map(Number) : [];
@@ -123,13 +129,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
           params.cat && params.cat.length > 0 ? params.cat.split(",").map(Number) : [];
         this.condition.searchOptions =
           params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
-        this.condition.isRemojuRecommended =
-          params.rep ? true : false;
-        this.condition.isUserPost =
-          params.usp ? true : false;
-        //　ボタン用フラグ
-        this.isRemojuRecommended = params.rep ? true : false;
-        this.isUserPost =  params.usp ? true : false;
+        this.condition.select = params.lst  
+        
         this.indexedDBService.registListSearchConditionPlan(this.condition);
       }
     })
@@ -137,6 +138,20 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   onPlanSpotChange(val:any){
     let temp = this.temp;
+    // cacheがある場合はクリアして再取得する
+    if(this.isRecover){
+      this.getPlanSpotDataSetRecover();
+      this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+        temp = result.list;
+        this.switchList(val,temp);
+      })
+      this.isRecover=false;
+    }else{
+      this.switchList(val,temp);
+    }
+  }
+
+  switchList(val,temp){
     switch(val){
       case 'plan':
         temp = this.temp.filter(d => d.isPlan === 1);
@@ -149,6 +164,27 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.count = temp.length;
     this.rows = temp;
     this.mergeNextDataSetAfterSorting(this.sortval);
+
+    this.condition.select = val;
+    this.indexedDBService.registListSearchConditionPlan(this.condition);
+  }
+
+  async getPlanSpotDataSetRecover(){
+    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+      this.listSelectMaster = r;
+      this.listSelectMaster.isList = true;
+
+      // 検索条件を再取得
+      let condition: any = await this.indexedDBService.getListSearchConditionPlan();
+      if (condition){
+        this.condition = condition;
+      }
+
+      this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        // フィルタリング処理
+        this.planspots.filteringData(r,this.condition,this.listSelectMaster);
+      });
+    });
   }
   
   async getPlanSpotDataSet() {
@@ -234,13 +270,16 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.offset = cache.offset;
     this.details$ = this.rows.slice(0,this.end);
     this.p = cache.p;
+    this.isRecover = true;
+    this.condition.select = cache.select;
+    this.count = cache.data.length;
 
     this.transferState.remove(PLANSPOT_KEY);
   }
 
   historyReplace(searchParams:string):void{
     if(isPlatformBrowser(this.platformId)){
-      if(searchParams.length>14){
+      if(searchParams.length>19){
         history.replaceState(
           "search_key",
           "",
@@ -251,31 +290,28 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       }
       // history back desabled
       history.pushState(null,null,null);
-      window.onpopstate = (e) =>{
+      window.onpopstate = () =>{
         history.pushState(null,null,null);
       }
     }
   }
 
+  // プラン/スポット詳細リンク
   linktoDetail(id:number){
-
-    console.log(id);
-
     const c = new CacheStore();
     c.data = this.rows;
     c.p = this.p;
     c.end = this.end;
     c.offset = window.pageYOffset;
+    c.select = this.condition.select;
     c.keyword = "";
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
-
+    // idで切り替え
     if(id > 10000){
       this.router.navigate(["/" + this.lang + "/spots/detail",id]);
     }else{
       this.router.navigate(["/" + this.lang + "/plans/detail",id]);
     }
-    
-    
   }
   
 }

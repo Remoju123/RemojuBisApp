@@ -14,25 +14,13 @@ export class PlanspotSelectorComponent implements OnInit {
 
   @Output() event = new EventEmitter<any>();
 
-  isSpot:boolean;
-  isPlan:boolean;
-
   constructor() { }
 
   ngOnInit(): void {
-    
+    console.log(this.condition);
   }
 
   onSwitchPlanSpot(e){
-    //console.log(e.target.value)
-    // let e = attr.target.dataset.index;
-    // if(e==='0'){
-    //   this.isSpot = !this.isSpot;
-      
-    // }else{
-    //   this.isPlan = !this.isPlan;
-      
-    // }
     this.event.emit(e.target.value);
   }
 

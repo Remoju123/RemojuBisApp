@@ -11,7 +11,7 @@ export class ListSearchCondition {
     // this.isOpens = [];
     this.isRemojuRecommended = true;
     this.isUserPost = true;
-
+    this.select = 'all';
   }
   // エリアID
   areaId: number[];
@@ -27,7 +27,7 @@ export class ListSearchCondition {
   // プラン一覧用 ユーザー投稿
   isUserPost: boolean;
   // プランスポット選択
-  select:any;
+  select:string;
 }
 
 // 作成・編集中のプラン

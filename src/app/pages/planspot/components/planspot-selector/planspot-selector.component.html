@@ -9,6 +9,7 @@
         class="keyword"/>
     </div>
     <div class='row button'>
+      <!-- <span>{{condition.select}}</span> -->
       <button mat-button class="spot-search">
         {{ 'AreaAndCommitment' | translate }}
       </button>
@@ -20,22 +21,14 @@
       <mat-form-field class='condition'>
         <mat-select></mat-select>
       </mat-form-field>
-      <!-- <button class="spot" [attr.data-index]="0" [attr.data-status]="isSpot" [ngClass]="{'on':isSpot}" (click)="onSwitchPlanSpot($event)"></button>
-      <button class="plan" [attr.data-index]="1" [attr.data-status]="isPlan" [ngClass]="{'on':isPlan}" (click)="onSwitchPlanSpot($event)"></button> -->
       <div class="switch-toggle">
-        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" checked="" />
+        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
         <label for="spot" class="spot" value="spot">Spot</label>
-      
-        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" checked="checked" />
+        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
         <label for="all" class="all" value="all">All</label>
-      
-        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" />
+        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
         <label for="plan" class="plan">Plan</label>
-      
       </div>
     </div>
-    
   </mat-card-content>
-  
-
 </mat-card>

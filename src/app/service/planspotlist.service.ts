@@ -201,12 +201,7 @@ const httpOptions = {
       _params.push("aid=" + cond.areaId.join(","));
       _params.push("era=" + cond.areaId2.join(","));
       _params.push("cat=" + cond.searchCategories.join(","));
-      if (cond.isRemojuRecommended){
-        _params.push("rep=1");
-      }
-      if (cond.isUserPost){
-        _params.push("usp=1");
-      }
+      _params.push("lst=" + cond.select);
 
       this.result.list = _result;
       this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
@@ -215,11 +210,7 @@ const httpOptions = {
       this.result.searchParamsObj.aid = cond.areaId.join(",");
       this.result.searchParamsObj.era = cond.areaId2.join(",");
       this.result.searchParamsObj.cat = cond.searchCategories.join(",");
-      this.result.searchParamsObj.rep = cond.isRemojuRecommended;
-      this.result.searchParamsObj.usp = cond.isUserPost;
-
-      // console.log(this.result);
-
+      this.result.searchParamsObj.lst = cond.select;
 
       if (master.isList) {
         this.searchSubject.next(this.result);
@@ -228,12 +219,9 @@ const httpOptions = {
       }
     }
 
-
     // プラン一覧(詳細)を整形
     dataFormat(row: PlanSpotList){
       row.planName = this.commonService.isValidJson(row.planName, this.translate.currentLang);
     }
-
-
 
   }

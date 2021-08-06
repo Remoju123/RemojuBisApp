@@ -128,6 +128,7 @@ export class SearchParamsObj{
   cat: string;
   rep: boolean;
   usp:boolean;
+  lst: string;
 }
 
 
@@ -184,5 +185,6 @@ export class CacheStore {
   p:number;
   end:number;
   offset:number;
+  select:string;
   keyword:string;
 }
