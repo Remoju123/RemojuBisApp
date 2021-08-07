@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output,EventEmitter } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { DataSelected, ListSelectMaster } from 'src/app/class/common.class';
+import { DataSelected } from 'src/app/class/common.class';
 import { ListSearchCondition} from 'src/app/class/indexeddb.class';
-import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 
 @Component({
   selector: 'app-planspot-selector',
@@ -13,24 +12,18 @@ import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 export class PlanspotSelectorComponent implements OnInit {
   @Input() count:number;
   @Input() condition:ListSearchCondition;
+  @Input() mSort:DataSelected[];
   
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
-
-  mSort:DataSelected[];
 
   get lang() {
     return this.translate.currentLang;
   }
 
-  constructor(private translate: TranslateService,private planspots: PlanSpotListService,) { }
+  constructor(private translate: TranslateService,) { }
 
-  ngOnInit(): void {
-    this.planspots.masterSubject.subscribe(m => {
-      this.mSort = m;
-    })
-    //console.log(this.condition.sortval);
-  }
+  ngOnInit(): void {}
 
   onSwitchPlanSpot(e){
     this.event.emit(e.target.value);

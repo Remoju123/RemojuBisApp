@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { ListSelectMaster } from 'src/app/class/common.class';
+import { DataSelected, ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { CacheStore, PlanSpotList } from 'src/app/class/planspotlist.class';
 import { isPlatformBrowser } from '@angular/common';
@@ -22,8 +22,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
 
   condition: ListSearchCondition;
-  // isRemojuRecommended: boolean;
-  // isUserPost: boolean;
 
   listSelectMaster: ListSelectMaster;
   master: any;
@@ -40,6 +38,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   end: number;
   offset:number;
 
+  $mSort: DataSelected[];
   sortval:number;
   optionKeywords: string[];
 
@@ -61,7 +60,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.limit = 6;
       this.p = 1;
       this.condition = new ListSearchCondition();
-      // this.condition.sortval='11';
     }
 
   ngAfterViewChecked(): void {
@@ -77,17 +75,14 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async ngOnInit() {
-    // QueryParam判定して検索条件取得
-    this.recoveryQueryParams(); //get listSearchCondition
+    this.recoveryQueryParams();
 
-    // プランスポット一覧データセットを取得してフィルタ、並べ替え処理
     if(this.transferState.hasKey(PLANSPOT_KEY)){
       this.cacheRecoveryDataSet();
     }else{
       this.getPlanSpotDataSet();
     }
 
-    // マージセットSubjectの中継開始
     this.planspots.searchFilter
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
@@ -132,37 +127,25 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     })
   }
 
-  onPlanSpotChange(val:any){
-    this.condition.select = val;
-    this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
-    this.p = 1;
-  }
-
   async getPlanSpotDataSet() {
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
       this.listSelectMaster.isList = true;
+      this.$mSort = r.mSort;
 
-      // 検索条件を再取得
       let condition: any = await this.indexedDBService.getListSearchCondition();
       if (condition){
         this.condition = condition;
       }
 
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        // フィルタリング処理
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
-
-        // ソート->詳細取得
-        //this.mergeNextDataSetAfterSorting(this.sortval);
         this.mergeNextDataSet();
       });
     })
   }
 
   async mergeNextDataSet(){
-    //let startIndex = 0;
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
     if(this.rows.length - startIndex < this.limit){
@@ -178,7 +161,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
           // 掲載終了の場合は削除
           if(d.isEndOfPublication){
-            // 削除処理
             this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
             this.rows.splice(idx, 1);
               if(this.rows.length - startIndex < this.limit){
@@ -196,12 +178,15 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   cacheRecoveryDataSet(){
     const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY,null);
+    console.log(cache);
     this.rows = cache.data;
     this.end = cache.end;
     this.offset = cache.offset;
     this.details$ = this.rows.slice(0,this.end);
     this.p = cache.p;
     this.condition.select = cache.select;
+    this.condition.sortval = cache.sortval;
+    this.$mSort = cache.mSort;
     this.count = cache.data.length;
 
     this.transferState.remove(PLANSPOT_KEY);
@@ -226,6 +211,22 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
   }
 
+  // 表示順
+  sortChange(v:any){
+    this.condition.sortval=v;
+    this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
+  }
+
+  // プランスポット切り替え
+  onPlanSpotChange(val:any){
+    this.condition.select = val;
+    this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
+  }
+
   // プラン/スポット詳細リンク
   linktoDetail(id:number){
     const c = new CacheStore();
@@ -234,22 +235,16 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.end = this.end;
     c.offset = window.pageYOffset;
     c.select = this.condition.select;
+    c.sortval =this.condition.sortval;
+    c.mSort = this.$mSort;
     c.keyword = "";
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
-    // idで切り替え
+    // 5digits or more is Plan
     if(id > 10000){
       this.router.navigate(["/" + this.lang + "/spots/detail",id]);
     }else{
       this.router.navigate(["/" + this.lang + "/plans/detail",id]);
     }
-  }
-
-  // 表示順
-  sortChange(v:any){
-    this.condition.sortval=v;
-    this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
-    this.p = 1;
   }
   
 }

@@ -187,5 +187,7 @@ export class CacheStore {
   end:number;
   offset:number;
   select:string;
+  sortval:string;
   keyword:string;
+  mSort:DataSelected[];
 }
