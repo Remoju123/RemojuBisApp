@@ -298,7 +298,7 @@
     </mat-card-content>
   </mat-card> -->
 
-  <mat-card id="otherSpot" class="pics" *ngIf="!data.spotToGoList">
+  <mat-card id="otherSpot" class="pics" *ngIf="data.spotToGoList">
     <mat-card-header>
       <h4 class="header">
         {{ "RecommendedSpotsInTheSameArea" | translate }}
@@ -323,7 +323,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card id="specialpage" class="pics" *ngIf="!features">
+  <mat-card id="specialpage" class="pics" *ngIf="features">
     <mat-card-header>
       <h4 class="header">
         {{ "FeaturedLink" | translate }}

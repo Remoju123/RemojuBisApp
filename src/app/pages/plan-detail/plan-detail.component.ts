@@ -53,7 +53,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   spots: PlanSpotCommon[];
   transfers: Trans[];
- 
+
   reviewResult: ReviewResult;
 
   recommendedPlan: Recommended[];
@@ -117,7 +117,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   myPlanSpots:any;
   planSpotids: number[] = new Array();
-  
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -144,7 +144,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
     if(isPlatformBrowser(this.platformId)){
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
-      this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";  
+      this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
 
   }
@@ -206,7 +206,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     // 検索条件更新
     this.indexedDBService.registListSearchConditionPlan(condition);
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/plans"]);  
+    this.router.navigate(["/" + this.lang + "/plans"]);
   }
 
   // カテゴリ
@@ -221,8 +221,8 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     // 表示位置をクリア
     sessionStorage.removeItem("cachep");
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/plans"]);  
-  } 
+    this.router.navigate(["/" + this.lang + "/plans"]);
+  }
 
   // 違反報告
   // 通報
@@ -311,7 +311,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         this.router.navigate(["/" + this.lang + "/notfound"]);
         return;
       }
-      
+
       const langpipe = new LangFilterPipe();
 
       this.$isRemojuPlan = r.isRemojuPlan;
@@ -339,7 +339,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
              : langpipe.transform(this.data.planName, this.lang)
           }
         ]);
-  
+
         this.data.planName = langpipe.transform(this.data.planName, this.lang);
         this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
       } else {
@@ -357,32 +357,35 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
             content: this.data.planName
           }
         ]);
-  
+
       }
 
 
       // console.log(r);
-      this.data.startTime = this.reshapetime(this.data.startTime);
-      this.data.endTime = this.reshapetime(this.data.endTime);
       let ids = [];
       this.spots = r.spots.map((x, i) => {
         if (x.type === 1){
           this.commonService.setAddPlanLang(x, this.lang);
         }
-        x.startTime = this.reshapetime(x.startTime);
         // 次のスポットがある場合
         if (i + 1 < r.spots.length) {
           x.destination = this.commonService.isValidJson(r.spots[i + 1].spotName, this.lang);
         }
-        x.line = this.planService.transline(
-          langpipe.transform(JSON.parse(x.transfer), this.lang)
-        );
-        x.transtime = this.planService.transtimes(
-          langpipe.transform(JSON.parse(x.transfer), this.lang)
-        );
-        x.transflow = this.planService.transflows(
-          langpipe.transform(JSON.parse(x.transfer), this.lang)
-        );
+
+        // 移動方法
+        if (x.transfer) {
+          let transfer: any;
+          try {
+            transfer = this.commonService.isValidJson(x.transfer, this.lang);
+          }
+          catch{
+            transfer = JSON.parse(x.transfer)[0].text;
+          }
+
+          x.line = this.planService.transline(transfer);
+          x.transtime = this.planService.transtimes(transfer);
+          x.transflow = this.planService.transflows(transfer);
+        }
         x.ismore =false;
         x.label = "more"
 
@@ -400,7 +403,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
       // カテゴリ
       this.categoryNames = r.searchCategories;
-      
+
       // map表示
       this.isMapDisp = !this.isMapDisp;
 
@@ -423,7 +426,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     });
   }
 
-  reshapetime(v: string) {
+  /*reshapetime(v: string) {
     if (v) {
       const str = v.split(":");
       return parseInt(str[0]).toString() + ":" + str[1];
@@ -436,12 +439,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     d.setMinutes(d.getMinutes() + addtime);
     return d.toLocaleTimeString();
     //console.log(d.setMinutes(d.getMinutes + addtime));
-  }
+  }*/
 
   match(spots:any,plans:any){
     try{
       if(spots){
-        const res = Array.from(spots).every(v => 
+        const res = Array.from(spots).every(v =>
           Array.from(plans).includes(v)
         );
         return res;
@@ -480,9 +483,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   }
 
   linktoSpot(id:any){
-    
+
   }
-  
+
   onIsmore(e: { ismore: boolean; label: string; }){
     e.ismore = !e.ismore;
     e.label = e.ismore?"close":"more";
