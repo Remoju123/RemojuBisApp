@@ -77,7 +77,7 @@ export class PlanSpotList {
   businessHours: Businesshours[];//
   createDate: string;
   favoriteQty: number;
-  googleSpot: null
+  googleSpot: GoogleSpot;
   guid: string;
   id: number;
   isCreation: boolean;
@@ -190,4 +190,33 @@ export class CacheStore {
   sortval:string;
   keyword:string;
   mSort:DataSelected[];
+}
+
+export class GoogleSpot {
+  google_spot_id: number;
+  areaId: number;
+  spot_name: string;
+  address: string;
+  picture_url: string;
+  latitude: string;
+  longitude: string;
+  place_id: string;
+  create_user_id: string;
+  create_datetime: string;
+  mArea: MArea;
+  formatAddress: string;
+  isFavorite: boolean;
+  compoundCode: string;
+}
+
+export class MArea {
+  area_id: number;
+  display_order: number;
+  parent_area_id: number;
+  is_display_search: boolean;
+  is_active: boolean;
+  level: number;
+  map_url: string;
+  area_name_1: string;
+  area_name_2: string;
 }

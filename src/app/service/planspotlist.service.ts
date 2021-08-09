@@ -24,8 +24,6 @@ const httpOptions = {
     
     public result: searchResult;
 
-    public masterSubject = new Subject<any>();
-
     public searchSubject = new Subject<searchResult>();
     public searchFilter = this.searchSubject.asObservable();
 
@@ -54,38 +52,24 @@ const httpOptions = {
       return this.http.get<PlanSpotList[]>(url);
     }
 
-    // 一覧のスポット詳細取得
-    async fetchSpotDetail(planSpotList: PlanSpotList) {
-      const guid = await this.commonService.getGuid();
-      const url = this.host + "/api/PlanSpotList/SearchDetailSpot";
-      return this.http.get<PlanSpotList>(url, {
+    // Googleスポット検索
+    async getGoogleSpotList(keyword: string) {
+      const url = this.host + "/api/SpotList/GoogleSpot";
+      return this.http.get<PlanSpotList[]>(url, {
         params: {
-          versionNo: String(planSpotList.versionNo),
-          spotId: String(planSpotList.id),
-          objectId: this.commonService.objectId,
-          guid: guid
-          }
-      });
-    }
-
-    // 一覧のプラン詳細取得
-    async fetchPlanDetail(planSpotList: PlanSpotList) {
-      const guid = await this.commonService.getGuid();
-      const url = this.host + "/api/PlanSpotList/SearchDetailPlan";
-      return this.http.get<PlanSpotList>(url, {
-        params: {
-          isRemojuPlan: String(planSpotList.isRemojuPlan),
-          versionNo: String(planSpotList.versionNo),
-          planId: String(planSpotList.id),
-          objectId: this.commonService.objectId,
-          guid: guid
+          keyword: keyword,
+          langCd: this.translate.currentLang,
+          guid: await this.commonService.getGuid(),
+          objectId: this.commonService.objectId
         }
       });
     }
 
+    // プランスポット一覧、詳細データ
     async fetchDetails(options: PlanSpotList){
       const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
       const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
+      
       options.objectId = this.commonService.objectId;
       options.guid = await this.commonService.getGuid();
       
@@ -96,19 +80,8 @@ const httpOptions = {
       }
     }
 
-    fetchDetails2(options: PlanSpotList){
-      const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
-      const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
-      options.objectId = this.commonService.objectId;
-      options.guid = this.commonService.getGuidStatic();
-      
-      if(options.isPlan){
-        return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
-      }else{
-        return this.http.post<PlanSpotList>(spot_url, options, httpOptions);
-      }
-    }
 
+    // フィルタ & データセット作成
     async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
       /*-----------------------------------------
       * 1.絞り込み処理
@@ -176,6 +149,11 @@ const httpOptions = {
         case 9: // プランに追加された件数
           
           break;
+      }
+
+      // キーワード検索
+      if(cond.keyword !== ""){
+        _result = _result.filter(d => JSON.stringify(d.keyword).indexOf(cond.keyword) !== -1 || !cond.keyword);
       }
 
       /*-----------------------------------------
@@ -246,8 +224,6 @@ const httpOptions = {
       } else {
         this.searchSubjectNoList.next(this.result);
       }
-
-      this.masterSubject.next(master.mSort);
     }
 
     // プラン一覧(詳細)を整形

@@ -278,13 +278,13 @@ export class CommonService implements OnDestroy{
 
   // // ユーザーの一意識別子を取得
   public get objectId(){
-    if(isPlatformBrowser(this.platformId)){
+    //if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
       return claims['sub'];
-    }
+    //}
   }
 
   // idpを取得

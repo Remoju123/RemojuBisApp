@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-planspot-list',
@@ -8,6 +8,7 @@ import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output } from
 })
 export class PlanspotListComponent implements OnInit {
 
+  @Input() isList:boolean;
   @Output() scrolled = new EventEmitter();
   
   constructor() { }

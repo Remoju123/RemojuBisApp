@@ -1,5 +1,5 @@
 <mat-card id="planspot-list-item">
-  <mat-card-content>
+  <mat-card-content *ngIf="item.googleSpot === null; else isGoogle">
     <div class='header'>
       <div class='lt'>
         <span class='avatar'>
@@ -122,4 +122,63 @@
       <div class='link-area' (click)="linktoDetail(item.id)"></div>
     </div>
   </mat-card-content>
+  <ng-template #isGoogle>
+    <div class='header'>
+      <div class='lt'>
+        <span class='avatar'>
+          <img src="../../../../../assets/img/icon_google.svg" alt="google">
+          <span class="username">google</span>
+        </span>
+      </div>
+      <div class='rt'>
+        <span class='mark'>
+          <img [src]="genMarkPath()" alt="mark">
+        </span>
+        <span class='title'>
+          {{ item.googleSpot.spot_name}}
+        </span>
+      </div>
+    </div>
+    <div class='card-box'>
+      <div class='card-header'>
+        <div class='picture'>
+          <div class="thumbmain fullwidth">
+            <ng-container *ngIf="item.googleSpot.picture_url;else noImage">
+              <img [src]="item.googleSpot.picture_url" alt="" />
+            </ng-container>
+            <ng-template #noImage>
+              <img src="../../../../../assets/img/noimage.png" alt="noImage">
+            </ng-template>
+          </div>
+        </div>
+        <div class='info'>
+          <div class='lt'>
+            <span class="areaName" *ngIf="item.googleSpot.mArea.area_name_1">
+              {{ item.googleSpot.mArea.area_name_1 | langFilter: lang }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class='card-bottom'>
+        <mat-list>
+          <mat-list-item class="bottom-view">
+            <span class="note">
+              Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。
+            </span>
+            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            </button>
+          </mat-list-item>
+          <mat-list-item class="row mt1">
+            <span class="googleaddress">{{ item.googleSpot.formatAddress }}</span>
+          </mat-list-item>
+          <!-- Remoju plan プランに追加 -->
+          <mat-list-item class="footer">
+            <button mat-flat-button class="add-to-plan" (click)="onClickAddToPlan(item)">
+              {{ "AddToPlan" | translate }}
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </div>
+  </ng-template>
 </mat-card>

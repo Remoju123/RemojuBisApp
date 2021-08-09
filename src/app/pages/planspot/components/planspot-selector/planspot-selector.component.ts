@@ -16,6 +16,7 @@ export class PlanspotSelectorComponent implements OnInit {
   
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
+  @Output() keyword = new EventEmitter<any>();
 
   get lang() {
     return this.translate.currentLang;
@@ -31,6 +32,11 @@ export class PlanspotSelectorComponent implements OnInit {
 
   onSortChange(e:{value:number}){
     this.sort.emit(e.value);
+  }
+
+  onKeywordSearch(e){
+    const val = e.target.value.toLowerCase();
+    this.keyword.emit(val);
   }
 
 }

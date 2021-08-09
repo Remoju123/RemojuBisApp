@@ -42,6 +42,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   sortval:number;
   optionKeywords: string[];
 
+  isList:boolean;
+
 
   get lang() {
     return this.translate.currentLang;
@@ -146,39 +148,51 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async mergeNextDataSet(){
-    let startIndex = (this.p - 1) * this.limit;
-    this.end = startIndex + this.limit;
-    if(this.rows.length - startIndex < this.limit){
-      this.end = this.rows.length;
-    }
+    if(this.rows.length > 0){
+      this.isList = true;
+      let startIndex = (this.p - 1) * this.limit;
+      this.end = startIndex + this.limit;
+      if(this.rows.length - startIndex < this.limit){
+        this.end = this.rows.length;
+      }
 
-    for (let i = startIndex; i < this.end; i++){
-      (await this.planspots.fetchDetails(this.rows[i]))
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(d => {
-          // 非同期で戻された結果セットの順番を維持するための処理
-          const idx = this.rows.findIndex(v => v.id === d.id);
+      for (let i = startIndex; i < this.end; i++){
+        (await this.planspots.fetchDetails(this.rows[i]))
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            // 非同期で戻された結果セットの順番を維持するための処理
+            const idx = this.rows.findIndex(v => v.id === d.id);
 
-          // 掲載終了の場合は削除
-          if(d.isEndOfPublication){
-            this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
-            this.rows.splice(idx, 1);
-              if(this.rows.length - startIndex < this.limit){
-                this.end = this.rows.length;
-              }
-          }else{
-            this.rows[idx] = d;
-            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-          }
-          this.details$ = this.rows.slice(0,this.end);
+            // 掲載終了の場合は削除
+            if(d.isEndOfPublication){
+              this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+              this.rows.splice(idx, 1);
+                if(this.rows.length - startIndex < this.limit){
+                  this.end = this.rows.length;
+                }
+            }else{
+              this.rows[idx] = d;
+              this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+            }
+            this.details$ = this.rows.slice(0,this.end);
+          })
+      }
+      this.p++;
+    }else{
+      this.isList = false;
+      const keyword = this.condition.keyword;
+      if(keyword !== null){
+        (await this.planspots.getGoogleSpotList(keyword)).subscribe(g => {
+          this.details$ = g;
+          this.count = g.length;
         })
+      }
+      //this.details$ = [];
     }
-    this.p++;
   }
 
   cacheRecoveryDataSet(){
     const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY,null);
-    console.log(cache);
     this.rows = cache.data;
     this.end = cache.end;
     this.offset = cache.offset;
@@ -186,6 +200,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.p = cache.p;
     this.condition.select = cache.select;
     this.condition.sortval = cache.sortval;
+    this.condition.keyword = cache.keyword;
     this.$mSort = cache.mSort;
     this.count = cache.data.length;
 
@@ -211,9 +226,18 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
   }
 
+  // キーワード検索
+  keywordSearch(v:any){
+    console.log(v);
+    this.condition.keyword = v;
+    this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
+  }
+
   // 表示順
   sortChange(v:any){
-    this.condition.sortval=v;
+    this.condition.sortval = v;
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
     this.p = 1;
@@ -237,7 +261,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.select = this.condition.select;
     c.sortval =this.condition.sortval;
     c.mSort = this.$mSort;
-    c.keyword = "";
+    c.keyword = this.condition.keyword;
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan
     if(id > 10000){

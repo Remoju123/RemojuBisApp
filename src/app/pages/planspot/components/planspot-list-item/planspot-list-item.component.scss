@@ -394,6 +394,9 @@
         .view{
           flex-basis: 60px;
         }
+        .note{
+          flex-basis: 90%;
+        }
         button.add-to-favorite{
           box-shadow: none;
           min-width: auto;
@@ -553,6 +556,20 @@
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/business-hour.svg");
+              width: 16px;
+              height: 16px;
+              padding-right: 4px;
+              vertical-align: -3px;
+            }
+          }
+
+          .googleaddress {
+            padding-right: 3px;
+            padding-left: 2px;
+
+            &::before {
+              display: inline-block;
+              content: url("../../../../../assets/img/icon_spot.svg");
               width: 16px;
               height: 16px;
               padding-right: 4px;

@@ -6,7 +6,11 @@
     <div class='row'>
       <input type="search" 
         placeholder="「京都女子旅」「スカイツリー」..." 
-        class="keyword"/>
+        class="keyword"
+        [value]="condition.keyword"
+        (keyup.enter)="onKeywordSearch($event)"
+        (search)="onKeywordSearch($event)"
+      />
     </div>
     <div class='row button'>
       <!-- <span>{{condition.select}}</span> -->
