@@ -1,0 +1,42 @@
+<mat-card id="planspot-selector">
+  <mat-card-content>
+    <div class='row title'>
+      みんなのおすすめを探す
+    </div>
+    <div class='row'>
+      <input type="search" 
+        placeholder="「京都女子旅」「スカイツリー」..." 
+        class="keyword"
+        [value]="condition.keyword"
+        (keyup.enter)="onKeywordSearch($event)"
+        (search)="onKeywordSearch($event)"
+      />
+    </div>
+    <div class='row button'>
+      <!-- <span>{{condition.select}}</span> -->
+      <button mat-button class="spot-search">
+        {{ 'AreaAndCommitment' | translate }}
+      </button>
+    </div>
+    <div class='row info'>
+      <div class='count'>
+        {{count}}<span class="sm">&nbsp;{{ "Count" | translate }}</span>
+      </div>
+      <mat-form-field class='condition'>
+        <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval">
+          <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
+            {{ item.name | langFilter:lang}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="switch-toggle">
+        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
+        <label for="spot" class="spot" value="spot">Spot</label>
+        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
+        <label for="all" class="all" value="all">All</label>
+        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
+        <label for="plan" class="plan">Plan</label>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

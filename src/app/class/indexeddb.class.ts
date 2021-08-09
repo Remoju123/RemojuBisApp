@@ -8,6 +8,9 @@ export class ListSearchCondition {
     this.areaId2 = [];
     this.searchCategories = [];
     this.searchOptions = [];
+    this.select = 'all';
+    this.sortval = '11';
+    this.keyword = '';
     // this.isOpens = [];
     this.isRemojuRecommended = true;
     this.isUserPost = true;
@@ -19,6 +22,12 @@ export class ListSearchCondition {
   searchCategories: any[];
   // さらに条件追加
   searchOptions: any[];
+  // プランスポット選択
+  select:string;
+  // ソート順
+  sortval:string;
+  // キーワード
+  keyword:string;
   // エリアEXPオープン
   // isOpens: number[];
   // プラン一覧用 Remojuおすすめ

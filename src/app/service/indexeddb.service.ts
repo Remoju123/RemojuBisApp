@@ -15,12 +15,17 @@ export class IndexedDBService {
   version = 4;
 
   // オブジェクトストア
+  storeListSearchCondition = "ListSearchCondition";
   storeListSearchConditionSpot = "ListSearchConditionSpot";
   storeListSearchConditionPlan = "ListSearchConditionPlan";
   storeMyplan = "Myplan";
   storeGuid = "Guid";
   storeHistorySpot = "HistorySpot";
   storeHistoryPlan = "HistoryPlan";
+
+  async getListSearchCondition(){
+    return this.getStoreValue(this.storeListSearchCondition);
+  }
 
   // スポット一覧検索条件取得
   async getListSearchConditionSpot() {
@@ -76,6 +81,10 @@ export class IndexedDBService {
   // プラン閲覧履歴取得
   async getHistoryPlan(){
     return this.getStoreValue(this.storeHistoryPlan);
+  }
+
+  async registListSearchCondition(value: ListSearchCondition) {
+    return this.registStore(this.storeListSearchCondition, value);
   }
 
   // スポット一覧検索条件保存
@@ -224,6 +233,7 @@ export class IndexedDBService {
   // DBオープン、オブジェクトストア作成
   openDb(){
     const openRequest = indexedDB.open(this.dbName, this.version);
+    const storeListSearchCondition = this.storeListSearchCondition;
     const storeListSearchConditionSpot = this.storeListSearchConditionSpot;
     const storeListSearchConditionPlan = this.storeListSearchConditionPlan;
     const storeMyplan = this.storeMyplan;
@@ -235,6 +245,9 @@ export class IndexedDBService {
     openRequest.onupgradeneeded = function(){
       let db = openRequest.result;
       // オブジェクトストアを削除
+      if (db.objectStoreNames.contains(storeListSearchCondition)) {
+        db.deleteObjectStore(storeListSearchCondition);
+      }
       if (db.objectStoreNames.contains(storeListSearchConditionSpot)) {
         db.deleteObjectStore(storeListSearchConditionSpot);
       }      
@@ -255,6 +268,9 @@ export class IndexedDBService {
       }      
 
       // オブジェクトストアを作成
+      if (!db.objectStoreNames.contains(storeListSearchCondition)){
+        db.createObjectStore(storeListSearchCondition);
+      }
       if (!db.objectStoreNames.contains(storeListSearchConditionSpot)){
         db.createObjectStore(storeListSearchConditionSpot);
       }

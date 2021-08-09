@@ -1,6 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule, HammerModule, HammerGestureConfig, 
-  HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState } from '@angular/platform-browser';
+  HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClient,  HttpClientModule} from "@angular/common/http";
 
@@ -105,6 +105,8 @@ import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-
 import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
 import { MypageUserprofileComponent } from './pages/mypage-userprofile/mypage-userprofile.component';
 import { MypageComponent } from './pages/mypage/mypage.component';
+import { PlanspotModule } from './pages/planspot/planspot.module';
+import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -125,6 +127,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
 
     mc.get('pinch').set({enable: true});
     mc.get('rotate').set({enable: true});
+    mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
     for (const eventName in this.overrides) {
       mc.get(eventName).set(this.overrides[eventName]);
@@ -178,10 +181,11 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
-    UserprofilePanelComponent,
+    UserprofilePanelComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserTransferStateModule,
     TransferHttpCacheModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -195,6 +199,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
         deps: [HttpClient,TransferState]
       }
     }),
+    BrowserTransferStateModule,
     NgxPageScrollCoreModule,
     NgxPageScrollModule,
     AppRoutingModule,
@@ -229,6 +234,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     InfiniteScrollModule,
     HammerModule,
     CrystalLightboxModule,
+    PlanspotModule,
+    PlanDetailModule,
   ],
   providers: [
     DataService,

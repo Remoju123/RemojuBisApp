@@ -119,6 +119,15 @@ export class CommonService implements OnDestroy{
     return String(guid);
   }
 
+  getGuidStatic(){
+    let guid = this.indexedDBService.getGuid();
+    if (!guid) {
+      let guid = Guid.create().toString();
+      this.indexedDBService.registGuid(String(guid));
+    }
+    return String(guid);
+  }
+
   // スポットまたはプラン追加時のチェック
   // 戻り値 true: プランを追加する false:エラーなのでプランを追加しない
   async checkAddPlan(addSpotQty: number){
@@ -269,13 +278,13 @@ export class CommonService implements OnDestroy{
 
   // // ユーザーの一意識別子を取得
   public get objectId(){
-    if(isPlatformBrowser(this.platformId)){
+    //if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
       return claims['sub'];
-    }
+    //}
   }
 
   // idpを取得
@@ -422,7 +431,7 @@ export class CommonService implements OnDestroy{
         const ctx:any = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, dstWidth, dstHeight);
         // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/jpeg");
+        const resized = canvas.toDataURL("image/webp",0.75);
         result.previewUrl = resized;
         // blobに再変換
         var blob = this.base64toBlob(resized);

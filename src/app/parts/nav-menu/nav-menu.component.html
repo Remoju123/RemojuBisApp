@@ -2,7 +2,7 @@
 <nav class="navbar" role="navigation">
     <div class="navbar-header">
       <a class="navbar-brand lower" href="/">
-        <img src="../../../assets/img/remoju-logo-b.svg" alt="remoju-app" />
+        <img src="../../../assets/img/remoju-logo-b.svg" alt="remoju-app" width="106" height="27" />
       </a>
     </div>
     <div class="nav-wrap">
@@ -31,6 +31,7 @@
           <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
           <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','favorite')">{{ "SearchByFavorite" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('planspot')">プランスポット一覧</a>
         </mat-nav-list>
       </mat-nav-list>
       <mat-nav-list>

@@ -1,0 +1,16 @@
+<div class="box"
+infinite-scroll
+[infiniteScrollDistance]="5"
+[infiniteScrollUpDistance]="1.5"
+[infiniteScrollThrottle]="150"
+(scrolled)="scrolledEmit()">
+  <mat-card id="nolist" *ngIf="!isList">
+    <mat-card-content>
+      みんなのおすすめは、見つかりませんでした。<br>
+      代わりにGoogleにてヒットしたスポットを表示します。<br>
+      （これらのスポットもプランに入れることができます。）
+    </mat-card-content>
+  </mat-card>
+  <ng-content>
+  </ng-content>
+</div>

@@ -13,6 +13,7 @@ $color-gld02: #6f4b00;
 $color-gld03: #8f7848;
 $color-gld04: #9a721e;
 $color-gld04cf:#9a721ecf;
+$color-gld05: #BF9F60;
 
 $color-gry00: #f6f6f6;
 $color-gry01: #eaeaea;
@@ -21,6 +22,7 @@ $color-gry03: #949494;
 $color-gry04: #807e7d;
 $color-gry05: #757575;
 $color-gry06: #696969;
+$color-gry07: #A8A8A8;
 
 $color-pnk00: #e58e90;
 $color-pnk02: #f3787e;
@@ -642,6 +644,32 @@ $color-grn01: #81C5B4;
         color: #fff;
       }
     }
+  }
+}
+
+@mixin text-truncate($font-size, $line-height, $line, $bg) {
+  position: relative;
+  max-height: $font-size * $line-height * $line + px;
+  font-size: $font-size + px;
+  line-height: $line-height;
+  word-break: break-all;
+  overflow: hidden;
+  &::before,
+  &::after {
+    position: absolute;
+    background: $bg;
+  }
+  &::before {
+    content: '...more';
+    top: $font-size * $line-height * ($line - 1) + px;
+    right: 0;
+    width: 3.3em;
+    color: #757575;
+  }
+  &::after {
+    content: '';
+    width: 100%;
+    height: 100%;
   }
 }
 
