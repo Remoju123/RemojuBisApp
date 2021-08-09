@@ -680,30 +680,18 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           }
         }
 
-        this.row.startPlanSpot.line = this.planService.transline(
-          langpipe.transform(
-            this.row.startPlanSpot.transfer,
-            this.lang
-          )
-        );
-        this.row.startPlanSpot.transtime = this.planService.transtimes(
-          langpipe.transform(
-            this.row.startPlanSpot.transfer,
-            this.lang
-          )
-        );
-        this.row.startPlanSpot.transflow = this.planService.transflows(
-          langpipe.transform(
-            this.row.startPlanSpot.transfer,
-            this.lang
-          )
-        );
-      }
-    }
+        let transfer: any;
+        try {
+          transfer = this.commonService.isValidJson(this.row.startPlanSpot.transfer, this.lang);
+        }
+        catch{
+          transfer = JSON.parse(this.row.startPlanSpot.transfer)[0].text;
+        }
 
-    // 出発時間(00:00形式)
-    if (this.row.startTime) {
-      this.row.startTime = this.row.startTime.substring(0, 5);
+        this.row.startPlanSpot.line = this.planService.transline(transfer);
+        this.row.startPlanSpot.transtime = this.planService.transtimes(transfer);
+        this.row.startPlanSpot.transflow = this.planService.transflows(transfer);
+      }
     }
 
     // 終了時間(出発時間＋所要時間)
@@ -745,13 +733,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         );
       }
 
-      // 到着時間
-      if (this.row.planSpots[i].startTime){
-        this.row.planSpots[i].startTime = this.row.planSpots[i].startTime.substring(0, 5);
-      }
-
       // 移動方法
-      if (this.row.planSpots[i].transfer !== null) {
+      if (this.row.planSpots[i].transfer) {
         // 次のスポットがある場合
         if (i + 1 < this.row.planSpots.length) {
           if (this.row.planSpots[i + 1].type === 1) {
@@ -760,24 +743,18 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             this.row.planSpots[i].destination = this.row.planSpots[i + 1].spotName;
           }
         }
-        this.row.planSpots[i].line = this.planService.transline(
-          langpipe.transform(
-            this.row.planSpots[i].transfer,
-            this.lang
-          )
-        );
-        this.row.planSpots[i].transtime = this.planService.transtimes(
-          langpipe.transform(
-            this.row.planSpots[i].transfer,
-            this.lang
-          )
-        );
-        this.row.planSpots[i].transflow = this.planService.transflows(
-          langpipe.transform(
-            this.row.planSpots[i].transfer,
-            this.lang
-          )
-        );
+        // 移動方法
+        let transfer: any;
+        try {
+          transfer = this.commonService.isValidJson(this.row.planSpots[i].transfer, this.lang);
+        }
+        catch{
+          transfer = JSON.parse(this.row.planSpots[i].transfer)[0].text;
+        }
+
+        this.row.planSpots[i].line = this.planService.transline(transfer);
+        this.row.planSpots[i].transtime = this.planService.transtimes(transfer);
+        this.row.planSpots[i].transflow = this.planService.transflows(transfer);
       }
     }
   }
@@ -874,7 +851,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
     items: 1,
-    nav: true,
-    // autoplay:true
+    nav: true
   };
 }

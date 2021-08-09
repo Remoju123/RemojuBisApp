@@ -11,11 +11,11 @@ import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { PlanListComponent } from './pages/plan-list/plan-list.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
-// import { MapComponent } from './pages/map/map.component';
-// import { MypageComponent } from './pages/mypage/mypage.component';
-// import { NotfoundComponent } from './pages/notfound/notfound.component';
-// import { SystemErrorComponent } from './pages/system-error/system-error.component';
-// import { UserComponent } from './pages/user/user.component';
+import { MapComponent } from './pages/map/map.component';
+import { MypageComponent } from './pages/mypage/mypage.component';
+import { NotfoundComponent } from './pages/notfound/notfound.component';
+import { SystemErrorComponent } from './pages/system-error/system-error.component';
+import { UserComponent } from './pages/user/user.component';
 
 const routes: Routes = [
   {
@@ -26,23 +26,19 @@ const routes: Routes = [
       component:RootComponent,
       children:[
         { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
-        // { path: "top", component: TopComponent },
         { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent},
         { path: "spots/detail/:id", component: SpotDetailComponent},
         { path: "plans", component: PlanListComponent },
         { path: "plans/detail", component: PlanDetailComponent },
         { path: "plans/detail/:id", component: PlanDetailComponent },
-        /*{ path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
+        { path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
         { path: "sharedplan/:id", component: SpotListComponent },
-        { path: "user/:id", component: UserComponent },*/
-        // { path: "**", redirectTo: "404", pathMatch: "full" },
-        /*{ path: "home", component: TopComponent },
+        { path: "user/:id", component: UserComponent },
+        { path: "home", component: TopComponent },
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/top",pathMatch:"full" },
-        { path: '404', component: NotfoundComponent },*/
-        // { path: "keihankyoto/spots", component: SpotListComponent },
-        // { path: "keihankyoto/plans", component: PlanListComponent },
+        { path: '404', component: NotfoundComponent }
       ]
     },
     {
@@ -50,7 +46,7 @@ const routes: Routes = [
       component:BlankComponent,
       children:[
         { path: "top", component: TopComponent },
-        // { path: "map", component: MapComponent }
+        { path: "map", component: MapComponent }
       ]
     }]
   },
