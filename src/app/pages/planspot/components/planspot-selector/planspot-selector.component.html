@@ -8,8 +8,7 @@
         placeholder="「京都女子旅」「スカイツリー」..." 
         class="keyword"
         [value]="condition.keyword"
-        (keyup.enter)="onKeywordSearch($event)"
-        (search)="onKeywordSearch($event)"
+        (input)="onKeywordSearch($event)"
       />
     </div>
     <div class='row button'>
