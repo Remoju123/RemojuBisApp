@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output,EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DataSelected } from 'src/app/class/common.class';
 import { ListSearchCondition} from 'src/app/class/indexeddb.class';
@@ -17,6 +18,8 @@ export class PlanspotSelectorComponent implements OnInit {
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
+
+  keywordControl = new FormControl();
 
   get lang() {
     return this.translate.currentLang;

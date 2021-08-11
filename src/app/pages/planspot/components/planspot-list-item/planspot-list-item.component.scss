@@ -738,3 +738,13 @@
     }
   }
 }
+
+@media screen and (min-width: 415px) and (max-width: 1024px) { 
+  #planspot-list-item{
+    width: calc(100%/2);
+    float: left;
+    .header{
+      min-height: 56px;
+    }
+  }  
+}
