@@ -3,13 +3,13 @@
     <div class='row title'>
       みんなのおすすめを探す
     </div>
-    <div class='row' onclick="">
+    <div class='row'>
       <input type="search" 
         placeholder="「京都女子旅」「スカイツリー」..." 
         class="keyword"
         [value]="condition.keyword"
         (keyup.enter)="onKeywordSearch($event)"
-        (search)="onKeywordSearch($event)"
+        (blur)="onKeywordSearch($event)"
       />
     </div>
     <div class='row button'>
