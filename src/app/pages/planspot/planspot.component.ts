@@ -203,7 +203,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.condition.keyword = cache.keyword;
     this.$mSort = cache.mSort;
     this.count = cache.data.length;
-    this.isList = cache.isList;
+    this.isList = cache.isList; //change
     
     this.transferState.remove(PLANSPOT_KEY);
   }
