@@ -190,6 +190,7 @@ export class CacheStore {
   sortval:string;
   keyword:string;
   mSort:DataSelected[];
+  isList:boolean;
 }
 
 export class GoogleSpot {

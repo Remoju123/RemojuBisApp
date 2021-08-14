@@ -203,7 +203,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.condition.keyword = cache.keyword;
     this.$mSort = cache.mSort;
     this.count = cache.data.length;
-
+    this.isList = cache.isList;
+    
     this.transferState.remove(PLANSPOT_KEY);
   }
 
@@ -262,6 +263,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.sortval =this.condition.sortval;
     c.mSort = this.$mSort;
     c.keyword = this.condition.keyword;
+    c.isList = this.isList;
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan
     if(id > 10000){
