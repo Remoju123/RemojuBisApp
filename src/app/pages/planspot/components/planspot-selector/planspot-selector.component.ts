@@ -18,6 +18,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
+  @Output() open = new EventEmitter<any>();
 
   keywordControl = new FormControl();
 
@@ -40,6 +41,10 @@ export class PlanspotSelectorComponent implements OnInit {
   onKeywordSearch(e){
     const val = e.target.value.toLowerCase();
     this.keyword.emit(val);
+  }
+
+  openDialog(e){
+    this.open.emit(e.value);
   }
 
 }

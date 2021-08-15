@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PlanspotRoutingModule } from './planspot-routing.module';
 import { PlanspotComponent } from './planspot.component';
@@ -12,6 +13,7 @@ import { MaterialModule } from "../../material/material.module";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UtilsModule } from "../../utils/utils.module";
 import { TranslateModule } from '@ngx-translate/core';
+import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
     PlanspotComponent,
     PlanspotSelectorComponent,
     PlanspotListComponent,
-    PlanspotListItemComponent
+    PlanspotListItemComponent,
+    SearchDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +31,9 @@ import { TranslateModule } from '@ngx-translate/core';
     MaterialModule,
     InfiniteScrollModule,
     UtilsModule,
-    TranslateModule
+    TranslateModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     PlanspotComponent

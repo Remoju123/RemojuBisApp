@@ -12,11 +12,19 @@
         (blur)="onKeywordSearch($event)"
       />
     </div>
-    <div class='row button'>
+    <div class='row switch'>
       <!-- <span>{{condition.select}}</span> -->
-      <button mat-button class="spot-search">
-        {{ 'AreaAndCommitment' | translate }}
-      </button>
+      <div class="switch-toggle">
+        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
+        <label for="all" class="all" value="all">All</label>
+        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
+        <label for="spot" class="spot" value="spot">Spot</label>
+        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
+        <label for="plan" class="plan">Plan</label>
+        <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
+        <label for="google" class="google">Google</label>
+
+      </div>
     </div>
     <div class='row info'>
       <div class='count'>
@@ -29,14 +37,9 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="switch-toggle">
-        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
-        <label for="spot" class="spot" value="spot">Spot</label>
-        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
-        <label for="all" class="all" value="all">All</label>
-        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
-        <label for="plan" class="plan">Plan</label>
-      </div>
+      <button mat-button class="spot-search" (click)="openDialog(0)">
+        {{ 'AreaAndCommitment' | translate }}
+      </button>
     </div>
   </mat-card-content>
 </mat-card>

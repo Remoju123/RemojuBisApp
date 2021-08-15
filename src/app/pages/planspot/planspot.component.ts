@@ -12,6 +12,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');@Component({
   selector: 'app-planspot',
@@ -42,7 +44,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   sortval:number;
   optionKeywords: string[];
 
-  isList:boolean;
+  isList:boolean = true;
+  select:string;
 
 
   get lang() {
@@ -57,6 +60,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     private indexedDBService: IndexedDBService,
     private transferState: TransferState,
     private router: Router,
+    public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: object
     ) {
       this.limit = 6;
@@ -180,14 +184,17 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.p++;
     }else{
       this.isList = false;
-      const keyword = this.condition.keyword;
-      if(keyword !== null){
-        (await this.planspots.getGoogleSpotList(keyword)).subscribe(g => {
-          this.details$ = g;
-          this.count = g.length;
-        })
+      if(this.condition.select !== 'plan'){
+        const keyword = this.condition.keyword;
+        if(keyword !== null){
+          (await this.planspots.getGoogleSpotList(keyword)).subscribe(g => {
+            this.details$ = g;
+            this.count = g.length;
+          })
+        }
+      }else{
+        this.details$ = [];
       }
-      //this.details$ = [];
     }
   }
 
@@ -246,6 +253,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   // プランスポット切り替え
   onPlanSpotChange(val:any){
+    this.select = val;
     this.condition.select = val;
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
@@ -271,6 +279,25 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }else{
       this.router.navigate(["/" + this.lang + "/plans/detail",id]);
     }
+  }
+
+  // 検索パネル
+  openDialog(e:any){
+    this.listSelectMaster.tabIndex = e;
+    this.listSelectMaster.planSpotList = this.rows;
+
+    const dialogRef = this.dialog.open(SearchDialogComponent, {
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: this.listSelectMaster,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+      this.getPlanSpotDataSet();
+      this.p = 1;
+    });
   }
   
 }

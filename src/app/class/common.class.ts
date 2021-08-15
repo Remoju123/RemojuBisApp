@@ -56,6 +56,10 @@ export class ListSelectMaster{
   businessDay: DataSelected[];
   // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
   isList: boolean;
+  // 検索ダイアログtab
+  tabIndex: number;
+  // プランスポット一覧
+  planSpotList: PlanSpotList[];
 }
 
 export class ListSelected {

@@ -25,29 +25,103 @@
         -webkit-appearance: none;
       }
 
-      &.button{
-        display: flex;
+      &.switch{
+        margin: 0.7em 0 0.2em;
         justify-content: flex-end;
-        button.spot-search{
-          font-size: 12px;
-          color: $color-gld02;
-          padding: 0 8px 0 16px;
-      
-          &::before{
-            content: url("../../../../../assets/img/searchplus.svg");
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            padding-right: 3px;
-            vertical-align: sub;
+        .switch-toggle {
+          background: #7D9E9F;
+          height: 24px;
+          border-radius: 6px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+          input{
+            all: unset;
+            position: absolute;
+            opacity: 0;
+            
+            + label{
+              color: #fff;
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              height: inherit;
+            }
+  
+            &#spot{
+              &:checked + label{
+                background: #ABD9D9;
+                //border-radius: 12px 0 0 12px;
+              }
+            }
+  
+            &#plan{
+              &:checked + label{
+                background: #F6C57D;
+                //border-radius: 0 12px 12px 0;
+              }
+            }
+  
+            &#all{
+              &:checked + label{
+                background:#797E86;
+                border-radius: 6px 0 0 6px;
+              }
+            }
+
+            &#google{
+              &:checked + label{
+                background:#797E86;
+                border-radius: 0 6px 6px 0;
+              }
+            }
           }
-      
-          ::ng-deep.mat-button-focus-overlay{
-            background-color: transparent!important; 
+  
+          label{
+            text-align: center;
+            width: 74px;
+            &.plan{
+              //width: 58px;
+              &::before{
+                content: "";
+                display: inline-block;
+                width: 23px;
+                height: 14px;
+                background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
+                vertical-align: middle;
+                margin-left: 2px;
+              }
+            }
+            &.spot{
+              //width: 58px;
+              &::before{
+                content: "";
+                display: inline-block;
+                width: 13px;
+                height: 14px;
+                background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
+                vertical-align: middle;
+                margin-right: 2px;
+              }
+            }
+            &.google{
+              //width: 36px;
+              &::before{
+                content: "";
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                background: url("../../../../../assets/img/icon_google.svg") no-repeat;
+                vertical-align: middle;
+                margin-right: 2px;
+              }
+            }
           }
         }
       }
-      
+
     
       &.info{
         display: flex;
@@ -71,104 +145,50 @@
               width: 90px;
             }
           }
-          
         }
-
-        button{
-          border: none;
-          flex-basis: 96px;
-          width: 96px;
-          height: 23px;
-          background-color: transparent;
-          background-repeat: no-repeat;
-          background-size:contain;
-          background-position: center center;
-        }
-
-        button.spot{
-          background-image: url("../../../../../assets/img/btn_spot.svg");
-          background-repeat: no-repeat;
-        }
-
-        button.plan{
-          background-image: url("../../../../../assets/img/btn_plan.svg");
-          background-repeat: no-repeat;
-        }
-
-        .switch-toggle {
-          background: #7D9E9F;
-          height: 24px;
-          border-radius: 12px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          
-          input{
-            all: unset;
-            position: absolute;
-            opacity: 0;
-            
-            + label{
-              color: #fff;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: inherit;
-            }
-
-            &#spot{
-              &:checked + label{
-                background: #ABD9D9;
-                border-radius: 12px 0 0 12px;
-              }
-            }
-
-            &#plan{
-              &:checked + label{
-                background: #F6C57D;
-                border-radius: 0 12px 12px 0;
-              }
-            }
-
-            &#all{
-              &:checked + label{
-                background:#797E86
-              }
-            }
+        
+        button.spot-search{
+          font-size: 12px;
+          color: $color-gld02;
+          padding: 0 8px 0 16px;
+      
+          &::before{
+            content: url("../../../../../assets/img/searchplus.svg");
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            padding-right: 3px;
+            vertical-align: sub;
           }
-
-          label{
-            text-align: center;
-            &.plan{
-              width: 58px;
-              &::after{
-                content: "";
-                  display: inline-block;
-                  width: 23px;
-                  height: 14px;
-                  background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
-                  vertical-align: middle;
-                  margin-left: 2px;
-              }
-            }
-            &.spot{
-              width: 58px;
-              &::before{
-                content: "";
-                  display: inline-block;
-                  width: 13px;
-                  height: 14px;
-                  background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
-                  vertical-align: middle;
-                  margin-right: 2px;
-              }
-            }
-            &.all{
-              width: 36px;
-            }
+      
+          ::ng-deep.mat-button-focus-overlay{
+            background-color: transparent!important; 
           }
         }
+        
+
+        // button{
+        //   border: none;
+        //   flex-basis: 96px;
+        //   width: 96px;
+        //   height: 23px;
+        //   background-color: transparent;
+        //   background-repeat: no-repeat;
+        //   background-size:contain;
+        //   background-position: center center;
+        // }
+
+        // button.spot{
+        //   background-image: url("../../../../../assets/img/btn_spot.svg");
+        //   background-repeat: no-repeat;
+        // }
+
+        // button.plan{
+        //   background-image: url("../../../../../assets/img/btn_plan.svg");
+        //   background-repeat: no-repeat;
+        // }
+
+        
       }
     }
   }

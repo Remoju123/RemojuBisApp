@@ -153,7 +153,7 @@
         </div>
         <div class='info'>
           <div class='lt'>
-            <span class="areaName" *ngIf="item.googleSpot.mArea.area_name_1">
+            <span class="areaName" *ngIf="item.googleSpot.mArea?.area_name_1">
               {{ item.googleSpot.mArea.area_name_1 | langFilter: lang }}
             </span>
           </div>
