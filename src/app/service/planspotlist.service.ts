@@ -302,7 +302,7 @@ export class PlanSpotListService {
         qty: list.filter(x =>
           x.searchCategories !== null
             ? x.searchCategories.some(
-              (              s: { search_category_id: { toString: () => string; }; }) =>
+              ( s: { search_category_id: { toString: () => string; }; }) =>
                 s.search_category_id.toString().slice(0, 3) ===
                 c["parentId"].toString()
             )
