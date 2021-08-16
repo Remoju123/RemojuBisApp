@@ -272,6 +272,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.mSort = this.$mSort;
     c.keyword = this.condition.keyword;
     c.isList = this.isList;
+    
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan
     if(id > 10000){
@@ -295,8 +296,12 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      this.getPlanSpotDataSet();
-      this.p = 1;
+      console.log(result);
+
+      //this.getPlanSpotDataSet();
+      // this.rows = result;
+      // this.mergeNextDataSet();
+      //this.p = 1;
     });
   }
   

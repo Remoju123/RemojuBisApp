@@ -116,7 +116,7 @@
           </div>
         </mat-card>
       </mat-tab>
-      <mat-tab label="{{ 'Options' | translate }}">
+      <!-- <mat-tab label="{{ 'Options' | translate }}">
         <mat-card formArrayName="addes" class="card">
           <div
             *ngFor="let item of addes.controls; let i = index"
@@ -153,7 +153,7 @@
             </mat-card-content>
           </div>
         </mat-card>
-      </mat-tab>
+      </mat-tab> -->
     </mat-tab-group>
   </mat-dialog-content>
   <div class="footer">
@@ -161,7 +161,7 @@
       <button mat-raised-button (click)="onReset()" class="cancel">
         {{ "Reset" | translate }}
       </button>
-      <button mat-raised-button [mat-dialog-close]="result" class="submit">
+      <button mat-raised-button [mat-dialog-close]="condition" class="submit">
         <i class="material-icons"> add </i>{{ "Search" | translate }} (
         {{ result?.length }} )
       </button>

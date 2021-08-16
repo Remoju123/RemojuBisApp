@@ -191,6 +191,7 @@ export class CacheStore {
   keyword:string;
   mSort:DataSelected[];
   isList:boolean;
+  tabIndex:number;
 }
 
 export class GoogleSpot {

@@ -35,6 +35,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     cates: this.fb.array([]),
     addes: this.fb.array([])
   });
+  $mSearchCategory:NestDataSelected[];
 
   get areas(): FormArray {
     return this.searchForm.get("areas") as FormArray;
@@ -65,7 +66,9 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     public fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectMaster
-  ) { }
+  ) { 
+    this.$mSearchCategory = this.data.mSearchCategoryPlan.concat(this.data.mSearchCategory);
+  }
 
   ngOnDestroy(): void {
     // ローカル変数配列の重複除外
@@ -93,7 +96,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   async initForm(list:PlanSpotList[]){
     // 検索条件選択値を取得
-    let condition: any = await this.idx.getListSearchConditionSpot();
+    let condition: any = await this.idx.getListSearchCondition();
     if (condition){
       this.condition = condition;
     } else {
@@ -119,16 +122,14 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
     // マスタカテゴリカウント取得
     const $mCategory = this.planspots.reduceMasterCategory(
-      this.data.mSearchCategory,
+      this.$mSearchCategory,
       list,
       arr1
     );
 
     // カテゴリ分解
-    const $_Category = $mCategory.filter(x => x.parentId < 299);
-    this.searchForm.setControl("cates", this.setFbArray($_Category));
-    const $_AddOption = $mCategory.filter(x => x.parentId > 300);
-    this.searchForm.setControl("addes", this.setFbArray($_AddOption));
+    this.searchForm.setControl("cates", this.setFbArray($mCategory));
+    this.filteringData();
 
   }
 
@@ -176,7 +177,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
     // カテゴリ・さらに条件追加条件を更新
     const $mCategory = this.planspots.reduceQty(
-      this.data.mSearchCategory,
+      this.$mSearchCategory,
       this.result
     );
 
@@ -197,26 +198,10 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    // さらに条件追加
-    const $_AddOption = $mCategory.filter(x => x.parentId > 300);
-    $_AddOption.forEach((x, i) => {
-      this.addes.controls[i].get("qty").patchValue(x.qty);
-      const sub = this.addes.controls[i].get("dataSelecteds") as FormArray;
-      x.dataSelecteds.forEach((y: { qty: number; }, j: any) => {
-        sub.controls[j].get("qty").patchValue(y.qty);
-        if (y.qty === 0) {
-          sub.controls[j].get("selected").patchValue(false);
-          // addedId選択の矛盾をクリア
-          this.condition.searchOptions = this.condition.searchOptions.filter(
-            z => z !== sub.controls[j].get("id").value
-          );
-        }
-      });
-    });
-
     // 検索結果フィルタリング処理
-    this.planspots.filteringData(this.data.planSpotList,this.condition,this.data);
+    //this.planspots.filteringData(this.result,this.condition,this.data);
   }
+
 
   // フォーム作成 sub
   setFbArray(data: NestDataSelected[]) {
@@ -243,28 +228,125 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     );
   }
 
+  // エリア-エクスパンションOpen
   onAreaCollapseOpen(i: number, id: number) {
+    // subエリアを再現する場合にExpression has changed after it was checked.となることを防止する。
+    //setTimeout(() => {
+      this.areas.controls[i].get("selected").patchValue(true);
+      const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+      // エリアのsubエリアがひとつしかない場合、最初のサブエリアをチェックする
+      if (fa.length === 1) {
+        if (fa.controls[0].get("qty").value > 0) {
+          this.areas.controls[i].get("selected").patchValue(false);
+          fa.controls[0].get("selected").patchValue(true);
+        }
+      }
+      // subエリアがチェックされていた場合は、親エリアのチェツクを外す
+      if (this.cs.isSome(fa)) {
+        this.areas.controls[i].get("selected").patchValue(false);
+      }
+      this.filteringData();
+    //}, 50);
   }
 
+  // エリア-エクスパンションClose
   onAreaCollapseClose(i: number) {
+    this.areas.controls[i].get("selected").patchValue(false);
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    fa.controls.map(d => {
+      d.get("selected").patchValue(false);
+    });
+
+    this.filteringData();
   }
 
+  // エリア-サブエリア選択時のすべて選択
+  onAreaAllClick(i: number) {
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    if (this.areas.controls[i].get("selected").value === false) {
+      this.areas.controls[i].get("selected").patchValue(true);
+      fa.controls.map(d => {
+        d.get("selected").patchValue(false);
+      });
+    } else {
+      this.areas.controls[i].get("selected").patchValue(false);
+    }
+    this.filteringData();
+  }
+
+  // エリア-チェックボックス選択
+  onAreaSelection(i: number, id: number) {
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+
+    if (fa.controls.length !== 1) {
+      if (this.cs.isSome(fa)) {
+        this.areas.controls[i].get("selected").patchValue(false);
+      } else {
+        this.areas.controls[i].get("selected").patchValue(true);
+      }
+      this.filteringData();
+    }
+  }
+
+  // エリア-エクスパンション状態
+  // *isOpensのパラメータはindexです。
   isExpended(i: number) {
+    // 都道府県が選択されている場合
+    if (this.areas.controls[i].get("selected")?.value){
+      return true;
+    }
+    // サブエリアが選択されている場合
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    if (this.cs.isSome(fa)) {
+      return true;
+    }
     return false;
   }
 
-  onAreaAllClick(i: number) {
-  }
-
-  onAreaSelection(i: number, id: number) {
-  }
-
+  // カテゴリチェック
   onCategoryChange(e: any) {
+    if (e.target.checked) {
+      this.condition.searchCategories.push(Number(e.target["id"]));
+    } else {
+      this.condition.searchCategories = this.condition.searchCategories.filter(
+        x => x !== Number(e.target["id"])
+      );
+    }
+    this.filteringData();
   }
 
-  onAddesChange(e: any) {
-  }
-
+  // リセット
   onReset(): void {
+    this.areas.controls.map(x => {
+      x.get("selected").patchValue(false);
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.cates.controls.map(x => {
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.addes.controls.map(x => {
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.condition.areaId = [];
+    this.condition.areaId2 = [];
+    this.condition.searchCategories = [];
+    this.condition.searchOptions = [];
+
+    this.filteringData();
+    this.dialogRef.close(this.result);
   }
+
+  
 }

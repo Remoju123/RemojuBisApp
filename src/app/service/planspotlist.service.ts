@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { ListSelectMaster, NestDataSelected } from "../class/common.class";
+import { DataSelected, ListSelectMaster, NestDataSelected } from "../class/common.class";
 import { PlanSpotList,searchResult,
   SearchParamsObj, 
   ListSelected} from "../class/planspotlist.class";
@@ -169,12 +169,21 @@ export class PlanSpotListService {
     const _category: string[] = [];
     const kws: any[] = [];
 
-    const Categories = [
-      ...master.mSearchCategory[0].dataSelecteds,
-      ...master.mSearchCategory[1].dataSelecteds,
-      ...master.mSearchCategory[2].dataSelecteds
-    ];
+    const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
 
+    const Categories = [
+      ...$master[0].dataSelecteds,
+      ...$master[1].dataSelecteds,
+      ...$master[2].dataSelecteds,
+      ...$master[3].dataSelecteds,
+      ...$master[4].dataSelecteds,
+      ...$master[5].dataSelecteds,
+      ...$master[6].dataSelecteds,
+      ...$master[7].dataSelecteds,
+      ...$master[8].dataSelecteds,
+      ...$master[9].dataSelecteds,
+    ]
+    
     const langpipe = new LangFilterPipe();
 
     if(cond.areaId.length){
@@ -300,23 +309,17 @@ export class PlanSpotListService {
         parentId: c["parentId"],
         parentName: c["parentName"],
         qty: list.filter(x =>
-          x.searchCategories !== null
-            ? x.searchCategories.some(
-              ( s: { search_category_id: { toString: () => string; }; }) =>
-                s.search_category_id.toString().slice(0, 3) ===
-                c["parentId"].toString()
-            )
-            : []
-        ).length,
+        x.searchCategoryIds !== null ? x.searchCategoryIds.some(
+          (s: { toString: () => string; }) => s.toString().slice(0, 3) === c["parentId"].toString()) : []
+          ).length,
         selected: true,
         dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
           y.push({
             id: d["id"],
             name: d["name"],
             qty: list.filter(x =>
-              x.searchCategories !== null
-                ? x.searchCategories.some((s: { search_category_id: number; }) => s.search_category_id === d["id"])
-                : []
+              x.searchCategoryIds !== null ? x.searchCategoryIds.some(
+                (s: number) => s === d["id"]) : []
             ).length,
             selected: categoryIds.includes(d["id"]) // d["selected"]
           });
@@ -351,23 +354,17 @@ export class PlanSpotListService {
       x.push({
         parentId: c["parentId"],
         qty: list.filter(x =>
-          x.searchCategories !== null
-            ? x.searchCategories.some(
-              (              s: { search_category_id: { toString: () => string; }; }) =>
-                s.search_category_id.toString().slice(0, 3) ===
-                c["parentId"].toString()
-            )
-            : []
+          x.searchCategoryIds !== null ? x.searchCategoryIds.some(
+            s => s.toString().slice(0, 3) === c["parentId"].toString()) : []
         ).length,
         dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
           y.push({
             id: d["id"],
             qty: list.filter(x =>
-              x.searchCategories !== null
-                ? x.searchCategories.some((s: { search_category_id: number; }) => s.search_category_id === d["id"])
-                : []
+              x.searchCategoryIds !== null ? x.searchCategoryIds.some(
+                s => s === d["id"]) : []
             ).length
-          });
+          }); 
           return y;
         }, [])
       });
