@@ -1,4 +1,4 @@
-import { DataSelected } from "./common.class";
+import { DataSelected, ListSelectMaster } from "./common.class";
 import { SpotSearchCategory } from "./spotlist.class";
 import { PlanSearchCategory, PlanSpotName } from "./planlist.class";
 
@@ -192,6 +192,7 @@ export class CacheStore {
   mSort:DataSelected[];
   isList:boolean;
   tabIndex:number;
+  ListSelectMaster:ListSelectMaster;
 }
 
 export class GoogleSpot {

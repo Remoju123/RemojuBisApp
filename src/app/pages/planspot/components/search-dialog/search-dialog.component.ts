@@ -214,7 +214,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       );
     }
 
-    
     this.update();
   }
 
@@ -299,7 +298,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     );
 
     // カテゴリ条件リストを更新
-    //const $_Category = $mCategory.filter(x => x.parentId < 299);
     $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
       const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;
@@ -341,5 +339,9 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
         });
       })
     );
-  }  
+  }
+  
+  onTabChanged(e){
+    
+  }
 }

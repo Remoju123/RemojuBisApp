@@ -211,6 +211,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.$mSort = cache.mSort;
     this.count = cache.data.length;
     this.isList = cache.isList; //change
+    this.listSelectMaster = cache.ListSelectMaster;
     
     this.transferState.remove(PLANSPOT_KEY);
   }
@@ -272,6 +273,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.mSort = this.$mSort;
     c.keyword = this.condition.keyword;
     c.isList = this.isList;
+    c.ListSelectMaster = this.listSelectMaster;
     
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan
@@ -283,8 +285,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   // 検索パネル
-  openDialog(e:any){
-    this.listSelectMaster.tabIndex = e;
+  openDialog(){
+    this.listSelectMaster.tabIndex = 0;
     this.listSelectMaster.planSpotList = this.rows;
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
