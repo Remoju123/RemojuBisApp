@@ -77,7 +77,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     // this.condition.isOpens = Array.from(new Set(this.condition.isOpens));
 
     // 検索条件選択値を更新
-    this.idx.registListSearchConditionSpot(this.condition);
+    //this.idx.registListSearchConditionSpot(this.condition);
     this.onDestroy$.next();
   }
 
@@ -94,7 +94,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     
   }
 
-  async initForm(list:PlanSpotList[]){
+  async initForm(planspotlist:PlanSpotList[]){
     // 検索条件選択値を取得
     let condition: any = await this.idx.getListSearchCondition();
     if (condition){
@@ -106,7 +106,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     // マスタエリアカウント取得
     const $mArea = this.planspots.reduceMasterArea(
       this.data.mArea,
-      list,
+      planspotlist,
       this.condition.areaId,
       this.condition.areaId2
     );
@@ -123,17 +123,135 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     // マスタカテゴリカウント取得
     const $mCategory = this.planspots.reduceMasterCategory(
       this.$mSearchCategory,
-      list,
+      planspotlist,
       arr1
     );
 
     // カテゴリ分解
     this.searchForm.setControl("cates", this.setFbArray($mCategory));
-    this.filteringData();
-
+    this.update();
   }
 
-  filteringData() {
+  // エリア-エクスパンションOpen
+  onAreaCollapseOpen(i: number, id: number) {
+    this.areas.controls[i].get("selected").patchValue(true);
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    // エリアのsubエリアがひとつしかない場合、最初のサブエリアをチェックする
+    if (fa.length === 1) {
+      if (fa.controls[0].get("qty").value > 0) {
+        this.areas.controls[i].get("selected").patchValue(false);
+        fa.controls[0].get("selected").patchValue(true);
+      }
+    }
+    // subエリアがチェックされていた場合は、親エリアのチェツクを外す
+    if (this.cs.isSome(fa)) {
+      this.areas.controls[i].get("selected").patchValue(false);
+    }
+
+    this.update();
+  }
+
+  // エリア-エクスパンションClose
+  onAreaCollapseClose(i: number) {
+    this.areas.controls[i].get("selected").patchValue(false);
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    fa.controls.map(d => {
+      d.get("selected").patchValue(false);
+    });
+
+    this.update();
+  }
+
+  // エリア-サブエリア選択時のすべて選択
+  onAreaAllClick(i: number) {
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    if (this.areas.controls[i].get("selected").value === false) {
+      this.areas.controls[i].get("selected").patchValue(true);
+      fa.controls.map(d => {
+        d.get("selected").patchValue(false);
+      });
+    } else {
+      this.areas.controls[i].get("selected").patchValue(false);
+    }
+    this.update();
+  }
+
+  // エリア-チェックボックス選択
+  onAreaSelection(i: number, id: number) {
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+
+    if (fa.controls.length !== 1) {
+      if (this.cs.isSome(fa)) {
+        this.areas.controls[i].get("selected").patchValue(false);
+      } else {
+        this.areas.controls[i].get("selected").patchValue(true);
+      }
+      this.update();
+    }
+  }
+
+  // エリア-エクスパンション状態
+  isExpended(i: number) {
+    // 都道府県が選択されている場合
+    if (this.areas.controls[i].get("selected")?.value){
+      return true;
+    }
+    // サブエリアが選択されている場合
+    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    if (this.cs.isSome(fa)) {
+      return true;
+    }
+    return false;
+  }
+
+  // カテゴリチェック
+  onCategoryChange(e: any) {
+    if (e.target.checked) {
+      this.condition.searchCategories.push(Number(e.target["id"]));
+    } else {
+      this.condition.searchCategories = this.condition.searchCategories.filter(
+        x => x !== Number(e.target["id"])
+      );
+    }
+
+    
+    this.update();
+  }
+
+  // リセット
+  onReset(): void {
+    this.areas.controls.map(x => {
+      x.get("selected").patchValue(false);
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.cates.controls.map(x => {
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.addes.controls.map(x => {
+      const sub = x.get("dataSelecteds") as FormArray;
+      sub.controls.map(y => {
+        y.get("selected").patchValue(false);
+      });
+    });
+
+    this.condition.areaId = [];
+    this.condition.areaId2 = [];
+    this.condition.searchCategories = [];
+    this.condition.searchOptions = [];
+
+    this.update();
+    this.dialogRef.close(this.condition);
+  }
+
+  update() {
     // エリア検索用パラメータを整形
     const areaIds = [];
     this.condition.areaId = [];
@@ -173,17 +291,16 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     });
 
     // 検索結果フィルタリング処理
-    this.result = this.planspots.getSearchAreaFilter(this.data,this.condition);
-
-    // カテゴリ・さらに条件追加条件を更新
+    let _result = this.planspots.getSearchAreaFilter(this.data,this.condition);
+    
     const $mCategory = this.planspots.reduceQty(
       this.$mSearchCategory,
-      this.result
+      _result
     );
 
-    // カテゴリ
-    const $_Category = $mCategory.filter(x => x.parentId < 299);
-    $_Category.forEach((x, i) => {
+    // カテゴリ条件リストを更新
+    //const $_Category = $mCategory.filter(x => x.parentId < 299);
+    $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
       const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;
       x.dataSelecteds.forEach((y: { qty: number; }, j: any) => {
@@ -198,10 +315,8 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    // 検索結果フィルタリング処理
-    //this.planspots.filteringData(this.result,this.condition,this.data);
+    this.result = this.planspots.getSearchAreaCategoryFilter(this.data,this.condition);
   }
-
 
   // フォーム作成 sub
   setFbArray(data: NestDataSelected[]) {
@@ -226,127 +341,5 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
         });
       })
     );
-  }
-
-  // エリア-エクスパンションOpen
-  onAreaCollapseOpen(i: number, id: number) {
-    // subエリアを再現する場合にExpression has changed after it was checked.となることを防止する。
-    //setTimeout(() => {
-      this.areas.controls[i].get("selected").patchValue(true);
-      const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
-      // エリアのsubエリアがひとつしかない場合、最初のサブエリアをチェックする
-      if (fa.length === 1) {
-        if (fa.controls[0].get("qty").value > 0) {
-          this.areas.controls[i].get("selected").patchValue(false);
-          fa.controls[0].get("selected").patchValue(true);
-        }
-      }
-      // subエリアがチェックされていた場合は、親エリアのチェツクを外す
-      if (this.cs.isSome(fa)) {
-        this.areas.controls[i].get("selected").patchValue(false);
-      }
-      this.filteringData();
-    //}, 50);
-  }
-
-  // エリア-エクスパンションClose
-  onAreaCollapseClose(i: number) {
-    this.areas.controls[i].get("selected").patchValue(false);
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
-    fa.controls.map(d => {
-      d.get("selected").patchValue(false);
-    });
-
-    this.filteringData();
-  }
-
-  // エリア-サブエリア選択時のすべて選択
-  onAreaAllClick(i: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
-    if (this.areas.controls[i].get("selected").value === false) {
-      this.areas.controls[i].get("selected").patchValue(true);
-      fa.controls.map(d => {
-        d.get("selected").patchValue(false);
-      });
-    } else {
-      this.areas.controls[i].get("selected").patchValue(false);
-    }
-    this.filteringData();
-  }
-
-  // エリア-チェックボックス選択
-  onAreaSelection(i: number, id: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
-
-    if (fa.controls.length !== 1) {
-      if (this.cs.isSome(fa)) {
-        this.areas.controls[i].get("selected").patchValue(false);
-      } else {
-        this.areas.controls[i].get("selected").patchValue(true);
-      }
-      this.filteringData();
-    }
-  }
-
-  // エリア-エクスパンション状態
-  // *isOpensのパラメータはindexです。
-  isExpended(i: number) {
-    // 都道府県が選択されている場合
-    if (this.areas.controls[i].get("selected")?.value){
-      return true;
-    }
-    // サブエリアが選択されている場合
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
-    if (this.cs.isSome(fa)) {
-      return true;
-    }
-    return false;
-  }
-
-  // カテゴリチェック
-  onCategoryChange(e: any) {
-    if (e.target.checked) {
-      this.condition.searchCategories.push(Number(e.target["id"]));
-    } else {
-      this.condition.searchCategories = this.condition.searchCategories.filter(
-        x => x !== Number(e.target["id"])
-      );
-    }
-    this.filteringData();
-  }
-
-  // リセット
-  onReset(): void {
-    this.areas.controls.map(x => {
-      x.get("selected").patchValue(false);
-      const sub = x.get("dataSelecteds") as FormArray;
-      sub.controls.map(y => {
-        y.get("selected").patchValue(false);
-      });
-    });
-
-    this.cates.controls.map(x => {
-      const sub = x.get("dataSelecteds") as FormArray;
-      sub.controls.map(y => {
-        y.get("selected").patchValue(false);
-      });
-    });
-
-    this.addes.controls.map(x => {
-      const sub = x.get("dataSelecteds") as FormArray;
-      sub.controls.map(y => {
-        y.get("selected").patchValue(false);
-      });
-    });
-
-    this.condition.areaId = [];
-    this.condition.areaId2 = [];
-    this.condition.searchCategories = [];
-    this.condition.searchOptions = [];
-
-    this.filteringData();
-    this.dialogRef.close(this.result);
-  }
-
-  
+  }  
 }

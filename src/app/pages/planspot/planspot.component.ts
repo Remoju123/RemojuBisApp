@@ -295,13 +295,10 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       autoFocus: false
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      console.log(result);
-
-      //this.getPlanSpotDataSet();
-      // this.rows = result;
-      // this.mergeNextDataSet();
-      //this.p = 1;
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(condition => {
+      this.indexedDBService.registListSearchCondition(condition);
+      this.getPlanSpotDataSet();
+      this.p = 1;
     });
   }
   

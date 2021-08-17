@@ -88,11 +88,11 @@ export class PlanSpotListService {
     * 1.絞り込み処理
     -----------------------------------------*/
     const areas:any = [];
-    cond.areaId.forEach(x => {
+    cond.areaId?.forEach(x => {
       areas.push({ areaId: x });
     });
 
-    cond.areaId2.forEach(x => {
+    cond.areaId2?.forEach(x => {
       areas.push({ areaId2: x });
     });
 
@@ -104,12 +104,12 @@ export class PlanSpotListService {
       }) : data;
 
     // カテゴリ検索(OR)
-    _result = filterd1.filter((item: { searchCategories: any[]; }) => {
-      if (!cond.searchCategories.length) {
+    _result = filterd1.filter((item: { searchCategoryIds: any[]; }) => {
+      if (!cond.searchCategories?.length) {
         return true;
       }
-      return item.searchCategories.find((c: { search_category_id: any; }) => {
-        return cond.searchCategories.find(f => f === c.search_category_id);
+      return item.searchCategoryIds.find(c => {
+        return cond.searchCategories.find(f => f === c);
       });
     });
 
@@ -186,22 +186,18 @@ export class PlanSpotListService {
     
     const langpipe = new LangFilterPipe();
 
-    if(cond.areaId.length){
-      cond.areaId.forEach(v=>{
-        _areaNums.push(master.mArea.find(x=>x.parentId === v).parentName)
-      });
-    }
+    cond.areaId?.forEach(v=>{
+      _areaNums.push(master.mArea.find(x=>x.parentId === v).parentName)
+    });
 
-    if(cond.areaId2.length){
-      cond.areaId2.forEach(e=>{
-        const _areas = master.mArea.find(
-          v => v.parentId === Number(e.toString().slice(0, -2))
-        );
-        _areaId2Nums.push(_areas.dataSelecteds.find(x => x.id === e).name);
-      })
-    }
-
-    if(cond.searchCategories.length){
+    cond.areaId2?.forEach(e=>{
+      const _areas = master.mArea.find(
+        v => v.parentId === Number(e.toString().slice(0, -2))
+      );
+      _areaId2Nums.push(_areas.dataSelecteds.find(x => x.id === e).name);
+    })
+  
+    if(cond.searchCategories?.length){
       cond.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
       })
@@ -214,7 +210,6 @@ export class PlanSpotListService {
       /*-----------------------------------------
     * 3.検索パラメータ結合
     -----------------------------------------*/
-
     const _params = [];
     _params.push("aid=" + cond.areaId.join(","));
     _params.push("era=" + cond.areaId2.join(","));
@@ -262,6 +257,37 @@ export class PlanSpotListService {
       }) : listSelected.planSpotList;
   }
 
+  getSearchAreaCategoryFilter(listSelected:ListSelectMaster, condition:ListSearchCondition){
+    const areas: { areaId?: number; areaId2?: number; }[] = [];
+    condition.areaId.forEach(x => {
+      areas.push({ areaId: x });
+    });
+
+    condition.areaId2.forEach(x => {
+      areas.push({ areaId2: x });
+    });
+
+    let _result = [];
+
+    // エリア検索 (ngx-filter-pipe)
+    const filterdArea = areas.length
+    ? this.filterPipe.transform(listSelected.planSpotList, {
+      $or: areas
+    }) : listSelected.planSpotList;
+
+    // カテゴリ検索(OR)
+    _result = filterdArea.filter((item: { searchCategoryIds: any[]; }) => {
+      if (!condition.searchCategories.length) {
+        return true;
+      }
+      return item.searchCategoryIds.find(c => {
+        return condition.searchCategories.find(f => f === c);
+      });
+    });
+
+    return _result;
+  }
+
   /* マスタ：エリア/サブエリア別カウント
    * mArea:this.listSelected.mArea
    * list:r.spotAppList
@@ -291,8 +317,8 @@ export class PlanSpotListService {
       });
       return x;
     }, []);
-    return data.filter(x => x.qty > 0);
-    // return data;
+    //return data.filter(x => x.qty > 0);
+    return data;
   }
 
   /* マスタ：カテゴリ別カウント
@@ -349,7 +375,7 @@ export class PlanSpotListService {
     // return data;
   }
 
-  reduceQty(master: NestDataSelected[], list: any[]) {
+  reduceQty(master: NestDataSelected[], list: PlanSpotList[]) {
     return master.reduce((x, c) => {
       x.push({
         parentId: c["parentId"],
