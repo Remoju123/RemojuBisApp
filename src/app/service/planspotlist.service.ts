@@ -10,6 +10,8 @@ import { ListSearchCondition } from "../class/indexeddb.class";
 import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
+import { PlanspotComponent } from "../pages/planspot/planspot.component";
+import { takeUntil } from "rxjs/operators";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -87,51 +89,7 @@ export class PlanSpotListService {
     /*-----------------------------------------
     * 1.絞り込み処理
     -----------------------------------------*/
-    const areas:any = [];
-    cond.areaId?.forEach(x => {
-      areas.push({ areaId: x });
-    });
-
-    cond.areaId2?.forEach(x => {
-      areas.push({ areaId2: x });
-    });
-
-    let _result = [];
-    // エリア検索 (ngx-filter-pipe)
-    const filterd1 = areas.length
-      ? this.filterPipe.transform(data, {
-        $or: areas
-      }) : data;
-
-    // カテゴリ検索(OR)
-    _result = filterd1.filter((item: { searchCategoryIds: any[]; }) => {
-      if (!cond.searchCategories?.length) {
-        return true;
-      }
-      return item.searchCategoryIds.find(c => {
-        return cond.searchCategories.find(f => f === c);
-      });
-    });
-
-    // モデルプラン みんなのプラン検索
-    _result = _result.filter((item: { isRemojuPlan: boolean; }) => {
-      // isRemojuPlan true:Remojuプラン false:ユーザ投稿プラン
-      return item.isRemojuPlan ? item.isRemojuPlan === cond.isRemojuRecommended
-      : !item.isRemojuPlan === cond.isUserPost;
-    });
-
-    // プラン・スポット選択
-    switch(cond.select){
-      case 'plan':
-        _result = _result.filter(d => d.isPlan === 1);  
-        break;
-      case 'spot':
-        _result = _result.filter(d => d.isPlan === 0);  
-        break;
-      case 'google':
-        _result = [];
-        break;
-    }
+    let _result = this.getFilterbyCondition(data,cond);
 
     // ソート処理
     switch(parseInt(cond.sortval)){
@@ -234,59 +192,61 @@ export class PlanSpotListService {
     }
   }
 
+  getFilterbyCondition(data:PlanSpotList[], cond:ListSearchCondition){
+    const areas:any = [];
+    cond.areaId?.forEach(x => {
+      areas.push({ areaId: x });
+    });
+
+    cond.areaId2?.forEach(x => {
+      areas.push({ areaId2: x });
+    });
+
+    let _result = [];
+    // エリア検索 (ngx-filter-pipe)
+    const filterd1 = areas.length
+      ? this.filterPipe.transform(data, {
+        $or: areas
+      }) : data;
+
+    // カテゴリ検索(OR)
+    _result = filterd1.filter((item: { searchCategoryIds: any[]; }) => {
+      if (!cond.searchCategories?.length) {
+        return true;
+      }
+      return item.searchCategoryIds.find(c => {
+        return cond.searchCategories.find(f => f === c);
+      });
+    });
+
+    // モデルプラン みんなのプラン検索
+    _result = _result.filter((item: { isRemojuPlan: boolean; }) => {
+      // isRemojuPlan true:Remojuプラン false:ユーザ投稿プラン
+      return item.isRemojuPlan ? item.isRemojuPlan === cond.isRemojuRecommended
+      : !item.isRemojuPlan === cond.isUserPost;
+    });
+
+    // プラン・スポット選択
+    switch(cond.select){
+      case 'plan':
+        _result = _result.filter(d => d.isPlan === 1);  
+        break;
+      case 'spot':
+        _result = _result.filter(d => d.isPlan === 0);  
+        break;
+      case 'google':
+        _result = [];
+        break;
+    }
+
+    return _result;
+  }
+
   // プラン一覧(詳細)を整形
   dataFormat(row: PlanSpotList){
     row.planName = this.commonService.isValidJson(row.planName, this.translate.currentLang);
   }
 
-  // 一覧をエリアで絞り込み
-  getSearchAreaFilter(listSelected:ListSelectMaster, condition:ListSearchCondition){
-    const areas: { areaId?: number; areaId2?: number; }[] = [];
-    condition.areaId.forEach(x => {
-      areas.push({ areaId: x });
-    });
-
-    condition.areaId2.forEach(x => {
-      areas.push({ areaId2: x });
-    });
-
-    // エリア検索 (ngx-filter-pipe)
-    return areas.length
-      ? this.filterPipe.transform(listSelected.planSpotList, {
-        $or: areas
-      }) : listSelected.planSpotList;
-  }
-
-  getSearchAreaCategoryFilter(listSelected:ListSelectMaster, condition:ListSearchCondition){
-    const areas: { areaId?: number; areaId2?: number; }[] = [];
-    condition.areaId.forEach(x => {
-      areas.push({ areaId: x });
-    });
-
-    condition.areaId2.forEach(x => {
-      areas.push({ areaId2: x });
-    });
-
-    let _result = [];
-
-    // エリア検索 (ngx-filter-pipe)
-    const filterdArea = areas.length
-    ? this.filterPipe.transform(listSelected.planSpotList, {
-      $or: areas
-    }) : listSelected.planSpotList;
-
-    // カテゴリ検索(OR)
-    _result = filterdArea.filter((item: { searchCategoryIds: any[]; }) => {
-      if (!condition.searchCategories.length) {
-        return true;
-      }
-      return item.searchCategoryIds.find(c => {
-        return condition.searchCategories.find(f => f === c);
-      });
-    });
-
-    return _result;
-  }
 
   /* マスタ：エリア/サブエリア別カウント
    * mArea:this.listSelected.mArea
@@ -354,25 +314,6 @@ export class PlanSpotListService {
       });
       return x;
     }, []);
-  }
-
-  reduceQtyArea(master: NestDataSelected[], list: PlanSpotList[]) {
-    const data = master.reduce((x, c) => {
-      x.push({
-        parentId: c["parentId"],
-        qty: list.filter(i => i.areaId === c["parentId"]).length,
-        dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
-          y.push({
-            id: d["id"],
-            qty: list.filter(j => j.areaId2 === d["id"]).length
-          });
-          return y;
-        }, [])
-      });
-      return x;
-    }, []);
-    return data.filter(x => x.qty > 0);
-    // return data;
   }
 
   reduceQty(master: NestDataSelected[], list: PlanSpotList[]) {

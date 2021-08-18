@@ -166,6 +166,9 @@
                       font-weight: bolder;
                       font-size: 15px;
                     }
+                    &.disabled{
+                      color: #ddd;
+                    }
                   }
                   span.qty {
                     font-size: 12px;
@@ -386,7 +389,7 @@
 
               input[type="checkbox"][disabled] {
                 + label {
-                  color: #666;
+                  color: rgb(168, 168, 168);
                 }
               }
             }

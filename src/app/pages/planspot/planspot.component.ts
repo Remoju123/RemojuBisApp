@@ -15,7 +15,9 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
-export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');@Component({
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
+export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
+@Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
   styleUrls: ['./planspot.component.scss']
@@ -145,6 +147,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       }
 
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        // trasferState save list
+        this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY,r);
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
         this.mergeNextDataSet();
       });
@@ -285,9 +289,9 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   // 検索パネル
-  openDialog(){
-    this.listSelectMaster.tabIndex = 0;
-    this.listSelectMaster.planSpotList = this.rows;
+  openDialog(e: number){
+    this.listSelectMaster.tabIndex = e;
+    //this.listSelectMaster.planSpotList = this.rows;
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",

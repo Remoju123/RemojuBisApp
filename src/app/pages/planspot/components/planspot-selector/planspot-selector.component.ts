@@ -18,7 +18,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
-  @Output() open = new EventEmitter();
+  @Output() open = new EventEmitter<number>();
 
   keywordControl = new FormControl();
 
@@ -43,8 +43,8 @@ export class PlanspotSelectorComponent implements OnInit {
     this.keyword.emit(val);
   }
 
-  openDialog(){
-    this.open.emit();
+  openDialog(e){
+    this.open.emit(e);
   }
 
 }

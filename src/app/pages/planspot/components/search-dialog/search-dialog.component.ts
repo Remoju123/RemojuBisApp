@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Inject } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Guid } from 'guid-typescript';
 import { FilterPipe } from 'ngx-filter-pipe';
@@ -13,6 +14,9 @@ import { searchResult } from 'src/app/class/spotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
+
+
+export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
 
 @Component({
   selector: 'app-search-dialog',
@@ -32,10 +36,11 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   searchTarm: any;
   searchForm = this.fb.group({
     areas: this.fb.array([]),
-    cates: this.fb.array([]),
-    addes: this.fb.array([])
+    cates: this.fb.array([])
   });
   $mSearchCategory:NestDataSelected[];
+
+  list:PlanSpotList[];
 
   get areas(): FormArray {
     return this.searchForm.get("areas") as FormArray;
@@ -43,10 +48,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   get cates(): FormArray {
     return this.searchForm.get("cates") as FormArray;
-  }
-
-  get addes(): FormArray {
-    return this.searchForm.get("addes") as FormArray;
   }
 
   get lang() {
@@ -65,6 +66,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     private filterPipe: FilterPipe,
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     public fb: FormBuilder,
+    private transferState: TransferState,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectMaster
   ) { 
     this.$mSearchCategory = this.data.mSearchCategoryPlan.concat(this.data.mSearchCategory);
@@ -77,15 +79,18 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     // this.condition.isOpens = Array.from(new Set(this.condition.isOpens));
 
     // 検索条件選択値を更新
-    //this.idx.registListSearchConditionSpot(this.condition);
+    this.idx.registListSearchCondition(this.condition);
     this.onDestroy$.next();
   }
 
   ngOnInit(): void {
     this.tabIndex = this.data.tabIndex;
 
+    this.list = this.transferState.get<PlanSpotList[]>(PLANSPOTLIST_KEY,null);
+    
     // Formデータ初期化
-    this.initForm(this.data.planSpotList);
+    //this.initForm(this.data.planSpotList);
+    this.initForm();
 
     this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result=>{
       this.result = result.list;
@@ -94,7 +99,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     
   }
 
-  async initForm(planspotlist:PlanSpotList[]){
+  async initForm(){
     // 検索条件選択値を取得
     let condition: any = await this.idx.getListSearchCondition();
     if (condition){
@@ -103,10 +108,12 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition = new ListSearchCondition();
     }
 
+    console.log(this.condition);
+
     // マスタエリアカウント取得
     const $mArea = this.planspots.reduceMasterArea(
       this.data.mArea,
-      planspotlist,
+      this.list,
       this.condition.areaId,
       this.condition.areaId2
     );
@@ -115,16 +122,12 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
     this.searchForm.setControl("areas", this.setFbArray($mArea));
 
-    const arr1 = [
-      this.condition.searchCategories,
-      ...this.condition.searchOptions
-    ].reduce((acc, val) => acc.concat(val), []);
-
     // マスタカテゴリカウント取得
     const $mCategory = this.planspots.reduceMasterCategory(
       this.$mSearchCategory,
-      planspotlist,
-      arr1
+      this.list,
+      //arr1
+      this.condition.searchCategories
     );
 
     // カテゴリ分解
@@ -158,7 +161,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     fa.controls.map(d => {
       d.get("selected").patchValue(false);
     });
-
     this.update();
   }
 
@@ -177,7 +179,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   }
 
   // エリア-チェックボックス選択
-  onAreaSelection(i: number, id: number) {
+  onAreaSelection(i: number) {
     const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
 
     if (fa.controls.length !== 1) {
@@ -213,7 +215,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
         x => x !== Number(e.target["id"])
       );
     }
-
     this.update();
   }
 
@@ -234,43 +235,36 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    this.addes.controls.map(x => {
-      const sub = x.get("dataSelecteds") as FormArray;
-      sub.controls.map(y => {
-        y.get("selected").patchValue(false);
-      });
-    });
-
     this.condition.areaId = [];
     this.condition.areaId2 = [];
     this.condition.searchCategories = [];
-    this.condition.searchOptions = [];
 
-    this.update();
     this.dialogRef.close(this.condition);
   }
 
   update() {
     // エリア検索用パラメータを整形
-    const areaIds = [];
+    //const areaIds = [];
     this.condition.areaId = [];
     this.condition.areaId2 = [];
 
     // エリアIDを一括りにする
     this.areas.value.map((x: { selected: any; parentId: number; dataSelecteds: any[]; }) => {
       if (x.selected) {
-        areaIds.push({ areaId: x.parentId });
+        //areaIds.push({ areaId: x.parentId });
         this.condition.areaId.push(x.parentId);
       }
       x.dataSelecteds.map((y: { selected: any; id: number; }) => {
         if (y.selected) {
-          areaIds.push({ areaId2: y.id });
+          //areaIds.push({ areaId2: y.id });
           this.condition.areaId2.push(y.id);
         }
       });
     });
 
-    // エリア条件リストを更新
+    this.result = this.planspots.getFilterbyCondition(this.list,this.condition);
+
+    // エリア条件コントロールを更新
     this.temparea.forEach((x, i) => {
       this.areas.controls
         .find(y => y.value["parentId"] === x.parentId)
@@ -289,15 +283,11 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    // 検索結果フィルタリング処理
-    let _result = this.planspots.getSearchAreaFilter(this.data,this.condition);
-    
+    // カテゴリ条件コントロールを更新
     const $mCategory = this.planspots.reduceQty(
       this.$mSearchCategory,
-      _result
+      this.result
     );
-
-    // カテゴリ条件リストを更新
     $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
       const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;
@@ -312,8 +302,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
         }
       });
     });
-
-    this.result = this.planspots.getSearchAreaCategoryFilter(this.data,this.condition);
   }
 
   // フォーム作成 sub
@@ -342,6 +330,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   }
   
   onTabChanged(e){
-    
+    this.update();
   }
 }

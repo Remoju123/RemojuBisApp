@@ -32,7 +32,8 @@
               [expandedHeight]="'45px'"
             >
               <div class="box">
-                <span class="pref" [ngClass]="{'bold':item.value.isHighlight}">{{ item.value.parentName | langFilter: lang }}</span> <span class="qty">({{ item.value.qty }})</span>
+                <span class="pref" [ngClass]="{'bold':item.value.isHighlight,'disabled':item.value.qty === 0 }">{{ item.value.parentName | langFilter: lang }}</span>
+                <!--span class="qty">({{ item.value.qty }})</span-->
               </div>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
@@ -62,7 +63,7 @@
                       [value]="sub.value.id"
                       [checked]="sub.value.selected"
                       formControlName="selected"
-                      (change)="onAreaSelection(i, item.value.parentId)"
+                      (change)="onAreaSelection(i)"
                       [attr.disabled]="sub.value.qty === 0 ? true : null"
                     />
                     <label for="{{ sub.value.id }}">
