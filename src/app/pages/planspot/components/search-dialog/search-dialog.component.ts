@@ -108,8 +108,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition = new ListSearchCondition();
     }
 
-    console.log(this.condition);
-
     // マスタエリアカウント取得
     const $mArea = this.planspots.reduceMasterArea(
       this.data.mArea,
