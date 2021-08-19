@@ -58,8 +58,6 @@ export class ListSelectMaster{
   isList: boolean;
   // 検索ダイアログtab
   tabIndex: number;
-  // プランスポット一覧
-  planSpotList: PlanSpotList[];
 }
 
 export class ListSelected {

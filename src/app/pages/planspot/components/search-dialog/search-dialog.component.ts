@@ -89,7 +89,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     this.list = this.transferState.get<PlanSpotList[]>(PLANSPOTLIST_KEY,null);
     
     // Formデータ初期化
-    //this.initForm(this.data.planSpotList);
     this.initForm();
 
     this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result=>{
@@ -118,6 +117,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
     this.temparea = [...$mArea];
 
+    // エリアフォーム
     this.searchForm.setControl("areas", this.setFbArray($mArea));
 
     // マスタカテゴリカウント取得
@@ -128,8 +128,9 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition.searchCategories
     );
 
-    // カテゴリ分解
+    // カテゴリフォーム
     this.searchForm.setControl("cates", this.setFbArray($mCategory));
+
     this.update();
   }
 
@@ -148,7 +149,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     if (this.cs.isSome(fa)) {
       this.areas.controls[i].get("selected").patchValue(false);
     }
-
     this.update();
   }
 
@@ -282,10 +282,12 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     });
 
     // カテゴリ条件コントロールを更新
-    const $mCategory = this.planspots.reduceQty(
+    const $mCategory = this.planspots.reduceMasterCategory(
       this.$mSearchCategory,
-      this.result
+      this.list,
+      this.condition.searchCategories
     );
+
     $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
       const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;

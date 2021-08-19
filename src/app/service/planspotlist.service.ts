@@ -83,115 +83,7 @@ export class PlanSpotListService {
     }
   }
 
-
-  // フィルタ & データセット作成
-  async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
-    /*-----------------------------------------
-    * 1.絞り込み処理
-    -----------------------------------------*/
-    let _result = this.getFilterbyCondition(data,cond);
-
-    // ソート処理
-    switch(parseInt(cond.sortval)){
-      case 7: // 閲覧順
-        _result = _result.sort((a,b) => {
-          return a.pvQtyAll < b.pvQtyAll ? 1 : -1
-        })
-        break;
-      case 10: // レビュー評価
-        _result = _result.sort((a,b) => {
-          return a.reviewAvg < b.reviewAvg ? 1 : -1
-        })
-        break;
-      case 11: // 新着純
-        _result = _result.sort((a,b) => {
-          return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
-        })
-        break;
-      case 9: // プランに追加された件数
-        
-        break;
-    }
-
-    // キーワード検索
-    if(cond.keyword !== ""){
-      _result = _result.filter(d => JSON.stringify(d.keyword).indexOf(cond.keyword) !== -1 || !cond.keyword);
-    }
-
-    /*-----------------------------------------
-    * 2.検索条件文字列結合
-    -----------------------------------------*/
-
-    const _areaNums: string[] = [];
-    const _areaId2Nums: string[] = [];
-    const _category: string[] = [];
-    const kws: any[] = [];
-
-    const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
-
-    const Categories = [
-      ...$master[0].dataSelecteds,
-      ...$master[1].dataSelecteds,
-      ...$master[2].dataSelecteds,
-      ...$master[3].dataSelecteds,
-      ...$master[4].dataSelecteds,
-      ...$master[5].dataSelecteds,
-      ...$master[6].dataSelecteds,
-      ...$master[7].dataSelecteds,
-      ...$master[8].dataSelecteds,
-      ...$master[9].dataSelecteds,
-    ]
-    
-    const langpipe = new LangFilterPipe();
-
-    cond.areaId?.forEach(v=>{
-      _areaNums.push(master.mArea.find(x=>x.parentId === v).parentName)
-    });
-
-    cond.areaId2?.forEach(e=>{
-      const _areas = master.mArea.find(
-        v => v.parentId === Number(e.toString().slice(0, -2))
-      );
-      _areaId2Nums.push(_areas.dataSelecteds.find(x => x.id === e).name);
-    })
-  
-    if(cond.searchCategories?.length){
-      cond.searchCategories.forEach(v=>{
-        _category.push(Categories.find(x => x.id === v).name);
-      })
-    }
-
-    let kw = [..._areaNums, ..._areaId2Nums, ..._category];
-    kw.map(k => {
-      kws.push(langpipe.transform(k, this.translate.currentLang));
-    });
-      /*-----------------------------------------
-    * 3.検索パラメータ結合
-    -----------------------------------------*/
-    const _params = [];
-    _params.push("aid=" + cond.areaId.join(","));
-    _params.push("era=" + cond.areaId2.join(","));
-    _params.push("cat=" + cond.searchCategories.join(","));
-    _params.push("srt=" + cond.sortval);
-    _params.push("lst=" + cond.select);
-
-    this.result.list = _result;
-    this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
-    this.result.searchParams = _params.join("&");
-    this.result.searchParamsObj = new SearchParamsObj;
-    this.result.searchParamsObj.aid = cond.areaId.join(",");
-    this.result.searchParamsObj.era = cond.areaId2.join(",");
-    this.result.searchParamsObj.cat = cond.searchCategories.join(",");
-    this.result.searchParamsObj.srt = cond.sortval;
-    this.result.searchParamsObj.lst = cond.select;
-
-    if (master.isList) {
-      this.searchSubject.next(this.result);
-    } else {
-      this.searchSubjectNoList.next(this.result);
-    }
-  }
-
+  // 検索条件絞り込み処理
   getFilterbyCondition(data:PlanSpotList[], cond:ListSearchCondition){
     const areas:any = [];
     cond.areaId?.forEach(x => {
@@ -239,14 +131,121 @@ export class PlanSpotListService {
         break;
     }
 
+    // キーワード検索
+    if(cond.keyword !== ""){
+      _result = _result.filter(d => JSON.stringify(d.keyword).indexOf(cond.keyword) !== -1 || !cond.keyword);
+    }
+
     return _result;
+  }
+
+  // データセット作成
+  async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
+    /*-----------------------------------------
+    * 1.絞り込み処理
+    -----------------------------------------*/
+    let _result = this.getFilterbyCondition(data,cond);
+
+    // ソート処理
+    switch(parseInt(cond.sortval)){
+      case 7: // 閲覧順
+        _result = _result.sort((a,b) => {
+          return a.pvQtyAll < b.pvQtyAll ? 1 : -1
+        })
+        break;
+      case 10: // レビュー評価
+        _result = _result.sort((a,b) => {
+          return a.reviewAvg < b.reviewAvg ? 1 : -1
+        })
+        break;
+      case 11: // 新着純
+        _result = _result.sort((a,b) => {
+          return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
+        })
+        break;
+      case 9: // プランに追加された件数
+        
+        break;
+    }
+
+    /*-----------------------------------------
+    * 2.検索条件文字列結合
+    -----------------------------------------*/
+    const _areaNums: string[] = [];
+    const _areaId2Nums: string[] = [];
+    const _category: string[] = [];
+    const kws: any[] = [];
+
+    const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
+
+    const Categories = [
+      ...$master[0].dataSelecteds,
+      ...$master[1].dataSelecteds,
+      ...$master[2].dataSelecteds,
+      ...$master[3].dataSelecteds,
+      ...$master[4].dataSelecteds,
+      ...$master[5].dataSelecteds,
+      ...$master[6].dataSelecteds,
+      ...$master[7].dataSelecteds,
+      ...$master[8].dataSelecteds,
+      ...$master[9].dataSelecteds,
+    ]
+    
+    const langpipe = new LangFilterPipe();
+
+    cond.areaId?.forEach(v=>{
+      _areaNums.push(master.mArea.find(x=>x.parentId === v).parentName)
+    });
+
+    cond.areaId2?.forEach(e=>{
+      const _areas = master.mArea.find(
+        v => v.parentId === Number(e.toString().slice(0, -2))
+      );
+      _areaId2Nums.push(_areas.dataSelecteds.find(x => x.id === e).name);
+    })
+  
+    if(cond.searchCategories?.length){
+      cond.searchCategories.forEach(v=>{
+        _category.push(Categories.find(x => x.id === v).name);
+      })
+    }
+
+    let kw = [..._areaNums, ..._areaId2Nums, ..._category];
+    kw.map(k => {
+      kws.push(langpipe.transform(k, this.translate.currentLang));
+    });
+
+      /*-----------------------------------------
+    * 3.検索パラメータ結合
+    -----------------------------------------*/
+    const _params = [];
+    _params.push("aid=" + cond.areaId.join(","));
+    _params.push("era=" + cond.areaId2.join(","));
+    _params.push("cat=" + cond.searchCategories.join(","));
+    _params.push("srt=" + cond.sortval);
+    _params.push("lst=" + cond.select);
+
+    this.result.list = _result;
+    this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
+    this.result.searchParams = _params.join("&");
+    this.result.searchParamsObj = new SearchParamsObj;
+    this.result.searchParamsObj.aid = cond.areaId.join(",");
+    this.result.searchParamsObj.era = cond.areaId2.join(",");
+    this.result.searchParamsObj.cat = cond.searchCategories.join(",");
+    this.result.searchParamsObj.srt = cond.sortval;
+    this.result.searchParamsObj.lst = cond.select;
+
+    if (master.isList) {
+      this.searchSubject.next(this.result);
+    } else {
+      this.searchSubjectNoList.next(this.result);
+    }
   }
 
   // プラン一覧(詳細)を整形
   dataFormat(row: PlanSpotList){
     row.planName = this.commonService.isValidJson(row.planName, this.translate.currentLang);
   }
-
 
   /* マスタ：エリア/サブエリア別カウント
    * mArea:this.listSelected.mArea
@@ -309,29 +308,6 @@ export class PlanSpotListService {
             ).length,
             selected: categoryIds.includes(d["id"]) // d["selected"]
           });
-          return y;
-        }, [])
-      });
-      return x;
-    }, []);
-  }
-
-  reduceQty(master: NestDataSelected[], list: PlanSpotList[]) {
-    return master.reduce((x, c) => {
-      x.push({
-        parentId: c["parentId"],
-        qty: list.filter(x =>
-          x.searchCategoryIds !== null ? x.searchCategoryIds.some(
-            s => s.toString().slice(0, 3) === c["parentId"].toString()) : []
-        ).length,
-        dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
-          y.push({
-            id: d["id"],
-            qty: list.filter(x =>
-              x.searchCategoryIds !== null ? x.searchCategoryIds.some(
-                s => s === d["id"]) : []
-            ).length
-          }); 
           return y;
         }, [])
       });

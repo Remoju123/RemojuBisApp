@@ -149,6 +149,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         // trasferState save list
         this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY,r);
+        
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
         this.mergeNextDataSet();
       });
@@ -291,8 +292,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   // 検索パネル
   openDialog(e: number){
     this.listSelectMaster.tabIndex = e;
-    //this.listSelectMaster.planSpotList = this.rows;
-
+    
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",
       width: "92vw",
@@ -305,6 +305,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.indexedDBService.registListSearchCondition(condition);
       this.getPlanSpotDataSet();
       this.p = 1;
+      this.transferState.remove(PLANSPOTLIST_KEY);
     });
   }
   
