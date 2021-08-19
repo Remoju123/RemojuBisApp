@@ -6,19 +6,15 @@
           <a *ngIf="!tollSpotLogo" href="/{{ currentLang }}/planspot" style="min-height:54px;">
             <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" width="227" height="58" />
           </a>
-          <!-- Keihan -->
-          <a *ngIf="tollSpotLogo" href="/{{ currentLang }}/top" style="min-height:54px;">
-            <img [src]="tollSpotLogo" style="width: 180px;height: auto;margin-top: 0.5em;" />
-          </a>
         </span>
         <span class="feature">
           <button mat-icon-button aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
             <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
           </button>
-          <button mat-icon-button aria-label="mypage" class="user"
+          <!--button mat-icon-button aria-label="mypage" class="user"
           matTooltip="{{userName}}" (click)="linktoProfile()">
             <img src="{{pictureUrl}}" alt="user">
-          </button>
+          </button-->
         </span>
         <span class="menu">
           <button mat-icon-button color="primary" aria-label="menu" (click)="toggleactive()">
