@@ -7,7 +7,7 @@ import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { DataSelected, ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
-import { CacheStore, PlanSpotList } from 'src/app/class/planspotlist.class';
+import { CacheStore, PlanSpotList, tarms } from 'src/app/class/planspotlist.class';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,10 +26,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
 
   condition: ListSearchCondition;
-
   listSelectMaster: ListSelectMaster;
-  master: any;
-
+  
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
   details$:PlanSpotList[] = [];
@@ -44,11 +42,10 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   $mSort: DataSelected[];
   sortval:number;
-  optionKeywords: string[];
+  optionKeywords: tarms;
 
   isList:boolean = true;
   select:string;
-
 
   get lang() {
     return this.translate.currentLang;
@@ -96,7 +93,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     .subscribe(result => {
       this.rows = result.list;
       this.temp = [...this.rows];
-      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+      //this.optionKeywords = result.searchTarm!=null ? result.searchTarm.split(","):[];
+      this.optionKeywords = result.searchTarm!=null ? result.searchTarm :null;
       this.historyReplace(result.searchParams);
       this.count = result.list.length;
     })
@@ -242,11 +240,13 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   // キーワード検索
   keywordSearch(v:any){
-    console.log(v);
-    this.condition.keyword = v;
-    this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
-    this.p = 1;
+    setTimeout(() => {
+      console.log(v);
+      this.condition.keyword = v;
+      this.indexedDBService.registListSearchCondition(this.condition);
+      this.getPlanSpotDataSet();
+      this.p = 1;  
+    }, 100);
   }
 
   // 表示順
@@ -289,7 +289,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     }
   }
 
-  // 検索パネル
+  // 検索パネル(エリア・カテゴリー選択)
   openDialog(e: number){
     this.listSelectMaster.tabIndex = e;
     

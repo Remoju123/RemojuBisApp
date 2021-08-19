@@ -3,14 +3,19 @@
     <div class='row title'>
       みんなのおすすめを探す
     </div>
-    <div class='row'>
-      <input type="search" 
+    <div class='row input'>
+      <input type="text" 
         placeholder="「京都女子旅」「スカイツリー」..." 
         class="keyword"
+        #keywordInput
         [value]="condition.keyword"
         (keyup.enter)="onKeywordSearch($event)"
         (blur)="onKeywordSearch($event)"
       />
+      <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="">
+      <button mat-button class="reset" *ngIf="isVal" (click)="inputClear()">
+        <img src="../../../../../assets/img/reset_btn.svg" alt="reset">
+      </button>
     </div>
     <div class='row switch'>
       <!-- <span>{{condition.select}}</span> -->

@@ -10,14 +10,11 @@ import { takeUntil } from 'rxjs/operators';
 import { ListSelectMaster } from 'src/app/class/common.class';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { NestDataSelected, PlanSpotList } from 'src/app/class/planspotlist.class';
-import { searchResult } from 'src/app/class/spotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 
-
 export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
-
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
@@ -237,6 +234,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     this.dialogRef.close(this.condition);
   }
 
+  // 更新処理
   update() {
     // エリア検索用パラメータを整形
     //const areaIds = [];
@@ -257,8 +255,10 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
+    // 検索結果を再取得
     this.result = this.planspots.getFilterbyCondition(this.list,this.condition);
 
+    // エリアオブジェクトを更新
     const $mArea = this.planspots.reduceMasterArea(
       this.data.mArea,
       this.result,
@@ -266,7 +266,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition.areaId2
     );
 
-    // エリア条件コントロールを更新
+    // エリアコントロールを再レンダリング
     $mArea.forEach((x, i) => {
       this.areas.controls
         .find(y => y.value["parentId"] === x.parentId)
@@ -285,13 +285,14 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    // カテゴリ条件コントロールを更新
+    // カテゴリオブジェクトを更新
     const $mCategory = this.planspots.reduceMasterCategory(
       this.$mSearchCategory,
-      this.list,
+      this.result,
       this.condition.searchCategories
     );
 
+    // カテゴリコントロールを再レンダリング
     $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
       const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;
@@ -308,7 +309,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     });
   }
 
-  // フォーム作成 sub
+  // フォーム作成バッチ
   setFbArray(data: NestDataSelected[]) {
     return this.fb.array(
       data.map(p => {
@@ -333,6 +334,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     );
   }
   
+  // タブ切り替え（念のために更新処理）
   onTabChanged(e){
     this.update();
   }

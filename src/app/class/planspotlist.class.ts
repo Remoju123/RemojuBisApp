@@ -117,9 +117,14 @@ export class searchResult{
     this.searchParamsObj = new SearchParamsObj;
   }
   list: PlanSpotList[];
-  searchTarm: string;
+  searchTarm: tarms;
   searchParams: string;
   searchParamsObj: SearchParamsObj;
+}
+
+export class tarms{
+  area:string;
+  cate:string;
 }
 
 export class SearchParamsObj{

@@ -171,8 +171,8 @@ export class PlanSpotListService {
     /*-----------------------------------------
     * 2.検索条件文字列結合
     -----------------------------------------*/
-    const _areaNums: string[] = [];
-    const _areaId2Nums: string[] = [];
+    const _areaNams: string[] = [];
+    const _areaId2Nams: string[] = [];
     const _category: string[] = [];
     const kws: any[] = [];
 
@@ -194,14 +194,14 @@ export class PlanSpotListService {
     const langpipe = new LangFilterPipe();
 
     cond.areaId?.forEach(v=>{
-      _areaNums.push(master.mArea.find(x=>x.parentId === v).parentName)
+      _areaNams.push(master.mArea.find(x=>x.parentId === v).parentName)
     });
 
     cond.areaId2?.forEach(e=>{
       const _areas = master.mArea.find(
         v => v.parentId === Number(e.toString().slice(0, -2))
       );
-      _areaId2Nums.push(_areas.dataSelecteds.find(x => x.id === e).name);
+      _areaId2Nams.push(_areas.dataSelecteds.find(x => x.id === e).name);
     })
   
     if(cond.searchCategories?.length){
@@ -210,7 +210,7 @@ export class PlanSpotListService {
       })
     }
 
-    let kw = [..._areaNums, ..._areaId2Nums, ..._category];
+    let kw = [..._areaNams, ..._areaId2Nams, ..._category];
     kw.map(k => {
       kws.push(langpipe.transform(k, this.translate.currentLang));
     });
@@ -226,7 +226,8 @@ export class PlanSpotListService {
     _params.push("lst=" + cond.select);
 
     this.result.list = _result;
-    this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
+    //this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
+    this.result.searchTarm = {area:'',cate:''};
     this.result.searchParams = _params.join("&");
     this.result.searchParamsObj = new SearchParamsObj;
     this.result.searchParamsObj.aid = cond.areaId.join(",");
