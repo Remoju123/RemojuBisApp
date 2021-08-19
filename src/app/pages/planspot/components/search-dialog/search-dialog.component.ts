@@ -31,7 +31,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   tabIndex = 0;
   result: any;
   condition: ListSearchCondition;
-  temparea: any[] = [];
   $mArea: any;
   searchTarm: any;
   searchForm = this.fb.group({
@@ -114,8 +113,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition.areaId,
       this.condition.areaId2
     );
-
-    this.temparea = [...$mArea];
 
     // エリアフォーム
     this.searchForm.setControl("areas", this.setFbArray($mArea));
@@ -262,8 +259,15 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
     this.result = this.planspots.getFilterbyCondition(this.list,this.condition);
 
+    const $mArea = this.planspots.reduceMasterArea(
+      this.data.mArea,
+      this.result,
+      this.condition.areaId,
+      this.condition.areaId2
+    );
+
     // エリア条件コントロールを更新
-    this.temparea.forEach((x, i) => {
+    $mArea.forEach((x, i) => {
       this.areas.controls
         .find(y => y.value["parentId"] === x.parentId)
         .get("qty")

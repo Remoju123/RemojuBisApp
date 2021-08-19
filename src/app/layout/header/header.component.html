@@ -1,27 +1,29 @@
 <header>
     <mat-toolbar color="primary">
       <mat-toolbar-row>
-        <span style="flex-basis: 80%;">
+        <span>
           <!-- Remoju -->
           <a *ngIf="!tollSpotLogo" href="/{{ currentLang }}/planspot" style="min-height:54px;">
-            <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" width="227" height="58" />
+            <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" />
           </a>
         </span>
-        <span class="feature">
-          <button mat-icon-button aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
-            <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
-          </button>
           <!--button mat-icon-button aria-label="mypage" class="user"
           matTooltip="{{userName}}" (click)="linktoProfile()">
             <img src="{{pictureUrl}}" alt="user">
           </button-->
-        </span>
+        
         <span class="menu">
-          <button mat-icon-button color="primary" aria-label="menu" (click)="toggleactive()">
-            <mat-icon>
-              more_vert</mat-icon>
+          <button mat-icon-button class="favorite" aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
+            <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
+          </button>
+          <button mat-icon-button class="menu" color="primary" aria-label="menu" (click)="toggleactive()">
+            <mat-icon>more_vert</mat-icon>
           </button>
         </span>
+
+        <div class='guide'>
+          旅プランを作ろう！
+        </div>
       </mat-toolbar-row>
     </mat-toolbar>
   </header>
