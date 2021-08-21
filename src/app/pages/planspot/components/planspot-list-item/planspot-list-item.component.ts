@@ -20,6 +20,8 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() isFavorite: boolean;
 
   @Output() linked = new EventEmitter<number>();
+  @Output() addMyPlan = new EventEmitter<PlanSpotList>();
+  @Output() setFav = new EventEmitter<PlanSpotList>();
 
   isProd:boolean;
   
@@ -121,9 +123,14 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
-  onClickAddToPlan(item:any){
-    //
+  onClickAddToPlan(item:PlanSpotList){
+    this.addMyPlan.emit(item);
   }
+
+  onClickFavorite(item:PlanSpotList){
+    this.setFav.emit(item);
+  }
+  
 
   mainOptions: any = {
     rewindSpeed:0,

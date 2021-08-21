@@ -317,5 +317,18 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.getPlanSpotDataSet();
     this.p = 1;
   }
+
+  addMyPlan(item:PlanSpotList){
+    console.log(item);
+  }
+
+  setFavorite(item:PlanSpotList){
+    console.log(item);
+    if(!item.isFavorite){
+      
+    }else{
+
+    }
+  }
   
 }

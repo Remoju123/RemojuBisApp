@@ -68,7 +68,7 @@
             <span *ngIf="!isProd">
               {{item.id}}
             </span>
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot" >

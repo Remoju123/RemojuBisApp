@@ -1,9 +1,10 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { DataSelected, ListSelectMaster, NestDataSelected } from "../class/common.class";
+import { DataSelected, ListSelectMaster, NestDataSelected, RegistFavorite } from "../class/common.class";
 import { PlanSpotList,searchResult,
   SearchParamsObj, 
-  ListSelected} from "../class/planspotlist.class";
+  ListSelected,
+  GoogleSpot} from "../class/planspotlist.class";
 import { CommonService } from "./common.service";
 import { Observable, Subject } from "rxjs";
 import { ListSearchCondition } from "../class/indexeddb.class";
@@ -351,5 +352,27 @@ export class PlanSpotListService {
       });
       return x;
     }, []);
+  }
+
+  // お気に入り登録
+  registFavorite(
+    id: number,
+    isFavorite: boolean,
+    googleSpot: GoogleSpot = null
+  ) {
+    // お気に入り登録データ作成
+    const registFavorite: RegistFavorite = new RegistFavorite();
+    registFavorite.spotFavorite = {
+      spot_id: id,
+      google_spot_id: 0,
+      guid: this.commonService.getGuidStatic(),
+      is_delete: !isFavorite,
+      objectId: this.commonService.objectId
+    };
+    if (id === 0) {
+      registFavorite.googleSpot = googleSpot;
+    }
+    const url = this.host + "/api/SpotList/Favorite";
+    return this.http.post<any>(url, registFavorite, httpOptions);
   }
 }

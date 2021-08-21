@@ -14,6 +14,8 @@
     *ngFor="let item of details$"
     [item]="item"
     (linked)="linktoDetail($event)"
+    (addMyPlan)="addMyPlan($event)"
+    (setFav)="setFavorite($event)"
   >
   </app-planspot-list-item>
 </app-planspot-list>
