@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output,EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output,EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DataSelected } from 'src/app/class/common.class';
@@ -21,10 +21,12 @@ export class PlanspotSelectorComponent implements OnInit {
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
   @Output() open = new EventEmitter<number>();
+  @Output() reset = new EventEmitter();
 
   @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   isVal:boolean = false;
+  isShow:boolean = false; 
 
   get lang() {
     return this.translate.currentLang;
@@ -57,5 +59,24 @@ export class PlanspotSelectorComponent implements OnInit {
     this.keywordInput.nativeElement.value="";
     this.keyword.emit("");
   }
+
+  @HostListener("window:scroll", [])
+  onWindowScroll(){
+    const h = 208;
+    if((window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop) > h){
+        this.isShow = true;
+      }
+    else {
+      this.isShow = false;
+    }
+  }
+
+  condReset(){
+    this.reset.emit();
+  }
+
+
 
 }

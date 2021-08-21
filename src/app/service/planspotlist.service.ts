@@ -174,7 +174,8 @@ export class PlanSpotListService {
     const _areaNams: string[] = [];
     const _areaId2Nams: string[] = [];
     const _category: string[] = [];
-    const kws: any[] = [];
+    const areas:any[] = [];
+    const cates:any[] = [];
 
     const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
 
@@ -203,6 +204,11 @@ export class PlanSpotListService {
       );
       _areaId2Nams.push(_areas.dataSelecteds.find(x => x.id === e).name);
     })
+
+    let _areas = [..._areaNams,..._areaId2Nams];
+    _areas.map(v => {
+      areas.push(langpipe.transform(v,this.translate.currentLang));
+    })
   
     if(cond.searchCategories?.length){
       cond.searchCategories.forEach(v=>{
@@ -210,12 +216,15 @@ export class PlanSpotListService {
       })
     }
 
-    let kw = [..._areaNams, ..._areaId2Nams, ..._category];
-    kw.map(k => {
-      kws.push(langpipe.transform(k, this.translate.currentLang));
-    });
+    if(cond.keyword !== ""){
+      cates.push(cond.keyword);
+    }
 
-      /*-----------------------------------------
+    _category.map(v => {
+      cates.push(langpipe.transform(v,this.translate.currentLang));
+    })
+
+    /*-----------------------------------------
     * 3.検索パラメータ結合
     -----------------------------------------*/
     const _params = [];
@@ -226,8 +235,7 @@ export class PlanSpotListService {
     _params.push("lst=" + cond.select);
 
     this.result.list = _result;
-    //this.result.searchTarm = kws.length > 0 ? kws.join(","):"";
-    this.result.searchTarm = {area:'',cate:''};
+    this.result.searchTarm = {area : areas.length > 0 ? areas.join(' 、'):'----',cate : cates.length > 0 ? cates.join('、'):'----'};
     this.result.searchParams = _params.join("&");
     this.result.searchParamsObj = new SearchParamsObj;
     this.result.searchParamsObj.aid = cond.areaId.join(",");
@@ -271,6 +279,35 @@ export class PlanSpotListService {
             name: d["name"],
             qty: list.filter(j => j.areaId2 === d["id"]).length,
             selected: areaId2.includes(d["id"]) // d["selected"]
+          });
+          return y;
+        }, [])
+      });
+      return x;
+    }, []);
+    //return data.filter(x => x.qty > 0);
+    return data;
+  }
+
+  reduceAreaCount(
+    mArea: NestDataSelected[],
+    list: any[],
+    areaId: any[],
+    areaId2: any[]
+  ){
+    const data = mArea.reduce((x, c) => {
+      x.push({
+        parentId: c["parentId"],
+        parentName: c["parentName"],
+        isHighlight:c["isHighlight"],
+        qty: list.filter(i => i.areaId === c["parentId"]).length,
+        selected: false,//areaId.includes(c["parentId"]), //  false,
+        dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
+          y.push({
+            id: d["id"],
+            name: d["name"],
+            qty: list.filter(j => j.areaId2 === d["id"]).length,
+            selected: d["selected"]//areaId2.includes(d["id"]) // d["selected"]
           });
           return y;
         }, [])

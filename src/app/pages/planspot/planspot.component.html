@@ -6,7 +6,8 @@
   (event)="onPlanSpotChange($event)" 
   (sort)="sortChange($event)" 
   (keyword)="keywordSearch($event)" 
-  (open)="openDialog($event)">
+  (open)="openDialog($event)"
+  (reset)="conditionReset()">
 </app-planspot-selector>
 <app-planspot-list (scrolled)="onScrollDown()" [isList]="isList" [condition]="condition">
   <app-planspot-list-item

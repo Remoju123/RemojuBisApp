@@ -1,9 +1,9 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-// let locationhost = `${window.location.protocol}//${window.location.host}`;
+//let locationhost = `${window.location.protocol}//${window.location.host}`;
 let locationhost = `http://localhost:4200`;
-// let locationhost = `http://10.0.1.13:4200`;
+//let locationhost = `http://10.0.1.13:4200`;
 export const environment = {
   production: false,
   defaultLang:"ja",

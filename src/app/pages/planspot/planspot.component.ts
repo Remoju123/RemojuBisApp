@@ -93,8 +93,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     .subscribe(result => {
       this.rows = result.list;
       this.temp = [...this.rows];
-      //this.optionKeywords = result.searchTarm!=null ? result.searchTarm.split(","):[];
-      this.optionKeywords = result.searchTarm!=null ? result.searchTarm :null;
+      this.optionKeywords = result.searchTarm;
       this.historyReplace(result.searchParams);
       this.count = result.list.length;
     })
@@ -307,6 +306,16 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.p = 1;
       this.transferState.remove(PLANSPOTLIST_KEY);
     });
+  }
+
+  conditionReset(){
+    this.condition.areaId = [];
+    this.condition.areaId2 = [];
+    this.condition.searchCategories = [];
+    this.condition.keyword = "";
+    this.indexedDBService.registListSearchCondition(this.condition);
+    this.getPlanSpotDataSet();
+    this.p = 1;
   }
   
 }

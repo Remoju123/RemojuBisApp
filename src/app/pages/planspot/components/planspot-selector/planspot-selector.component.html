@@ -28,7 +28,6 @@
         <label for="plan" class="plan">Plan</label>
         <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
         <label for="google" class="google">Google</label>
-
       </div>
     </div>
     <div class='row info'>
@@ -47,4 +46,20 @@
       </button>
     </div>
   </mat-card-content>
+  <div class='popup' [ngClass]="{'on':isShow}">
+    <div class='popupInner'>
+      <button class="popupItem cnt">
+        <span>{{count}}件</span>
+      </button>
+      <button class='popupItem are' (click)="openDialog(0)">
+        <span>{{searchTarms?.area}}</span>
+      </button>
+      <button class='popupItem cat' (click)="openDialog(1)">
+        <span>{{searchTarms?.cate}}</span>
+      </button>
+      <button class="popupItem reset" (click)="condReset()">
+        <span>reset</span>
+      </button>
+    </div>
+  </div>
 </mat-card>
