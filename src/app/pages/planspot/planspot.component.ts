@@ -15,6 +15,7 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
+import { MyplanService } from 'src/app/service/myplan.service';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
@@ -61,6 +62,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
     private mypageFavoriteListService: MypageFavoriteListService,
+    private myplanService: MyplanService,
     private transferState: TransferState,
     private router: Router,
     public dialog: MatDialog,
@@ -315,9 +317,10 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     });
   }
 
+  // 検索条件リセット
   conditionReset(){
     this.commonService.scrollToTop();
-
+    
     this.condition.areaId = [];
     this.condition.areaId2 = [];
     this.condition.searchCategories = [];
@@ -327,15 +330,32 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.p = 1;
   }
 
+  // プランに追加
   async addMyPlan(item:PlanSpotList){
     const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
     if(await this.commonService.checkAddPlan(tempqty) === false){
       return
     };
 
-    
+    this.planspots.addPlan(
+      item.isRemojuPlan,
+      item.id,
+      item.isPlan,
+      item.googleSpot
+    ).then(result => {
+      result.pipe(takeUntil(this.onDestroy$)).subscribe(
+        async myPlanApp => {
+          if (myPlanApp) {
+            this.myplanService.onPlanUserChanged(myPlanApp);
+            this.indexedDBService.registPlan(myPlanApp);
+            this.myplanService.FetchMyplanSpots();
+          }
+        }
+      )
+    })
   }
 
+  // お気に入り登録・除外
   setFavorite(item:PlanSpotList){
     this.planspots.registFavorite(
       item.id,
