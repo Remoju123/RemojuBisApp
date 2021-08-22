@@ -198,6 +198,7 @@ export class CacheStore {
   isList:boolean;
   tabIndex:number;
   ListSelectMaster:ListSelectMaster;
+  optionKeywords: tarms;
 }
 
 export class GoogleSpot {

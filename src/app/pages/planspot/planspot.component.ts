@@ -219,6 +219,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.count = cache.data.length;
     this.isList = cache.isList; //change
     this.listSelectMaster = cache.ListSelectMaster;
+    this.optionKeywords = cache.optionKeywords;
     
     this.transferState.remove(PLANSPOT_KEY);
   }
@@ -283,6 +284,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.keyword = this.condition.keyword;
     c.isList = this.isList;
     c.ListSelectMaster = this.listSelectMaster;
+    c.optionKeywords = this.optionKeywords;
     
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan

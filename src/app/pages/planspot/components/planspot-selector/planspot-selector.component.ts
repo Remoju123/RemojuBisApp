@@ -74,7 +74,7 @@ export class PlanspotSelectorComponent implements OnInit {
   }
 
   chkTarms():boolean{
-    return (this.searchTarms.area !== "----" || this.searchTarms.cate !== "----");
+    return (this.searchTarms.area !== "----" ?? this.searchTarms.cate !== "----");
   }
 
   condReset(){
