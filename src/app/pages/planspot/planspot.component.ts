@@ -314,6 +314,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   conditionReset(){
+    this.commonService.scrollToTop();
+
     this.condition.areaId = [];
     this.condition.areaId2 = [];
     this.condition.searchCategories = [];
@@ -323,8 +325,13 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.p = 1;
   }
 
-  addMyPlan(item:PlanSpotList){
-    console.log(item);
+  async addMyPlan(item:PlanSpotList){
+    const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
+    if(await this.commonService.checkAddPlan(tempqty) === false){
+      return
+    };
+
+    
   }
 
   setFavorite(item:PlanSpotList){
