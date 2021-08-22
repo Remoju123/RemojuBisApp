@@ -66,17 +66,18 @@ export class PlanspotSelectorComponent implements OnInit {
     if((window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop) > h){
-        this.isShow = true;
+        this.isShow = this.chkTarms();
       }
     else {
       this.isShow = false;
     }
   }
 
+  chkTarms():boolean{
+    return (this.searchTarms.area !== "----" || this.searchTarms.cate !== "----");
+  }
+
   condReset(){
     this.reset.emit();
   }
-
-
-
 }

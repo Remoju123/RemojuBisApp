@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
+import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
@@ -47,6 +48,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   isList:boolean = true;
   select:string;
 
+  guid:string;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -57,6 +60,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
+    private mypageFavoriteListService: MypageFavoriteListService,
     private transferState: TransferState,
     private router: Router,
     public dialog: MatDialog,
@@ -80,8 +84,9 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async ngOnInit() {
+    this.guid= await this.commonService.getGuid();
     this.recoveryQueryParams();
-
+    
     if(this.transferState.hasKey(PLANSPOT_KEY)){
       this.cacheRecoveryDataSet();
     }else{
@@ -323,12 +328,19 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   setFavorite(item:PlanSpotList){
-    console.log(item);
-    if(!item.isFavorite){
-      
-    }else{
-
-    }
+    this.planspots.registFavorite(
+      item.id,
+      item.isPlan,
+      !item.isFavorite,
+      item.isRemojuPlan,
+      this.guid,
+      item.googleSpot
+    )
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(()=>{
+      this.mypageFavoriteListService.GetFavoriteCount(this.guid);
+    });
+    item.isFavorite = !item.isFavorite;
   }
   
 }

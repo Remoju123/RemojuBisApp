@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { DataSelected, ListSelectMaster, NestDataSelected, RegistFavorite } from "../class/common.class";
+import { AddPlan, AddSpot, DataSelected, ListSelectMaster, MyPlanApp, NestDataSelected, RegistFavorite } from "../class/common.class";
 import { PlanSpotList,searchResult,
   SearchParamsObj, 
   ListSelected,
@@ -13,6 +13,8 @@ import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
 import { PlanspotComponent } from "../pages/planspot/planspot.component";
 import { takeUntil } from "rxjs/operators";
+import { IndexedDBService } from "./indexeddb.service";
+import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -37,6 +39,7 @@ export class PlanSpotListService {
   constructor(
     private http: HttpClient,
     private commonService: CommonService,
+    private indexedDBService: IndexedDBService,
     private filterPipe: FilterPipe,
     private translate: TranslateService,
     @Inject("BASE_API_URL") private host: string
@@ -357,22 +360,80 @@ export class PlanSpotListService {
   // お気に入り登録
   registFavorite(
     id: number,
+    isPlan: number,
     isFavorite: boolean,
-    googleSpot: GoogleSpot = null
+    isRemojuPlan: boolean,
+    guid:string,
+    googleSpot?: GoogleSpot,
   ) {
     // お気に入り登録データ作成
-    const registFavorite: RegistFavorite = new RegistFavorite();
-    registFavorite.spotFavorite = {
-      spot_id: id,
-      google_spot_id: 0,
-      guid: this.commonService.getGuidStatic(),
-      is_delete: !isFavorite,
-      objectId: this.commonService.objectId
-    };
-    if (id === 0) {
-      registFavorite.googleSpot = googleSpot;
+    let url: string;
+    let param: any;
+    if (isPlan === 1){
+      if(isRemojuPlan){
+        param = new PlanFavorite();
+        param = {
+          plan_id: id,
+          guid: guid,
+          is_delete: !isFavorite,
+          objectId: this.commonService.objectId
+        };
+        url = this.host + "/api/PlanList/Favorite";
+        
+      }else{
+        param = new PlanUserFavorite();
+        param = {
+          plan_user_id: id,
+          guid: guid,
+          is_delete: !isFavorite,
+          objectId: this.commonService.objectId
+        };
+        url = this.host + "/api/PlanList/UserFavorite";
+      }
+    }else{
+      param = new RegistFavorite();
+      param.spotFavorite = {
+        spot_id: id,
+        google_spot_id: 0,
+        guid: guid,
+        is_delete: !isFavorite,
+        objectId: this.commonService.objectId
+      };
+      if (id === 0) {
+        param.googleSpot = googleSpot;
+      }
+      url = this.host + "/api/SpotList/Favorite";
     }
-    const url = this.host + "/api/SpotList/Favorite";
-    return this.http.post<any>(url, registFavorite, httpOptions);
+    return this.http.post<any>(url, param, httpOptions);
+  }
+
+  // プランに追加
+  async addPlan(isRemojuPlan: boolean, id: number, isPlan: number, googleSpot?: GoogleSpot) {
+    let myPlan: any = await this.indexedDBService.getEditPlan(true);
+    if (!myPlan){
+      myPlan = new MyPlanApp();
+    }
+    myPlan.languageCd1 = [ this.translate.currentLang ];
+
+    if(isPlan === 1){
+      let addPlan: AddPlan = new AddPlan();
+      addPlan = {
+        MyPlan: myPlan,
+        planId: id,
+        isRemojuPlan: isRemojuPlan
+      };
+      const url = this.host + "/api/PlanList/Addplan";
+      return this.http.post<MyPlanApp>(url, addPlan, httpOptions);
+    }else{
+      let addSpot: AddSpot = new AddSpot();
+      addSpot = {
+        MyPlan: myPlan,
+        spotId: id,
+        type: googleSpot ? 2 : 1,
+        googleSpot: googleSpot
+      };
+      const url = this.host + "/api/SpotList/AddSpot";
+      return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
+    }
   }
 }
