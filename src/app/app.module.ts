@@ -1,5 +1,5 @@
 import { Injectable, NgModule } from '@angular/core';
-import { BrowserModule, HammerModule, HammerGestureConfig, 
+import { BrowserModule, HammerModule, HammerGestureConfig,
   HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClient,  HttpClientModule} from "@angular/common/http";
@@ -14,6 +14,8 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { AgmCoreModule } from "@agm/core";
 import { AgmDirectionModule } from "agm-direction";
 
+import { ImageCropperModule } from "ngx-image-cropper";
+
 // Materialモジュール
 import { MaterialModule } from "./material/material.module";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -23,7 +25,7 @@ import {
   MatSpinner
 } from "@angular/material/progress-spinner";
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import Hammer from '@egjs/hammerjs';
+//import Hammer from '@egjs/hammerjs';
 import { NgxPageScrollCoreModule } from "ngx-page-scroll-core";
 import { NgxPageScrollModule } from "ngx-page-scroll";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
@@ -107,6 +109,7 @@ import { MypageUserprofileComponent } from './pages/mypage-userprofile/mypage-us
 import { MypageComponent } from './pages/mypage/mypage.component';
 import { PlanspotModule } from './pages/planspot/planspot.module';
 import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
+import { ImageCropperDialogComponent } from "./parts/image-cropper-dialog/image-cropper-dialog.component";
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -121,7 +124,7 @@ export const MATERIAL_MODULES = [
 ];
 @Injectable({providedIn:'root'})
 
-export class MyHammerGestureConfig extends HammerGestureConfig {
+/*export class MyHammerGestureConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, this.options);
 
@@ -134,7 +137,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     }
     return mc;
   }
-}
+}*/
 @NgModule({
   declarations: [
     RootComponent,
@@ -181,7 +184,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
-    UserprofilePanelComponent
+    UserprofilePanelComponent,
+    ImageCropperDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -214,7 +218,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    }),    
+    }),
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: [environment.backend],
@@ -236,6 +240,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     CrystalLightboxModule,
     PlanspotModule,
     PlanDetailModule,
+    ImageCropperModule,
   ],
   providers: [
     DataService,
@@ -250,8 +255,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     { provide: "BASE_API_URL", useValue: environment.backend },
     AuthGuard,
     {provide: MAT_DATE_LOCALE,useValue:"ja-JP"},
-    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
-    { provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
+    //{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
+    //{ provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
   ],
   entryComponents:[
     MatSpinner,
@@ -273,6 +278,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ReviewPostDialogComponent,
     TransferPanelComponent,
     MapDialogComponent,
+    ImageCropperDialogComponent,
   ],
   bootstrap: [AppComponent]
 })

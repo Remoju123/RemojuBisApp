@@ -69,10 +69,17 @@
                 class="selectPhoto"
                 (change)="onClickSelectPhotoPlan($event)" />
               </div>
-
               <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
-                <img width="100%" height="100%" [src]="row.picturePreviewUrl ? row.picturePreviewUrl : row.pictureUrl" />
+                <div>
+                  <span>画角</span>
+                  <span *ngIf="row.aspectRatio === '1'">4:3</span>
+                  <span *ngIf="row.aspectRatio === '2'">4:5</span>
+                  <span *ngIf="row.aspectRatio === '3'">1:1</span>
+                  <span *ngIf="row.aspectRatio === '4'">16:9</span>
+                </div>
+                <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
                 <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
+                <button *ngIf="row.pictureFile" type="button" mat-button (click)="onClickCropPlan()"><i>crop</i></button>
               </div>
               <!-- プラン概要 -->
               <mat-form-field appearance="outline">
@@ -192,7 +199,7 @@
                         <span class="order">{{ item.displayOrder }}</span>
                         <ng-container *ngIf="item.planUserpictures && item.planUserpictures.length > 0; else spotPicture">
                           <img
-                          [src]="item.planUserpictures[0].picturePreviewUrl ? item.planUserpictures[0].picturePreviewUrl : item.planUserpictures[0].picture_url"
+                          [src]="item.planUserpictures[0].imageCropped ?? item.planUserpictures[0].picturePreviewUrl ?? item.planUserpictures[0].picture_url"
                           [alt]="item.spotId" [title]="item.spotId" />
                         </ng-container>
                         <ng-template #spotPicture>
@@ -234,10 +241,19 @@
                       accept="image/*"
                       (change)="onClickSelectPhotoSpot($event, item)" />
                     </div>
-
+                    <div *ngIf="item.planUserpictures?.length > 0">
+                      <span>画角</span>
+                      <span *ngIf="item.aspectRatio === '1'">4:3</span>
+                      <span *ngIf="item.aspectRatio === '2'">4:5</span>
+                      <span *ngIf="item.aspectRatio === '3'">1:1</span>
+                      <span *ngIf="item.aspectRatio === '4'">16:9</span>
+                    </div>
                     <div *ngFor="let picture of item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">
-                      <img width="100%" height="100%" [src]="picture.picturePreviewUrl ? picture.picturePreviewUrl : picture.picture_url" />
-                      <button type="button" class="delete" (click)="onClickPhotoDeleteSpot(item, picture)"></button>
+                      <div class="picpreview">
+                        <img width="100%" height="100%" [src]="picture.imageCropped ?? picture.picturePreviewUrl ?? picture.picture_url" />
+                        <button type="button" class="delete" (click)="onClickPhotoDeleteSpot(item, picture)"></button>
+                        <button *ngIf="picture.pictureFile" type="button" mat-button (click)="onClickCropSpot(item, picture)"><i>crop</i></button>
+                      </div>
                     </div>
 
                     <!-- スポット概要 -->
@@ -367,7 +383,7 @@
       </div>
       <div class='planhead'>
         <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
-          <img width="100%" height="100%" [src]="row.picturePreviewUrl ? row.picturePreviewUrl : (row.pictureUrl ? row.pictureUrl : row.refPictureUrl)" />
+          <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl ?? row.refPictureUrl" />
         </div>
         <mat-list class="planex">
           <mat-list-item>

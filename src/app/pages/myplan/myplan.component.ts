@@ -3,7 +3,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { PlanListService } from "../../service/planlist.service";
-import { SpotListService } from "../../service/spotlist.service";
 import { SpotService } from "../../service/spot.service";
 import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
@@ -14,7 +13,8 @@ import {
   PlanSpotCommon,
   PlanUserPicture,
   MapFullScreenParam,
-  ListSelectedPlan } from "../../class/common.class";
+  ListSelectedPlan,
+  ImageCropperParam} from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { searchResult, PlanAppList } from "../../class/planlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
@@ -33,6 +33,7 @@ import { environment } from "../../../environments/environment";
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
+import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -64,7 +65,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private indexedDBService: IndexedDBService,
     private planListService: PlanListService,
     private planService: PlanService,
-    private spotListService: SpotListService,
     private spotService: SpotService,
     private translate: TranslateService,
     public dialog: MatDialog,
@@ -103,8 +103,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   isMapDisp = false;
 
   isOpen = true;
-
-  //currentlang = localStorage.getItem("gml");
 
   get lang() {
     return this.translate.currentLang;
@@ -197,7 +195,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       const img = await this.commonService.imageSize(file);
       this.row.picturePreviewUrl = img.previewUrl;
       this.row.pictureFile = img.file;
-      this.row.pictureFileExt = this.getImageExt(img.file.name);
+      this.row.aspectRatio = "1";
       this.onChange(false);
     }
   }
@@ -207,8 +205,35 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.row.pictureFile = null;
     this.row.picturePreviewUrl = null;
     this.row.pictureUrl = null;
-    this.row.pictureFileExt = null;
+    this.row.imageCropped = null;
+    this.row.cropperPosition = null;
     this.onChange(false);
+  }
+
+  onClickCropPlan() {
+    let param = new ImageCropperParam();
+    param.isAspectRatio = true;
+    param.aspectRatio = this.row.aspectRatio;
+    param.cropperPosition = this.row.cropperPosition;
+    param.imageCropped = this.row.imageCropped;
+    param.pictureFile = this.row.pictureFile;
+    param.picturePreviewUrl = this.row.picturePreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        this.row.imageCropped = r.imageCropped;
+        this.row.aspectRatio = r.aspectRatio;
+        this.row.cropperPosition = r.cropperPosition;
+        this.onChange(false);
+      }
+    });
   }
 
   // エリア・カテゴリ選択
@@ -258,7 +283,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           }
           picture.pictureFile = img.file;
           picture.picturePreviewUrl = img.previewUrl;
-          picture.pictureFileExt = this.getImageExt(img.file.name);
           if (planSpot.planUserpictures){
             planSpot.planUserpictures.push(picture);
           } else {
@@ -283,6 +307,39 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       picture.picture_display_order = i++;
     });
     this.onChange(false);
+  }
+
+  onClickCropSpot(planSpot: PlanSpotCommon, picture: PlanUserPicture) {
+    let param = new ImageCropperParam();
+    if (picture.picture_display_order === 1) {
+      param.isAspectRatio = true;
+    } else {
+      param.isAspectRatio = false;
+    }
+    param.aspectRatio = planSpot.aspectRatio;
+    param.cropperPosition = picture.cropperPosition;
+    param.imageCropped = picture.imageCropped;
+    param.pictureFile = picture.pictureFile;
+    param.picturePreviewUrl = picture.picturePreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        const idx = this.row.planSpots.findIndex(x => x.displayOrder === planSpot.displayOrder);
+        const idxPic = this.row.planSpots[idx].planUserpictures.findIndex(x => x.picture_display_order === picture.picture_display_order);
+
+        this.row.planSpots[idx].planUserpictures[idxPic].imageCropped = r.imageCropped;
+        this.row.planSpots[idx].aspectRatio = r.aspectRatio;
+        this.row.planSpots[idx].planUserpictures[idxPic].cropperPosition = r.cropperPosition;
+        this.onChange(false);
+      }
+    });
   }
 
   // バスON・OFF
@@ -445,7 +502,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
     // プランメイン写真の画像URL(ファイル名はプランユーザID＋拡張子)
     if (this.row.pictureFile) {
-      this.row.pictureUrl = environment.blobUrl + "/pr{0}/{0}" + this.row.pictureFileExt;
+      this.row.pictureUrl = environment.blobUrl + "/pr{0}/{0}_{1}.webp";
     }
 
     // スポット写真
@@ -456,7 +513,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
             this.row.planSpots[i].planUserpictures[j].picture_url = environment.blobUrl + "/pr{0}/" +
               this.row.planSpots[i].displayOrder + "_" + this.row.planSpots[i].planUserpictures[j].picture_display_order
-              + "_{1}" + this.row.planSpots[i].planUserpictures[j].pictureFileExt;
+              + "_{1}.webp";
           }
         }
       }
@@ -471,10 +528,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         if(r){
           // プランメイン写真
           if (this.row.pictureFile) {
-            // 画像保存処理
-            await this.saveImagePlan(this.row.pictureFile
-              , r.pictureUrl,
-              r.planUserId);
+            if (this.row.imageCropped) {
+              // blobに再変換
+              var blob = this.commonService.base64toBlob(this.row.imageCropped);
+              // blob object array( fileに再変換 )
+              var file = this.commonService.blobToFile(blob, Date.now() + this.row.pictureFile.name);
+              // 画像保存処理
+              await this.saveImagePlan(file
+                , r.pictureUrl,
+                r.planUserId);
+            } else {
+              // 画像保存処理
+              await this.saveImagePlan(this.row.pictureFile
+                , r.pictureUrl,
+                r.planUserId);
+            }
           }
 
           // スポット写真
@@ -482,10 +550,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             if (this.row.planSpots[i].planUserpictures) {
               for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
                 if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
-                  // 画像保存処理
-                  await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
-                    , r.planSpots[i].planUserpictures[j].picture_url,
-                    r.planUserId);
+                  if (this.row.planSpots[i].planUserpictures[j].imageCropped) {
+                    // blobに再変換
+                    var blob = this.commonService.base64toBlob(this.row.planSpots[i].planUserpictures[j].imageCropped);
+                    // blob object array( fileに再変換 )
+                    var file = this.commonService.blobToFile(blob, Date.now() + this.row.planSpots[i].planUserpictures[j].pictureFile.name);
+                    // 画像保存処理
+                    await this.saveImagePlan(file
+                      , r.planSpots[i].planUserpictures[j].picture_url,
+                      r.planUserId);
+                  } else {
+                    // 画像保存処理
+                    await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
+                      , r.planSpots[i].planUserpictures[j].picture_url,
+                      r.planUserId);
+                  }
                 }
               }
             }
@@ -780,11 +859,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.$startTime.push(moment({hour,minute:30}).format('HH:mm'));
     }
   }
-
+/*
   getImageExt(fileName: string) {
     return fileName.substring(fileName.lastIndexOf(".") ,fileName.length);
   }
-
+*/
   saveImagePlan(file: File, pictureUrl: string, planId: number){
     return new Promise((resolve) => {
     // 画像アップロード
@@ -827,7 +906,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 表示する画像を設定
     for (let i = 0; i < this.row.planSpots.length; i++) {
       if (this.row.planSpots[i].planUserpictures?.length > 0) {
-        this.row.planSpots[i].previewPictures = this.row.planSpots[i].planUserpictures.map(x => x.picturePreviewUrl ?? x.picture_url);
+        this.row.planSpots[i].previewPictures = this.row.planSpots[i].planUserpictures.map(x => x.imageCropped ?? x.picturePreviewUrl ?? x.picture_url);
       } else {
         this.row.planSpots[i].previewPictures = this.row.planSpots[i].pictures;
       }

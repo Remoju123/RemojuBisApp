@@ -12,7 +12,7 @@ export class IndexedDBService {
 
   // DB
   dbName = "Remoju";
-  version = 4;
+  version = 5;
 
   // オブジェクトストア
   storeListSearchCondition = "ListSearchCondition";
@@ -96,7 +96,7 @@ export class IndexedDBService {
   async registListSearchConditionPlan(value: ListSearchCondition) {
     return this.registStore(this.storeListSearchConditionPlan, value);
   }
-  
+
   // プラン保存
   async registPlan(myPlanApp: MyPlanApp){
     // 保存用クラスに変換
@@ -109,7 +109,9 @@ export class IndexedDBService {
       travelDate: myPlanApp.travelDate,
       planName: myPlanApp.planName,
       pictureFile: myPlanApp.pictureFile,
-      pictureFileExt: myPlanApp.pictureFileExt,
+      imageCropped: myPlanApp.imageCropped,
+      cropperPosition: myPlanApp.cropperPosition,
+      aspectRatio: myPlanApp.aspectRatio,
       pictureUrl: myPlanApp.pictureUrl,
       picturePreviewUrl: myPlanApp.picturePreviewUrl,
       planExplanation: myPlanApp.planExplanation,
@@ -134,6 +136,7 @@ export class IndexedDBService {
           longitude: c.longitude,
           startTime: c.startTime,
           stayTime: c.stayTime,
+          aspectRatio: c.aspectRatio,
           transfer: c.transfer,
           basePlanId: c.basePlanId,
           line: c.line,
@@ -153,6 +156,7 @@ export class IndexedDBService {
         longitude: myPlanApp.startPlanSpot.longitude,
         startTime: myPlanApp.startPlanSpot.startTime,
         stayTime: myPlanApp.startPlanSpot.stayTime,
+        aspectRatio: null,
         transfer: myPlanApp.startPlanSpot.transfer,
         basePlanId: null,
         line: myPlanApp.startPlanSpot.line,
@@ -170,6 +174,7 @@ export class IndexedDBService {
         longitude: myPlanApp.endPlanSpot.longitude,
         startTime: myPlanApp.endPlanSpot.startTime,
         stayTime: myPlanApp.endPlanSpot.stayTime,
+        aspectRatio: null,
         transfer: myPlanApp.endPlanSpot.transfer,
         basePlanId: null,
         line: myPlanApp.endPlanSpot.line,
@@ -182,7 +187,21 @@ export class IndexedDBService {
     // 保存
     return this.registStore(this.storeMyplan, myPlan);
   }
-
+/*
+  // ImageCropperEventがそのままだと保存できないので変換
+  getImageCropper(event: ImageCroppedEvent) : ImageCropped{
+    let imageCropped = new ImageCropped();
+    if (event) {
+      imageCropped.base64 = event.base64;
+      imageCropped.cropperPosition = event.cropperPosition;
+      imageCropped.height = event.height;
+      imageCropped.imagePosition = event.imagePosition;
+      imageCropped.offsetImagePosition = event.offsetImagePosition;
+      imageCropped.width = event.width;
+    }
+    return imageCropped;
+  }
+*/
   // GUID保存
   async registGuid(value: string) {
     return this.registStore(this.storeGuid, value);
@@ -250,22 +269,22 @@ export class IndexedDBService {
       }
       if (db.objectStoreNames.contains(storeListSearchConditionSpot)) {
         db.deleteObjectStore(storeListSearchConditionSpot);
-      }      
+      }
       if (db.objectStoreNames.contains(storeListSearchConditionPlan)) {
         db.deleteObjectStore(storeListSearchConditionPlan);
-      }      
+      }
       if (db.objectStoreNames.contains(storeMyplan)) {
         db.deleteObjectStore(storeMyplan);
-      }      
+      }
       if (db.objectStoreNames.contains(storeGuid)) {
         db.deleteObjectStore(storeGuid);
-      }      
+      }
       if (db.objectStoreNames.contains(storeHistorySpot)) {
         db.deleteObjectStore(storeHistorySpot);
-      }      
+      }
       if (db.objectStoreNames.contains(storeHistoryPlan)) {
         db.deleteObjectStore(storeHistoryPlan);
-      }      
+      }
 
       // オブジェクトストアを作成
       if (!db.objectStoreNames.contains(storeListSearchCondition)){
@@ -300,7 +319,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;
@@ -325,7 +344,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;
@@ -353,7 +372,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;

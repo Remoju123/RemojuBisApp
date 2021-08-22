@@ -1,4 +1,4 @@
-import { Accesses, Businesshours }  from "./spot.class";
+import { Businesshours }  from "./spot.class";
 import {
   GoogleSpot,
   SpotFavorite,
@@ -9,7 +9,6 @@ import { Line } from "./plan.class";
 import { PlanAppList } from "./planlist.class";
 import { ListSearchCondition } from "./indexeddb.class";
 import { PlanSpotList } from "./planspotlist.class";
-import { Observable } from "rxjs";
 
 // 選択
 export interface DataSelected {
@@ -172,7 +171,6 @@ export class MyPlanApp {
   memo: string;
   timeRequired: string;
   isRelease: boolean;
-//  isAnonymous: boolean;
   isShare: boolean;
   shareUrl: string;
   isCreation: boolean;
@@ -197,8 +195,11 @@ export class MyPlanApp {
   picturePreviewUrl: string;
   // 写真
   pictureFile: File;
-  // 写真拡張子
-  pictureFileExt: string;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
+  // 画角
+  aspectRatio: string;
   // エリアID(登録用)
   areaId: number;
   areaId2: number;
@@ -272,6 +273,8 @@ export class PlanSpotCommon {
   googleSpot: GoogleSpot;
   // GoogleプレイスID(選択値)
   place_id: string;
+  // 画角
+  aspectRatio: string;
 }
 
 export class PlanUserPicture {
@@ -285,8 +288,9 @@ export class PlanUserPicture {
   picturePreviewUrl: string;
   // 写真
   pictureFile: File;
-  // 写真拡張子
-  pictureFileExt: string;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
 }
 
 export class GoogleNearBySearch {
@@ -397,6 +401,15 @@ export class ComfirmDialogParam{
   subText: string;
   leftButton: string;
   rightButton: string;
+}
+
+export class ImageCropperParam {
+  isAspectRatio: boolean;
+  aspectRatio: string;
+  pictureFile: File;
+  cropperPosition: any;
+  picturePreviewUrl: string;
+  imageCropped: any;
 }
 
 export interface OAuthErrorEventParams {
