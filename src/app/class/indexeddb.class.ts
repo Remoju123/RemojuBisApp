@@ -54,8 +54,11 @@ export class MyPlan {
   picturePreviewUrl: string;
   // 写真
   pictureFile: File;
-  // 写真拡張子
-  pictureFileExt: string;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
+  // 画角
+  aspectRatio: string;
   // 写真URL
   pictureUrl: string;
   // プラン概要
@@ -106,6 +109,8 @@ export class PlanUserSpot{
   startTime: string;
   // 滞在時間
   stayTime: number;
+  // 画角
+  aspectRatio: string;
   // 移動経路(駅探)
   transfer: string;
   // ベースになったプランID
