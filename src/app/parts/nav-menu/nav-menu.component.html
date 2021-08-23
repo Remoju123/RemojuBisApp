@@ -28,10 +28,11 @@
       <mat-nav-list>
         <div class="header">{{ "MakeATripPlan" | translate }}</div>
         <mat-nav-list class="sub">
-          <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
-          <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a>
+          <!-- <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a> -->
+          <a mat-list-item (click)="onNavgate('planspot')">{{ "FindEveryoneRecommendations" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','favorite')">{{ "SearchByFavorite" | translate }}</a>
-          <a mat-list-item (click)="onNavgate('planspot')">プランスポット一覧</a>
+          
         </mat-nav-list>
       </mat-nav-list>
       <mat-nav-list>

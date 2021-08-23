@@ -332,7 +332,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(){
-          console.log("error");
+          console.log("get store value error");
         };
       });
     }
@@ -360,7 +360,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(){
-          console.log("error");
+          console.log("regist store error");
         };
       });
     }
@@ -385,7 +385,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(event){
-          console.log("error");
+          console.log("clear store error");
         };
       });
     }
