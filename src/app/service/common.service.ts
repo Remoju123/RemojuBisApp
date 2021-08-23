@@ -202,8 +202,8 @@ export class CommonService implements OnDestroy{
 
   // ログイン
   public login(){
-    const state = this.router.routerState.snapshot;
-    this.oauthService.initImplicitFlow(state.url);
+    //const state = this.router.routerState.snapshot;
+    this.oauthService.initImplicitFlow(this.router.url);
   }
 
   // ログアウト

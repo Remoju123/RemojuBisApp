@@ -58,7 +58,7 @@ export class AppComponent implements OnInit,OnDestroy {
         this.oauthService.loadDiscoveryDocument(environment.openidConf)
         this.oauthService.tryLogin()
         .catch(()=>{
-          console.log('error');
+          console.log('oauth trylogin error');
         })
         .then(async ()=>{
           if (this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken()) {
