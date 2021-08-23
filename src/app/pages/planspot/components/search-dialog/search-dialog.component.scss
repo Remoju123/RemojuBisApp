@@ -58,7 +58,7 @@
   overflow: unset;
   min-height: 97vh;
 
-  .mat-dialog-actions {
+  #searchdialogaction {
     // max-height:
     min-height: 20px;
     margin: 0;
@@ -66,8 +66,6 @@
     display: block;
     width: 100%;
     position: relative;
-
-    
 
     button.close {
       position: absolute;
