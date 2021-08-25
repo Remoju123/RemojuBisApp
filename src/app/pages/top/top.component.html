@@ -28,10 +28,12 @@
       </div>
       
       <div class="inputWrapper">
-        <div class='title'>みんなのおすすめを探す</div>
-        <input type="search" 
+        <div class='title'>{{"FindEveryoneRecommendations" | translate}}</div>
+        <input type="text" 
         placeholder="「京都女子旅」「スカイツリー」..." 
-        class="keyword"/>
+        class="keyword"
+        (keyup.enter)="onKeywordSearch($event)"
+        (blur)="onKeywordSearch($event)"/>
 
         <img src='{{pictureUrl}}' alt="user" class="figure"/>
       </div>

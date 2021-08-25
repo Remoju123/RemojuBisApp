@@ -1,4 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router } from '@angular/router';
+import { TranslateService } from "@ngx-translate/core";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+import { ListSearchCondition } from "src/app/class/indexeddb.class";
+import { CommonService } from "src/app/service/common.service";
+import { IndexedDBService } from "src/app/service/indexeddb.service";
+import { UserService } from "src/app/service/user.service";
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 
 @Component({
@@ -6,13 +14,33 @@ import { LoadingIndicatorService } from '../../service/loading-indicator.service
   templateUrl: "./top.component.html",
   styleUrls: ["./top.component.scss"]
 })
-export class TopComponent implements OnInit {
+export class TopComponent implements OnInit,OnDestroy {
+  private onDestroy$ = new Subject();
 
+  condition: ListSearchCondition;
   mode:any = "over";
   opened: boolean;
   currentLang: string;
 
-  constructor(public service: LoadingIndicatorService) {}
+  isVal:boolean = false;
+  
+  get lang() {
+    return this.translate.currentLang;
+  }
+
+  constructor(
+    private translate: TranslateService,
+    public service: LoadingIndicatorService,
+    private commonService: CommonService,
+    private indexedDBService: IndexedDBService,
+    private userService: UserService,
+    private router: Router,
+  ) {
+    this.condition = new ListSearchCondition();
+  }
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+  }
 
   redirectUri = "";
 
@@ -34,15 +62,34 @@ export class TopComponent implements OnInit {
     //     iconvpipe.transform(JSON.stringify(this.profile.idToken))
     //   );
     // }
+
+    if(this.commonService.loggedIn){
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe((r: { pictureUrl: string; displayName: string; }) =>{
+        if(r){
+          if(r.pictureUrl){this.pictureUrl = r.pictureUrl};
+        }
+      });
+    }
   }
 
   // サイトナビ開閉状態の切り替え
   onhandleSiteNav(eventData: boolean) {
-    // console.log(!eventData);
     this.opened = !eventData;
   }
 
   toggleactive(){
     this.opened = true;
+  }
+
+  onKeywordSearch(e){
+    const val = e.target.value.toLowerCase();
+    val!==""?this.isVal=true:false;
+    console.log(val);
+    if(val!==""){
+      this.condition.keyword = val;
+      this.indexedDBService.registListSearchCondition(this.condition);
+
+      this.router.navigate(["/" + this.lang + "/planspot"]);
+    }
   }
 }

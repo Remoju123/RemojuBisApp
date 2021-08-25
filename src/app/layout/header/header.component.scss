@@ -81,7 +81,9 @@ header {
 
 ::ng-deep.mat-toolbar.mat-primary {
   color: #666;
-  
+  .logo{
+    z-index: 2;
+  }
   .menu{
     z-index: 2;
     .mat-icon-button.favorite{

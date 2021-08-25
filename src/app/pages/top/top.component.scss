@@ -79,6 +79,7 @@
     align-items: center;
     flex-direction: column;
     position: relative;
+    //width: calc(100% - 32px);
     .title{
       font-size: 14px;
       line-height: 2;
@@ -89,8 +90,9 @@
       height: 58px;
       border: 1px solid #ccc;
       border-radius: 29px;
-      width: 85vw;
-      padding: 0 16px 0 54px;
+      width: 75vw;
+      font-size: 16px;
+      padding-left: 54px;
     }
 
     img.figure{
@@ -99,6 +101,7 @@
       position: absolute;
       left: 14px;
       bottom: 45px;
+      border-radius: 50%;
     }
   }
   
