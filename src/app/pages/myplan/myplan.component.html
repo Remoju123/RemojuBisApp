@@ -25,7 +25,7 @@
                 </div>
                 <div class="rt" (click)="$event.stopPropagation()">
                   <!-- バス -->
-                  <button class="option" (click)="onClickBus()">
+                  <button class="option" (click)="onClickBus()" [disabled]="!row">
                     <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
                     <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
                     <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
@@ -34,7 +34,7 @@
                   </button>
 
                   <!-- 最短ルート -->
-                  <button class="option" (click)="onClickAuto()">
+                  <button class="option" (click)="onClickAuto()" [disabled]="!row">
                     <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
                     <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
                       <img src="/assets/img/keiro.svg" alt="Auto">

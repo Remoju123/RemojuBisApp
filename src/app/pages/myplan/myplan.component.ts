@@ -344,16 +344,18 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   // バスON・OFF
   onClickBus() {
-    this.row.isBus = !this.row.isBus;
-    // 保存
-    this.onChange(true);
+      this.row.isBus = !this.row.isBus;
+      // 保存
+      this.onChange(true);
+    
   }
 
   // 経路最適化
   onClickAuto() {
-    this.row.isAuto = true;
-    // 保存
-    this.onChange(true);
+      this.row.isAuto = true;
+      // 保存
+      this.onChange(true);
+    
   }
 
   // 出発地・到着地を設定
