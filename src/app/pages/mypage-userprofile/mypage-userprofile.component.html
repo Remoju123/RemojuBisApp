@@ -8,27 +8,11 @@
               <button mat-button class="return" (click)="onClickPreviewSwitch()">{{ "Preview" | translate }}</button>
               <div class="wrap">
                 <img
-                  *ngIf="
-                    data.coverPreviewUrl !== null && data.coverPreviewUrl !== undefined
-                  "
-                  [src]="data.coverPreviewUrl"
+                  *ngIf="data.coverImageCropped || data.coverPreviewUrl || data.coverUrl"
+                  [src]="data.coverImageCropped ?? data.coverPreviewUrl ?? data.coverUrl"
                   alt=""
                 />
-                <img
-                  *ngIf="
-                  (data.coverPreviewUrl === null || data.coverPreviewUrl === undefined) 
-                  && data.coverUrl !== null && data.coverUrl !== undefined
-                  "
-                  [src]="data.coverUrl"
-                  alt=""
-                />
-                <span
-                  *ngIf="
-                    (data.coverPreviewUrl === null || data.coverPreviewUrl === undefined)
-                    && (data.coverUrl === null || data.coverUrl === undefined)
-                  "
-                  >no image</span
-                >
+                <span *ngIf="!data.coverImageCropped && !data.coverPreviewUrl && !data.coverUrl">no image</span>
               </div>
               <input
                 type="file"
@@ -40,31 +24,16 @@
               <button type="button" mat-button class="edit" (click)="onClickCoverFileInputButton()">
                 {{ "editCoverImage" | translate }}
               </button>
+              <button *ngIf="data.coverFile" type="button" mat-button (click)="onClickCropCover()">cover<i>crop</i></button>
             </div>
             <div class="user">
               <div class="wrap">
                 <img
-                  *ngIf="
-                    data.picturePreviewUrl !== null && data.picturePreviewUrl !== undefined
-                  "
-                  [src]="data.picturePreviewUrl"
+                  *ngIf="data.imageCropped || data.picturePreviewUrl || data.pictureUrl"
+                  [src]="data.imageCropped ?? data.picturePreviewUrl ?? data.pictureUrl"
                   alt=""
                 />
-                <img
-                  *ngIf="
-                  (data.picturePreviewUrl === null || data.picturePreviewUrl === undefined) 
-                  && data.pictureUrl !== null && data.pictureUrl !== undefined
-                  "
-                  [src]="data.pictureUrl"
-                  alt=""
-                />
-                <span
-                  *ngIf="
-                    (data.picturePreviewUrl === null || data.picturePreviewUrl === undefined)
-                    && (data.pictureUrl === null || data.pictureUrl === undefined)
-                  "
-                  >no image</span
-                >
+                <span *ngIf="!data.imageCropped && !data.picturePreviewUrl && !data.pictureUrl">no image</span>
               </div>
               <input
                 type="file"
@@ -76,6 +45,7 @@
               <button type="button" mat-button class="edit" (click)="onClickFileInputButton()">
                 {{ "SelectPhoto" | translate }}
               </button>
+              <button *ngIf="data.pictureFile" type="button" mat-button (click)="onClickCropUser()"><i>crop</i></button>
             </div>
           </div>
         </div>
@@ -116,7 +86,7 @@
               <mat-select formControlName="country">
                 <mat-option *ngFor="let c of $country" [value]="c.id">{{c.name}}</mat-option>
               </mat-select>
-            </mat-form-field>        
+            </mat-form-field>
           </mat-list-item>
           <!-- 自己紹介 -->
           <mat-list-item>
@@ -134,7 +104,7 @@
         </mat-list>
       </mat-card-content>
     </mat-card>
-    
+
     <!-- 非公開情報 -->
     <mat-card>
       <mat-card-header>

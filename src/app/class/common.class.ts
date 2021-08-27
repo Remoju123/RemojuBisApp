@@ -406,12 +406,15 @@ export class ComfirmDialogParam{
 }
 
 export class ImageCropperParam {
+  // 画角指定可能フラグ(roundCropperがtrueの場合は指定しなくてよい)
   isAspectRatio: boolean;
+  // 画角(roundCropperがtrueの場合は指定しなくてよい)
   aspectRatio: string;
   pictureFile: File;
   cropperPosition: any;
   picturePreviewUrl: string;
   imageCropped: any;
+  roundCropper: boolean;
 }
 
 export interface OAuthErrorEventParams {
