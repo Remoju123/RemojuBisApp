@@ -25,7 +25,7 @@ export class UserService {
   ) { }
 
   // サーバー側ユーザー情報補完処理
-  userCompletion(guid: string){  
+  userCompletion(guid: string){
     let loginParam = new LoginParam();
     if(isPlatformBrowser(this.platformId)){
       loginParam = {
@@ -62,7 +62,7 @@ export class UserService {
       params: { objectId: objectId}
     });
   }
-  
+
   // ユーザ更新
   registUser(
     user: User
@@ -78,9 +78,25 @@ export class UserService {
   ) {
     const formData = new FormData();
     if (isCover){
-      formData.append("param" , user.coverFile, user.coverFile.name);
+      if (user.coverImageCropped) {
+        // blobに再変換
+        var blob = this.commonService.base64toBlob(user.coverImageCropped);
+        // blob object array( fileに再変換 )
+        var file = this.commonService.blobToFile(blob, user.coverFile.name);
+        formData.append("param" , file, file.name);
+      } else {
+        formData.append("param" , user.coverFile, user.coverFile.name);
+      }
     } else {
-      formData.append("param" , user.pictureFile, user.pictureFile.name);
+      if (user.imageCropped){
+        // blobに再変換
+        var blob = this.commonService.base64toBlob(user.imageCropped);
+        // blob object array( fileに再変換 )
+        var file = this.commonService.blobToFile(blob, user.pictureFile.name);
+        formData.append("param" , file, file.name);
+      } else {
+        formData.append("param" , user.pictureFile, user.pictureFile.name);
+      }
     }
     formData.append("objectId", user.object_id);
     const url = this.host + "/api/User/SaveFile";

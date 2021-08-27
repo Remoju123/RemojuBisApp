@@ -25,7 +25,12 @@ export class ImageCropperDialogComponent implements OnInit {
   isLoaded = false;
 
   ngOnInit() {
-
+    if (!this.data.roundCropper) {
+      this.data.roundCropper = false;
+    } else {
+      this.data.isAspectRatio = false;
+      this.data.aspectRatio = "3";
+    }
   }
 
   cropperReady() {
