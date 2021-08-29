@@ -40,10 +40,16 @@ export class User {
   pictureUrl: any;
   // プロフィール写真ファイル
   pictureFile: File;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
   // カバー画像プレビューURL
   coverPreviewUrl: any;
   // カバー写真URL
   coverUrl: any;
   // カバー写真ファイル
   coverFile: File;
+  // トリミング画像
+  coverImageCropped: any;
+  coverCropperPosition: any;
 }
