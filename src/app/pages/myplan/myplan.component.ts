@@ -212,22 +212,26 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   onClickCropPlan() {
     let param = new ImageCropperParam();
+    
     param.isAspectRatio = true;
     param.aspectRatio = this.row.aspectRatio;
     param.cropperPosition = this.row.cropperPosition;
     param.imageCropped = this.row.imageCropped;
     param.pictureFile = this.row.pictureFile;
     param.picturePreviewUrl = this.row.picturePreviewUrl;
+    console.log(param);
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
       maxWidth: "100%",
-      width: "92vw",
-      position: { top: "10px" },
+      width: "100vw",
+      position: { top: "0px" },
       data: param,
       autoFocus: false
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
       if (r && r !== "cancel"){
+        console.log(r);
         this.row.imageCropped = r.imageCropped;
         this.row.aspectRatio = r.aspectRatio;
         this.row.cropperPosition = r.cropperPosition;
@@ -322,6 +326,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     param.pictureFile = picture.pictureFile;
     param.picturePreviewUrl = picture.picturePreviewUrl;
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },

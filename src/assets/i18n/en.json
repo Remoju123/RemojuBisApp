@@ -189,6 +189,7 @@
   "EnterThePlanName": "Enter the plan title (up to 20 characters)",
   "PlanNameEx": "Enter the plan title",
   "PlanExplanationEx": "Enter the recommended points for the entire plan",
+  "labelClear":"Clear",
   "MemoEx": "Enter recommended points",
   "SelectAPhoto": "Select a photo (up to 8)",
   "SaveDraft": "Save draft",

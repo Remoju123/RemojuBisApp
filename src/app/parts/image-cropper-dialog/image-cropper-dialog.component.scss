@@ -1,5 +1,50 @@
 @import "../../../assets/scss/vars";
 
+::ng-deep mat-dialog-container#imgcrop{
+  //background-color: $color-gld06;
+  position: relative;
+  .cropper{
+    padding: 0;
+    // height: 58vw;
+  }
+
+  .changeratio{
+    width: 40px;
+    height: 40px;
+    background-color: #4A4A4A;
+    border-radius: 50%;
+
+    position: absolute;
+    bottom: 76px;
+    
+    z-index: 2;
+    text-decoration: none;
+    text-align: center;
+    span.ratio{
+      color: #fff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
+      font-weight: bold;
+      line-height: 38px;
+    }
+    
+    
+    
+    &::before{
+      content: url("../../../assets/img/icon_transform.svg");
+      width: 28px;
+      height: 28px;
+     
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      right: 0;
+      
+    }
+  }
+}
 
 .mat-dialog-actions{
   display: flex;

@@ -24,17 +24,20 @@
 .myplan-edit{
   padding: 0;
 
-  .mat-expansion-panel.edit{
+  //.mat-expansion-panel.edit{
+  #edit{
     // position: sticky;
     // top: 0px;
     // z-index: 1;
+    box-shadow: none;
+    border-radius: 0;
     .mat-expansion-panel-header{
       height: 65px;
       padding: initial;
 
       .myplan-edit-box {
         padding: 3px 16px;
-        border-bottom: #bfa060 1px solid;
+        border: $color-gld06 1px solid;
         display: flex;
         box-shadow: 0 4px 6px #0000001f;
         height: 65px;
@@ -68,16 +71,23 @@
         }
     
         .lt{
-          flex-basis: 63%;
+          flex-basis: 69%;
           display: flex;
           flex-direction: column;
           .container{
             overflow: hidden;
 
+            .label{
+              position: absolute;
+              top: 9px;
+            }
+
             .text{
               white-space: nowrap;
               display: block;
               text-overflow: ellipsis;
+              font-size: 16px;
+              margin-top: 8px;
             }
 
             span>span.required{
@@ -88,7 +98,7 @@
     
         .rt{
           display: flex;
-          flex-basis: 37%;
+          flex-basis: 31%;
           button.option{
             all: inherit;
             display: flex;
@@ -100,8 +110,8 @@
               justify-content: center;
               align-items: center;
               border-radius: 50%;
-              width: 30px;
-              height: 30px;
+              width: 31px;
+              height: 31px;
               padding: 7px;
               box-sizing: border-box;
               margin-top: 0.4em;
@@ -130,14 +140,25 @@
 
     ::ng-deep .mat-expansion-panel-content{
       .mat-expansion-panel-body{
+        background-color: $color-gld06;
         padding-top: 24px;
         .mat-form-field{
           width: 100%;
           font-size: 16px!important;
 
+
+          .mat-hint{
+            color: #fff;
+            a{
+              color: #fff;
+              text-decoration: none;
+            }
+          }
+
           &.pname{
             #mat-hint-2{
-              color: $color-pnk02;
+              //color: $color-pnk02;
+              color: red;
             }
           }
           .mat-form-field-wrapper{
@@ -147,6 +168,8 @@
             }
           }
           .mat-form-field-outline{
+            background-color: #fff;
+            border-radius: 6px;
             top: 0;
           }
           .mat-form-field-infix{
@@ -160,24 +183,33 @@
           }
         }
 
-        .fileselector{
-          border: 1px solid $color-gld01;
-          border-radius: 12px;
-          display: inline-block;
-          padding: 2px 1em;
-          position: relative;
-          margin-top: 0.8em;
-          margin-bottom: 0.8em;
-          color: $color-gld01;
-          input[type="file"] {
-            height: 100%;
-            left: 0;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            width: 100%;
+        .select{
+          .fileselector{
+            border: 1px solid $color-gld01;
+            border-radius: 12px;
+            display: inline-block;
+            padding: 2px 1em;
+            position: relative;
+            margin-top: 0.8em;
+            margin-bottom: 0.8em;
+            color: $color-gld01;
+            background-color: #fff;
+            input[type="file"] {
+              height: 100%;
+              left: 0;
+              opacity: 0;
+              position: absolute;
+              top: 0;
+              width: 100%;
+            }
+          }
+          label{
+            color: #fff;
+            font-size: 12px;
+            padding-left: 16px;
           }
         }
+        
 
         .picpreview{
           position: relative;
@@ -194,6 +226,26 @@
               vertical-align: text-bottom;
             }
           }
+          button.crop{
+            all:unset;
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 60px;
+            height: 24px;
+            background-color: #4A4A4A;
+            border-radius: 2px;
+            font-size: 12px;
+            color: #fff;
+            &::before{
+              content: url("../../../assets/img/icon_crop.svg");
+              display: inline-block;
+              width: 17px;
+              height: 17px;
+              vertical-align: sub;
+              padding: 0 5px;
+            }
+          }
         }
 
         button.mat-stroked-button{
@@ -204,10 +256,33 @@
           border-color: $color-gld01;
           color: $color-gld01;
           margin-bottom: 1em;
+          background-color: #fff;
         }
 
         .chips{
           margin-bottom: 0;
+        }
+
+        .close{
+          display: flex;
+          justify-content: flex-end;
+
+          button{
+            all: unset;
+            width: 85px;
+            height: 26px;
+            border-radius: 13px;
+            background-color: #4A4A4A;
+            color: #fff;
+            &::before{
+              content: url("../../../assets/img/exp_close.svg");
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              vertical-align: text-top;
+              padding: 0 5px;
+            }
+          }
         }
       }
     }
@@ -222,7 +297,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 5px;
+    // margin-top: 5px;
 
 
     button.setting{
@@ -313,8 +388,24 @@
     }
   }
 
+  .spacer{
+    display: flex;
+    justify-content: center;
+    img{
+      width: 36px;
+      margin: 6px;
+    }
+  }
+
   .spots{
     position: relative;
+    .title{
+      font-size: 12px;
+      padding: 0px 12px;
+      border-bottom: 1px solid $color-gld01;
+      margin-bottom: 3px;
+    }
+
     dl{
       display: flex;
       margin: initial;
@@ -327,6 +418,7 @@
           color: #a6a29e;
         }
       }
+      
       &.td{
         line-height: 68px;
         

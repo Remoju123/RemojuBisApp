@@ -14,7 +14,7 @@
     <mat-card *ngIf="isEdit" class="myplan-edit">
       <mat-card-content>
         <mat-accordion #mepPlan="matAccordion">
-          <mat-expansion-panel #mep class="edit" [hideToggle]=true [disabled]="!row">
+          <mat-expansion-panel id="edit" #mep class="edit" [hideToggle]=true [disabled]="!row">
             <mat-expansion-panel-header>
               <div class="myplan-edit-box">
                 <div class="lt">
@@ -47,13 +47,13 @@
             <!-- プラン名 -->
             <ng-container *ngIf="row">
               <mat-form-field appearance="outline" hintLabel="{{ 'Required' | translate }}" class="pname">
-                <mat-label>{{ "PlanName" | translate }}</mat-label>
+                <!-- <mat-label>{{ "PlanName" | translate }}</mat-label> -->
                 <input
                   matInput
                   #planName
                   name="planName"
                   maxlength="30"
-                  placeholder="{{ 'PlanNameEx' | translate }}"
+                  placeholder="{{ 'PlanName' | translate }}"
                   required
                   #inputinfo="ngModel"
                   [(ngModel)]="row.planName"
@@ -61,29 +61,25 @@
                   <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
               </mat-form-field>
               <!-- 写真 -->
-              <div class="fileselector">
-                {{ "MyplanSelectPhoto" | translate }}
-                <input
-                type="file"
-                accept="image/*"
-                class="selectPhoto"
-                (change)="onClickSelectPhotoPlan($event)" />
+              <div class='select'>
+                <div class="fileselector">
+                  {{ "MyplanSelectPhoto" | translate }}
+                  <input
+                  type="file"
+                  accept="image/*"
+                  class="selectPhoto"
+                  (change)="onClickSelectPhotoPlan($event)" />
+                </div>
+                <label>プランのイメージ画像を選択</label>
               </div>
               <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
-                <div>
-                  <span>画角</span>
-                  <span *ngIf="row.aspectRatio === '1'">4:3</span>
-                  <span *ngIf="row.aspectRatio === '2'">4:5</span>
-                  <span *ngIf="row.aspectRatio === '3'">1:1</span>
-                  <span *ngIf="row.aspectRatio === '4'">16:9</span>
-                </div>
                 <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
+                <button *ngIf="row.pictureFile" type="button" class="crop" (click)="onClickCropPlan()">{{"Edit"|translate}}</button>
                 <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
-                <button *ngIf="row.pictureFile" type="button" mat-button (click)="onClickCropPlan()"><i>crop</i></button>
               </div>
               <!-- プラン概要 -->
               <mat-form-field appearance="outline">
-                <mat-label>{{ "PlanExplanationEx" | translate }}</mat-label>
+                <!-- <mat-label>{{ "PlanExplanationEx" | translate }}</mat-label> -->
                 <textarea
                   matInput
                   #planExplanation
@@ -94,10 +90,11 @@
                   [(ngModel)]="row.planExplanation"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{planExplanation.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
-                  <button (click)="row.planExplanation='';">clear</button>
+                  <mat-hint align="start"><a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
+                  <!-- <button (click)="row.planExplanation='';">clear</button> -->
               </mat-form-field>
               <!-- フリー文章 -->
-              <mat-form-field appearance="outline">
+              <!-- <mat-form-field appearance="outline">
                 <mat-label>{{ "FreeMemoEx" | translate }}</mat-label>
                 <textarea
                   matInput
@@ -109,19 +106,22 @@
                   [(ngModel)]="row.memo"
                   (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
-                  <button (click)="row.memo='';">clear</button>
-                </mat-form-field>
+                <button (click)="row.memo='';">clear</button>
+              </mat-form-field> -->
               <!-- カテゴリー選択ボタン -->
               <button mat-stroked-button (click)="onClickAreaCategory()">
                 {{ "SelectAnAreaCategory" | translate }}
               </button>
-              <mat-card-content class="chips">
+              <div class="chips">
                 <mat-chip-list>
                   <mat-chip *ngFor="let keyword of optionKeywords">
                     {{ keyword }}
                   </mat-chip>
                 </mat-chip-list>
-              </mat-card-content>
+              </div>
+              <div class='close'>
+                <button (click)="mep.expanded = false;">閉じる</button>
+              </div>
             </ng-container>
           </mat-expansion-panel>
         </mat-accordion>
@@ -172,12 +172,19 @@
           </div>
         </div>
 
+        <div class='spacer'>
+          <img src="../../../assets/img/allow_down_slv.svg" alt="">
+        </div>
+
         <!-- スポットを表示 -->
         <div class="spots"  *ngIf="row || spotZero"
           cdkDropList
           [cdkDropListData]="row && row.planSpots ? row.planSpots : spotZero"
           (cdkDropListDropped)="cdkDropListDroppedSpot($event)"
           >
+          <div class='title'>
+            周遊スポット
+          </div>
           <dl class="th">
             <dt>{{ "Remove" | translate }}</dt>
             <dt>{{ "Spot" | translate }}</dt>
