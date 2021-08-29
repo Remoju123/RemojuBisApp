@@ -939,4 +939,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     items: 1,
     nav: true
   };
+
+  
 }
