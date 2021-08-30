@@ -191,9 +191,10 @@
             <dt>{{ "Movement" | translate }}</dt>
           </dl>
 
-          <ng-container *ngFor="let item of row && row.planSpots ? row.planSpots : spotZero; index as i;trackBy: myTrackBy">
+          <div *ngFor="let item of row && row.planSpots ? row.planSpots : spotZero; index as i;trackBy: myTrackBy" cdkDrag
+            (cdkDragMoved)="setStep(999)">
             <mat-accordion #mepSpot="matAccordion" multi>
-              <mat-expansion-panel #mepSpot{{i}} class="transfer" hideToggle>
+              <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpot{{i}} class="transfer" hideToggle>
                 <mat-expansion-panel-header
                   [@.disabled]="true"
                 >
@@ -292,13 +293,11 @@
                   </div>
                 </div>
                 <div class='close'>
-                  <button (click)="mep.expanded = false;">閉じる</button>
+                  <button (click)="setStep(999)">閉じる</button>
                 </div>
               </mat-expansion-panel>
             </mat-accordion>
-          </ng-container>
-
-
+          </div>
 
           <div id="overlay" *ngIf="!row">
             <div class="guide">

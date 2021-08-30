@@ -34,6 +34,7 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
+import { Catch } from "src/app/class/log.class";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -103,6 +104,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   isMapDisp = false;
 
   isOpen = true;
+
+  step = 999;
 
   get lang() {
     return this.translate.currentLang;
@@ -532,7 +535,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 保存
     this.myplanService.registPlan().then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-        if(r){
+        //if(r){
           // プランメイン写真
           if (this.row.pictureFile) {
             if (this.row.imageCropped) {
@@ -587,10 +590,10 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
           // 保存完了
           this.commonService.snackBarDisp("PlanSaved");
-        } else {
-          this.router.navigate(["/" + this.lang + "/systemerror"]);
-          return;
-        }
+        // } else {
+        //   //this.router.navigate(["/" + this.lang + "/systemerror"]);
+        //   //return;
+        // }
       });
     });
   }
@@ -940,5 +943,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     nav: true
   };
 
-  
+  setStep(i:number){
+    this.step = i;
+  }
 }
