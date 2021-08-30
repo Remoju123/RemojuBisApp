@@ -264,5 +264,8 @@
   "MyPlan#Sec5":"(Up to 6 spots)",
   "ReportPlanUser": "プランを違反報告",
   "ReportPlanUserConfirmTitle": "不適切なプランを報告しますか？",
-  "ReportPlanUserConfirmText": "ご報告いただいたプランについて、担当者が数営業日以内に確認します。"
+  "ReportPlanUserConfirmText": "ご報告いただいたプランについて、担当者が数営業日以内に確認します。",
+  "Selectimagespot": "スポットのイメージ画像を選択",
+  "Roundspot": "周遊スポット",
+  "Max6spots": "最大６ヶ所"
 }

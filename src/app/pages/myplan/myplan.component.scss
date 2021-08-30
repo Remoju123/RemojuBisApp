@@ -1,6 +1,6 @@
 @import "../../../assets/scss/vars";
 
-.top{
+.top,.bottom{
   height: 47px;
   padding: 0 16px;
   display: flex;
@@ -18,6 +18,12 @@
     font-size: 17px;
   }
   @include switchView();
+}
+.bottom{
+  border-bottom: none;
+  &.prev{
+    padding-right: 16px!important;
+  }
 }
 
 
@@ -416,6 +422,16 @@
         dt{
           font-size: 10px;
           color: #a6a29e;
+          text-align: center;
+          &:nth-child(1){
+            flex-basis: 12%;
+          }
+          &:nth-child(2){
+            flex-basis: 76%;
+          }
+          &:nth-child(3){
+            flex-basis: 12%;
+          }
         }
       }
     }
@@ -724,6 +740,9 @@
 
   .myplan-box {
     margin: 14px auto 0;
+    display: flex;
+    align-items: center;
+    position: relative;
   
     button.add-spot{
       display: flex;
@@ -731,13 +750,41 @@
       font-size: 16px;
       color: $color-pnk02;
       padding-left: 44px;
+      
       &::before{
         content: url("../../../assets/img/add_spot.svg");
         width: 40px;
+        height: 40px;
         display: inline-block;
         margin-right: 16px;
       }
+      ::ng-deep .mat-button-wrapper{
+        display: flex;
+        flex-direction: column;
+        height: 40px;
+        justify-content: center;
+        span{
+          line-height: 1;
+          &.count{
+            color: #000;
+            font-size: 12px;
+            margin-top: 4px;
+          }
+        }
+      }
     }
+
+    button.clear{
+      all: unset;
+      width: 85px;
+      height: 26px;
+      border-radius: 13px;
+      background-color: #4A4A4A;
+      color: #fff;
+      text-align: center;
+    }
+
+    
   }
 
   .footer{
@@ -842,6 +889,21 @@
         &:disabled{
           opacity: 0.5;
         }
+      }
+    }
+
+    .share{
+      margin-top: $mtop;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: $width;
+      button{
+        background: url("../../../assets/img/btn_share.svg") no-repeat;
+        border: 0;
+        width: 40px;
+        height: 40px;
+        min-width: initial;
       }
     }
   }
