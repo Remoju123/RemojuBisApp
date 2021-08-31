@@ -90,7 +90,5 @@ export class ImageCropperDialogComponent implements OnInit {
         this.data.aspectRatio = "16 / 9"
         break;
     }
-    //this.temp = this.aspectRatio;
-    
   }
 }

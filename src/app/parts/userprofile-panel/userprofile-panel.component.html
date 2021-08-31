@@ -13,18 +13,18 @@
         <div class="cover" *ngIf="!detail">
           <div class="wrap">
             <img
-            *ngIf="user.coverPreviewUrl || user.coverUrl"
-            [src]="user.coverPreviewUrl ? user.coverPreviewUrl : user.coverUrl"
-            alt=""
+              *ngIf="user.coverImageCropped || user.coverPreviewUrl || user.coverUrl"
+              [src]="user.coverImageCropped ?? user.coverPreviewUrl ?? user.coverUrl"
+              alt=""
             />
           </div>
         </div>
         <div class="user">
           <div class="wrap">
             <img
-            *ngIf="user.picturePreviewUrl || user.pictureUrl"
-            [src]="user.picturePreviewUrl ? user.picturePreviewUrl : user.pictureUrl"
-            alt=""
+              *ngIf="user.imageCropped || user.picturePreviewUrl || user.pictureUrl"
+              [src]="user.imageCropped ?? user.picturePreviewUrl ?? user.pictureUrl"
+              alt=""
             />
           </div>
         </div>
