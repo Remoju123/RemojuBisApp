@@ -21,10 +21,14 @@
                 accept="image/*"
                 (change)="onChangeCoverFileInput()"
               />
-              <button type="button" mat-button class="edit" (click)="onClickCoverFileInputButton()">
+              <button type="button" mat-button class="edit" [matMenuTriggerFor]="coverMenu">
                 {{ "editCoverImage" | translate }}
               </button>
-              <button *ngIf="data.coverFile" type="button" mat-button (click)="onClickCropCover()">cover<i>crop</i></button>
+              <mat-menu #coverMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="onClickCoverFileInputButton()"><mat-icon>photo</mat-icon>写真を選択する</button>
+                <button [disabled]="!data.coverFile" mat-menu-item (click)="onClickCropCover()"><mat-icon>crop</mat-icon>{{"Edit"|translate}}</button>
+                <button [disabled]="!data.coverFile" mat-menu-item (click)="onDeleteCoverFile()"><mat-icon>delete</mat-icon>削除する</button>
+              </mat-menu>
             </div>
             <div class="user">
               <div class="wrap">
@@ -42,10 +46,14 @@
                 accept="image/*"
                 (change)="onChangeFileInput()"
               />
-              <button type="button" mat-button class="edit" (click)="onClickFileInputButton()">
+              <button type="button" mat-button class="edit" [matMenuTriggerFor]="userMenu">
                 {{ "SelectPhoto" | translate }}
               </button>
-              <button *ngIf="data.pictureFile" type="button" mat-button (click)="onClickCropUser()"><i>crop</i></button>
+              <mat-menu #userMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="onClickFileInputButton()"><mat-icon>photo</mat-icon>写真を選択する</button>
+                <button mat-menu-item (click)="onClickCropUser()" [disabled]="!data.pictureFile"><mat-icon>crop</mat-icon>{{"Edit"|translate}}</button>
+                <button mat-menu-item (click)="onDeleteUserFile()" [disabled]="!data.pictureFile"><mat-icon>delete</mat-icon>削除する</button>
+              </mat-menu>
             </div>
           </div>
         </div>

@@ -18,11 +18,6 @@ export class ImageCropperDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ImageCropperParam
   ) { }
 
-  @ViewChild("cropper43") cropper43: ImageCropperComponent;
-  @ViewChild("cropper45") cropper45: ImageCropperComponent;
-  @ViewChild("cropper11") cropper11: ImageCropperComponent;
-  @ViewChild("cropper169") cropper169: ImageCropperComponent;
-
   @ViewChild("cropper") croper: ImageCropperComponent;
 
   isLoaded = false;
@@ -32,24 +27,6 @@ export class ImageCropperDialogComponent implements OnInit {
   }
 
   cropperReady() {
-    // if (this.data.cropperPosition) {
-    //   switch (this.data.aspectRatio){
-    //     case "1":
-    //       this.cropper43.cropper = this.data.cropperPosition;
-    //       break;
-    //     case "2":
-    //       this.cropper45.cropper = this.data.cropperPosition;
-    //       break;
-    //     case "3":
-    //       this.cropper11.cropper = this.data.cropperPosition;
-    //       break;
-    //     case "4":
-    //       this.cropper169.cropper = this.data.cropperPosition;
-    //       break;
-    //   }
-    // }
-    // this.isLoaded = true;
-    //console.log(this.data);
     switch(this.data.aspectRatio){
       case "4 / 3":
         this.temp = 4/3;
@@ -95,8 +72,6 @@ export class ImageCropperDialogComponent implements OnInit {
     const len = this.classes.length;
     this.index = this.index;
     const val = this.classes[this.index++ % len];
-    console.log(val);
-    //this.data.aspectRatio = val;
     switch(val){
       case "1":
         this.aspectRatio = 4/3;

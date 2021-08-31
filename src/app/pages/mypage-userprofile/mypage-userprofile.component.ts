@@ -72,6 +72,8 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   isPreview = true;
   currentlang:string;
 
+  _coverUrl:any;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -234,22 +236,31 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     }
   }
 
+  // カバー写真を削除
+  onDeleteCoverFile():void{
+    if(this.data.coverImageCropped){
+      this.data.coverImageCropped = null;
+    }
+    this.data.coverPreviewUrl = this.data.coverUrl;
+    this.data.coverFile=null;
+  }
+
   onClickCropCover(): void {
     let param = new ImageCropperParam();
-    param.isAspectRatio = false;
-    param.aspectRatio = "4";
+    param.isAspectRatio = true;
+    param.aspectRatio = "16 / 9";
     param.cropperPosition = this.data.coverCropperPosition;
     param.imageCropped = this.data.coverImageCropped;
     param.pictureFile = this.data.coverFile;
     param.picturePreviewUrl = this.data.coverPreviewUrl;
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
       data: param,
       autoFocus: false
     });
-
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
       if (r && r !== "cancel"){
         this.data.coverImageCropped = r.imageCropped;
@@ -271,14 +282,25 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     }
   }
 
+  // プロフィール写真を削除
+  onDeleteUserFile():void{
+    if(this.data.imageCropped){
+      this.data.imageCropped = null;
+    }
+    this.data.picturePreviewUrl = this.data.pictureUrl;
+    this.data.pictureFile=null;
+  }
+
   onClickCropUser(): void {
     let param = new ImageCropperParam();
     param.roundCropper = true;
+    param.aspectRatio = "1 / 1";
     param.cropperPosition = this.data.cropperPosition;
     param.imageCropped = this.data.imageCropped;
     param.pictureFile = this.data.pictureFile;
     param.picturePreviewUrl = this.data.picturePreviewUrl;
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id: "imgcrop",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },

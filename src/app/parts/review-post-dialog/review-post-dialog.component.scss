@@ -196,6 +196,27 @@
                 }
               }
             }
+
+            button.crop{
+              all:unset;
+              // position: absolute;
+              // top: 6px;
+              // left: 6px;
+              width: 60px;
+              height: 24px;
+              background-color: #4A4A4A;
+              border-radius: 2px;
+              font-size: 12px;
+              color: #fff;
+              &::before{
+                content: url("../../../assets/img/icon_crop.svg");
+                display: inline-block;
+                width: 17px;
+                height: 17px;
+                vertical-align: sub;
+                padding: 0 5px;
+              }
+            }
           }
         }
         &.evaluation{

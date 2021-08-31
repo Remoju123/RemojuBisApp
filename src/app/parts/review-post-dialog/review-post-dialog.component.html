@@ -93,7 +93,7 @@
               <img [src]="item.imageCropped ?? item.picturePreviewUrl ??item.pictureUrl" alt="" />
               <button type="button" class="delete" (click)="onClickImageDelete(item)"></button>
             </div>
-            <button *ngIf="item.pictureFile" type="button" mat-button (click)="onClickCrop(item)"><i>crop</i></button>
+            <button *ngIf="item.pictureFile" type="button" class="crop" (click)="onClickCrop(item)">{{"Edit"|translate}}</button>
           </div>
         </div>
       </mat-list-item>

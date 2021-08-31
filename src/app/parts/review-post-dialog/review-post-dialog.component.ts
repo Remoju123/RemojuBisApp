@@ -101,6 +101,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
     param.pictureFile = picture.pictureFile;
     param.picturePreviewUrl = picture.picturePreviewUrl;
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
