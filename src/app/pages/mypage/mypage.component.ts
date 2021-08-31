@@ -13,7 +13,7 @@ export class MypageComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
   constructor(
     private activatedRoute: ActivatedRoute,
-    private commonService: CommonService
+    public common: CommonService
   ) { }
 
   // タブ選択
@@ -42,9 +42,11 @@ export class MypageComponent implements OnInit, OnDestroy {
         this.tabChange(0);
       }
     });
+
+
     
     // ヘッダプランの非表示通知
-    this.commonService.onNotifyIsShowHeader(true);
+    this.common.onNotifyIsShowHeader(true);
   }
 
   ngOnDestroy(){

@@ -220,6 +220,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
   // プレビュー表示切り替え
   onClickPreviewSwitch() {
+    
     this.isPreview = !this.isPreview;
   }
 
