@@ -253,7 +253,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   // キーワード検索
   keywordSearch(v:any){
     setTimeout(() => {
-      console.log(v);
       this.condition.keyword = v;
       this.indexedDBService.registListSearchCondition(this.condition);
       this.getPlanSpotDataSet();
