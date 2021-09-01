@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
 import { MyplanService } from 'src/app/service/myplan.service';
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
@@ -54,6 +55,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   get lang() {
     return this.translate.currentLang;
   }
+
+  codec = new HttpUrlEncodingCodec;
 
   constructor(
     private translate: TranslateService,
@@ -121,6 +124,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
        || (params.cat && params.cat.length > 0)
        || (params.srt && params.srt.length > 0)
        || (params.lst && params.lst.length > 0)
+       || (params.kwd && params.kwd.length > 0)
       )
       {
         this.condition.areaId =
@@ -133,6 +137,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
           params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
         this.condition.sortval = params.srt;
         this.condition.select = params.lst;
+        this.condition.keyword = this.codec.decodeValue(params.kwd);
         
         this.indexedDBService.registListSearchCondition(this.condition);
       }

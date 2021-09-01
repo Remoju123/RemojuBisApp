@@ -12,9 +12,10 @@ import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
 import { PlanspotComponent } from "../pages/planspot/planspot.component";
-import { takeUntil } from "rxjs/operators";
+import { map, takeUntil } from "rxjs/operators";
 import { IndexedDBService } from "./indexeddb.service";
 import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
+import { HttpUrlEncodingCodec } from "@angular/common/http";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -35,6 +36,8 @@ export class PlanSpotListService {
 
   public searchSubjectNoList = new Subject<searchResult>();
   public searchFilterNoList = this.searchSubjectNoList.asObservable();
+
+  codec = new HttpUrlEncodingCodec;
 
   constructor(
     private http: HttpClient,
@@ -237,6 +240,7 @@ export class PlanSpotListService {
     _params.push("cat=" + cond.searchCategories.join(","));
     _params.push("srt=" + cond.sortval);
     _params.push("lst=" + cond.select);
+    _params.push("kwd=" + cond.keyword);
 
     this.result.list = _result;
     this.result.searchTarm = {area : areas.length > 0 ? areas.join(' 、'):'----',cate : cates.length > 0 ? cates.join('、'):'----'};
@@ -247,6 +251,7 @@ export class PlanSpotListService {
     this.result.searchParamsObj.cat = cond.searchCategories.join(",");
     this.result.searchParamsObj.srt = cond.sortval;
     this.result.searchParamsObj.lst = cond.select;
+    this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
 
     if (master.isList) {
       this.searchSubject.next(this.result);
@@ -435,5 +440,11 @@ export class PlanSpotListService {
       const url = this.host + "/api/SpotList/AddSpot";
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
     }
+  }
+
+  genQueryParams(cond:ListSearchCondition){
+    
+    console.log(cond);
+    //return _params.join("&");
   }
 }

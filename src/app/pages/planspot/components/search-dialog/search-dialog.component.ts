@@ -233,6 +233,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     this.condition.areaId = [];
     this.condition.areaId2 = [];
     this.condition.searchCategories = [];
+    this.condition.keyword = '';
 
     this.dialogRef.close(this.condition);
   }

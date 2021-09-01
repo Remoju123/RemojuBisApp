@@ -66,7 +66,8 @@ export class PlanspotSelectorComponent implements OnInit {
     if((window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop) > h){
-        this.isShow = this.chkTarms();
+        //this.isShow = this.chkTarms();
+        this.isShow = true;
       }
     else {
       this.isShow = false;

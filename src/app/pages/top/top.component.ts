@@ -1,11 +1,14 @@
+import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from '@angular/router';
+import { JsonHubProtocol } from "@aspnet/signalr";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ListSearchCondition } from "src/app/class/indexeddb.class";
 import { CommonService } from "src/app/service/common.service";
 import { IndexedDBService } from "src/app/service/indexeddb.service";
+import { PlanSpotListService } from "src/app/service/planspotlist.service";
 import { UserService } from "src/app/service/user.service";
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 
@@ -23,6 +26,8 @@ export class TopComponent implements OnInit,OnDestroy {
   currentLang: string;
 
   isVal:boolean = false;
+
+  codec = new HttpUrlEncodingCodec;
   
   get lang() {
     return this.translate.currentLang;
@@ -33,6 +38,7 @@ export class TopComponent implements OnInit,OnDestroy {
     public service: LoadingIndicatorService,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
+    private planspots: PlanSpotListService,
     private userService: UserService,
     private router: Router,
   ) {
@@ -51,6 +57,8 @@ export class TopComponent implements OnInit,OnDestroy {
   _url: any = `${window.location.origin}`;
 
   pictureUrl:string = "../../../assets/img/icon_who.svg";
+
+  condtion:ListSearchCondition;
 
   ngOnInit() {
     // // this.authService.profile.subscribe(p => (this.profile = p));
@@ -84,12 +92,9 @@ export class TopComponent implements OnInit,OnDestroy {
   onKeywordSearch(e){
     const val = e.target.value.toLowerCase();
     val!==""?this.isVal=true:false;
-    console.log(val);
     if(val!==""){
-      this.condition.keyword = val;
-      this.indexedDBService.registListSearchCondition(this.condition);
-
-      this.router.navigate(["/" + this.lang + "/planspot"]);
+      let encval = this.codec.encodeValue(val);
+      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:encval}});
     }
   }
 }

@@ -93,21 +93,6 @@
                 <mat-hint align="start"><a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
                 <!-- <button (click)="row.planExplanation='';">clear</button> -->
             </mat-form-field>
-            <!-- フリー文章 -->
-            <!-- <mat-form-field appearance="outline">
-              <mat-label>{{ "FreeMemoEx" | translate }}</mat-label>
-              <textarea
-                matInput
-                #memo
-                name="memo"
-                rows="5"
-                placeholder="{{ 'FreeMemoEx' | translate }}"
-                #inputinfo="ngModel"
-                [(ngModel)]="row.memo"
-                (change)="onChange(false)"></textarea>
-                <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
-              <button (click)="row.memo='';">clear</button>
-            </mat-form-field> -->
             <!-- カテゴリー選択ボタン -->
             <button mat-stroked-button (click)="onClickAreaCategory()">
               {{ "SelectAnAreaCategory" | translate }}
@@ -301,14 +286,27 @@
 
         <div id="overlay" *ngIf="!row">
           <div class="guide">
-            <p>{{ "MyPlan#Sec1" | translate }}<span class="inner">{{ "MyPlan#Sec2" | translate }}</span>{{ "MyPlan#Sec3" | translate }}</p>
-            <p>{{ "MyPlan#Sec4" | translate }}</p>
-            <p class='under'>{{ "MyPlan#Sec5" | translate }}</p>
+            <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
+            <p class="bold">{{ "MyPlan#Sec2" | translate }}</p>
+            <p class='under'>{{ "MyPlan#Sec3" | translate }}</p>
+            <div class="inputWrapper">
+              <input placeholder="「京都女子旅」「スカイツリー」..." class="keyword"
+              #keywordInput
+              (keyup.enter)="onKeywordSearch($event)"
+              (blur)="onKeywordSearch($event)"/>
+              
+              <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="">
+              <button mat-button class="reset" (click)="inputClear()">
+                <img src="../../../../../assets/img/reset_btn.svg" alt="reset">
+              </button>
+            </div>
+            <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
+            <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
           </div>
         </div>
       </div>
       <!-- スポットを追加する -->
-      <div class="myplan-box">
+      <div *ngIf="row" class="myplan-box">
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
           <span class='label'>{{ "AddSpot" | translate }}</span>  
           <span class='count'>{{"NumberOfSpots"|translate}}{{row?.planSpots.length}} / {{"Max6spots"|translate}}</span>

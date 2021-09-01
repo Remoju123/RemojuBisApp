@@ -258,15 +258,16 @@
   "GoogleKeyword": "場所や住所を検索しよう！",
   "StartSearch": "出発地を設定",
   "EndSearch": "到着地を設定",
-  "MyPlan#Sec1":"各画面にある",
-  "MyPlan#Sec2":"myプランに入れる",
-  "MyPlan#Sec3":"から",
-  "MyPlan#Sec4":"あなただけの旅プランを作ろう！",
-  "MyPlan#Sec5":"(最大６スポットまで)",
+  "MyPlan#Sec1":"みんなのおすすめを参考に",
+  "MyPlan#Sec2":"オリジナルの旅行プランが作れます。",
+  "MyPlan#Sec3":"次はどんな所に行きたいですか？",
+  "MyPlan#Sec4":"又は",
+  "MyPlan#Sec5":"一覧から探す",
   "ReportPlanUser": "プランを違反報告",
   "ReportPlanUserConfirmTitle": "不適切なプランを報告しますか？",
   "ReportPlanUserConfirmText": "ご報告いただいたプランについて、担当者が数営業日以内に確認します。",
   "Selectimagespot": "スポットのイメージ画像を選択",
   "Roundspot": "周遊スポット",
-  "Max6spots": "最大６ヶ所"
+  "Max6spots": "最大６ヶ所",
+  "Option": "※オプション"
 }

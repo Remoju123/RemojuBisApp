@@ -35,6 +35,7 @@ import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { Catch } from "src/app/class/log.class";
+import { HttpUrlEncodingCodec } from "@angular/common/http";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -59,6 +60,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   private onDestroy$ = new Subject();
   private baseUrl:string;
   private currentlang:string;
+  codec = new HttpUrlEncodingCodec;
 
   constructor(
     private commonService: CommonService,
@@ -79,6 +81,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.baseUrl = document.getElementsByTagName("base")[0].href;
       this.currentlang = localStorage.getItem("gml");
     }
+    this.condition = new ListSearchCondition();
   }
 
   @ViewChild("mepPlan") accordionPlan: MatAccordion;
@@ -107,9 +110,17 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   step = 999;
 
+  condition: ListSearchCondition;
+
+  isVal:boolean = false;
+
   get lang() {
     return this.translate.currentLang;
   }
+
+  pictureUrl:string = "../../../assets/img/icon_who.svg";
+
+  @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   /*------------------------------
    *
@@ -222,7 +233,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     param.imageCropped = this.row.imageCropped;
     param.pictureFile = this.row.pictureFile;
     param.picturePreviewUrl = this.row.picturePreviewUrl;
-    console.log(param);
+    //console.log(param);
     const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
       id:"imgcrop",
       maxWidth: "100%",
@@ -234,7 +245,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
       if (r && r !== "cancel"){
-        console.log(r);
+        //console.log(r);
         this.row.imageCropped = r.imageCropped;
         this.row.aspectRatio = r.aspectRatio;
         this.row.cropperPosition = r.cropperPosition;
@@ -419,7 +430,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       return;
     }
 
-    this.router.navigate(["/" + this.lang + "/spots"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
 
     // スライドを閉じる
     this.commonService.onNotifyIsShowCart(false);
@@ -945,5 +956,24 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   setStep(i:number){
     this.step = i;
+  }
+
+  onKeywordSearch(e){
+    const val = e.target.value.toLowerCase();
+    val!==""?this.isVal=true:false;
+    if(val!==""){
+      let encval = this.codec.encodeValue(val);
+      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:encval}});
+
+      if(~this.router.url.indexOf('planspot')){
+        location.reload();
+      }
+    }
+  }
+
+  inputClear(){
+    this.isVal=false;
+    this.keywordInput.nativeElement.value="";
+    return;
   }
 }

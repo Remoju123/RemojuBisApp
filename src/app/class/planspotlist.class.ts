@@ -135,6 +135,7 @@ export class SearchParamsObj{
   srt: string;
   rep: boolean;
   usp:boolean;
+  kwd: string;
 }
 
 
