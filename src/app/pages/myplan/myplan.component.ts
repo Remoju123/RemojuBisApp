@@ -967,7 +967,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       if(~this.router.url.indexOf('planspot')){
         this.condition.keyword = val;
         this.indexedDBService.registListSearchCondition(this.condition);
-        location.reload();
+        window.location.reload(true);
       }
     }
   }
