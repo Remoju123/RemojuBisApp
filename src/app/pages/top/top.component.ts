@@ -94,7 +94,7 @@ export class TopComponent implements OnInit,OnDestroy {
     val!==""?this.isVal=true:false;
     if(val!==""){
       let encval = this.codec.encodeValue(val);
-      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:encval}});
+      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:val}});
     }
   }
 }

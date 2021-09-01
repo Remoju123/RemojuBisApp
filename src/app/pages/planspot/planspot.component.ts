@@ -137,7 +137,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
           params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
         this.condition.sortval = params.srt;
         this.condition.select = params.lst;
-        this.condition.keyword = this.codec.decodeValue(params.kwd);
+        this.condition.keyword = params.kwd;
         
         this.indexedDBService.registListSearchCondition(this.condition);
       }
