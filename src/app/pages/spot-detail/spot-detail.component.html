@@ -1,5 +1,5 @@
 <div class="spotdtl">
-  <mat-card id="header" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
+  <!-- <mat-card id="header" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
     <mat-card-header>
       <div class="lt">
         <span class="spotName">
@@ -15,7 +15,41 @@
         </button>
       </div>
     </mat-card-header>
+  </mat-card> -->
+  <mat-card id="spotdtlheader" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
+    <mat-card-content>
+      <div class='header'>
+        <div class='lt'>
+          <span class='avatar'>
+            <img
+                src="{{ $userStaff?.pictureUrl }}"
+                alt=""
+              />
+            <!-- <span class="username">{{$userStaff.romanLetterName|langFilter:lang}}</span> -->
+          </span>
+        </div>
+        <div class='rt'>
+          <div class='name'>
+            <span class='mark'>
+              <img src="../../../assets/img/mark_spot.svg" alt="mark">
+            </span>
+            <span class='title'>
+              {{ data.spotName | langFilter: lang }}
+            </span>
+          </div>
+          <div class='buttons'>
+            <button mat-icon-button class="plan_fav" (click)="onClickFavorite()">
+              <img src="../../../assets/img/hart_small.svg" alt="">
+            </button>
+            <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
+              <img src="{{addplanbtn_src}}" alt="add to plan">
+            </button>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
   </mat-card>
+
   
   <mat-card id="mainPictures">
     <mat-card-content class="mt10">
@@ -52,7 +86,7 @@
     <mat-card-content>    
       <mat-list class="spot-info">
         <mat-list-item class="title">
-          <span class="spotName">{{ data.spotName | langFilter: lang }}</span>
+          基本情報
         </mat-list-item>
         <mat-list-item
           class="row view">

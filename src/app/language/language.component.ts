@@ -17,8 +17,8 @@ export class LanguageComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.params.pipe(takeUntil(this.onDestroy$)).subscribe((params: Params) => {
       this.translate.use(params["lang"]);
-
-      // localStorage.setItem("gml", params["lang"]);
+      // ts内部onInit側でイメージパス判定の際に必要
+      localStorage.setItem("gml", params["lang"]);
     });
   }
 

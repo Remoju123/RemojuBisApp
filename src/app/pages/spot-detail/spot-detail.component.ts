@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit ,OnDestroy, Inject, PLATFORM_ID } from "@angular/core";
+import { Component, HostListener, Input, OnInit ,OnDestroy, Inject, PLATFORM_ID} from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -43,7 +43,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     private translate: TranslateService,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
-
+  
   @Input() spotId: string;
 
   data: SpotApp = new SpotApp();
@@ -183,11 +183,13 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       this.myplanService.MySpots$.subscribe((v)=>{
         this.myPlanSpots = v;
       })
+      
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
-    
   }
+
+  
 
   // SignalRの設定
   @Catch()
