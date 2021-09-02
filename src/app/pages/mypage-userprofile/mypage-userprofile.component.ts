@@ -220,7 +220,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
   // プレビュー表示切り替え
   onClickPreviewSwitch() {
-    
+
     this.isPreview = !this.isPreview;
   }
 
@@ -248,7 +248,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
   onClickCropCover(): void {
     let param = new ImageCropperParam();
-    param.isAspectRatio = true;
+    param.isAspectRatio = false;
     param.aspectRatio = "16 / 9";
     param.cropperPosition = this.data.coverCropperPosition;
     param.imageCropped = this.data.coverImageCropped;

@@ -2,18 +2,19 @@
   <a href="javascript:void(0);" (click)="onClickToggle()" class="changeratio">
     <span class="ratio">{{data.aspectRatio}}</span>
   </a>
-  
+
   <image-cropper
     #cropper
     class="cropper"
     [imageFile]="data.pictureFile"
     [aspectRatio]="aspectRatio"
     [imageQuality]=100
+    [roundCropper]="data.roundCropper"
     format="webp"
     (imageCropped)="imageCropped($event)"
     (cropperReady)="cropperReady()"
   ></image-cropper>
-  
+
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-raised-button mat-dialog-close="cancel" class="cancel">{{ "Return" | translate }}</button>
