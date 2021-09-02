@@ -379,7 +379,7 @@
           <label for="plansave">{{ "Save" | translate }}</label>
         </div>
         <!-- 新規プラン作成 -->
-        <div class="newplan" *ngIf="!row">
+        <div class="newplan">
           <button mat-button type="button" id="plannew" [disabled]="row?.planUserId === 0" (click)="onClickBatchClear(true)">
           </button>
           <label for="plannew">{{"CreatingNewPlan" | translate}}</label>
