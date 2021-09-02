@@ -209,7 +209,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       const img = await this.commonService.imageSize(file);
       this.row.picturePreviewUrl = img.previewUrl;
       this.row.pictureFile = img.file;
-      this.row.aspectRatio = "1";
       this.onChange(false);
     }
   }
@@ -226,7 +225,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   onClickCropPlan() {
     let param = new ImageCropperParam();
-    
+
     param.isAspectRatio = true;
     param.aspectRatio = this.row.aspectRatio;
     param.cropperPosition = this.row.cropperPosition;
@@ -366,7 +365,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.row.isBus = !this.row.isBus;
       // 保存
       this.onChange(true);
-    
+
   }
 
   // 経路最適化
@@ -374,7 +373,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.row.isAuto = true;
       // 保存
       this.onChange(true);
-    
+
   }
 
   // 出発地・到着地を設定
