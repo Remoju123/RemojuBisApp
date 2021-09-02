@@ -91,7 +91,21 @@
                 (change)="onChange(false)"></textarea>
                 <mat-hint align="end">{{planExplanation.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
                 <mat-hint align="start"><a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
-                <!-- <button (click)="row.planExplanation='';">clear</button> -->
+            </mat-form-field>
+            <!-- フリー文章 -->
+            <mat-form-field appearance="outline">
+              <mat-label>{{ "FreeMemoEx" | translate }}</mat-label>
+              <textarea
+                matInput
+                #memo
+                name="memo"
+                rows="5"
+                placeholder="{{ 'FreeMemoEx' | translate }}"
+                #inputinfo="ngModel"
+                [(ngModel)]="row.memo"
+                (change)="onChange(false)"></textarea>
+                <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
+                <mat-hint align="start"><a href="javascript:void(0);" (click)="row.memo='';">{{"labelClear" | translate}}</a></mat-hint>
             </mat-form-field>
             <!-- カテゴリー選択ボタン -->
             <button mat-stroked-button (click)="onClickAreaCategory()">
