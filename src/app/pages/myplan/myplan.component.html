@@ -306,7 +306,7 @@
               #keywordInput
               (keyup.enter)="onKeywordSearch($event)"
               (blur)="onKeywordSearch($event)"/>
-              
+
               <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="">
               <button mat-button class="reset" (click)="inputClear()">
                 <img src="../../../../../assets/img/reset_btn.svg" alt="reset">
@@ -320,7 +320,7 @@
       <!-- スポットを追加する -->
       <div *ngIf="row" class="myplan-box">
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
-          <span class='label'>{{ "AddSpot" | translate }}</span>  
+          <span class='label'>{{ "AddSpot" | translate }}</span>
           <span class='count'>{{"NumberOfSpots"|translate}}{{row?.planSpots.length}} / {{"Max6spots"|translate}}</span>
         </button>
         <button class="clear" (click)="planRemove()">{{"labelClear"|translate}}</button>
@@ -379,11 +379,11 @@
           <label for="plansave">{{ "Save" | translate }}</label>
         </div>
         <!-- 新規プラン作成 -->
-        <!-- <div class="newplan">
+        <div class="newplan">
           <button mat-button type="button" id="plannew" [disabled]="row?.planUserId === 0" (click)="onClickBatchClear(true)">
           </button>
           <label for="plannew">{{"CreatingNewPlan" | translate}}</label>
-        </div> -->
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
