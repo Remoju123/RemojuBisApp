@@ -194,5 +194,7 @@
       </mat-card-content>
     </mat-card>
   </ng-container>
-  <app-userprofile-panel *ngIf="data && isPreview" [user]="data" [country]="countryAll" [edit]="isPreview" (event)="onClickPreviewSwitch()"></app-userprofile-panel>
+  <mat-card>
+    <app-userprofile-panel *ngIf="data && isPreview" [user]="data" [country]="countryAll" [edit]="isPreview" (event)="onClickPreviewSwitch()"></app-userprofile-panel>
+  </mat-card>
 </form>

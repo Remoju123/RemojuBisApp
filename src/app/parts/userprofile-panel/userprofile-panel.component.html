@@ -1,22 +1,19 @@
-<mat-card>
-  <mat-card-header *ngIf="detail">
+<!-- <mat-card> -->
+  <!-- <mat-card-header *ngIf="detail">
     <h4>
       {{ "PostersProfile" | translate }}
     </h4>
-    <div class="memo" *ngIf="memo">
-      <p [innerHTML]="memo | replaceNewline"></p>
-    </div>
-  </mat-card-header>
+  </mat-card-header> -->
   <mat-card-content *ngIf="user">
     <div class="card-box">
-      <div class="card-header" [ngClass]="{'detail':detail}">
-        <div class="cover" *ngIf="!detail">
+      <div class="card-header">
+        <div class="cover">
           <div class="wrap">
-            <img
+            <!-- <img
               *ngIf="user.coverImageCropped || user.coverPreviewUrl || user.coverUrl"
               [src]="user.coverImageCropped ?? user.coverPreviewUrl ?? user.coverUrl"
               alt=""
-            />
+            /-->
           </div>
         </div>
         <div class="user">
@@ -51,4 +48,4 @@
       </div>
     </div>
   </mat-card-content>
-</mat-card>
+<!-- </mat-card> -->
