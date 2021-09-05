@@ -420,6 +420,18 @@ h4.header{
         font-weight: 700;
         padding: 4px 0;
         color: #555;
+
+        ::ng-deep.mat-list-item-content{
+          justify-content: space-between;
+          button{
+            all: unset;
+          }
+        }
+      }
+
+      span.divider{
+        margin: 0 8px;
+        border-bottom: 1px solid #bfa060;
       }
     }
   }
@@ -1052,6 +1064,23 @@ h4.header{
     } //.card-box
   } //.spotinfo
 
+  .addToPlan{
+    margin: 8px 16px;
+    display: flex;
+    justify-content: end;
+    button{
+      all:unset;
+      width: 181px;
+      height: 28px;
+      background-color: #DE7274;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: 800;
+      line-height: 28px;
+    }
+  }
+
   .mat-list{
     .fintime{
       display: flex;
@@ -1507,6 +1536,7 @@ h4.header{
   .buttons{
     position: relative;
     display: inline-block;
+    margin-top: 12px;
     button{
       all: unset;
       width: 188px;

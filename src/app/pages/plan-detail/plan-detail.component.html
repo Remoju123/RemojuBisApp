@@ -70,7 +70,17 @@
       <mat-list class="plan-info">
         <mat-list-item class="title">
           {{ "BasicInfomation" | translate }}
+          <ng-container *ngIf="!$isRemojuPlan">
+            <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menuPlan">
+              <mat-icon>
+                more_vert</mat-icon>
+            </button>
+          </ng-container>
+          <mat-menu #menuPlan="matMenu">
+            <button mat-menu-item (click)="onClickReport()">{{ "ReportPlanUser" | translate }}</button>
+          </mat-menu>
         </mat-list-item>
+        <span class='divider'></span>
         <mat-list-item class="row psname">
           <span *ngFor="let item of spots; index as i">{{item.spotName}}</span>
         </mat-list-item>
@@ -81,44 +91,18 @@
             <span *ngIf="data.timeRequiredMin !== null">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
           </span>
           <span class="timespan">
-            {{ data.startTime }}～{{ data.endTime }}
+            ({{ data.startTime }}～{{ data.endTime }})
           </span>
           <span class="spots">
             <label>{{ "NumberOfSpots" | translate }}：</label>
             <span>{{ data.spots?.length }}</span>
           </span>
         </mat-list-item>
-        <!-- <mat-list-item class="row">
-          <span class="time">
-            <label>{{ "TimeRequired" | translate }}：</label>
-            <span *ngIf="data.timeRequiredHour > 0">{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span>
-              <span *ngIf="data.timeRequiredMin > 0">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
-          </span>
-          <span class="timespan">
-            {{ data.startTime }}～{{ data.endTime }}
-          </span>
-        </mat-list-item> -->
         <mat-list-item class="row categories">
           <ng-container *ngFor="let item of categoryNames">
             <span class="feature" (click)="onClickCategory(item.id)">{{ item.name | langFilter:lang }}</span>
           </ng-container>
         </mat-list-item>
-        <!-- <mat-list-item
-          class="row pt8"
-          *ngIf="($nearest | langFilter: lang) !== ''"
-        >
-          <span class="{{ $access}}">
-            {{ $nearest | langFilter: lang }}
-          </span>
-        </mat-list-item>
-        <mat-list-item class="row">
-          <div [innerHTML]="$budgetFrameHead"></div>
-        </mat-list-item>
-        <mat-list-item class="row">
-          <span class="businesshour" *ngIf="$businessHourMain !== ''">
-            {{ $businessHourHead }}
-          </span>
-        </mat-list-item> -->
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -171,7 +155,7 @@
       <mat-card class="spotinfo">
         <mat-card-content>
           <!-- 掲載OK -->
-          <div *ngIf="!item.isEndOfPublication">
+          <ng-container *ngIf="!item.isEndOfPublication;">
             <div class="card-box">
               <div class="spot-title">
                 <div class="rt">
@@ -232,15 +216,19 @@
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
           <!-- 掲載終了スポット -->
-          <div *ngIf="item.isEndOfPublication">
+          <ng-container *ngIf="item.isEndOfPublication">
             <div class="card-box">
               <div class="spot-title">
                 <span class="mark">{{i+1}}</span>
               </div>
             </div>
             <span>{{ "EndOfPublication" | translate }}</span>
+          </ng-container>
+
+          <div class='addToPlan'>
+            <button class="btn">{{"AddToPlanOnly"|translate}}</button>
           </div>
 
           <mat-list>
@@ -276,8 +264,6 @@
       <p [innerHTML]="data.memo | replaceNewline"></p>
     </div>
   </div>
-
-
 
   <!-- レビュー投稿 -->
   <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3" [id]="data.planId" [spotplanName]="data.planName"></app-review-list-panel>
