@@ -377,7 +377,7 @@ p{
   width: 100%;
 
   > img {
-    width: 100%;
+    // width: 100%;
     height: 60vw;
     object-fit: cover;
     @include copy-protect;
