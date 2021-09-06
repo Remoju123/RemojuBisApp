@@ -198,7 +198,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.p++;
     }else{
       this.isList = false;
-      if(this.condition.select !== 'plan'){
+      //if(this.condition.select !== 'plan'){
+      if(this.condition.select === 'google'){
         const keyword = this.condition.keyword;
         if(keyword !== null){
           (await this.planspots.getGoogleSpotList(keyword)).subscribe(g => {
