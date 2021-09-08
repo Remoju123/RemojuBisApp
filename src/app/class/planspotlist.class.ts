@@ -16,8 +16,6 @@ export interface NestDataSelected {
   selected: boolean;
 }
 export class PlanSpotListSearchResult {
-    // 1ページあたりの表示件数
-    pageViewQty: number;
     // 検索結果
     planSpotList: PlanSpotList[];
     // 営業曜日
@@ -54,7 +52,7 @@ export class PlanSpotList_bk {
   releaseCreateDatetime: string;
   // 検索カテゴリ
   spotSearchCategories: SpotSearchCategory[];
-  
+
   planSearchCategories: PlanSearchCategory[];
 
   pictures: string[];
@@ -62,7 +60,7 @@ export class PlanSpotList_bk {
   isEndOfPublication: boolean;
 
   objectId:string;
-  
+
   guid:string;
 }
 
@@ -229,4 +227,11 @@ export class MArea {
   map_url: string;
   area_name_1: string;
   area_name_2: string;
+}
+
+export class GoogleSearchResult {
+    // 次ページ検索token
+    tokenGoogle: string;
+    // 検索結果
+    planSpotList: PlanSpotList[];
 }

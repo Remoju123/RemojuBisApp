@@ -2,8 +2,8 @@ import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AddPlan, AddSpot, DataSelected, ListSelectMaster, MyPlanApp, NestDataSelected, RegistFavorite } from "../class/common.class";
 import { PlanSpotList,searchResult,
-  SearchParamsObj, 
-  ListSelected,
+  SearchParamsObj,
+  GoogleSearchResult,
   GoogleSpot} from "../class/planspotlist.class";
 import { CommonService } from "./common.service";
 import { Observable, Subject } from "rxjs";
@@ -11,7 +11,6 @@ import { ListSearchCondition } from "../class/indexeddb.class";
 import { FilterPipe } from "ngx-filter-pipe";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
-import { PlanspotComponent } from "../pages/planspot/planspot.component";
 import { map, takeUntil } from "rxjs/operators";
 import { IndexedDBService } from "./indexeddb.service";
 import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
@@ -23,12 +22,12 @@ const httpOptions = {
     "Content-Type": "application/json;charset=utf-8"
   })
 };
-  
+
 @Injectable({
   providedIn: "root"
 })
 export class PlanSpotListService {
-  
+
   public result: searchResult;
 
   public searchSubject = new Subject<searchResult>();
@@ -46,7 +45,7 @@ export class PlanSpotListService {
     private filterPipe: FilterPipe,
     private translate: TranslateService,
     @Inject("BASE_API_URL") private host: string
-  ) { 
+  ) {
     this.result = new searchResult();
   }
 
@@ -63,26 +62,27 @@ export class PlanSpotListService {
   }
 
   // Googleスポット検索
-  async getGoogleSpotList(keyword: string) {
-    const url = this.host + "/api/SpotList/GoogleSpot";
-    return this.http.get<PlanSpotList[]>(url, {
-      params: {
+  async getGoogleSpotList(keyword: string, areaId: number[], areaId2: number[], token: string) {
+    const url = this.host + "/api/PlanSpotList/GoogleSpot";
+    return this.http.post<GoogleSearchResult>(url,
+      {
         keyword: keyword,
         langCd: this.translate.currentLang,
         guid: await this.commonService.getGuid(),
-        objectId: this.commonService.objectId
-      }
-    });
+        objectId: this.commonService.objectId,
+        areaIds: areaId.concat(areaId2),
+        token: token
+      }, httpOptions);
   }
 
   // プランスポット一覧、詳細データ
   async fetchDetails(options: PlanSpotList){
     const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
     const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
-    
+
     options.objectId = this.commonService.objectId;
     options.guid = await this.commonService.getGuid();
-    
+
     if(options.isPlan){
       return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
     }else{
@@ -128,10 +128,10 @@ export class PlanSpotListService {
     // プラン・スポット選択
     switch(cond.select){
       case 'plan':
-        _result = _result.filter(d => d.isPlan === 1);  
+        _result = _result.filter(d => d.isPlan === 1);
         break;
       case 'spot':
-        _result = _result.filter(d => d.isPlan === 0);  
+        _result = _result.filter(d => d.isPlan === 0);
         break;
       case 'google':
         _result = [];
@@ -171,7 +171,7 @@ export class PlanSpotListService {
         })
         break;
       case 9: // プランに追加された件数
-        
+
         break;
     }
 
@@ -198,7 +198,7 @@ export class PlanSpotListService {
       ...$master[8].dataSelecteds,
       ...$master[9].dataSelecteds,
     ]
-    
+
     const langpipe = new LangFilterPipe();
 
     cond.areaId?.forEach(v=>{
@@ -216,7 +216,7 @@ export class PlanSpotListService {
     _areas.map(v => {
       areas.push(langpipe.transform(v,this.translate.currentLang));
     })
-  
+
     if(cond.searchCategories?.length){
       cond.searchCategories.forEach(v=>{
         _category.push(Categories.find(x => x.id === v).name);
@@ -384,7 +384,7 @@ export class PlanSpotListService {
           objectId: this.commonService.objectId
         };
         url = this.host + "/api/PlanList/Favorite";
-        
+
       }else{
         param = new PlanUserFavorite();
         param = {
@@ -443,7 +443,7 @@ export class PlanSpotListService {
   }
 
   genQueryParams(cond:ListSearchCondition){
-    
+
     console.log(cond);
     //return _params.join("&");
   }
