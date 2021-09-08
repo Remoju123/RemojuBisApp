@@ -41,12 +41,23 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-button class="spot-search" (click)="openDialog(0)">
-        {{ 'AreaAndCommitment' | translate }}
+      <div class='buttons'>
+        <button mat-button class="spot-search" (click)="openDialog(0)">
+          {{ 'AreaAndCommitment' | translate }}
+        </button>
+      </div>
+    </div>
+    <div class='row result' [ngClass]="{'on':this.chkTarms()}">
+      <button mat-button class="popupItem spot-result" (click)="openDialog(0)">
+        <span>{{searchTarms?.area}} {{searchTarms?.cate}}</span>
+      </button>
+      <button class="popupItem reset" (click)="condReset()">
+        <img src="../../../../../assets/img/pop_reset.svg" alt="">
       </button>
     </div>
   </mat-card-content>
-  <div class='popup' [ngClass]="{'on':isShow}">
+
+  <div class='popup' [ngClass]="{'on':isChk}">
     <div class='popupInner'>
       <button class="popupItem cnt">
         <span>{{count}}件</span>

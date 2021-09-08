@@ -181,32 +181,40 @@
         }
 
         .mat-form-field.condition{
+          flex-basis: 77px;
           ::ng-deep.mat-form-field-wrapper{
             padding-bottom: 0;
             ::ng-deep.mat-form-field-infix{
-              width: 90px;
+              width: 77px;
+            }
+          }
+        }
+
+        .buttons{
+          flex-basis: 48%;
+          height: 37px;
+          display: flex;
+          button.spot-search{
+            font-size: 12px;
+            color: $color-gld02;
+            padding: 0 8px 0 12px;
+        
+            &::before{
+              content: url("../../../../../assets/img/searchplus.svg");
+              display: inline-block;
+              width: 15px;
+              height: 15px;
+              padding-right: 3px;
+              vertical-align: sub;
+            }
+        
+            ::ng-deep.mat-button-focus-overlay{
+              background-color: transparent!important; 
             }
           }
         }
         
-        button.spot-search{
-          font-size: 12px;
-          color: $color-gld02;
-          padding: 0 8px 0 16px;
-      
-          &::before{
-            content: url("../../../../../assets/img/searchplus.svg");
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            padding-right: 3px;
-            vertical-align: sub;
-          }
-      
-          ::ng-deep.mat-button-focus-overlay{
-            background-color: transparent!important; 
-          }
-        }
+        
         
 
         // button{
@@ -231,6 +239,39 @@
         // }
 
         
+      }
+
+      &.result{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+        height: 0;
+        visibility: hidden;
+        transition: all 200ms 0s ease;
+        button.popupItem{
+          all: unset;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          height: 100%;
+          padding: 0 4px;
+          span{
+            font-size: 12px;
+          }
+          &.reset{
+            border-right: none;
+            img{
+              width: 18px;
+              margin: auto 4px;
+            }
+          }
+        }
+        &.on{
+          height: 23px;
+          margin: 0.3em 0;
+          visibility:visible;
+        }
       }
     }
   }

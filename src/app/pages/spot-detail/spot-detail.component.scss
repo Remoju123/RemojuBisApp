@@ -20,10 +20,10 @@ p{
 
 #spotdtlheader {
   padding: 0;
-
   position: sticky;
   top: 0;
   z-index: 11;
+  border-radius: 0;
 
   .header{
     margin: 0 16px 4px;
@@ -199,8 +199,6 @@ p{
       bottom: 10px;
     }
   }
-
-  
 }
 
 .spotInfo {
@@ -228,13 +226,11 @@ p{
 }
 
 #mainPictures {
-  // height: 66.6vw;
   padding: 0;
   ::ng-deep .mat-card-content{
     margin: 0;
     padding: 0;
     background-color: #dccda9;
-    // height: 291px;
   }
 
   ::ng-deep .mat-card-footer{
@@ -336,7 +332,6 @@ p{
         background-color: rgba(255, 255, 255, 0.8);
         padding: 0 4px;
         line-height: 26px;
-        //white-space: pre-wrap;
         border-radius: 3px;
         white-space: nowrap;
       }
@@ -345,7 +340,6 @@ p{
         padding: 0 6px;
         line-height: 26px;
         margin-left: 7px;
-        // border: 1px solid $color-gld04;
         border-radius: 3px;
         color: rgba(0,0,0,.87);;
         white-space: nowrap;
@@ -382,7 +376,6 @@ p{
   width: 100%;
 
   > img {
-    // width: 100%;
     height: 60vw;
     object-fit: cover;
     @include copy-protect;
@@ -392,9 +385,6 @@ p{
 .thumbnail {
   display: inline-flex !important;
   height: 12vh;
-  // margin-right: 10px;
-  // margin-bottom: 10px;
-  // margin: 4px;
   padding: 4px;
 
   > img {
@@ -406,9 +396,6 @@ p{
 }
 
 .content {
-  // margin-right: 10px;
-  // margin-bottom: 10px;
-  // margin: 4px;
   padding: 4px;
 
   > p {
@@ -428,23 +415,18 @@ p{
 
   .mat-card-content{
 
-    // min-height: 197px;
     position: relative;
     .spot-info
     {
-      // margin: auto;
-      // width: 90%;
       background-color: #fff;
       border-radius: 10px;
       left: 0;
       right: 0;
       padding-top: 0;
       padding-bottom: 10px;
-      // margin-top: -21px;
       margin: -21px 8px 0;
 
       .title{
-        // border-bottom: 1px solid #bfa060;
         height: auto;
         font-weight: 700;
         padding: 4px 0;
@@ -461,7 +443,6 @@ p{
   }
   
   .row {
-    // height: 24px;
     height: auto;
     line-height: 2;
     font-size: 12px;
@@ -526,8 +507,6 @@ p{
         background-color: #bfa060;
         color: #fff;
         width: 200px;
-        // border-color: #c0a080;
-        // color: #c0a080;
 
         & span::after{
           content: "keyboard_arrow_down";
@@ -699,7 +678,6 @@ p{
         font-size: 15px;
         height: 35px;
         margin-left: 26px;
-        // width: 160px;
         vertical-align: -webkit-baseline-middle;
         margin-top: 2px;
       }
@@ -709,7 +687,6 @@ p{
         box-shadow: none;
         min-width: auto;
         padding: 0;
-        // background-color: $color-gry02;
         width: 25px;
         height: 25px;
         margin-right: 12px;
@@ -725,7 +702,6 @@ p{
         }
   
         &.on{
-          // background-color: $color-pnk04;
           &::before{
             background: url(../../../assets/img/icon_fav_b_on.svg);
             background-repeat: no-repeat;
@@ -746,8 +722,6 @@ p{
   line-height: 1.8;
   text-align: justify;
   text-justify: inter-ideograph;
-  // color: #4d4d4d;
-  // font-size: 14px;
 
   table {
     width: 100%;
@@ -900,14 +874,6 @@ button.inner {
 .shere{
   font-size: 0.8rem;
   padding-bottom: 8px;
-  
-  // &::before{
-  //   content: "keyboard_arrow_right";
-  //   font-family: "Material Icons";
-  //   font-size: 16px;
-  //   color: #e7ddc5;
-  //   vertical-align: sub;
-  // }
 }
 
 #writer {

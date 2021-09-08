@@ -26,13 +26,15 @@ export class PlanspotSelectorComponent implements OnInit {
   @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   isVal:boolean = false;
-  isShow:boolean = false; 
+  isChk:boolean = false; 
 
   get lang() {
     return this.translate.currentLang;
   }
 
-  constructor(private translate: TranslateService,) { }
+  constructor(private translate: TranslateService,) { 
+    
+  }
 
   ngOnInit(): void {}
 
@@ -63,19 +65,20 @@ export class PlanspotSelectorComponent implements OnInit {
   @HostListener("window:scroll", [])
   onWindowScroll(){
     const h = 208;
+
     if((window.pageYOffset ||
       document.documentElement.scrollTop ||
       document.body.scrollTop) > h){
-        //this.isShow = this.chkTarms();
-        this.isShow = true;
+        //this.isChk = this.chkTarms();
+        this.isChk = true;
       }
     else {
-      this.isShow = false;
+      this.isChk = false;
     }
   }
 
   chkTarms():boolean{
-    return (this.searchTarms.area !== "----" ?? this.searchTarms.cate !== "----");
+    return (this.searchTarms?.area !== "----" || this.searchTarms?.cate !== "----");
   }
 
   condReset(){
