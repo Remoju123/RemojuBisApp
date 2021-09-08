@@ -244,6 +244,7 @@
       &.result{
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
         margin: 0;
         height: 0;
@@ -258,6 +259,29 @@
           padding: 0 4px;
           span{
             font-size: 12px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          &.are{
+            width: 35%;
+            &::before{
+              content:url('../../../../../assets/img/pop_area.svg')!important;
+              width: 9px;
+              height: 16px;
+              padding-right: 2px;
+            }
+          }
+          &.cat{
+            width: 40%;
+            border-right: none;
+            &::before{
+              content:url('../../../../../assets/img/pop_keyword.svg')!important;
+              width: 12px;
+              height: 16px;
+              padding-right: 2px;
+            }
           }
           &.reset{
             border-right: none;
