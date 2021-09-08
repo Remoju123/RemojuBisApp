@@ -8,10 +8,6 @@
     // }
     display: flex;
 
-    .mat-divider{
-      
-    }
-
     button.edit{
       margin-top: 5px;
       line-height: 25px;
@@ -23,7 +19,11 @@
 
       position: absolute;
       right: 16px;
-      bottom: 4px;
+      bottom: 8px;
+    }
+
+    .header{
+      margin-bottom: 8px;
     }
   }
   .mat-card-content{

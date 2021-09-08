@@ -76,6 +76,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   addplanbtn_src:string;
 
+  blankUserSrc:string = "../../../../../assets/img/icon_who.svg";
+  blankuserName:string = "---";
+
   ct_department: any[] = [
     { id: 1, text: "Remoju コンテンツチーム" },
     { id: 2, text: "-----" },

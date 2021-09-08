@@ -674,4 +674,12 @@ $color-grn01: #81C5B4;
   }
 }
 
+.mat-divider{
+  position: absolute;
+  left: 0!important;
+  width: calc(100% - 32px)!important;
+  right: 0!important;
+  margin: auto!important;
+}
+
 

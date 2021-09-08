@@ -24,12 +24,11 @@
       <div class="username">
         {{ user.displayName }}
       </div>
-      <div class="gender">
+      <div class="attribute">
         <span *ngIf="user.countryName" class="country">{{ user.countryName }}</span>
         <span *ngIf="user.age">/{{ user.age }}{{ "Age" | translate }}</span>
         <span *ngIf="user.gender==='femail'">/{{ "Female" | translate }}</span>
         <span *ngIf="user.gender==='male'">/{{ "Male" | translate }}</span>
-
       </div>
       <div class="about">
         <p>{{ user.aboutMe }}</p>
