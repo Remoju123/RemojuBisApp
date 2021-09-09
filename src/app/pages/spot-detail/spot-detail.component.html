@@ -50,18 +50,15 @@
       </owl-carousel-o>
   
       <ng-template #singlePict>
-        <ng-container *ngFor="let item of mainPictures; index as i">
           <div class="thumb">
             <img
-              [src]="item.picture_url"
-              [alt]="item.spot_id"
-              [title]="item.spot_id"
+              [src]="mainPicturesSingle?.picture_url"
+              [alt]="mainPicturesSingle?.spot_id"
+              [title]="mainPicturesSingle?.spot_id"
             />
           </div>
-        </ng-container>
       </ng-template>
     </mat-card-content>
-    
     <div class='info'>
       <div class='lt'>
         <span class="areaName" *ngIf="data.areaName1">
@@ -85,7 +82,6 @@
         <mat-list-item class="title">
           {{ "BasicInfomation" | translate }}
         </mat-list-item>
-        <span class='divider'></span>
         <!-- <mat-list-item
           class="row view">
           <span>
@@ -126,7 +122,7 @@
     </mat-card-content>
   </mat-card>
   
-  <mat-card class="p0">
+  <mat-card>
     <mat-card-content>
       <ng-container *ngFor="let item of spotPictures; index as i">
         <h4
@@ -141,7 +137,6 @@
           />
         </div>
         <p
-          class="pl16 pr16"
           [innerHTML]="item.comment | langFilter: lang | replaceNewline"
         ></p>
       </ng-container>

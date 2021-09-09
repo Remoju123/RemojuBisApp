@@ -79,6 +79,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   $mapUrl:string;
 
   mainPictures: Pictures[];
+  mainPicturesSingle: Pictures;
   isMulti = true;
   spotPictures: Pictures[];
 
@@ -99,73 +100,11 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
   addplanbtn_src:string;
 
-  /*------------------------------
-   *
-   * owl carousel option nearbySpot/popularSpot/recommendPlan
-   *
-   * -----------------------------*/
-  customOptions: any = {
-    loop: false,
-    mouseDrag: true,
-    touchDrag: true,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: [
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
-    ],
-    stagePadding: 20,
-    margin: 10,
-    responsive: {
-      0: {
-        items: 2
-      },
-      400: {
-        items: 2
-      },
-      740: {
-        items: 4
-      },
-      940: {
-        items: 5
-      }
-    },
-    nav: false,
-    autoHeight: false
-  };
-
-  /*------------------------------
-   *
-   * owl carousel option mainPictures
-   *
-   * -----------------------------*/
-  mainOptions: any = {
-    loop: false,
-    mouseDrag: true,
-    touchDrag: true,
-    pullDrag: false,
-    dots: true,
-    navSpeed: 700,
-    navText: [
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
-    ],
-    items: 1,
-    nav: true
-  };
-
-  // HubConnectionオブジェクト
-  private connection: HubConnection;
-
-  get lang() {
-    return this.translate.currentLang;
-  }
-
   myPlanSpots:any;
 
   ngOnInit() {
-    if(isPlatformBrowser(this.platformId)){
+  
+    if(isPlatformBrowser(this.platformId)){  
       this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
         let id = params.get("id");
         if (this.spotId !== undefined && this.spotId !== null) {
@@ -183,13 +122,11 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       this.myplanService.MySpots$.subscribe((v)=>{
         this.myPlanSpots = v;
       })
-      
+    
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
   }
-
-  
 
   // SignalRの設定
   @Catch()
@@ -385,6 +322,9 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
       this.mainPictures = r.pictures;
       this.isMulti = r.pictures.length > 1;
+      //if(r.pictures.length <= 1){
+        this.mainPicturesSingle = r.pictures[0];
+      //}
 
       this.spotPictures = r.pictures.filter(
         (p: { is_main: any }) => !p.is_main
@@ -481,5 +421,68 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
   ngOnDestroy(){
     this.onDestroy$.next();
+  }
+  
+  /*------------------------------
+   *
+   * owl carousel option nearbySpot/popularSpot/recommendPlan
+   *
+   * -----------------------------*/
+  customOptions: any = {
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 700,
+    navText: [
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+    ],
+    stagePadding: 20,
+    margin: 10,
+    responsive: {
+      0: {
+        items: 2
+      },
+      400: {
+        items: 2
+      },
+      740: {
+        items: 4
+      },
+      940: {
+        items: 5
+      }
+    },
+    nav: false,
+    autoHeight: false
+  };
+
+  /*------------------------------
+   *
+   * owl carousel option mainPictures
+   *
+   * -----------------------------*/
+  mainOptions: any = {
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: false,
+    dots: true,
+    navSpeed: 700,
+    navText: [
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+    ],
+    items: 1,
+    nav: true
+  };
+
+  // HubConnectionオブジェクト
+  private connection: HubConnection;
+
+  get lang() {
+    return this.translate.currentLang;
   }
 }
