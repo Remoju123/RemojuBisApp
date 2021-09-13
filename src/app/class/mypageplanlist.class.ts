@@ -48,5 +48,5 @@ export class MyPlanAppListSelected{
   stayTime: DataSelected[];
   businessDay: DataSelected[];
   listSelectedPlan: ListSelectedPlan;
-  planSpots: PlanSpotCommon[];
+  myPlan: MyPlanApp;
 }

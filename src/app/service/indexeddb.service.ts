@@ -58,11 +58,13 @@ export class IndexedDBService {
       if (myPlan.pictureFile) {
         myPlan.pictureFile = null;
       }
-      myPlan.planSpots.forEach(x => {
-        if (x.planUserpictures) {
-          x.planUserpictures.forEach(y => y.pictureFile = null);
-        }
-      });
+      if (myPlan.planSpots) {
+        myPlan.planSpots.forEach(x => {
+          if (x.planUserpictures) {
+            x.planUserpictures.forEach(y => y.pictureFile = null);
+          }
+        });
+      }
     }
 
     return myPlan;
@@ -125,7 +127,7 @@ export class IndexedDBService {
       timeRequiredDisp: myPlanApp.timeRequiredDisp,
       startTime: myPlanApp.startTime,
       lastUpdatetime: new Date().toLocaleString(),
-      planSpots: myPlanApp.planSpots.reduce((x, c) => {
+      planSpots: myPlanApp.planSpots ? myPlanApp.planSpots.reduce((x, c) => {
         x.push({
           type: c.type,
           displayOrder: c.displayOrder,
@@ -145,7 +147,7 @@ export class IndexedDBService {
           planUserpictures: c.planUserpictures
         });
         return x;
-      }, []),
+      }, []) : null,
       startPlanSpot: myPlanApp.startPlanSpot ? {
         type: myPlanApp.startPlanSpot.type,
         displayOrder: myPlanApp.startPlanSpot.displayOrder,
