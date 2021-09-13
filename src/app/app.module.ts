@@ -110,6 +110,8 @@ import { MypageComponent } from './pages/mypage/mypage.component';
 import { PlanspotModule } from './pages/planspot/planspot.module';
 import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
 import { ImageCropperDialogComponent } from "./parts/image-cropper-dialog/image-cropper-dialog.component";
+import { NgDialogAnimationService } from 'ng-dialog-animation';
+import { UserPlanListComponent } from './parts/user-plan-list/user-plan-list.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -185,7 +187,8 @@ export const MATERIAL_MODULES = [
     NotfoundComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
-    ImageCropperDialogComponent
+    ImageCropperDialogComponent,
+    UserPlanListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
@@ -255,6 +258,7 @@ export const MATERIAL_MODULES = [
     { provide: "BASE_API_URL", useValue: environment.backend },
     AuthGuard,
     {provide: MAT_DATE_LOCALE,useValue:"ja-JP"},
+    NgDialogAnimationService
     //{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
     //{ provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
   ],
@@ -279,6 +283,7 @@ export const MATERIAL_MODULES = [
     TransferPanelComponent,
     MapDialogComponent,
     ImageCropperDialogComponent,
+    UserPlanListComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -13,6 +13,7 @@
   <app-planspot-list-item
     *ngFor="let item of details$"
     [item]="item"
+    [lang]="lang"
     (linked)="linktoDetail($event)"
     (addMyPlan)="addMyPlan($event)"
     (setFav)="setFavorite($event)"

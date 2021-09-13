@@ -32,6 +32,7 @@ export class PlanspotListItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.isProd = environment.production;
+    console.log(this.lang);
   }
 
   linktoDetail(id:number){

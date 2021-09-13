@@ -324,7 +324,7 @@
     <ng-template #profile>
       <app-userprofile-panel *ngIf="data.user && data.country" [otherUser]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
       <div class='buttons'>
-        <button mat-button disableRipple matBadge="4" matBadgeSize="small" >この投稿者の投稿一覧へ</button>
+        <button mat-button disableRipple matBadge="4" matBadgeSize="small" (click)="onViewUserPost()">この投稿者の投稿一覧へ</button>
       </div>
     </ng-template>
   </mat-card>

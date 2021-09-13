@@ -1,13 +1,13 @@
-import { Component, HostListener, OnInit, OnDestroy, ViewChild, Input, Inject, PLATFORM_ID } from "@angular/core";
+import { Component, HostListener, OnInit, OnDestroy, ViewChild, Input, Inject, PLATFORM_ID, NgZone } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
-import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
+import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
+import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam, CacheStore } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { Meta } from "@angular/platform-browser";
+import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
@@ -15,9 +15,17 @@ import { PlanListService } from "../../service/planlist.service";
 import { PlanService } from "../../service/plan.service";
 import { SpotListService } from "../../service/spotlist.service";
 import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
+import { UserPlanListComponent } from "../../parts/user-plan-list/user-plan-list.component";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
+import { MatDialog } from "@angular/material/dialog";
+import { NgDialogAnimationService } from 'ng-dialog-animation';
+import { PlanSpotListService } from "src/app/service/planspotlist.service";
+import { FilterPipe } from "ngx-filter-pipe";
+import { PlanSpotList } from "src/app/class/planspotlist.class";
+
+export const USERPLANSPOT_KEY = makeStateKey<CacheStore>('USERPLANSPOT_KEY');
 
 @Component({
   selector: "app-plan-detail",
@@ -38,9 +46,14 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     private planService: PlanService,
     private planListService: PlanListService,
     private spotListService: SpotListService,
+    private planspots: PlanSpotListService,
+    private filterPipe: FilterPipe,
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
+    public dialog: NgDialogAnimationService,
+    private transferState: TransferState,
+    private zone: NgZone,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
 
@@ -484,6 +497,38 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       });
     });
   }
+
+  rows: PlanSpotList[] = [];
+
+  onViewUserPost(){
+    this.planspots.filteringUserData();
+
+    this.planspots.searchFilter.subscribe(result => {
+      const param = new UserPlanData();
+      param.user = this.data.user;
+      param.country = this.data.country;
+      param.memo = this.data.memo;
+      param.rows = result.list;
+      
+      const dialogRef = this.dialog.open(UserPlanListComponent, {
+        id:"userplanlist",
+        maxWidth: "100%",
+        width: "100%",
+        height:"100%",
+        position: { top: "0" },
+        data:param,
+        autoFocus: false,
+        animation: {
+          to: "left",
+          incomingOptions: {
+            keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
+          }
+        }
+      });  
+    })
+  }
+
+
 
   linktoSpot(id:any){
 

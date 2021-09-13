@@ -1,5 +1,6 @@
 import { DataSelected, Recommended, PlanSpotCommon } from "./common.class";
 import { ReviewResult } from "../class/review.class";
+import { PlanSpotList } from "./planspotlist.class";
 
 export class PlanApp {
   // バージョンNo
@@ -124,4 +125,16 @@ export class OtherUser {
   coverUrl: string;
   // 性別
   gender: string;
+}
+
+export class UserPlanData{
+  // ユーザ
+  user: OtherUser;
+  // 国リスト
+  country: DataSelected[];
+  // メモ
+  memo: string;
+  // planspotlist
+  rows: PlanSpotList[];
+
 }

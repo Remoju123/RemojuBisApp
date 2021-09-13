@@ -15,6 +15,7 @@ import { map, takeUntil } from "rxjs/operators";
 import { IndexedDBService } from "./indexeddb.service";
 import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
+import { response } from "express";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -58,7 +59,8 @@ export class PlanSpotListService {
   // プランスポット一覧を取得
   getPlanSpotList() {
     const url = this.host + "/api/PlanSpotList/Search";
-    return this.http.get<PlanSpotList[]>(url);
+    return this.http.get<PlanSpotList[]>(url)
+    .pipe(map(response => response));
   }
 
   // Googleスポット検索
@@ -144,6 +146,16 @@ export class PlanSpotListService {
     }
 
     return _result;
+  }
+
+  // ユーザーデータセット（モック用）
+  filteringUserData(){
+    const sample = [{id:1673},{id:1669},{id:1542},{id:1487},{id:1485},{id:1484},{id:1351},{id:1337},{id:1317},{id:1306},{id:1281},{id:1278},{id:1274},{id:1146}];
+    
+    this.getPlanSpotList().subscribe(async r => {
+      this.result.list = this.filterPipe.transform(r,{$or:sample});
+      this.searchSubject.next(this.result);
+    });
   }
 
   // データセット作成

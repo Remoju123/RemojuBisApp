@@ -1,0 +1,24 @@
+::ng-deep #userplanlist.mat-dialog-container{
+  border-radius: 0;
+  padding: 0 16px 16px;
+
+  .header{
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 16px;
+    span{
+      font-size: 14px;
+    }
+  }
+
+  h4{
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+  }
+
+  .rows{
+    margin: auto -16px;
+  }
+}

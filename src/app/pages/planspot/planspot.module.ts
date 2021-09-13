@@ -33,7 +33,9 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
     ReactiveFormsModule,
   ],
   exports: [
-    PlanspotComponent
+    PlanspotComponent,
+    PlanspotListComponent,
+    PlanspotListItemComponent
   ]
 })
 export class PlanspotModule { }
