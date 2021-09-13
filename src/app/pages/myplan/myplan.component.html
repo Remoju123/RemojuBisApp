@@ -176,7 +176,7 @@
       <!-- スポットを表示 -->
       <div class="spots"  *ngIf="row || spotZero"
         cdkDropList
-        [cdkDropListData]="row && row.planSpots ? row.planSpots : spotZero"
+        [cdkDropListData]="row.planSpots ?? spotZero"
         (cdkDropListDropped)="cdkDropListDroppedSpot($event)"
         >
         <div class='title'>
@@ -188,7 +188,7 @@
           <dt>{{ "Movement" | translate }}</dt>
         </dl>
 
-        <div *ngFor="let item of row && row.planSpots ? row.planSpots : spotZero; index as i;trackBy: myTrackBy" cdkDrag
+        <div *ngFor="let item of row.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
           (cdkDragMoved)="setStep(999)">
           <mat-accordion #mepSpot="matAccordion" multi>
             <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpot{{i}} class="transfer" hideToggle>
@@ -296,7 +296,7 @@
           </mat-accordion>
         </div>
 
-        <div id="overlay" *ngIf="!row">
+        <div id="overlay" *ngIf="!row.planSpots">
           <div class="guide">
             <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
             <p class="bold">{{ "MyPlan#Sec2" | translate }}</p>
@@ -321,9 +321,9 @@
       <div *ngIf="row" class="myplan-box">
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
           <span class='label'>{{ "AddSpot" | translate }}</span>
-          <span class='count'>{{"NumberOfSpots"|translate}}{{row?.planSpots.length}} / {{"Max6spots"|translate}}</span>
+          <span class='count'>{{"NumberOfSpots"|translate}}{{ row.planSpots ? row.planSpots.length : 0 }} / {{"Max6spots"|translate}}</span>
         </button>
-        <button class="clear" (click)="planRemove()">{{"labelClear"|translate}}</button>
+        <button class="clear" [disabled]="!row.planSpots" (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
       </div>
 
       <div class='spacer'>
@@ -348,41 +348,6 @@
           <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
           <label for="switch-view"><span></span></label>
           <div id="swImg"></div>
-        </div>
-      </div>
-
-      <div class="footer">
-        <!-- 破棄(DB未保存)-->
-        <div *ngIf="row?.planUserId === 0" class="clear">
-          <label class="caption" *ngIf="row?.planUserId === 0" for="planclear">{{ "CreatePlanComment" | translate }}</label>
-          <button mat-button type="button" id="planclear" (click)="onClickBatchClear(false)" [disabled]="!row">
-          </button>
-          <label for="planclear">{{ "BatchClear" | translate }}</label>
-        </div>
-        <!-- 破棄(DB保存済み))-->
-        <div *ngIf="row?.planUserId > 0" class="reset">
-          <label class="caption" *ngIf="row?.planUserId > 0" for="planclear">{{ "EdifPlanComment" | translate }}</label>
-          <button mat-button type="button" id="planclear" [disabled]="row?.isSaved" (click)="onClickReset()">
-          </button>
-          <label for="planclear">{{ "BatchClear" | translate }}</label>
-        </div>
-        <!-- URL共有 -->
-        <div class="share">
-          <button mat-button type="button" id="planshare" (click)="onClickSharePlan()">
-          </button>
-          <label for="planshare">{{ "SharePlan" | translate }}</label>
-        </div>
-        <!-- 保存 -->
-        <div class="save">
-          <button mat-button type="button" id="plansave" [disabled]="!row || formCheck.invalid" (click)="onClickSavePlan()">
-          </button>
-          <label for="plansave">{{ "Save" | translate }}</label>
-        </div>
-        <!-- 新規プラン作成 -->
-        <div class="newplan">
-          <button mat-button type="button" id="plannew" [disabled]="row?.planUserId === 0" (click)="onClickBatchClear(true)">
-          </button>
-          <label for="plannew">{{"CreatingNewPlan" | translate}}</label>
         </div>
       </div>
     </mat-card-content>
@@ -446,7 +411,7 @@
     </div>
     <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer"
     [item]="row.startPlanSpot"></app-transfer-panel>
-    <div class="box">
+    <div class="box" *ngIf="row.planSpots">
       <ng-container *ngFor="let item of row.planSpots; index as i">
         <mat-card class="spotinfo">
           <!-- 掲載OK -->
@@ -590,15 +555,26 @@
         <div id="swImg"></div>
       </div>
     </div>
-
-    <!-- パネルフッタ -->
-    <div class="footer">
-      <div class="share">
-        <button mat-button type="button" id="planshare" (click)="onClickSharePlan()">
-        </button>
-        <label for="planshare">{{ "SharePlan" | translate }}</label>
-      </div>
+  </div>
+  <div class="footer">
+    <!-- 破棄-->
+    <div class="clear">
+      <label class="caption" for="planclear">{{ "CreatePlanComment" | translate }}</label>
+      <button mat-button type="button" id="planclear" (click)="onClickBatchClear()" [disabled]="!row">
+      </button>
+      <label for="planclear">{{ "BatchClear" | translate }}</label>
     </div>
-
+    <!-- 保存 -->
+    <div class="save">
+      <button mat-button type="button" id="plansave" [disabled]="formCheck.invalid || !row?.planSpots" (click)="onClickSavePlan(false)">
+      </button>
+      <label for="plansave">{{ "Save" | translate }}</label>
+    </div>
+    <!-- URL共有 -->
+    <div class="share">
+      <button mat-button type="button" id="planshare" (click)="onClickSharePlan()">
+      </button>
+      <label for="planshare">{{ "SharePlan" | translate }}</label>
+    </div>
   </div>
 </form>

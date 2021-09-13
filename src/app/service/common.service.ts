@@ -48,7 +48,7 @@ export class CommonService implements OnDestroy{
 
   private logoChange = new Subject<boolean>();
   public logoChange$ = this.logoChange.asObservable();
-  
+
   public loggedIn:boolean = false;
 
   private onDestroy$ = new Subject();
@@ -139,7 +139,7 @@ export class CommonService implements OnDestroy{
     const myPlanApp: MyPlanApp = myPlan;
 
     // 6スポットを超える場合
-    if (myPlanApp.planSpots.length + addSpotQty > 6){
+    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
       this.messageDialog("ErrorMsgAddSpot");
       return false;
     } else {
@@ -440,7 +440,7 @@ export class CommonService implements OnDestroy{
         resolve(result);
       };
     });
-  }  
+  }
 
   // 通知
   snackBarDisp(message: string) {
@@ -474,7 +474,7 @@ export class CommonService implements OnDestroy{
       id:"cmd"
     });
   }
-  
+
   // マイプランパネル状態変更
   public onNotifyIsShowCart(state:boolean){
     this.isshowcart.next(state)
@@ -499,9 +499,9 @@ export class CommonService implements OnDestroy{
   public onNotifySelectedSpotId(id:number){
     this.selectedSpotId.next(id);
   }
-  
+
   ngOnDestroy(){
     this.onDestroy$.next();
   }
-  
+
 }

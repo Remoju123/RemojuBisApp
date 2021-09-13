@@ -271,5 +271,7 @@
   "Roundspot": "周遊スポット",
   "Max6spots": "最大６ヶ所",
   "Option": "※オプション",
-  "AddToPlanOnly": "ここだけプランに入れる"
+  "AddToPlanOnly": "ここだけプランに入れる",
+  "SpotAllClearConfirm": "スポットをすべて削除します。よろしいですか？",
+  "SavePlanConfirm": "プランを保存します。よろしいですか？"
 }

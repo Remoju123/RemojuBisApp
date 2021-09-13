@@ -22,6 +22,9 @@ export class MyplanService  {
   private PlanUser = new Subject<MyPlanApp>();
   public PlanUser$ = this.PlanUser.asObservable();
 
+  private PlanUserEdit = new Subject<MyPlanApp>();
+  public PlanUserEdit$ = this.PlanUserEdit.asObservable();
+
   private PlanUserSaved = new Subject<MyPlanApp>();
   public PlanUserSaved$ = this.PlanUserSaved.asObservable();
 
@@ -109,10 +112,14 @@ export class MyplanService  {
     };
     return this.http.get<string>(url, options);
   }
-  
+
   // プラン更新通知
   public onPlanUserChanged(myPlanApp: MyPlanApp) {
     this.PlanUser.next(myPlanApp);
+  }
+
+  public onPlanUserEdit(myPlanApp: MyPlanApp) {
+    this.PlanUserEdit.next(myPlanApp);
   }
 
   // プラン保存通知
@@ -146,7 +153,9 @@ export class MyplanService  {
   }
 
   private SetItem(myPlanApp: MyPlanApp){
-    myPlanApp.planSpots.forEach(x => x.stayTime = Number(x.stayTime));
+    if (myPlanApp.planSpots) {
+      myPlanApp.planSpots.forEach(x => x.stayTime = Number(x.stayTime));
+    }
     myPlanApp.languageCd1 = [ this.translate.currentLang ];
     myPlanApp.objectId = this.commonService.objectId;
     if (myPlanApp.travelDate) {
