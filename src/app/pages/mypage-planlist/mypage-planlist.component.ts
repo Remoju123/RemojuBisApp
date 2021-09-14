@@ -302,10 +302,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
         // return;
       }
-      // プラン作成　一旦削除
-      this.myplanService.onPlanUserRemoved();
       // プラン作成に反映
-      this.myplanService.onPlanUserChanged(r);
+      this.myplanService.onPlanUserEdit(r);
       // プラン保存
       this.indexedDBService.registPlan(r);
       // subject更新
@@ -325,8 +323,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     if (myPlanApp && delPlanUserId === myPlanApp.planUserId){
       this.indexedDBService.clearMyPlan();
       // プラン作成に反映
-      const p = new MyPlanApp();
-      this.myplanService.onPlanUserChanged(p);
+      this.myplanService.onPlanUserRemoved();
     }
   }
 

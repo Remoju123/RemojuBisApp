@@ -1,1 +1,8 @@
-<p>urlcopy-dialog works!</p>
+<h2 mat-dialog-title>{{ 'SharePlanSave' | translate }}</h2>
+<mat-dialog-content>
+  <div style="word-wrap: break-word;">{{ data }}</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close="cancel">{{ 'Return' | translate }}</button>
+  <button *ngIf="data" mat-raised-button (click)="onClickCopy()">{{ 'Copy' | translate }}</button>
+</mat-dialog-actions>
