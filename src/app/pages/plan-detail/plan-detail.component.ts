@@ -1,13 +1,13 @@
-import { Component, HostListener, OnInit, OnDestroy, ViewChild, Input, Inject, PLATFORM_ID, NgZone } from "@angular/core";
+import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
-import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam, CacheStore } from "../../class/common.class";
+import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
+import { Meta } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
@@ -16,16 +16,12 @@ import { PlanService } from "../../service/plan.service";
 import { SpotListService } from "../../service/spotlist.service";
 import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
 import { UserPlanListComponent } from "../../parts/user-plan-list/user-plan-list.component";
-import { Observable, Subject } from "rxjs";
-import { take, takeUntil } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
-import { MatDialog } from "@angular/material/dialog";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { PlanSpotListService } from "src/app/service/planspotlist.service";
-import { FilterPipe } from "ngx-filter-pipe";
 import { PlanSpotList } from "src/app/class/planspotlist.class";
-
-export const USERPLANSPOT_KEY = makeStateKey<PlanSpotList[]>('USERPLANSPOT_KEY');
 @Component({
   selector: "app-plan-detail",
   templateUrl: "./plan-detail.component.html",
@@ -46,12 +42,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     private planListService: PlanListService,
     private spotListService: SpotListService,
     private planspots: PlanSpotListService,
-    private filterPipe: FilterPipe,
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
     public dialog: NgDialogAnimationService,
-    private transferState: TransferState,
     //public dialog:MatDialog,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
@@ -276,9 +270,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   @HostListener("window:scroll", [])
   onWindowScroll() {
-    // var element = document.getElementById("spot-detail");
-    // var rect = element.getBoundingClientRect();
-
     if (
       (window.pageYOffset ||
         document.documentElement.scrollTop ||
@@ -304,11 +295,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   async getMaster() {
     this.planListService.getPlanListSearchCondition(false).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       this.mSearchCategory = r.mSearchCategory;
-      // const Caterogries = [
-      //   r.mSearchCategory[0].dataSelecteds,
-      //   r.mSearchCategory[1].dataSelecteds,
-      //   r.mSearchCategory[2].dataSelecteds
-      // ];
     });
   }
 
@@ -444,25 +430,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         .subscribe((r)=>{
           this.user_plans = this.planspots.mergeBulkDataSet(r);
           // サーバーステートに保持
-          this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
+          //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
       });
     });
   }
-
-  /*reshapetime(v: string) {
-    if (v) {
-      const str = v.split(":");
-      return parseInt(str[0]).toString() + ":" + str[1];
-    }
-    return "";
-  }
-
-  getEndTime(st: string,addtime: number){
-    const d = new Date("1970/1/1 " + st);
-    d.setMinutes(d.getMinutes() + addtime);
-    return d.toLocaleTimeString();
-    //console.log(d.setMinutes(d.getMinutes + addtime));
-  }*/
 
   match(spots:any,plans:any){
     try{
@@ -511,6 +482,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     param.user = this.data.user;
     param.country = this.data.country;
     param.memo = this.data.memo;
+    param.rows = this.user_plans;
         
     this.dialog.open(UserPlanListComponent, {
       id:"userplanlist",
@@ -584,10 +556,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    // navText: [
-    //   "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-    //   "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
-    // ],
     stagePadding: 20,
     margin: 10,
     responsive: {
@@ -624,20 +592,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
-    // responsive: {
-    //   0: {
-    //     items: 1
-    //   },
-    //   400: {
-    //     items: 1
-    //   },
-    //   740: {
-    //     items: 2
-    //   },
-    //   940: {
-    //     items: 3
-    //   }
-    // },
     items:1,
     nav: true
   };
