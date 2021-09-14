@@ -38,7 +38,7 @@ const routes: Routes = [
         { path: "home", component: TopComponent },
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/top",pathMatch:"full" },
-        { path: '404', component: NotfoundComponent }
+        { path: '404', component: NotfoundComponent },
       ]
     },
     {

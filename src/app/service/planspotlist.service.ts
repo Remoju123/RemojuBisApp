@@ -16,6 +16,7 @@ import { IndexedDBService } from "./indexeddb.service";
 import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { response } from "express";
+import { ThisReceiver } from "@angular/compiler";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -36,6 +37,9 @@ export class PlanSpotListService {
 
   public searchSubjectNoList = new Subject<searchResult>();
   public searchFilterNoList = this.searchSubjectNoList.asObservable();
+
+  public userPlanSubject = new Subject<PlanSpotList[]>();
+  public userPlanSubject$ = this.userPlanSubject.asObservable();
 
   codec = new HttpUrlEncodingCodec;
 
@@ -60,7 +64,16 @@ export class PlanSpotListService {
   getPlanSpotList() {
     const url = this.host + "/api/PlanSpotList/Search";
     return this.http.get<PlanSpotList[]>(url)
-    .pipe(map(response => response));
+  }
+
+  // ユーザープランスポット一覧を取得
+  getUserPlanSpotList(oid:any) {
+    const url = this.host + "/api/PlanSpotList/SearchPlan";
+    return this.http.get<PlanSpotList[]>(url,{
+      params: {
+        objectId:oid
+      }
+    });
   }
 
   // Googleスポット検索
@@ -146,16 +159,6 @@ export class PlanSpotListService {
     }
 
     return _result;
-  }
-
-  // ユーザーデータセット（モック用）
-  filteringUserData(){
-    const sample = [{id:1673},{id:1669},{id:1542},{id:1487},{id:1485},{id:1484},{id:1351},{id:1337},{id:1317},{id:1306},{id:1281},{id:1278},{id:1274},{id:1146}];
-    
-    this.getPlanSpotList().subscribe(async r => {
-      this.result.list = this.filterPipe.transform(r,{$or:sample});
-      this.searchSubject.next(this.result);
-    });
   }
 
   // データセット作成
@@ -453,10 +456,17 @@ export class PlanSpotListService {
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
     }
   }
-
-  genQueryParams(cond:ListSearchCondition){
-
-    console.log(cond);
-    //return _params.join("&");
+  /*
+  rows:DataSet(empty)
+  page:
+  limit:
+  */
+  mergeBulkDataSet(rows:PlanSpotList[]){
+    rows.map(async row => {
+      (await this.fetchDetails(row)).subscribe(_row => {
+        Object.assign(row,_row);
+      })
+    })
+    return rows;
   }
 }

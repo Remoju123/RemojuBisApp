@@ -16,8 +16,8 @@ import { PlanService } from "../../service/plan.service";
 import { SpotListService } from "../../service/spotlist.service";
 import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
 import { UserPlanListComponent } from "../../parts/user-plan-list/user-plan-list.component";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
+import { take, takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { MatDialog } from "@angular/material/dialog";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
@@ -25,8 +25,7 @@ import { PlanSpotListService } from "src/app/service/planspotlist.service";
 import { FilterPipe } from "ngx-filter-pipe";
 import { PlanSpotList } from "src/app/class/planspotlist.class";
 
-export const USERPLANSPOT_KEY = makeStateKey<CacheStore>('USERPLANSPOT_KEY');
-
+export const USERPLANSPOT_KEY = makeStateKey<PlanSpotList[]>('USERPLANSPOT_KEY');
 @Component({
   selector: "app-plan-detail",
   templateUrl: "./plan-detail.component.html",
@@ -53,7 +52,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     private translate: TranslateService,
     public dialog: NgDialogAnimationService,
     private transferState: TransferState,
-    private zone: NgZone,
+    //public dialog:MatDialog,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
 
@@ -86,6 +85,8 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   isMobile: boolean;
   guid: string;
+
+  user_plans: PlanSpotList[] = [];
 
   addplanbtn_src:string;
 
@@ -162,7 +163,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
-
   }
 
 
@@ -373,9 +373,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
             content: this.data.planName
           }
         ]);
-
       }
-
 
       // console.log(r);
       let ids = [];
@@ -439,6 +437,15 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       this.spots.map(x=>{
         this.planSpotids.push(x.spotId)
       });
+
+      // ユーザープランリストデータを事前取得
+      this.planspots.getUserPlanSpotList(this.data.user.objectId)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((r)=>{
+          this.user_plans = this.planspots.mergeBulkDataSet(r);
+          // サーバーステートに保持
+          this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
+      });
     });
   }
 
@@ -498,40 +505,32 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     });
   }
 
-  rows: PlanSpotList[] = [];
 
   onViewUserPost(){
-    this.planspots.filteringUserData();
-
-    this.planspots.searchFilter.subscribe(result => {
-      const param = new UserPlanData();
-      param.user = this.data.user;
-      param.country = this.data.country;
-      param.memo = this.data.memo;
-      param.rows = result.list;
-      
-      const dialogRef = this.dialog.open(UserPlanListComponent, {
-        id:"userplanlist",
-        maxWidth: "100%",
-        width: "100%",
-        height:"100%",
-        position: { top: "0" },
-        data:param,
-        autoFocus: false,
-        animation: {
-          to: "left",
-          incomingOptions: {
-            keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
-          }
+    const param = new UserPlanData();
+    param.user = this.data.user;
+    param.country = this.data.country;
+    param.memo = this.data.memo;
+        
+    this.dialog.open(UserPlanListComponent, {
+      id:"userplanlist",
+      maxWidth: "100%",
+      width: "100%",
+      height:"100%",
+      position: { top: "0" },
+      data:param,
+      autoFocus: false,
+      animation: {
+        to: "left",
+        incomingOptions: {
+          keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
         }
-      });  
-    })
+      }
+    });  
   }
 
-
-
   linktoSpot(id:any){
-
+    //
   }
 
   onIsmore(e: { ismore: boolean; label: string; }){

@@ -676,7 +676,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         this.listSelectedPlan.planList = new Array<PlanAppList>();
         this.listSelectedPlan.isList = false;
         this.spotZero = r.planSpots;
-        for (let i = 0; i < this.spotZero.length; i++) {
+        for (let i = 0; i < this.spotZero?.length; i++) {
           // 多言語項目の使用言語で設定
           this.commonService.setAddPlanLang(this.spotZero[i], this.lang);
         }
@@ -966,7 +966,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       if(~this.router.url.indexOf('planspot')){
         this.condition.keyword = val;
         this.indexedDBService.registListSearchCondition(this.condition);
-        window.location.reload(true);
+        window.location.reload();
       }
     }
   }

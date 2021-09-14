@@ -1,15 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject,OnDestroy } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
 import { CacheStore, PlanSpotList } from 'src/app/class/planspotlist.class';
-import { CommonService } from 'src/app/service/common.service';
-import { PlanSpotListService } from 'src/app/service/planspotlist.service';
-import { FilterPipe } from "ngx-filter-pipe";
 import { UserPlanData } from 'src/app/class/plan.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { searchResult } from 'src/app/class/spotlist.class';
+import { ListSearchCondition } from 'src/app/class/indexeddb.class';
+import { PlanSpotListService } from 'src/app/service/planspotlist.service';
+import { takeUntil } from 'rxjs/operators';
 
 export const USERPLANSPOT_KEY = makeStateKey<CacheStore>('USERPLANSPOT_KEY');
 
@@ -22,6 +20,8 @@ export const USERPLANSPOT_KEY = makeStateKey<CacheStore>('USERPLANSPOT_KEY');
 export class UserPlanListComponent implements OnInit,OnDestroy {
   private onDestroy$ = new Subject();
 
+  condition:ListSearchCondition;
+
   rows: PlanSpotList[] = [];
   rows$: Observable<PlanSpotList[]>;
 
@@ -31,7 +31,7 @@ export class UserPlanListComponent implements OnInit,OnDestroy {
   details$$: Observable<any[]>;
 
   p: number;
-  limit: number;
+  limit: number = 6;
   end: number;
   offset:number;
 
@@ -47,24 +47,23 @@ export class UserPlanListComponent implements OnInit,OnDestroy {
 
   constructor(
     private translate: TranslateService,
-    private commonService: CommonService,
-    private planspots: PlanSpotListService,
     public dialogRef:MatDialogRef<UserPlanListComponent>,
-    private filterPipe: FilterPipe,
+    private planspots: PlanSpotListService,
     private transferState: TransferState,
     @Inject(MAT_DIALOG_DATA) public data: UserPlanData
-  ) { 
-    this.limit = 6;
-    this.p = 1;
+  ) {
   }
   
   ngOnDestroy(): void {
     this.onDestroy$.next();
   }
 
-  async ngOnInit() {
-    //console.log(this.data.rows);
-    //this.mergeNextDataSet();
+  async ngOnInit() {   
+    //this.rows = this.data.rows.slice(0,5);
+    this.rows = this.transferState.get<PlanSpotList[]>(USERPLANSPOT_KEY,null);
+
+    //this.rows = this.data.rows;
+    //this.planspots.mergeBulkDataSet(this.rows);
   }
 
   onClose(){
@@ -72,35 +71,37 @@ export class UserPlanListComponent implements OnInit,OnDestroy {
   }
 
   onScrollDown(){
-    
+    //this.rows = this.data.rows.slice(0,this.data.rows.length);
+    //console.log('scroll');
+    //this.planspots.mergeBulkDataSet(this.data.rows);
   }
 
   /*--- TBD ---*/
+  // async mergeNextDataSet(){
+  //   const merge = require('deepmerge');
 
-  async mergeNextDataSet(){
-    if(this.data.rows.length > 0){
-      this.isList = true;
-      let startIndex = (this.p - 1) * this.limit;
-      this.end = startIndex + this.limit;
-      if(this.data.rows.length - startIndex < this.limit){
-        this.end = this.data.rows.length;
-      }
+  //   if(this.rows.length > 0){
+  //     this.isList = true;
+  //     let startIndex = (this.p - 1) * this.limit;
+  //     this.end = startIndex + this.limit;
+  //     if(this.rows.length - startIndex < this.limit){
+  //       this.end = this.rows.length;
+  //     }
 
-      for (let i = startIndex; i < this.end; i++){
-        (await this.planspots.fetchDetails(this.data.rows[i]))
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            // 非同期で戻された結果セットの順番を維持するための処理
-            const idx = this.data.rows.findIndex(v => v.id === d.id);
-            this.data.rows[idx] = d;
-            this.data.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-            this.details$ = this.data.rows.slice(0,this.end);
-            console.log(this.details$);
-          })
-      }
-      this.p++;
-    }else{
-      this.details$ = [];
-    }
-  }
+  //     for (let i = startIndex; i < this.end; i++){
+  //       (await this.planspots.fetchDetails(this.rows[i]))
+  //         .pipe(takeUntil(this.onDestroy$))
+  //         .subscribe(d => {
+  //           const idx = this.rows.findIndex(v => v.id === d.id);
+  //           console.log(merge(this.rows[idx],d));
+  //           merge(this.rows[idx],d);
+  //           //this.details$$ = of(this.rows.slice(0,this.end));
+  //         }
+  //       )
+  //     }
+      
+  //     this.p++;
+  //   }
+  // }
+
 }

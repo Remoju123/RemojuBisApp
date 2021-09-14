@@ -37,6 +37,7 @@
     "agm-direction": "^0.8.9",
     "angular-oauth2-oidc": "^10.0.3",
     "angular-oauth2-oidc-jwks": "^9.0.0",
+    "deepmerge": "^4.2.2",
     "domino": "^2.1.6",
     "express": "^4.15.2",
     "guid-typescript": "^1.0.9",

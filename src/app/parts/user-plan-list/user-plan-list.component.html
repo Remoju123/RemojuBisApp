@@ -7,21 +7,16 @@
 
 <h4>私がおすすめの旅プラン</h4>
 
-<!-- <div *ngFor="let item of data.rows">
-  <p>{{item.id}}</p>
-</div> -->
-
 <div class='rows'>
-  
-  <!-- <ul>
-    <li *ngFor="let item of data.rows">
-      {{item.id}}
-    </li>
-  </ul> -->
-  <app-planspot-list (scrolled)="onScrollDown()" [isList]="isList" [condition]="">
-    <app-planspot-list-item *ngFor="let item of this.data.rows" [item]="item">
+  <div class="box"
+    infinite-scroll
+    [infiniteScrollDistance]="5"
+    [infiniteScrollUpDistance]="1.5"
+    [infiniteScrollThrottle]="150"
+    (scrolled)="onScrollDown()">
+    <app-planspot-list-item *ngFor="let item of rows" [item]="item" [lang]="lang">
     </app-planspot-list-item>
-  </app-planspot-list>
+  </div>
 </div>
 
 

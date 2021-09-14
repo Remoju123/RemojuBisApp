@@ -1,6 +1,7 @@
 import { DataSelected, Recommended, PlanSpotCommon } from "./common.class";
 import { ReviewResult } from "../class/review.class";
 import { PlanSpotList } from "./planspotlist.class";
+import { Observable } from "rxjs";
 
 export class PlanApp {
   // バージョンNo
@@ -125,6 +126,8 @@ export class OtherUser {
   coverUrl: string;
   // 性別
   gender: string;
+  // 
+  objectId: string;
 }
 
 export class UserPlanData{
