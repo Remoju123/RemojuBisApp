@@ -54,7 +54,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   get guid() {
     return Guid.create().toString();
   }
-  
+
   constructor(
     private translate: TranslateService,
     private planspots: PlanSpotListService,
@@ -65,18 +65,11 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     public fb: FormBuilder,
     private transferState: TransferState,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectMaster
-  ) { 
+  ) {
     this.$mSearchCategory = this.data.mSearchCategoryPlan.concat(this.data.mSearchCategory);
   }
 
   ngOnDestroy(): void {
-    // ローカル変数配列の重複除外
-    this.condition.areaId = Array.from(new Set(this.condition.areaId));
-    this.condition.areaId2 = Array.from(new Set(this.condition.areaId2));
-    // this.condition.isOpens = Array.from(new Set(this.condition.isOpens));
-
-    // 検索条件選択値を更新
-    this.idx.registListSearchCondition(this.condition);
     this.onDestroy$.next();
   }
 
@@ -84,7 +77,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     this.tabIndex = this.data.tabIndex;
 
     this.list = this.transferState.get<PlanSpotList[]>(PLANSPOTLIST_KEY,null);
-    
+
     // Formデータ初期化
     this.initForm();
 
@@ -92,7 +85,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.result = result.list;
       this.searchTarm = result.searchTarm;
     })
-    
+
   }
 
   async initForm(){
@@ -105,12 +98,26 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     }
 
     // マスタエリアカウント取得
-    const $mArea = this.planspots.reduceMasterArea(
-      this.data.mArea,
-      this.list,
-      this.condition.areaId,
-      this.condition.areaId2
-    );
+    let $mArea: NestDataSelected[];
+    if (this.data.isGoogle) {
+      // 都道府県順にソート
+      let temp = [...this.data.mArea];
+      temp.sort((a, b) => Number(a.parentId) - Number(b.parentId));
+      this.list = [];
+      $mArea = this.planspots.reduceMasterArea(
+        temp,
+        this.list,
+        this.condition.googleAreaId,
+        []
+      );
+    } else {
+      $mArea = this.planspots.reduceMasterArea(
+        this.data.mArea,
+        this.list,
+        this.condition.areaId,
+        this.condition.areaId2
+      );
+    }
 
     this.temparea = [...$mArea];
 
@@ -129,6 +136,19 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     this.searchForm.setControl("cates", this.setFbArray($mCategory));
 
     this.update();
+  }
+
+  // Google検索のエリアクリック時
+  onClickGoogleArea(i: number) {
+    const selected = this.areas.controls[i].get("selected");
+    this.areas.controls[i].get("selected").patchValue(!selected.value);
+    this.condition.googleAreaId = [];
+
+    this.areas.value.map((x: { selected: any; parentId: number; }) => {
+      if (x.selected) {
+        this.condition.googleAreaId.push(x.parentId);
+      }
+    });
   }
 
   // エリア-エクスパンションOpen
@@ -230,9 +250,13 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    this.condition.areaId = [];
-    this.condition.areaId2 = [];
-    this.condition.searchCategories = [];
+    if (this.data.isGoogle) {
+      this.condition.googleAreaId = [];
+    } else {
+      this.condition.areaId = [];
+      this.condition.areaId2 = [];
+      this.condition.searchCategories = [];
+    }
     this.condition.keyword = '';
 
     this.dialogRef.close(this.condition);
@@ -339,7 +363,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       })
     );
   }
-  
+
   // タブ切り替え（念のために更新処理）
   onTabChanged(e){
     this.update();

@@ -118,6 +118,7 @@ export class searchResult{
   searchTarm: tarms;
   searchParams: string;
   searchParamsObj: SearchParamsObj;
+  googleSearchArea: string;
 }
 
 export class tarms{
@@ -198,6 +199,7 @@ export class CacheStore {
   tabIndex:number;
   ListSelectMaster:ListSelectMaster;
   optionKeywords: tarms;
+  googleSearchArea: string;
 }
 
 export class GoogleSpot {

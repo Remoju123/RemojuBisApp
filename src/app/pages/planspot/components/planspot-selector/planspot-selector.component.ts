@@ -16,7 +16,8 @@ export class PlanspotSelectorComponent implements OnInit {
   @Input() condition:ListSearchCondition;
   @Input() mSort:DataSelected[];
   @Input() searchTarms:tarms;
-  
+  @Input() googleSearchArea: string;
+
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
@@ -26,14 +27,14 @@ export class PlanspotSelectorComponent implements OnInit {
   @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   isVal:boolean = false;
-  isChk:boolean = false; 
+  isChk:boolean = false;
 
   get lang() {
     return this.translate.currentLang;
   }
 
-  constructor(private translate: TranslateService,) { 
-    
+  constructor(private translate: TranslateService,) {
+
   }
 
   ngOnInit(): void {}
