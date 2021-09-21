@@ -17,6 +17,8 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
 import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
 import { MyplanService } from 'src/app/service/myplan.service';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { LangFilterPipe } from "../../utils/lang-filter.pipe";
+
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
@@ -34,7 +36,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
   details$:PlanSpotList[] = [];
-  count: number;
+  count: number = 0;
 
   result:Observable<PlanSpotList>[] = [];
 
@@ -46,6 +48,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   $mSort: DataSelected[];
   sortval:number;
   optionKeywords: tarms;
+  googleSearchArea: string = '----';
 
   isList:boolean = true;
   select:string;
@@ -95,9 +98,19 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.guid= await this.commonService.getGuid();
     this.recoveryQueryParams();
 
+    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+      this.listSelectMaster = r;
+      this.listSelectMaster.isList = true;
+      this.$mSort = r.mSort;
+    });
+
     if(this.transferState.hasKey(PLANSPOT_KEY)){
       this.cacheRecoveryDataSet();
     }else{
+      let condition: any = await this.indexedDBService.getListSearchCondition();
+      if (condition){
+        this.condition = condition;
+      }
       this.getPlanSpotDataSet();
     }
 
@@ -109,10 +122,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.optionKeywords = result.searchTarm;
       this.historyReplace(result.searchParams);
       this.count = result.list.length;
-      this.details$ = [];
-      this.prevkeyword = null;
-      this.token = null;
-      this.mergeNextDataSet();
     })
   }
 
@@ -152,23 +161,24 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   }
 
   async getPlanSpotDataSet() {
-    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-      this.listSelectMaster = r;
-      this.listSelectMaster.isList = true;
-      this.$mSort = r.mSort;
+    if (this.condition.select === 'google') {
+      this.rows = [];
+      this.temp = [];
+      this.details$ = [];
+      this.prevkeyword = null;
+      this.token = null;
+      this.count = 0;
 
-      let condition: any = await this.indexedDBService.getListSearchCondition();
-      if (condition){
-        this.condition = condition;
-      }
-
+      this.mergeNextDataSet();
+    } else {
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         // trasferState save list
         this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY,r);
 
         this.planspots.filteringData(r,this.condition,this.listSelectMaster);
+        this.mergeNextDataSet();
       });
-    })
+    }
   }
 
   async mergeNextDataSet(){
@@ -208,7 +218,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       if(this.condition.select === 'google'){
         const keyword = this.condition.keyword;
         if(keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))){
-          (await this.planspots.getGoogleSpotList(keyword, this.condition.areaId, this.condition.areaId2, this.token)).subscribe(g => {
+          (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).subscribe(g => {
             this.prevkeyword = keyword;
             this.details$ = this.details$.concat(g.planSpotList);
             this.count += g.planSpotList.length;
@@ -236,6 +246,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.isList = cache.isList; //change
     this.listSelectMaster = cache.ListSelectMaster;
     this.optionKeywords = cache.optionKeywords;
+    this.googleSearchArea = cache.googleSearchArea;
 
     this.transferState.remove(PLANSPOT_KEY);
   }
@@ -263,7 +274,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   keywordSearch(v:any){
     setTimeout(() => {
       this.condition.keyword = v;
-      this.token = null;
       this.indexedDBService.registListSearchCondition(this.condition);
       this.getPlanSpotDataSet();
       this.p = 1;
@@ -282,9 +292,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   onPlanSpotChange(val:any){
     this.select = val;
     this.condition.select = val;
-    this.details$ = [];
-    this.prevkeyword = null;
-    this.token = null;
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
     this.p = 1;
@@ -304,6 +311,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     c.isList = this.isList;
     c.ListSelectMaster = this.listSelectMaster;
     c.optionKeywords = this.optionKeywords;
+    c.googleSearchArea = this.googleSearchArea;
 
     this.transferState.set<CacheStore>(PLANSPOT_KEY,c);
     // 5digits or more is Plan
@@ -317,6 +325,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   // 検索パネル(エリア・カテゴリー選択)
   openDialog(e: number){
     this.listSelectMaster.tabIndex = e;
+    this.listSelectMaster.isGoogle = this.condition.select === 'google';
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",
@@ -327,10 +336,24 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(condition => {
-      this.indexedDBService.registListSearchCondition(condition);
-      this.getPlanSpotDataSet();
-      this.p = 1;
-      this.transferState.remove(PLANSPOTLIST_KEY);
+      if (condition !== 'cancel'){
+        // ローカル変数配列の重複除外
+        condition.areaId = Array.from(new Set(condition.areaId));
+        condition.areaId2 = Array.from(new Set(condition.areaId2));
+        this.indexedDBService.registListSearchCondition(condition);
+        this.condition = condition;
+        if (this.condition.select === 'google') {
+          const langpipe = new LangFilterPipe();
+          const googleAreas:any[] = [];
+          this.condition.googleAreaId?.forEach(v => {
+            googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x=>x.parentId === v).parentName, this.translate.currentLang));
+          });
+          this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、'):'----';
+        }
+        this.getPlanSpotDataSet();
+        this.p = 1;
+        this.transferState.remove(PLANSPOTLIST_KEY);
+      }
     });
   }
 
@@ -338,9 +361,13 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   conditionReset(){
     this.commonService.scrollToTop();
 
-    this.condition.areaId = [];
-    this.condition.areaId2 = [];
-    this.condition.searchCategories = [];
+    if (this.condition.select === 'google') {
+      this.condition.googleAreaId = [];
+    } else {
+      this.condition.areaId = [];
+      this.condition.areaId2 = [];
+      this.condition.searchCategories = [];
+    }
     this.condition.keyword = "";
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();

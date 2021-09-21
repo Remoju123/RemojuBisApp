@@ -5,7 +5,7 @@
       aria-label="close"
       class="close"
       color="white"
-      [mat-dialog-close]="condition"
+      mat-dialog-close="cancel"
     >
       <mat-icon>clear</mat-icon>
     </button>
@@ -17,8 +17,13 @@
   <mat-dialog-content id="searchdialog">
     <mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="onTabChanged($event)">
       <mat-tab translate label="{{ 'Areas' | translate }}">
+        <div *ngIf="data.isGoogle">
+          <div *ngFor="let item of areas.controls; let i = index">
+            <span [style]="{'background-color': item.value.selected ? '#9a721e' : 'white'}" (click)="onClickGoogleArea(i)">{{ item.value.parentName | langFilter: lang }}</span>
+          </div>
+        </div>
 
-        <mat-accordion [multi]="true" formArrayName="areas">
+        <mat-accordion [multi]="true" formArrayName="areas" *ngIf="!data.isGoogle">
           <mat-expansion-panel
             *ngFor="let item of areas.controls; let i = index"
             [formGroupName]="i"
@@ -37,7 +42,7 @@
               </div>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
-              <div class="all" *ngIf="item.value.dataSelecteds.length !== 1">
+              <div class="all" *ngIf="item.value.dataSelecteds.length !== 1 && !data.isGoogle">
                 <input
                   type="checkbox"
                   [id]="item.value.parentId"
@@ -78,7 +83,7 @@
           <div class="spacer6em"></div>
         </mat-accordion>
       </mat-tab>
-      <mat-tab label="{{ 'Categories' | translate }}">
+      <mat-tab [disabled]="data.isGoogle" label="{{ 'Categories' | translate }}">
         <mat-card formArrayName="cates" class="card">
           <div
             *ngFor="let item of cates.controls; let i = index"
@@ -124,8 +129,8 @@
         {{ "Reset" | translate }}
       </button>
       <button mat-raised-button [mat-dialog-close]="condition" class="submit">
-        <i class="material-icons"> add </i>{{ "Search" | translate }} (
-        {{ result?.length }} )
+        <i class="material-icons"> add </i>{{ "Search" | translate }}
+        <span *ngIf="!data.isGoogle"> ( {{ result?.length }} ) </span>
       </button>
     </div>
   </div>

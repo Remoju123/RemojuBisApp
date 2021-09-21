@@ -4,8 +4,8 @@
       {{ "FindEveryoneRecommendations" | translate}}
     </div>
     <div class='row input'>
-      <input type="text" 
-        placeholder="「京都女子旅」「スカイツリー」..." 
+      <input type="text"
+        placeholder="「京都女子旅」「スカイツリー」..."
         class="keyword"
         #keywordInput
         [value]="condition.keyword"
@@ -49,10 +49,10 @@
     </div>
     <div class='row result' [ngClass]="{'on':this.chkTarms()}">
       <button class='popupItem are' (click)="openDialog(0)">
-        <span>{{searchTarms?.area}}</span>
+        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
       </button>
-      <button class='popupItem cat' (click)="openDialog(1)">
-        <span>{{searchTarms?.cate}}</span>
+      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
+        <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
       </button>
       <button class="popupItem reset" (click)="condReset()">
         <!-- <img src="../../../../../assets/img/pop_reset.svg" alt=""> -->
@@ -67,10 +67,10 @@
         <span>{{count}}件</span>
       </button>
       <button class='popupItem are' (click)="openDialog(0)">
-        <span>{{searchTarms?.area}}</span>
+        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
       </button>
-      <button class='popupItem cat' (click)="openDialog(1)">
-        <span>{{searchTarms?.cate}}</span>
+      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
+        <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
       </button>
       <button class="popupItem reset" (click)="condReset()">
         <!-- <img src="../../../../../assets/img/pop_reset.svg" alt=""> -->

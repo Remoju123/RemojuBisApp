@@ -57,6 +57,8 @@ export class ListSelectMaster{
   isList: boolean;
   // 検索ダイアログtab
   tabIndex: number;
+  // Google検索の場合true
+  isGoogle: boolean;
 }
 
 export class ListSelected {

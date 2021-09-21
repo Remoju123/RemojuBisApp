@@ -6,6 +6,7 @@ export class ListSearchCondition {
   constructor() {
     this.areaId = [];
     this.areaId2 = [];
+    this.googleAreaId = [];
     this.searchCategories = [];
     this.searchOptions = [];
     this.select = 'all';
@@ -18,6 +19,7 @@ export class ListSearchCondition {
   // エリアID
   areaId: number[];
   areaId2: number[];
+  googleAreaId: number[];
   // 検索カテゴリ
   searchCategories: any[];
   // さらに条件追加
