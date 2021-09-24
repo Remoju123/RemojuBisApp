@@ -108,7 +108,20 @@ export class PlanSpotList {
   userPictureUrl: string;
   versionNo: number;
 }
+export class UserPlanList {
+  userPlans:PlanSpotList[];
+  searchCategories:DataSelected[];
 
+  constructor(){
+    this.userPlans = [];
+    this.searchCategories = [];
+  }
+
+  reset():void{
+    this.userPlans = [];
+    this.searchCategories = [];
+  }
+}
 
 export class searchResult{
   constructor(){

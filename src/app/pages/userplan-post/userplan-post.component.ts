@@ -7,11 +7,10 @@ import { GoogleSpotDialogComponent } from "../../parts/google-spot-dialog/google
 import { SearchDialogFormPlanComponent } from "../../parts/search-dialog-form-plan/search-dialog-form-plan.component";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from '../../service/myplan.service';
-import { PlanService } from "../../service/plan.service";
 import { PlanListService } from "../../service/planlist.service";
 import { UserplanpostService } from "../../service/userplanpost.service"
 import { TranslateService } from "@ngx-translate/core";
-import { FormBuilder, FormControl, FormGroupDirective, NgForm, Validators, FormGroup, AbstractControl } from "@angular/forms";
+import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
@@ -45,7 +44,6 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private myplanService: MyplanService,
-    private planService: PlanService,
     private planListService: PlanListService,
     private router: Router,
     private translate: TranslateService,

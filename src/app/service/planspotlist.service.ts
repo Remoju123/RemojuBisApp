@@ -456,11 +456,8 @@ export class PlanSpotListService {
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
     }
   }
-  /*
-  rows:DataSet(empty)
-  page:
-  limit:
-  */
+  
+  // プランデータセット一括マージ
   mergeBulkDataSet(rows:PlanSpotList[]){
     rows.map(async row => {
       (await this.fetchDetails(row)).subscribe(_row => {

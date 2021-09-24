@@ -376,6 +376,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   // プランに追加
   async addMyPlan(item:PlanSpotList){
+    console.log(item);
     const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
     if(await this.commonService.checkAddPlan(tempqty) === false){
       return

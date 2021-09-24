@@ -21,7 +21,9 @@ import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { PlanSpotListService } from "src/app/service/planspotlist.service";
-import { PlanSpotList } from "src/app/class/planspotlist.class";
+import { PlanSpotList, UserPlanList } from "src/app/class/planspotlist.class";
+import { SearchCategories } from "src/app/class/spot.class";
+import { async } from "@angular/core/testing";
 @Component({
   selector: "app-plan-detail",
   templateUrl: "./plan-detail.component.html",
@@ -29,6 +31,7 @@ import { PlanSpotList } from "src/app/class/planspotlist.class";
 })
 export class PlanDetailComponent implements OnInit,OnDestroy {
   @ViewChild(MapPanelComponent)
+  
 
   private mapPanelComponent: MapPanelComponent;
   private onDestroy$ = new Subject();
@@ -82,6 +85,8 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   user_plans: PlanSpotList[] = [];
 
+  userData: UserPlanList = new UserPlanList();
+
   addplanbtn_src:string;
 
   blankUserSrc:string = "../../../../../assets/img/icon_who.svg";
@@ -93,44 +98,15 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     { id: 3, text: "-----" }
   ];
 
-  thumbOptions: any = {
-    loop: false,
-    mouseDrag: true,
-    touchDrag: true,
-    pullDrag: false,
-    dots: false,
-    navSpeed: 700,
-    navText: [
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
-    ],
-    stagePadding:25,
-    margin: 10,
-    //items: 3,
-    responsive: {
-      0: {
-        items: 3
-      },
-      400: {
-        items: 3
-      },
-      740: {
-        items: 4
-      },
-      940: {
-        items: 5
-      }
-    },
-    nav: false,
-    autoHeight: false,
-    autoPlay:false
-  };
-
   myPlanSpots:any;
   planSpotids: number[] = new Array();
 
   get lang() {
     return this.translate.currentLang;
+  }
+
+  ngOnDestroy(){
+    this.onDestroy$.next();
   }
 
   ngOnInit() {
@@ -158,8 +134,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
   }
-
-
 
   // お気に入り登録(スポット)
   @Catch()
@@ -259,15 +233,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
    *
    * -----------------------------*/
 
-  @Catch()
-  registThanks() {
-    // this.spotService
-    //   .registThanks(this.$spotId, 0, this.guid, false)
-    //   .subscribe(r => {
-    //     this.$thanksQty = r;
-    //   });
-  }
-
   @HostListener("window:scroll", [])
   onWindowScroll() {
     if (
@@ -322,8 +287,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
       this.data = r;
       this.data.picCnt = r.pictures===null?0:r.pictures.length;
-      //this.data.spotToGoCnt = r.spotToGoList?0:r.spotToGoList.length;
-
+      
       if (this.$isRemojuPlan){
         this.meta.addTags([
           {
@@ -429,6 +393,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((r)=>{
           this.user_plans = this.planspots.mergeBulkDataSet(r);
+          this.userData.userPlans = this.planspots.mergeBulkDataSet(r);
+          
+          //this.userData.searchCategories = [];
           // サーバーステートに保持
           //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
       });
@@ -596,7 +563,37 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     nav: true
   };
 
-  ngOnDestroy(){
-    this.onDestroy$.next();
-  }
+  thumbOptions: any = {
+    loop: false,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: false,
+    dots: false,
+    navSpeed: 700,
+    navText: [
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+    ],
+    stagePadding:25,
+    margin: 10,
+    //items: 3,
+    responsive: {
+      0: {
+        items: 3
+      },
+      400: {
+        items: 3
+      },
+      740: {
+        items: 4
+      },
+      940: {
+        items: 5
+      }
+    },
+    nav: false,
+    autoHeight: false,
+    autoPlay:false
+  };
+
 }
