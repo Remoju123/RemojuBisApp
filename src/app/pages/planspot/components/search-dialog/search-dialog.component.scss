@@ -202,7 +202,6 @@
                   margin-top: 8px;
                 }
               }
-              
             }
 
             .mat-expansion-panel-spacing {
@@ -276,6 +275,29 @@
 
             .spacer6em {
               height: 3em;
+            }
+
+            &.gg{
+              ::ng-deep .mat-expansion-panel{
+                height: 46px;
+
+                .box{
+                  //border: none!important;
+                  border-color:white!important;
+                  span{
+                    color: initial!important;
+                  }
+                  &.selected{
+                    border-color: $color-gld04!important;
+                    span{
+                      color:$color-gld04!important;
+                      &.bold{
+                        color:$color-gld04!important;
+                      }
+                    }  
+                  }
+                }
+              }
             }
           }
 

@@ -9,19 +9,28 @@
     >
       <mat-icon>clear</mat-icon>
     </button>
-    <!-- <button class="set" mat-raised-button [mat-dialog-close]="result">
-      スポット数 ( {{ result?.length }} )
-    </button> -->
   </mat-dialog-actions>
 
   <mat-dialog-content id="searchdialog">
     <mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="onTabChanged($event)">
       <mat-tab translate label="{{ 'Areas' | translate }}">
-        <div *ngIf="data.isGoogle">
-          <div *ngFor="let item of areas.controls; let i = index">
-            <span [style]="{'background-color': item.value.selected ? '#9a721e' : 'white'}" (click)="onClickGoogleArea(i)">{{ item.value.parentName | langFilter: lang }}</span>
-          </div>
-        </div>
+        <mat-accordion [multi]="true" formArrayName="areas" *ngIf="data.isGoogle" [ngClass]="{'gg':data.isGoogle}">
+          <mat-expansion-panel
+            *ngFor="let item of areas.controls; let i = index"
+            [formGroupName]="i"
+            (opened)="onClickGoogleArea(i)"
+            (closed)="onClickGoogleArea(i)"
+            [hideToggle]="true"
+          >
+            <mat-expansion-panel-header [collapsedHeight]="'45px'" [expandedHeight]="'45px'">
+              <div class="box" [ngClass]="{'selected':item.value.selected}">
+                <span class="pref" [ngClass]="{'bold':item.value.isHighlight}">
+                  {{ item.value.parentName | langFilter: lang }}
+                </span>
+              </div>
+            </mat-expansion-panel-header>
+          </mat-expansion-panel>
+        </mat-accordion>
 
         <mat-accordion [multi]="true" formArrayName="areas" *ngIf="!data.isGoogle">
           <mat-expansion-panel
@@ -73,7 +82,7 @@
                     />
                     <label for="{{ sub.value.id }}">
                       {{ sub.value.name | langFilter: lang
-                      }}<!--span class="qty">({{ sub.value.qty }})</span-->
+                      }}
                     </label>
                   </li>
                 </ul>

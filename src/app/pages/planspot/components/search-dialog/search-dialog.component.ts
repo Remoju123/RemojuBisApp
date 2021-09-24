@@ -96,7 +96,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     } else {
       this.condition = new ListSearchCondition();
     }
-
     // マスタエリアカウント取得
     let $mArea: NestDataSelected[];
     if (this.data.isGoogle) {
@@ -143,13 +142,13 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     const selected = this.areas.controls[i].get("selected");
     this.areas.controls[i].get("selected").patchValue(!selected.value);
     this.condition.googleAreaId = [];
-
     this.areas.value.map((x: { selected: any; parentId: number; }) => {
       if (x.selected) {
         this.condition.googleAreaId.push(x.parentId);
       }
     });
-  }
+    this.update();
+  }  
 
   // エリア-エクスパンションOpen
   onAreaCollapseOpen(i: number, id: number) {
@@ -368,4 +367,5 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   onTabChanged(e){
     this.update();
   }
+
 }
