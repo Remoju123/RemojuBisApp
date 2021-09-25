@@ -824,13 +824,25 @@ div.plandtl{
             .thumbmain {
               text-align: center;
               background: $color-gry06;
-              > img {
+              img {
                 height: 75vw;
-              object-fit: cover;
+                object-fit: cover;
                 @include copy-protect;
               }
             }
           }
+
+          // single photo
+          .thumbmain{
+            text-align: center;
+              background: $color-gry06;
+              img {
+                height: 75vw;
+                object-fit: cover;
+                @include copy-protect;
+              }
+            }
+          
   
           .info{
             position: absolute;
