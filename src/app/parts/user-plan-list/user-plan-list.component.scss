@@ -2,13 +2,30 @@
   border-radius: 0;
   padding: 0 16px 16px;
 
-  .header{
+  .listheader{
     display: flex;
     align-items: center;
+    justify-content: center;
     border-bottom: 1px solid #eee;
     margin-bottom: 16px;
+    height: 40px;
+
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: #fff;
+    button{
+      position: absolute;
+      left: 0;
+      span{
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+      }
+    }
     span{
       font-size: 14px;
+      margin-top: -4px;
     }
   }
 
@@ -16,6 +33,23 @@
     font-size: 14px;
     border-bottom: 1px solid #eee;
     padding-bottom: 8px;
+  }
+
+  dl.category{
+    display: inline-flex;
+    margin: initial;
+    margin-bottom: 2em;
+    dd{
+      margin: auto 2px;
+      font-size: 11px;
+      color: #fff;
+      background-color: #bfa060;
+      border-radius: 2px;
+      min-height: 20px;
+      padding: 2px 5px 0;
+      line-height: 20px;
+      white-space: nowrap;
+    }
   }
 
   .rows{

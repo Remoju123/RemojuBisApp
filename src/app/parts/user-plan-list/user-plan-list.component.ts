@@ -7,6 +7,7 @@ import { UserPlanData } from 'src/app/class/plan.class';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { IndexedDBService } from 'src/app/service/indexeddb.service';
+import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
 import { MyplanService } from 'src/app/service/myplan.service';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 @Component({
@@ -23,20 +24,26 @@ export class UserPlanListComponent implements OnInit {
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
+    private mypageFavoriteListService: MypageFavoriteListService,
     public dialogRef:MatDialogRef<UserPlanListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserPlanData
-  ) {}  
+  ) {
+  }  
 
   get lang() {
     return this.translate.currentLang;
   }
 
+  guid:string;
+
   async ngOnInit() {
+    this.guid= await this.commonService.getGuid();
+
+    //console.log(this.data.rows.searchCategories);
   }
 
   // プランに追加
   async addMyPlan(item:PlanSpotList){
-    console.log(item);
     const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
     if(await this.commonService.checkAddPlan(tempqty) === false){
       return
@@ -57,7 +64,26 @@ export class UserPlanListComponent implements OnInit {
           }
         }
       )
+    }).then(()=>{
+      this.dialogRef.close();
     })
+  }
+
+  // お気に入り登録・除外
+  setFavorite(item:PlanSpotList){
+    this.planspots.registFavorite(
+      item.id,
+      item.isPlan,
+      !item.isFavorite,
+      item.isRemojuPlan,
+      this.guid,
+      item.googleSpot
+    )
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(()=>{
+      this.mypageFavoriteListService.GetFavoriteCount(this.guid);
+    });
+    item.isFavorite = !item.isFavorite;
   }
 
   onClose(){

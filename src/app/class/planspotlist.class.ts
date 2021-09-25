@@ -110,7 +110,7 @@ export class PlanSpotList {
 }
 export class UserPlanList {
   userPlans:PlanSpotList[];
-  searchCategories:DataSelected[];
+  searchCategories:string[];
 
   constructor(){
     this.userPlans = [];

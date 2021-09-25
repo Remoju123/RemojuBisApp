@@ -466,4 +466,20 @@ export class PlanSpotListService {
     })
     return rows;
   }
+
+  getMasterCategoryNames(ids:any,$master:NestDataSelected[]){
+
+    const Categories = [
+      ...$master[0].dataSelecteds,
+      ...$master[1].dataSelecteds,
+      ...$master[2].dataSelecteds
+    ]
+    const _category: string[] = [];
+    ids.forEach(v=>{
+      _category.push(Categories.find(x => x.id === v).name);
+    })
+    
+    return _category;
+  }
+
 }

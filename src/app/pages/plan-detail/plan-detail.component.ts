@@ -256,7 +256,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.mapPanelComponent.setMapCenter(latitude, longitude);
   }
 
-  @Catch()
   async getMaster() {
     this.planListService.getPlanListSearchCondition(false).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       this.mSearchCategory = r.mSearchCategory;
@@ -384,8 +383,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         this.indexedDBService.registHistoryPlan(history)
       }
 
+      let cids = []
       this.spots.map(x=>{
         this.planSpotids.push(x.spotId)
+
       });
 
       // ユーザープランリストデータを事前取得
@@ -395,7 +396,14 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
           this.user_plans = this.planspots.mergeBulkDataSet(r);
           this.userData.userPlans = this.planspots.mergeBulkDataSet(r);
           
-          //this.userData.searchCategories = [];
+          let ids = [];
+          r.map(c => {
+            ids = ids.concat(c.searchCategoryIds);
+          })
+
+          this.userData.searchCategories = this.planspots.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
+          
+
           // サーバーステートに保持
           //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
       });
@@ -449,7 +457,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     param.user = this.data.user;
     param.country = this.data.country;
     param.memo = this.data.memo;
-    param.rows = this.user_plans;
+    param.rows = this.userData;
         
     this.dialog.open(UserPlanListComponent, {
       id:"userplanlist",

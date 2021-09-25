@@ -1,6 +1,6 @@
 import { DataSelected, Recommended, PlanSpotCommon } from "./common.class";
 import { ReviewResult } from "../class/review.class";
-import { PlanSpotList } from "./planspotlist.class";
+import { PlanSpotList, UserPlanList } from "./planspotlist.class";
 import { Observable } from "rxjs";
 
 export class PlanApp {
@@ -138,6 +138,7 @@ export class UserPlanData{
   // メモ
   memo: string;
   // planspotlist
-  rows: PlanSpotList[];
+  //rows: PlanSpotList[];
+  rows: UserPlanList;
 
 }
