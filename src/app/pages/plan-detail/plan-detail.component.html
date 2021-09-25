@@ -148,7 +148,7 @@
                 <img [src]="item.pictureUrl" />
               </a>
             </div>
-            
+
             <div class="thumbname">
               <span>{{ item.spotName }}</span>
             </div>
@@ -164,7 +164,7 @@
   <div class='map'>
     <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true"></app-map-panel>
   </div>
-  
+
   <!-- プランスポット一覧 -->
   <div class="box">
     <ng-container *ngFor="let item of spots; index as i">
@@ -244,7 +244,7 @@
           </ng-container>
 
           <div class='addToPlan'>
-            <button class="btn">{{"AddToPlanOnly"|translate}}</button>
+            <button class="btn" (click)="onClickAddToPlan(item)">{{"AddToPlanOnly"|translate}}</button>
           </div>
 
           <mat-list>
@@ -286,15 +286,15 @@
 
   <!-- 投稿者のプロフィール-->
   <mat-card id="writer" *ngIf="data.user || data.userStaff">
-    
+
     <h4>{{"PostersProfile"|translate}}</h4>
-    
+
     <ng-container *ngIf="$userStaff;else profile" >
       <div class='card-box'>
         <div class="card-header">
           <div class="cover">
             <div class="wrap">
-              
+
             </div>
           </div>
           <div class="user">
@@ -321,7 +321,7 @@
         </div>
       </div>
     </ng-container>
-    
+
     <ng-template #profile>
       <app-userprofile-panel *ngIf="data.user && data.country" [otherUser]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
       <div class='buttons'>

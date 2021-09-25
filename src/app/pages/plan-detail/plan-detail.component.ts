@@ -23,7 +23,7 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { PlanSpotListService } from "src/app/service/planspotlist.service";
 import { PlanSpotList, UserPlanList } from "src/app/class/planspotlist.class";
 import { SearchCategories } from "src/app/class/spot.class";
-import { async } from "@angular/core/testing";
+
 @Component({
   selector: "app-plan-detail",
   templateUrl: "./plan-detail.component.html",
@@ -31,7 +31,7 @@ import { async } from "@angular/core/testing";
 })
 export class PlanDetailComponent implements OnInit,OnDestroy {
   @ViewChild(MapPanelComponent)
-  
+
 
   private mapPanelComponent: MapPanelComponent;
   private onDestroy$ = new Subject();
@@ -179,8 +179,24 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   }
 
   // プランに追加する
-  onClickAddToPlan() {
-    this.addToPlan();
+  async onClickAddToPlan(spot?: PlanSpotCommon) {
+    // スポット数チェック
+    if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length)){
+      // プランに追加
+      this.planspots
+      .addPlan(this.$isRemojuPlan, spot ? spot.spotId : this.$planId, spot ? 0 : 1, spot && spot.googleSpot ? spot.googleSpot : null).then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+          if (myPlanApp) {
+            // プラン作成に反映
+            this.myplanService.onPlanUserChanged(myPlanApp);
+            // プランを保存
+            this.indexedDBService.registPlan(myPlanApp);
+            // subject更新
+            this.myplanService.FetchMyplanSpots();
+          }
+        });
+      });
+    }
   }
 
   // エリア
@@ -286,7 +302,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
       this.data = r;
       this.data.picCnt = r.pictures===null?0:r.pictures.length;
-      
+
       if (this.$isRemojuPlan){
         this.meta.addTags([
           {
@@ -390,24 +406,26 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       });
 
       // ユーザープランリストデータを事前取得
-      this.planspots.getUserPlanSpotList(this.data.user.objectId)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe((r)=>{
-          this.user_plans = this.planspots.mergeBulkDataSet(r);
-          this.userData.userPlans = this.planspots.mergeBulkDataSet(r);
-          
-          let ids = [];
-          r.map(c => {
-            ids = ids.concat(c.searchCategoryIds);
-          })
+      if (this.data.user) {
+        this.planspots.getUserPlanSpotList(this.data.user.objectId)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe((r)=>{
+            this.user_plans = this.planspots.mergeBulkDataSet(r);
+            this.userData.userPlans = this.planspots.mergeBulkDataSet(r);
 
-          this.userData.searchCategories = this.planspots.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
-          
+            let ids = [];
+            r.map(c => {
+              ids = ids.concat(c.searchCategoryIds);
+            })
 
-          // サーバーステートに保持
-          //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
-      });
+            this.userData.searchCategories = this.planspots.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
+
+            // サーバーステートに保持
+            //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
+        });
+      }
     });
+
   }
 
   match(spots:any,plans:any){
@@ -425,40 +443,13 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     }
   }
 
-  // プランに追加
-  async addToPlan(){
-    // スポット数チェック
-    if (await this.commonService.checkAddPlan(this.spots.length)){
-      // プランに追加
-      await this.addToPlanApi();
-    }
-  }
-
-  async addToPlanApi(){
-    // プランに追加
-    this.planListService
-    .addPlan(this.$isRemojuPlan, this.$planId).then(result => {
-      result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-        if (myPlanApp) {
-          // プラン作成に反映
-          this.myplanService.onPlanUserChanged(myPlanApp);
-          // プランを保存
-          this.indexedDBService.registPlan(myPlanApp);
-          // subject更新
-          this.myplanService.FetchMyplanSpots();
-        }
-      });
-    });
-  }
-
-
   onViewUserPost(){
     const param = new UserPlanData();
     param.user = this.data.user;
     param.country = this.data.country;
     param.memo = this.data.memo;
     param.rows = this.userData;
-        
+
     const dialogRef = this.dialog.open(UserPlanListComponent, {
       id:"userplanlist",
       maxWidth: "100%",
@@ -477,10 +468,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
     dialogRef.afterClosed().subscribe(()=>{
       setTimeout(() => {
-        window.scroll({top: 0, behavior: 'smooth'});  
+        window.scroll({top: 0, behavior: 'smooth'});
       }, 800);
     })
-    
+
   }
 
   linktolist(){
