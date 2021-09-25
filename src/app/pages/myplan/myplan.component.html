@@ -504,7 +504,7 @@
             </div>
 
             <mat-list>
-              <mat-list-item class="outtime" *ngIf="item.transfer">
+              <mat-list-item class="outtime" *ngIf="item.line">
                 <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
               </mat-list-item>
             </mat-list>
@@ -566,7 +566,7 @@
     </div>
     <!-- 保存 -->
     <div class="save">
-      <button mat-button type="button" id="plansave" [disabled]="formCheck.invalid || !row?.planSpots" (click)="onClickSavePlan(false)">
+      <button mat-button type="button" id="plansave" [disabled]="disabledSavePlan()" (click)="onClickSavePlan(false)">
       </button>
       <label for="plansave">{{ "Save" | translate }}</label>
     </div>

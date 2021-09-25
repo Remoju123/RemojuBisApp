@@ -159,9 +159,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
     // 追加通知
     this.myplanService.PlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
-      // 編集モードにする
-      this.isEdit = true;
       this.setUserPicture(x);
+      // プレビュー表示
+      this.isEdit = false;
       // 変更を保存
       this.registPlan(false);
       this.myplanService.FetchMyplanSpots();
@@ -169,8 +169,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
     // スポット削除通知
     this.myplanService.RemoveDisplayOrder$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      // 編集モードにする
-      this.isEdit = true;
       // 削除したスポットを取得
       const planSpot = this.row.planSpots.find(spots => spots.displayOrder === x);
       // スポットを削除
@@ -203,7 +201,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               this.setUserPicture(r);
-              this.setPreviewPicture();
               // 変更を保存
               this.registPlan(false);
               ref.close();
@@ -384,14 +381,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
-        this.row.planSpots = null;
-        // 編集モードにする
-        this.isEdit = true;
-        // 保存
-        this.onChange(true);
-        this.step = 999;
-        this.accordionSpot.closeAll();
-        this.myplanService.FetchMyplanSpots();
+        this.spotAllRemove();
       }
     });
   }
@@ -510,9 +500,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   onClickSpotDelete(planSpot: PlanSpotCommon) {
     // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if(this.row.planSpots.length === 1){
-      this.row.planSpots = null;
-      this.step = 999;
-      this.accordionSpot.closeAll();
+      this.spotAllRemove();
     } else {
       // スポットを削除
       this.row.planSpots.splice(
@@ -572,6 +560,16 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   // プランを保存する
+  disabledSavePlan(): boolean {
+    // プラン名、スポット名必須
+    if (!this.row?.planName || !this.row?.planSpots
+      || this.row?.planSpots.reduce((sum, planSpot) => sum + (planSpot.spotName ? 0 : 1), 0) > 0
+      ) {
+      return true;
+    }
+    return false;
+  }
+
   onClickSavePlan(isShare: boolean) {
     if (!this.commonService.loggedIn) {
       // ログイン画面へ
@@ -716,7 +714,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         this.listSelectedPlan.planList = new Array<PlanAppList>();
         this.listSelectedPlan.isList = false;
         this.spotZero = r.myPlan.planSpots;
-        this.initRow = r.myPlan;
+        this.initRow = JSON.parse(JSON.stringify(r.myPlan));
         this.initRow.planSpots = null;
         for (let i = 0; i < this.spotZero.length; i++) {
           // 多言語項目の使用言語で設定
@@ -744,6 +742,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 写真を戻すために先にバインドしておく
           this.row = myPlanApp;
           this.setUserPicture(r);
+          this.isEdit = false;
           // 保存
           this.registPlan(true);
         });
@@ -752,7 +751,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       if (!this.$stayTime) {
         // 選択リストを取得
         await this.getListSelected();
-        this.row =  this.initRow;
+        this.row =  JSON.parse(JSON.stringify(this.initRow));
         // 保存
         this.registPlan(false);
       }
@@ -768,6 +767,20 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.historyPlan = hisPlan.reverse();
   }*/
 
+  // スポット一括クリア
+  spotAllRemove() {
+    this.row.isTransferSearch = false;
+    this.row.timeRequired = null;
+    this.row.timeRequiredDisp = null;
+    this.endTime = null;
+    this.row.planSpots = null;
+    this.isEdit = true;
+    this.registPlan(false);
+    this.step = 999;
+    this.accordionSpot.closeAll();
+    this.myplanService.FetchMyplanSpots();
+  }
+
   // 一括クリア
   planRemove(){
     // 編集エリアを閉じる
@@ -779,7 +792,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.accordionSpot.closeAll();
     }
     // プラン初期化
-    this.row = this.initRow;
+    this.row = JSON.parse(JSON.stringify(this.initRow));
     // 終了時間を削除
     this.endTime = null;
     // エリア・カテゴリの選択状態を解除
@@ -787,6 +800,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 変更を保存
     this.registPlan(false);
     this.isEdit = true;
+    // subject更新
+    this.myplanService.FetchMyplanSpots();
   }
 
   // URL共有ダイアログの表示
@@ -820,6 +835,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.listSelectedPlan.condition.searchCategories = this.row.categories;
     }
     this.planListService.getSearchFilter(this.listSelectedPlan, this.listSelectedPlan.condition);
+
+    // プレビュー用の画像を設定
+    this.setPreviewPicture();
 
     // 出発地が設定されている場合
     if (this.row.startPlanSpot){

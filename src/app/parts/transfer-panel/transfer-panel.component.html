@@ -18,7 +18,7 @@
         </div>
       </div>
     </mat-expansion-panel-header>
-    <div class="point-of-dept">
+    <div class="point-of-dept" *ngIf="item.line">
       <span class="times">{{ item.line[0].TimeFrom }}</span>
       <span class="dept">{{ item.spotName }} {{ "SpotStart" | translate }}</span>
     </div>
