@@ -742,7 +742,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 写真を戻すために先にバインドしておく
           this.row = myPlanApp;
           this.setUserPicture(r);
-          this.isEdit = false;
+          if (this.row.planSpots && this.row.planSpots.length > 0) {
+            this.isEdit = false;
+          }
           // 保存
           this.registPlan(true);
         });
