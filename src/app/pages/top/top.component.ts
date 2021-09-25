@@ -97,4 +97,8 @@ export class TopComponent implements OnInit,OnDestroy {
       this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:val}});
     }
   }
+
+  linktolist(){
+    this.router.navigate(["/" + this.lang + "/planspot"]);
+  }
 }

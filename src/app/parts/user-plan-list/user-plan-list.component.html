@@ -14,7 +14,7 @@
 </dl>
 
 <div class='rows'>
-  <app-planspot-list-item *ngFor="let item of data.rows.userPlans" [item]="item" [lang]="lang" (addMyPlan)="addMyPlan($event)" (setFav)="setFavorite($event)">
+  <app-planspot-list-item *ngFor="let item of data.rows.userPlans" [item]="item" [lang]="lang" (linked)="linktoDetail($event)" (addMyPlan)="addMyPlan($event)" (setFav)="setFavorite($event)">
   </app-planspot-list-item>
 </div>
 

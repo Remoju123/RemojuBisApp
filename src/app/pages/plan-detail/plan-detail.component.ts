@@ -459,7 +459,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     param.memo = this.data.memo;
     param.rows = this.userData;
         
-    this.dialog.open(UserPlanListComponent, {
+    const dialogRef = this.dialog.open(UserPlanListComponent, {
       id:"userplanlist",
       maxWidth: "100%",
       width: "100%",
@@ -473,7 +473,18 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
           keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
         }
       }
-    });  
+    });
+
+    dialogRef.afterClosed().subscribe(()=>{
+      setTimeout(() => {
+        window.scroll({top: 0, behavior: 'smooth'});  
+      }, 800);
+    })
+    
+  }
+
+  linktolist(){
+    this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
   linktoSpot(id:any){

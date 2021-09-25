@@ -24,6 +24,12 @@ p{
   top: 0;
   z-index: 11;
   border-radius: 0;
+  .link{
+    font-size: 14px;
+    padding: 6px 12px;
+    display: flex;
+    justify-content: center;
+  }
 
   .header{
     margin: 0 16px 4px;

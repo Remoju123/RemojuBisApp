@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserPlanData } from 'src/app/class/plan.class';
@@ -10,6 +11,7 @@ import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
 import { MyplanService } from 'src/app/service/myplan.service';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
+import { threadId } from 'worker_threads';
 @Component({
   selector: 'app-user-plan-list',
   templateUrl: './user-plan-list.component.html',
@@ -25,6 +27,7 @@ export class UserPlanListComponent implements OnInit {
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
     private mypageFavoriteListService: MypageFavoriteListService,
+    private router: Router,
     public dialogRef:MatDialogRef<UserPlanListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserPlanData
   ) {
@@ -84,6 +87,16 @@ export class UserPlanListComponent implements OnInit {
       this.mypageFavoriteListService.GetFavoriteCount(this.guid);
     });
     item.isFavorite = !item.isFavorite;
+  }
+
+  linktoDetail(id:number){
+    if(id > 10000){
+      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
+    }else{
+      this.router.navigate(["/" + this.lang + "/plans/detail",id]).then(()=>{
+        this.dialogRef.close();
+      });
+    }
   }
 
   onClose(){

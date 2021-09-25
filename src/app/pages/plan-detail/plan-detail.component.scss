@@ -28,7 +28,13 @@ div.plandtl{
     top: 0;
     z-index: 11;
     border-radius: 0;
-  
+    .link{
+      font-size: 14px;
+      padding: 6px 12px;
+      display: flex;
+      justify-content: center;
+    }
+    
     .header{
       width: 100%;
       margin: 0 16px 4px;
@@ -108,7 +114,8 @@ div.plandtl{
         height: 28px;
         position: absolute;
         right: 10px;
-        top:0;
+        //top:0;
+        bottom: 37px;
       }
     }
   }

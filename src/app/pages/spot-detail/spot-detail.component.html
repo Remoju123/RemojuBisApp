@@ -1,5 +1,6 @@
 <div class="spotdtl">
   <mat-card id="spotdtlheader" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
+    <div class='link' (click)="linktolist()">{{"BackEveryoneRecommendations" | translate}}</div>
     <mat-card-content>
       <div class='header'>
         <div class='lt'>

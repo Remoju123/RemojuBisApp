@@ -422,6 +422,10 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   ngOnDestroy(){
     this.onDestroy$.next();
   }
+
+  linktolist(){
+    this.router.navigate(["/" + this.lang + "/planspot"]);
+  }
   
   /*------------------------------
    *
