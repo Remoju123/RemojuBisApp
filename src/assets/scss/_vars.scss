@@ -193,7 +193,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      &.JP{
+      &.JR{
         &::before{
           content: "";
           display: inline-block;
@@ -383,7 +383,7 @@ $color-grn01: #81C5B4;
 
         dl {
           :first-child::before {
-            border-right: $dl-border-right;            
+            border-right: $dl-border-right;
           }
 
           > dd:last-of-type::before {
@@ -411,7 +411,7 @@ $color-grn01: #81C5B4;
 
         dl {
           :first-child::before {
-            border-right: $dl-border-right;            
+            border-right: $dl-border-right;
           }
 
           > dd:last-of-type::before {
@@ -439,7 +439,7 @@ $color-grn01: #81C5B4;
 
         dl {
           :first-child::before {
-            border-right: $dl-border-right;            
+            border-right: $dl-border-right;
           }
 
           > dd:last-of-type::before {
@@ -490,7 +490,7 @@ $color-grn01: #81C5B4;
           &:first-child{
             height: 56px;
             margin-inline-start: 0;
-            background-color: #fff;  
+            background-color: #fff;
 
             display: flex;
             align-items: center;
@@ -535,7 +535,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      @media screen and (min-width: 415px) and (max-width: 1024px) { 
+      @media screen and (min-width: 415px) and (max-width: 1024px) {
         dl{
           dd{
             &:last-child{
@@ -562,7 +562,7 @@ $color-grn01: #81C5B4;
     text-align: center;
     font-size: 10px;
     font-weight: bolder;
-    
+
     position: relative;
     // margin: auto;
     width: 130px;
@@ -577,8 +577,8 @@ $color-grn01: #81C5B4;
         }
         &:checked ~#swImg{
           &::before{
-            content: $preview_en;  
-          }  
+            content: $preview_en;
+          }
         }
       }
 
@@ -608,7 +608,7 @@ $color-grn01: #81C5B4;
 
       &:checked ~#swImg{
         transform: translateX(60px);
-        background: $color-pnk02; 
+        background: $color-pnk02;
         &::before{
           content: $preview;
           color: #fff;

@@ -434,6 +434,7 @@ export class PlanSpotListService {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
+    myPlan.isTransferSearch = true;
 
     if(isPlan === 1){
       let addPlan: AddPlan = new AddPlan();

@@ -180,6 +180,7 @@ export class SpotListService implements OnDestroy {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
+    myPlan.isTransferSearch = true;
 
     let addSpot: AddSpot = new AddSpot();
     addSpot = {
