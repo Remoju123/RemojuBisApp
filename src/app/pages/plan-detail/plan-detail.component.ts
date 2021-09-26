@@ -183,19 +183,23 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     // スポット数チェック
     if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length)){
       // プランに追加
-      this.planspots
-      .addPlan(this.$isRemojuPlan, spot ? spot.spotId : this.$planId, spot ? 0 : 1, spot && spot.googleSpot ? spot.googleSpot : null).then(result => {
-        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-          if (myPlanApp) {
-            // プラン作成に反映
-            this.myplanService.onPlanUserChanged(myPlanApp);
-            // プランを保存
-            this.indexedDBService.registPlan(myPlanApp);
-            // subject更新
-            this.myplanService.FetchMyplanSpots();
-          }
+      if (spot) {
+        this.spotListService.addSpot(spot.spotId, spot.type, null, this.$planId).then(result => {
+          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+            if (myPlanApp) {
+              this.addToPlanAfter(myPlanApp);
+            }
+          });
         });
-      });
+      } else {
+        this.planListService.addPlan(this.$isRemojuPlan, this.$planId).then(result => {
+          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+            if (myPlanApp) {
+              this.addToPlanAfter(myPlanApp);
+            }
+          });
+        });
+      }
     }
   }
 
@@ -485,6 +489,15 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   onIsmore(e: { ismore: boolean; label: string; }){
     e.ismore = !e.ismore;
     e.label = e.ismore?"close":"more";
+  }
+
+  addToPlanAfter(myPlanApp) {
+    // プラン作成に反映
+    this.myplanService.onPlanUserChanged(myPlanApp);
+    // プランを保存
+    this.indexedDBService.registPlan(myPlanApp);
+    // subject更新
+    this.myplanService.FetchMyplanSpots();
   }
 
   /*------------------------------
