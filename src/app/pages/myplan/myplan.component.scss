@@ -294,9 +294,6 @@
     }
   }
 
-
-
-
   .set{
     height: 60px;
     background-color: #f8f7f7;
@@ -439,6 +436,14 @@
     .transfer{ // mat-expantion-panel
       box-shadow: none;
       border-radius: 0;
+
+      // スポットがゼロの場合のExpansion制御用
+      &.zero{
+        ::ng-deep .mat-expansion-panel-content{
+          display: none!important;
+        }
+      }
+
       .mat-expansion-panel-header{
         padding: 0;
         height: 68px;

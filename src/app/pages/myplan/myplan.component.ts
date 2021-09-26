@@ -513,7 +513,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       let i = 1;
       this.row.planSpots.forEach(x => x.displayOrder = i++);
     }
-
     // 保存
     this.onChange(true);
     // subject更新

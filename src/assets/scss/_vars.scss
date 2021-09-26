@@ -564,7 +564,6 @@ $color-grn01: #81C5B4;
     font-weight: bolder;
 
     position: relative;
-    // margin: auto;
     width: 130px;
     background: #fff;
 
@@ -572,25 +571,25 @@ $color-grn01: #81C5B4;
       input[type="checkbox"]{
         &:checked +label{
           span::after{
-            content: $edit_en;
+            content: $preview_en;
           }
         }
         &:checked ~#swImg{
           &::before{
-            content: $preview_en;
+            content: $edit_en;
           }
         }
       }
 
       label{
         span::after{
-          content: $preview_en;
+          content: $edit_en;
         }
       }
 
       #swImg{
         &::before{
-          content: $edit_en;
+          content: $preview_en;
         }
       }
     }
@@ -600,7 +599,7 @@ $color-grn01: #81C5B4;
       &:checked +label{
         border-color: $color-pnk02;
         span::after{
-          content: $edit;
+          content: $preview;
           padding: 0 65px 0 0;
           color: $color-pnk02;
         }
@@ -610,7 +609,7 @@ $color-grn01: #81C5B4;
         transform: translateX(60px);
         background: $color-pnk02;
         &::before{
-          content: $preview;
+          content: $edit;
           color: #fff;
         }
       }
@@ -624,7 +623,7 @@ $color-grn01: #81C5B4;
       border-radius: 30px;
 
       span::after{
-        content: $preview;
+        content: $edit;
         padding: 0 0 0 67px;
         color: $color-pnk02;
       }
@@ -641,7 +640,7 @@ $color-grn01: #81C5B4;
       transition: .2s;
 
       &::before{
-        content: $edit;
+        content: $preview;
         color: #fff;
       }
     }
