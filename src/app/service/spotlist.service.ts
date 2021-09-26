@@ -173,7 +173,7 @@ export class SpotListService implements OnDestroy {
   }
 
   // プランに追加する
-  async addSpot(spotId: number, type: number = 1, googleSpot: GoogleSpot = null) {
+  async addSpot(spotId: number, type: number = 1, googleSpot: GoogleSpot = null, basePlanId: number = null) {
     // 作成中プラン取得
     let myPlan: any = await this.indexedDBService.getEditPlan(true);
     if (!myPlan){
@@ -187,7 +187,8 @@ export class SpotListService implements OnDestroy {
       MyPlan: myPlan,
       spotId: spotId,
       type: type,
-      googleSpot: googleSpot
+      googleSpot: googleSpot,
+      basePlanId: basePlanId
     };
     const url = this.host + "/api/SpotList/AddSpot";
     return this.http.post<MyPlanApp>(url, addSpot, httpOptions);

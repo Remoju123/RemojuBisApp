@@ -141,6 +141,8 @@ export class AddSpot {
   type: number;
   // Googleスポット(登録時のみ指定)
   googleSpot: GoogleSpot;
+  // ベースプランID
+  basePlanId: number;
 }
 
 // 現在地

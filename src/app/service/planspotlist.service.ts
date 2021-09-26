@@ -451,13 +451,14 @@ export class PlanSpotListService {
         MyPlan: myPlan,
         spotId: id,
         type: googleSpot ? 2 : 1,
-        googleSpot: googleSpot
+        googleSpot: googleSpot,
+        basePlanId: null
       };
       const url = this.host + "/api/SpotList/AddSpot";
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
     }
   }
-  
+
   // プランデータセット一括マージ
   mergeBulkDataSet(rows:PlanSpotList[]){
     rows.map(async row => {
@@ -479,7 +480,7 @@ export class PlanSpotListService {
     ids.forEach(v=>{
       _category.push(Categories.find(x => x.id === v).name);
     })
-    
+
     return _category;
   }
 
