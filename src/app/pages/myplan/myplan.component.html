@@ -362,7 +362,12 @@
         <div class="preview-box">
           <div class="lt">
             <!-- プラン名 -->
-            <span class="planName">{{ row.planName }}</span>
+            <ng-container *ngIf="row.planName;else noplan">
+              <span class="planName">{{ row.planName }}</span>
+            </ng-container>
+            <ng-template #noplan>
+              <a href="javascript:void(0)" (click)="onClickEdit()"><mat-icon>arrow_back</mat-icon>{{"ErrorMsgRequiredPlanName"|translate}}</a>
+            </ng-template>
           </div>
           <div class="rt">
             <!-- 周遊時間 -->

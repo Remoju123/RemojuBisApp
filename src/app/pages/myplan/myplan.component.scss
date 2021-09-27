@@ -873,6 +873,13 @@
       .planName{
         font-size: 16px;
       }
+      a{
+        text-decoration: none;
+        color: $color-pnk04;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+      }
     }
     .rt{
       display: flex;
