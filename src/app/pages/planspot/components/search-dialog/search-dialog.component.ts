@@ -148,7 +148,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       }
     });
     this.update();
-  }  
+  }
 
   // エリア-エクスパンションOpen
   onAreaCollapseOpen(i: number, id: number) {
@@ -256,7 +256,6 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       this.condition.areaId2 = [];
       this.condition.searchCategories = [];
     }
-    this.condition.keyword = '';
 
     this.dialogRef.close(this.condition);
   }
