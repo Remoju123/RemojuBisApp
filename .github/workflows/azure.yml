@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - staging
+      - develop
 
 env:
   AZURE_WEBAPP_NAME: remojuapp-v3u    # set this to your application's name
@@ -43,5 +43,5 @@ jobs:
       uses: azure/webapps-deploy@v1
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_REMOJUAPPV3U_STAGE }}
+        publish-profile: ${{ secrets.AZURE_REMOJUAPPV3U }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
