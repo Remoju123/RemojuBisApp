@@ -15,8 +15,6 @@ jobs:
     environment: production
     steps:
     - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
 
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v2
