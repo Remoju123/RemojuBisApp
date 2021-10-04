@@ -519,6 +519,20 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.myplanService.FetchMyplanSpots();
   }
 
+  // 画像順番入れ替え
+  onClickSpotPicture(picture: PlanUserPicture) {
+    const index = picture.picture_display_order - 1;
+    let pictures = this.row.planSpots[picture.display_order - 1].planUserpictures;
+    // 下の画像-1
+    pictures[index + 1].picture_display_order -= 1;
+    // 上の画像+1
+    pictures[index].picture_display_order += 1;
+    // 配列の入れ替え
+    [pictures[index], pictures[index + 1]] = [pictures[index + 1], pictures[index]];
+    // 保存
+    this.onChange(false);
+  }
+
   // プランを共有する
   onClickSharePlan() {
     if (!this.commonService.loggedIn) {
