@@ -93,22 +93,8 @@ p{
           }
         }
         .plan_add{
+          all:unset;
           width: 59px;
-          font-size: 10px;
-          height: 32px;
-          display: flex;
-          background: $color-pnk04;
-          border-radius: 7px;
-          align-items: center;
-          ::ng-deep{
-            span{
-              white-space: pre-wrap;
-              font-weight: bold;
-              color: #fff;
-              line-height: 1.2;
-              margin: auto 9px;
-            }
-          }
         }
       }
     }
