@@ -255,13 +255,14 @@
                   </div>
                   <label>{{"Selectimagespot"|translate}}</label>
                 </div>
-  
+
                 <div *ngFor="let picture of item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">
                   <img width="100%" height="100%" [src]="picture.imageCropped ?? picture.picturePreviewUrl ?? picture.picture_url" />
                   <button type="button" class="delete" (click)="onClickPhotoDeleteSpot(item, picture)"></button>
                   <button *ngIf="picture.pictureFile" type="button" class="crop" (click)="onClickCropSpot(item, picture)">{{"Edit"|translate}}</button>
+                  <div *ngIf="item.planUserpictures.length > j + 1" (click)="onClickSpotPicture(picture)">上下画像入れ替え</div>
                 </div>
-  
+
                 <!-- スポット概要 -->
                 <mat-form-field appearance="outline">
                   <textarea
@@ -278,7 +279,7 @@
                   <mat-hint align="end">{{memo.value?.length || 0}}{{ "Characters" | translate }}</mat-hint>
                   <mat-hint align="start"><a href="javascript:void(0);" (click)="item.memo='';">{{"labelClear" | translate}}</a></mat-hint>
                 </mat-form-field>
-  
+
                 <!-- 滞在時間 -->
                 <div class="selectStay">
                   <label>{{ "SuggestedTime" | translate }}</label>
