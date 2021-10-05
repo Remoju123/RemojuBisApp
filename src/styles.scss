@@ -28,7 +28,11 @@
 }
 
 .custom-snackbar{
-  margin: 0 !important;
+  margin: auto !important;
   position: absolute;
   top:50%;
+  width: 93%!important;
+  right: 0;
+  left: 0;
+  background-color: #4A4A4A;
 }
