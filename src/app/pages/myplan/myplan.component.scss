@@ -625,6 +625,15 @@
                 padding: 0 5px;
               }
             }
+            button.swapbtn{
+              all:unset;
+              position: absolute;
+              bottom: 8px;
+              right: 6px;
+              img{
+                width: 60px;
+              }
+            }
           }
 
           .selectStay{
@@ -879,6 +888,11 @@
         font-size: 12px;
         display: flex;
         align-items: center;
+        &::before{
+          content: url("../../../assets/img/arrow_forward_back.svg");
+          width: 20px;
+          height: 20px;
+        }
       }
     }
     .rt{
