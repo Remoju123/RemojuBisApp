@@ -1,3 +1,59 @@
+@import "../../../assets/scss/vars";
+.header{
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 0;
+
+  .row{
+    display: flex;
+    justify-content: space-between;
+    .title{
+      font-size: 14px;
+    }
+    button.edit{
+      all:unset;
+      width: 96px;
+      height: 23px;
+      border-radius: 12px;
+      background-color: $color-pnk04;
+      font-size: 11px;
+      line-height: 24px;
+      color: #fff;
+      text-align: center;
+    }
+  }
+  .label{
+    background-color: #5E5E5E;
+    width: 96px;
+    height: 23px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    line-height: 24px;
+    text-align: center;
+  }
+}
+.footer{
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 16px;
+  .row{
+    display: flex;
+    justify-content: flex-end;
+    button.edit{
+      all:unset;
+      width: 96px;
+      height: 23px;
+      border-radius: 12px;
+      background-color: $color-pnk04;
+      font-size: 11px;
+      line-height: 24px;
+      color: #fff;
+      text-align: center;
+      font-weight: 700;
+    }
+  }
+}
 .mat-card{
   .card-box{
     .card-header{
@@ -175,13 +231,24 @@
   }
 
   .mat-card-header{
-    border-bottom: 1px solid #bfa060;
+    // border-bottom: 1px solid #bfa060;
     margin-bottom: 20px;
-    h4{
-      font-size: 13px;
-      font-weight: normal;
-      margin-left: 12px;
-      margin-bottom: 1px;
+    // h4{
+    //   font-size: 13px;
+    //   font-weight: normal;
+    //   margin-left: 12px;
+    //   margin-bottom: 1px;
+    // }
+    .label{
+      background-color: #AAAAAA;
+      width: 96px;
+      height: 23px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 24px;
+      text-align: center;
     }
   }
 
@@ -266,21 +333,34 @@
       // 最下部
       &.bottom{
         ::ng-deep.mat-list-item-content{
-          justify-content: flex-end;
+          // justify-content: flex-end;
           margin-bottom: 35px;
           // 保存ボタン
           button.save{
-            width: 80px;
-            height: 32px;
+            width: 100%;
+            height: 39px;
             background-color: #bfa060;
             color: #fff;
-            border-radius: 16px;
-            line-height: 32px;
+            border-radius: 19px;
+            line-height: 39px;
+            font-weight: 700;
           }
         }
       }
     }
     
+  }
+  &.private{
+    .mat-card-content{
+      position: relative;
+      .overray{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff56;
+      }
+    }
   }
 }
 
