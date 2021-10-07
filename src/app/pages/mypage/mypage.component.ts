@@ -23,6 +23,7 @@ export class MypageComponent implements OnInit, OnDestroy {
   profile: boolean;
   planlist: boolean;
   favorite: boolean;
+  review:boolean;
   
   ngOnInit() {
     this.activatedRoute.fragment.pipe(takeUntil(this.onDestroy$)).subscribe((fragment: any) => {
@@ -34,10 +35,16 @@ export class MypageComponent implements OnInit, OnDestroy {
         // お気に入り一覧を表示
         this.tabIndex = 1;
         this.tabChange(1);
-      } else if (fragment === "profile") {
+      } else if (fragment === "review"){
+        // レビュー一覧
         this.tabIndex = 2;
         this.tabChange(2);
+      } else if (fragment === "profile") {
+        // プロフィール
+        this.tabIndex = 3;
+        this.tabChange(3);
       } else {
+        // （初期値）プラン一覧
         this.tabIndex = 0;
         this.tabChange(0);
       }
@@ -59,7 +66,10 @@ export class MypageComponent implements OnInit, OnDestroy {
     if (!this.favorite && $event === 1) {
       this.favorite = true;
     }
-    if (!this.profile && $event === 2){
+    if (!this.review && $event === 2){
+      this.review = true;
+    }
+    if (!this.profile && $event === 3){
       this.profile = true;
     }
   }

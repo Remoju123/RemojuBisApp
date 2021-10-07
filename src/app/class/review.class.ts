@@ -24,6 +24,8 @@ export class Review {
   // expantion flag & label
   ismore:boolean;
   label:string;
+  isPlan:boolean;
+  planSpotName:string;
 }
 
 export class ReviewPicture {

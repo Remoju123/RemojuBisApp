@@ -276,5 +276,6 @@
   "SpotAllClearConfirm": "スポットをすべて削除します。よろしいですか？",
   "SavePlanConfirm": "プランを保存します。よろしいですか？",
   "isEdit":"編集する",
-  "isSave":"保存する"
+  "isSave":"保存する",
+  "ViewUserPost":"この投稿者の投稿一覧へ"
 }

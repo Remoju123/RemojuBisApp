@@ -71,6 +71,8 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
       review.id = this.id;
     }
 
+    console.log(review);
+
     const dialog = this.dialog.open(ReviewPostDialogComponent, {
       maxWidth: "100%",
       width: "92vw",

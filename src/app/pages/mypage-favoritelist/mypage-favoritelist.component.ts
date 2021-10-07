@@ -14,6 +14,10 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PlanSpotList } from "src/app/class/planspotlist.class";
+import { PlanSpotListService } from "src/app/service/planspotlist.service";
+import { MyplanService } from "src/app/service/myplan.service";
+import { IndexedDBService } from "src/app/service/indexeddb.service";
 
 @Component({
   selector: "app-mypage-favoritelist",
@@ -30,7 +34,11 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     private mypageFavoriteListService: MypageFavoriteListService,
     private translate: TranslateService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    //--------
+    private planspots: PlanSpotListService,
+    private myplanService: MyplanService,
+    private indexedDBService: IndexedDBService,
   ) {}
 
   // マイページお気に入り一覧
@@ -53,6 +61,10 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   plan: boolean;
 
   guid: string;
+
+  //----
+  details$:PlanSpotList[] = [];
+
 
   get lang() {
     return this.translate.currentLang;
@@ -274,5 +286,71 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
         });
         break;
     }
+  }
+
+  //----------------
+
+  offset = 0;
+
+  async getPlanSpotDataSet() {
+    
+  }
+
+  async mergeNextDataSet(){
+
+  }
+
+  onScrollDown() {
+    this.mergeNextDataSet();
+  }
+
+  linktoDetail(id:number){
+    if(id > 10000){
+      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
+    }else{
+      this.router.navigate(["/" + this.lang + "/plans/detail",id]);
+    }
+  }
+
+  // プランに追加
+  async addMyPlan(item:PlanSpotList){
+    const tempqty:number = item.isPlan===1 ? item.spotQty : 1;
+    if(await this.commonService.checkAddPlan(tempqty) === false){
+      return
+    };
+
+    this.planspots.addPlan(
+      item.isRemojuPlan,
+      item.id,
+      item.isPlan,
+      item.googleSpot
+    ).then(result => {
+      result.pipe(takeUntil(this.onDestroy$)).subscribe(
+        async myPlanApp => {
+          if (myPlanApp) {
+            this.myplanService.onPlanUserChanged(myPlanApp);
+            this.indexedDBService.registPlan(myPlanApp);
+            this.myplanService.FetchMyplanSpots();
+          }
+        }
+      )
+    })
+  }
+
+  // お気に入り登録・除外
+  setFavorite(item:PlanSpotList){
+    this.planspots.registFavorite(
+      item.id,
+      item.isPlan,
+      !item.isFavorite,
+      item.isRemojuPlan,
+      this.guid,
+      item.googleSpot
+    )
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(()=>{
+      this.mypageFavoriteListService.GetFavoriteCount(this.guid);
+    });
+    item.isFavorite = !item.isFavorite;
   }
 }

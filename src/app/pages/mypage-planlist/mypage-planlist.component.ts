@@ -188,12 +188,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       .getMypagePlanList()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-          return;
-        }
         this.rows = r.mypagePlanAppList;
-        //this.pageSize = r.pageViewQty;
         this.pageSize = 40;
         this.p = 1;
 

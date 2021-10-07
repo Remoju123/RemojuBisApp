@@ -112,6 +112,7 @@ import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
 import { ImageCropperDialogComponent } from "./parts/image-cropper-dialog/image-cropper-dialog.component";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserPlanListComponent } from './parts/user-plan-list/user-plan-list.component';
+import { MypageReviewlistComponent } from './pages/mypage/mypage-reviewlist/mypage-reviewlist.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -188,7 +189,8 @@ export const MATERIAL_MODULES = [
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
     ImageCropperDialogComponent,
-    UserPlanListComponent
+    UserPlanListComponent,
+    MypageReviewlistComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

@@ -3,12 +3,15 @@
   {{ common.name }}{{ "Sanno" | translate }}
   {{ "MyPage" | translate }}
 </div>
-<mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)">
+<mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)" id="mypage">
   <mat-tab label="{{ 'MyplanList' | translate }}">
     <app-mypage-planlist *ngIf="planlist"></app-mypage-planlist>
   </mat-tab>
   <mat-tab label="{{ 'Favorite' | translate }}">
     <app-mypage-favoritelist *ngIf="favorite"></app-mypage-favoritelist>
+  </mat-tab>
+  <mat-tab label="レビュー">
+    <app-mypage-reviewlist [name]="common.name"></app-mypage-reviewlist>
   </mat-tab>
   <mat-tab label="{{ 'UserProfile' | translate }}">
     <app-mypage-userprofile *ngIf="profile"></app-mypage-userprofile>
