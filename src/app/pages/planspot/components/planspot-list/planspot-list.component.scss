@@ -6,6 +6,24 @@
 
 .box{
   margin-top: 16px;
+
+  .glink{
+    background-color: #7E9E9F;
+    padding: 3px 6px;
+    margin: auto 3px;
+    border-radius: 3px;
+    color: #fff;
+    text-decoration: none;
+    &::before{
+      content: "";
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: url('../../../../../assets/img/icon_google.svg') no-repeat;
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+  }
 }
 
 #nolist{
