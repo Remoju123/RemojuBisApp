@@ -116,6 +116,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   isVal:boolean = false;
 
+  isSaving = false;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -572,8 +574,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     }
   }
 
-  // プランを保存する
+  // 保存ボタンの制御
   disabledSavePlan(): boolean {
+    if (this.isSaving) {
+      return true;
+    }
     // プラン名、スポット名必須
     if (!this.row?.planName || !this.row?.planSpots
       || this.row?.planSpots.reduce((sum, planSpot) => sum + (planSpot.spotName ? 0 : 1), 0) > 0
@@ -583,12 +588,16 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     return false;
   }
 
+  // プランを保存する
   onClickSavePlan(isShare: boolean) {
     if (!this.commonService.loggedIn) {
       // ログイン画面へ
       this.commonService.login();
       return;
     }
+
+    // 保存ボタンロック
+    this.isSaving = true;
 
     // プランメイン写真の画像URL(ファイル名はプランユーザID＋拡張子)
     if (this.row.pictureFile) {
@@ -680,6 +689,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             // subject更新
             this.myplanService.FetchMyplanSpots();
           }
+
+          // 保存ボタンロック解除
+          this.isSaving = false;
 
         // } else {
         //   //this.router.navigate(["/" + this.lang + "/systemerror"]);
@@ -966,7 +978,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   genStartTimes(){
-    for (let hour = 7; hour < 24; hour++){
+    for (let hour = 0; hour < 24; hour++){
       this.$startTime.push(moment({hour}).format('HH:mm'));
       this.$startTime.push(moment({hour,minute:30}).format('HH:mm'));
     }
