@@ -26,6 +26,7 @@ export class Review {
   label:string;
   isPlan:boolean;
   planSpotName:string;
+  type:number;
 }
 
 export class ReviewPicture {

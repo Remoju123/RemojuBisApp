@@ -4,65 +4,71 @@
 
 <div class='container'>
   <mat-list>
-    <mat-list-item *ngFor="let item of myReviews">
-      <div class='row'>
-        <div class="date">
-          {{ "PostedDate" | translate }} : {{ item.postedDate | date:"yyyy/MM/dd" }}
+    <ng-container *ngIf="myReviews?.length>0; else noReview">
+      <mat-list-item *ngFor="let item of myReviews">
+        <div class='row'>
+          <div class="date">
+            {{ "PostedDate" | translate }} : {{ item.postedDate | date:"yyyy/MM/dd" }}
+          </div>
         </div>
-      </div>
-      <div class='row planspot'>
-        <div class='mark'>
-          <img src = {{genMarkPath(item)}} alt=""/>
+        <div class='row planspot'>
+          <div class='mark'>
+            <img src={{genMarkPath(item)}} alt="" />
+          </div>
+          <div class='name'>
+            <ng-container *ngIf="isJSON(item.planSpotName);else noJSON">
+              {{item.planSpotName | langFilter:lang}}
+            </ng-container>
+            <ng-template #noJSON>
+              {{item.planSpotName}}
+            </ng-template>
+          </div>
         </div>
-        <div class='name'>
-          <ng-container *ngIf="item.isPlan;else spotname">
-            {{item.planSpotName}}
-          </ng-container>
-          <ng-template #spotname>
-            {{item.planSpotName | langFilter:lang}}
-          </ng-template>
+        <div class="row">
+          <app-rating-comp [rating]="item.evaluation" [size]=12></app-rating-comp>
         </div>
-      </div>
-      <div class="row">
-        <app-rating-comp [rating]="item.evaluation" [size]=12></app-rating-comp>
-      </div>
-      <div class="title">
-        {{ item.title }}
-      </div>
-      <!-- <div class="content" [ngClass]="{'more':item.ismore}" #elm> -->
-      <div class="content">
-        {{ item.contents }}
-      </div>
-      <div class="line2">
-        <div class="visit">
-          {{ "VisitDate" | translate }} :
-          <ng-container *ngIf="lang==='ja';else den">{{ item.visitDate | date:"yyyy/MM/dd" }}</ng-container>
-          <ng-template #den>{{ item.visitDate | date:"MM/dd/yyyy" }}</ng-template>
+        <div class="title">
+          {{ item.title }}
         </div>
-        <!-- <a href="javascript:void(0)" class="continue" [ngClass]="{'off':item.ismore}" (click)="onIsmore(item)">
+        <!-- <div class="content" [ngClass]="{'more':item.ismore}" #elm> -->
+        <div class="content">
+          {{ item.contents }}
+        </div>
+        <div class="line2">
+          <div class="visit">
+            {{ "VisitDate" | translate }} :
+            <ng-container *ngIf="lang==='ja';else den">{{ item.visitDate | date:"yyyy/MM/dd" }}</ng-container>
+            <ng-template #den>{{ item.visitDate | date:"MM/dd/yyyy" }}</ng-template>
+          </div>
+          <!-- <a href="javascript:void(0)" class="continue" [ngClass]="{'off':item.ismore}" (click)="onIsmore(item)">
             {{item.label}}
           </a> -->
+        </div>
+        <div class="pic">
+          <owl-carousel-o [options]="reviewOptions">
+            <ng-container *ngFor="let picture of item.pictures; index as i">
+              <ng-template carouselSlide>
+                <div class="thumbnail">
+                  <img [src]="picture.pictureUrl" alt="" lightbox [backgroundOpacity]="0.8" />
+                </div>
+              </ng-template>
+            </ng-container>
+          </owl-carousel-o>
+        </div>
+        <div class="btnedit">
+          <button class="edit" mat-stroked-button (click)="onClickPosted(item)">
+            {{ "Edit" | translate }}
+          </button>
+          <button class="remove" mat-stroked-button (click)="onClickDelete(item)">
+            {{ "Remove" | translate }}
+          </button>
+        </div>
+      </mat-list-item>
+    </ng-container>
+    <ng-template #noReview>
+      <div class='noReviewbox'>
+        <p>{{"NoReviewMsg"|translate}}</p>
       </div>
-      <div class="pic">
-        <owl-carousel-o [options]="reviewOptions">
-          <ng-container *ngFor="let picture of item.pictures; index as i">
-            <ng-template carouselSlide>
-              <div class="thumbnail">
-                <img [src]="picture.pictureUrl" alt="" lightbox [backgroundOpacity]="0.8" />
-              </div>
-            </ng-template>
-          </ng-container>
-        </owl-carousel-o>
-      </div>
-      <div class="btnedit">
-        <button class="edit" mat-stroked-button (click)="onClickPosted(item)">
-          {{ "Edit" | translate }}
-        </button>
-        <button class="remove" mat-stroked-button (click)="onClickDelete(item)">
-          {{ "Remove" | translate }}
-        </button>
-      </div>
-
-    </mat-list-item>
+    </ng-template>
   </mat-list>
 </div>

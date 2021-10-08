@@ -277,5 +277,7 @@
   "SavePlanConfirm": "プランを保存します。よろしいですか？",
   "isEdit":"編集する",
   "isSave":"保存する",
-  "ViewUserPost":"この投稿者の投稿一覧へ"
+  "ViewUserPost":"この投稿者の投稿一覧へ",
+  "ViewReview":"投稿したレビューを見る",
+  "NoReviewMsg":"投稿中のレビューはありません"
 }

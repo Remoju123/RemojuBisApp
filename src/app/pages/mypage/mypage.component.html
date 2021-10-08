@@ -10,7 +10,7 @@
   <mat-tab label="{{ 'Favorite' | translate }}">
     <app-mypage-favoritelist *ngIf="favorite"></app-mypage-favoritelist>
   </mat-tab>
-  <mat-tab label="レビュー">
+  <mat-tab label="{{ 'Review' | translate }}">
     <app-mypage-reviewlist [name]="common.name"></app-mypage-reviewlist>
   </mat-tab>
   <mat-tab label="{{ 'UserProfile' | translate }}">

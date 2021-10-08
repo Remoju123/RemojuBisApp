@@ -10,6 +10,7 @@ import { CommonService } from 'src/app/service/common.service';
 import { ComfirmDialogParam } from 'src/app/class/common.class';
 import { SpotService } from 'src/app/service/spot.service';
 import { PlanService } from 'src/app/service/plan.service';
+import { async } from '@angular/core/testing';
 
 
 @Component({
@@ -41,6 +42,10 @@ export class MypageReviewlistComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.getMyReview();
+  }
+
+  getMyReview():void {
     this.mypagePlanListService.getMyPageReviewList().subscribe((result)=>{
       console.log(result);
       this.myReviews = result;
@@ -67,11 +72,13 @@ export class MypageReviewlistComponent implements OnInit {
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (r && r !== "cancel"){
         this.commonService.snackBarDisp("ReviewSaved");
+        
         //this.reviewResult = r;
         //this.dispReview(0);
         
-        console.log(r.avgEvaluation);
+        //console.log(r.avgEvaluation);
         //this.avgEvaluation = r.avgEvaluation.toFixed(2);
+        this.getMyReview();
       }
     });
   }
@@ -84,38 +91,37 @@ export class MypageReviewlistComponent implements OnInit {
     param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-      // レビューを削除する
-      if (d === "ok") {
-        switch (this.type) {
+      if(d === "ok"){
+        switch (review.type) {
           // スポット
           case 1:
-            this.spotService.deleteReview(review.id, review.displayOrder).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-              if (r){
+            this.spotService.deleteReview(review.id, review.displayOrder).toPromise().then(async r =>{
+              if(r){
                 this.commonService.snackBarDisp("ReviewRemoved");
-                // this.reviewResult = r;
-                // this.dispReview(0);
               }
-            });
+            }).then(()=>{
+              this.getMyReview();
+            })
             break;
           // プラン
           case 2:
-            this.planService.deletePlanReview(review.id, review.displayOrder).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-              if (r){
+            this.planService.deletePlanReview(review.id, review.displayOrder).toPromise().then(async r =>{
+              if(r){
                 this.commonService.snackBarDisp("ReviewRemoved");
-                // this.reviewResult = r;
-                // this.dispReview(0);
               }
-            });
+            }).then(()=>{
+              this.getMyReview();
+            })
             break;
           // プランユーザ
           case 3:
-            this.planService.deletePlanUserReview(review.id, review.displayOrder).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-              if (r){
+            this.planService.deletePlanUserReview(review.id, review.displayOrder).toPromise().then(async r =>{
+              if(r){
                 this.commonService.snackBarDisp("ReviewRemoved");
-                // this.reviewResult = r;
-                // this.dispReview(0);
               }
-            });
+            }).then(()=>{
+              this.getMyReview();
+            })
             break;
         }
       }
@@ -138,5 +144,18 @@ export class MypageReviewlistComponent implements OnInit {
     nav: false,
     autoHeight: false
   };
+
+  isJSON(arg:any){
+    arg = (typeof arg === "function") ? arg() : arg;
+    if (typeof arg  !== "string") {
+      return false;
+    }
+    try {
+      arg = (!JSON) ? eval("(" + arg + ")") : JSON.parse(arg);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
 }

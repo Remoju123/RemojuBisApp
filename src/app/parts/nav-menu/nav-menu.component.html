@@ -47,9 +47,10 @@
       <mat-nav-list *ngIf="common.loggedIn">
         <div class="header">{{ "ViewMyPage" | translate }}</div>
         <mat-nav-list class="sub">
-          <a mat-list-item (click)="onNavgate('mypage')">{{ "EditProfile" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','list')">{{ "ViewSavedPlans" | translate }}</a>
           <a mat-list-item  (click)="onNavgate('mypage','favorite')">{{ "ViewFavorite" | translate }}</a>
+          <a mat-list-item  (click)="onNavgate('mypage','review')">{{ "ViewReview" | translate }}</a>
+          <a mat-list-item (click)="onNavgate('mypage','profile')">{{ "EditProfile" | translate }}</a>
         </mat-nav-list>
         
       </mat-nav-list>
