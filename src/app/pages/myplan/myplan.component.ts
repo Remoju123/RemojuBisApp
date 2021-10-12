@@ -672,22 +672,16 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // マイページに保存通知
           this.myplanService.onPlanUserSaved(r);
 
+          this.row = r;
+          this.dataFormat();
+          // 変更を保存
+          this.registPlan(true);
+          // 保存完了
+          this.commonService.snackBarDisp("PlanSaved");
+
           // URL共有の場合
           if (isShare) {
-            this.row = r;
-            this.dataFormat();
-            // 変更を保存
-            this.registPlan(true);
-            // 保存完了
-            this.commonService.snackBarDisp("PlanSaved");
             this.shareDialog();
-          } else {
-            // クリア
-            this.planRemove();
-            // 保存完了
-            this.commonService.snackBarDisp("PlanSaved");
-            // subject更新
-            this.myplanService.FetchMyplanSpots();
           }
 
           // 保存ボタンロック解除
@@ -701,12 +695,13 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     });
   }
 
-  // 破棄ボタンクリック時
-  onClickBatchClear() {
+  // 新規プラン作成ボタンクリック時
+  onClickNewPlan() {
     if (this.row && !this.row.isSaved){
       // 確認ダイアログの表示
       const param = new ComfirmDialogParam();
-      param.title = "NewPlanConfirm";
+      param.title = "NewPlanConfirmTitle";
+      param.text = "NewPlanConfirmText";
       param.leftButton = "Cancel";
       param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
@@ -771,7 +766,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             this.isEdit = false;
           }
           // 保存
-          this.registPlan(true);
+          this.indexedDBService.registPlan(this.row);
         });
       });
     } else {
@@ -780,7 +775,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         await this.getListSelected();
         this.row =  JSON.parse(JSON.stringify(this.initRow));
         // 保存
-        this.registPlan(false);
+        this.indexedDBService.registPlan(this.row);
       }
     }
   }
@@ -825,7 +820,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // エリア・カテゴリの選択状態を解除
     this.listSelectedPlan.condition = null;
     // 変更を保存
-    this.registPlan(false);
+    this.indexedDBService.registPlan(this.row);
     this.isEdit = true;
     // subject更新
     this.myplanService.FetchMyplanSpots();
