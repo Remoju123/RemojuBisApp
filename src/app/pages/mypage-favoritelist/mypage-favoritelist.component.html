@@ -1,37 +1,14 @@
 <!-- マイページお気に入り一覧 -->
-<!-- <mat-tab-group (selectedIndexChange)="tabChange($event)" >
-  
-  <mat-tab>
-    <ng-template mat-tab-label>
-      {{ 'Spot' | translate }}
-      <span class="count">
-        {{ rowsSpot?.length }}
-      </span>
-    </ng-template>
-    
-    
-    <app-spot-list-panel *ngIf="rowsSpot && pageSizeSpot && pSpot" 
-    [rows]="rowsSpot" [isFavoriteList]="true"
-    (spotDetail)="getSpotListDetail()"></app-spot-list-panel>
-  </mat-tab>
-  
-  
-  <mat-tab>
-    <ng-template mat-tab-label>
-      {{ 'Plan' | translate }}
-      <span class="count">
-        {{ rowsPlan?.length }}
-      </span>
-    </ng-template>
-    <ng-container *ngIf="plan">
-      
-      <app-plan-list-panel *ngIf="rowsPlan && pageSizePlan && pPlan" 
-      [rows]="rowsPlan" [isFavoriteList]="true"
-      (planDetail)="getPlanListDetail()"></app-plan-list-panel>
-      
-    </ng-container>
-  </mat-tab>
-</mat-tab-group> -->
+<app-planspot-selector
+  [count]="count"
+  [condition]="condition"
+  [mSort]="$mSort"
+  [searchTarms]="optionKeywords"
+  [myFavorite]=true
+  (event)="onPlanSpotChange($event)"
+  (sort)="sortChange($event)"
+>
+</app-planspot-selector>
 <div class='rows'
   infinite-scroll
   [infiniteScrollDistance]="5"
@@ -42,8 +19,10 @@
     *ngFor="let item of details$" 
     [item]="item" 
     [lang]="lang" 
+    [myFavorite]="true"
     (linked)="linktoDetail($event)" 
     (addMyPlan)="addMyPlan($event)" 
-    (setFav)="setFavorite($event)">
+    (setFav)="setFavorite($event)"
+    (delFav)="deleteFavorite($event)">
   </app-planspot-list-item>
 </div>

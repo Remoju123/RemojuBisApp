@@ -1,7 +1,7 @@
 <form #formCheck="ngForm" id="myplan">
   <div class="top">
     <div class="title">
-      {{ "MakeMyPlan" | translate }}
+      {{ "ArragePlan" | translate }}
     </div>
     <div class="switchView" [ngClass]="{'en':lang==='en'}">
       <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row?.planSpots">
@@ -223,7 +223,7 @@
                     </div>
                   </dt>
                   <dt cdkDragHandle>
-                    <img src="../../../assets/img/icon_drag.svg" width="16px"/>
+                    <img src="../../../assets/img/icon_swap.svg" width="16px"/>
                   </dt>
                 </dl>
               </mat-expansion-panel-header>

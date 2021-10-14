@@ -12,9 +12,10 @@ export class IndexedDBService {
 
   // DB
   dbName = "Remoju";
-  version = 5;
+  version = 6;
 
   // オブジェクトストア
+  storeListSearchConditionMyfav = "ListSearchConditionMyfav";
   storeListSearchCondition = "ListSearchCondition";
   storeListSearchConditionSpot = "ListSearchConditionSpot";
   storeListSearchConditionPlan = "ListSearchConditionPlan";
@@ -23,11 +24,16 @@ export class IndexedDBService {
   storeHistorySpot = "HistorySpot";
   storeHistoryPlan = "HistoryPlan";
 
+  // マイページお気に入り一覧検索条件
+  async getListSearchConditionMyfav(){
+    return this.getStoreValue(this.storeListSearchConditionMyfav);
+  }
+
   async getListSearchCondition(){
     return this.getStoreValue(this.storeListSearchCondition);
   }
 
-  // スポット一覧検索条件取得
+  // スポット一覧検索条件取得　
   async getListSearchConditionSpot() {
     return this.getStoreValue(this.storeListSearchConditionSpot);
   }
@@ -83,6 +89,10 @@ export class IndexedDBService {
   // プラン閲覧履歴取得
   async getHistoryPlan(){
     return this.getStoreValue(this.storeHistoryPlan);
+  }
+
+  async registListSearchConditionMyfav(value: ListSearchCondition) {
+    return this.registStore(this.storeListSearchConditionMyfav, value);
   }
 
   async registListSearchCondition(value: ListSearchCondition) {
@@ -254,6 +264,7 @@ export class IndexedDBService {
   // DBオープン、オブジェクトストア作成
   openDb(){
     const openRequest = indexedDB.open(this.dbName, this.version);
+    const storeListSearchConditionMyfav = this.storeListSearchConditionMyfav;
     const storeListSearchCondition = this.storeListSearchCondition;
     const storeListSearchConditionSpot = this.storeListSearchConditionSpot;
     const storeListSearchConditionPlan = this.storeListSearchConditionPlan;
@@ -266,6 +277,9 @@ export class IndexedDBService {
     openRequest.onupgradeneeded = function(){
       let db = openRequest.result;
       // オブジェクトストアを削除
+      if (db.objectStoreNames.contains(storeListSearchConditionMyfav)) {
+        db.deleteObjectStore(storeListSearchConditionMyfav);
+      }
       if (db.objectStoreNames.contains(storeListSearchCondition)) {
         db.deleteObjectStore(storeListSearchCondition);
       }
@@ -289,6 +303,9 @@ export class IndexedDBService {
       }
 
       // オブジェクトストアを作成
+      if (!db.objectStoreNames.contains(storeListSearchConditionMyfav)){
+        db.createObjectStore(storeListSearchConditionMyfav);
+      }
       if (!db.objectStoreNames.contains(storeListSearchCondition)){
         db.createObjectStore(storeListSearchCondition);
       }

@@ -161,7 +161,7 @@ export class PlanSpotListService {
     return _result;
   }
 
-  // データセット作成
+  // データセット作成（メイン）
   async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster){
     /*-----------------------------------------
     * 1.絞り込み処理
@@ -199,20 +199,24 @@ export class PlanSpotListService {
     const areas:any[] = [];
     const cates:any[] = [];
 
-    const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
+    let Categories = [];
 
-    const Categories = [
-      ...$master[0].dataSelecteds,
-      ...$master[1].dataSelecteds,
-      ...$master[2].dataSelecteds,
-      ...$master[3].dataSelecteds,
-      ...$master[4].dataSelecteds,
-      ...$master[5].dataSelecteds,
-      ...$master[6].dataSelecteds,
-      ...$master[7].dataSelecteds,
-      ...$master[8].dataSelecteds,
-      ...$master[9].dataSelecteds,
-    ]
+    if(master.mSearchCategoryPlan){
+      const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
+
+      Categories = [
+        ...$master[0].dataSelecteds,
+        ...$master[1].dataSelecteds,
+        ...$master[2].dataSelecteds,
+        ...$master[3].dataSelecteds,
+        ...$master[4].dataSelecteds,
+        ...$master[5].dataSelecteds,
+        ...$master[6].dataSelecteds,
+        ...$master[7].dataSelecteds,
+        ...$master[8].dataSelecteds,
+        ...$master[9].dataSelecteds,
+      ]
+    }
 
     const langpipe = new LangFilterPipe();
 

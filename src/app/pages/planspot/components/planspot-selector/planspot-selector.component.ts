@@ -17,7 +17,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Input() mSort:DataSelected[];
   @Input() searchTarms:tarms;
   @Input() googleSearchArea: string;
-
+  @Input() myFavorite: boolean;
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();

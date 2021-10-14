@@ -7,15 +7,16 @@
             <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" />
           </a>
         </span>
-          <!--button mat-icon-button aria-label="mypage" class="user"
-          matTooltip="{{userName}}" (click)="linktoProfile()">
-            <img src="{{pictureUrl}}" alt="user">
-          </button-->
         
         <span class="menu">
-          <button mat-icon-button class="favorite" aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
+          <!-- <button mat-icon-button class="favorite" aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small" (click)="linktoFavorite()">
             <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
+          </button> -->
+
+          <button mat-icon-button class="user" aria-label="user" (click)="linktoProfile()">
+            <img src="{{pictureUrl}}" alt="user">
           </button>
+
           <button mat-icon-button class="menu" color="primary" aria-label="menu" (click)="toggleactive()">
             <mat-icon>more_vert</mat-icon>
           </button>

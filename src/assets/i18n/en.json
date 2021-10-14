@@ -223,6 +223,7 @@
   "VideoSizeError": "Video files larger than 100MB cannot be uploaded.",
   "FreeMemoEx": "Message for everyone",
   "MakeMyPlan": "Make my plan",
+  "ArragePlan": "アレンジする",
   "SetDeparturePoint": "Origin",
   "SetDestination": "Destination",
   "PointOfDeparture": "Point of departure",

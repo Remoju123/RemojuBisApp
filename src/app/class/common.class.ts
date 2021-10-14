@@ -83,6 +83,8 @@ export class ListSelected {
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
   condition: ListSearchCondition;
+
+  isGoogle: boolean;
 }
 
 export class ListSelectedPlan {

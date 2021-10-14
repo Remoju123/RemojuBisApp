@@ -1,9 +1,9 @@
 <mat-card id="planspot-selector">
   <mat-card-content>
-    <div class='row title'>
+    <div class='row title' *ngIf="!myFavorite">
       {{ "FindEveryoneRecommendations" | translate}}
     </div>
-    <div class='row input'>
+    <div class='row input' *ngIf="!myFavorite">
       <input type="text"
         placeholder="「京都女子旅」「スカイツリー」..."
         class="keyword"
@@ -18,7 +18,6 @@
       </button>
     </div>
     <div class='row switch'>
-      <!-- <span>{{condition.select}}</span> -->
       <div class="switch-toggle">
         <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
         <label for="all" class="all" value="all">All</label>
@@ -26,8 +25,10 @@
         <label for="spot" class="spot" value="spot">Spot</label>
         <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
         <label for="plan" class="plan">Plan</label>
-        <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
-        <label for="google" class="google">Google</label>
+        <ng-container *ngIf="!myFavorite" >
+          <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
+          <label for="google" class="google">Google</label>
+        </ng-container>
       </div>
     </div>
     <div class='row info'>
@@ -41,7 +42,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div class='buttons'>
+      <div class='buttons' *ngIf="!myFavorite">
         <button mat-button class="spot-search" (click)="openDialog(0)">
           {{ 'AreaAndCommitment' | translate }}
         </button>
@@ -55,7 +56,6 @@
         <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
       </button>
       <button class="popupItem reset" (click)="condReset()">
-        <!-- <img src="../../../../../assets/img/pop_reset.svg" alt=""> -->
         <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
       </button>
     </div>
@@ -73,7 +73,6 @@
         <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
       </button>
       <button class="popupItem reset" (click)="condReset()">
-        <!-- <img src="../../../../../assets/img/pop_reset.svg" alt=""> -->
         <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
       </button>
     </div>

@@ -35,7 +35,8 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
   exports: [
     PlanspotComponent,
     PlanspotListComponent,
-    PlanspotListItemComponent
+    PlanspotListItemComponent,
+    PlanspotSelectorComponent
   ]
 })
 export class PlanspotModule { }
