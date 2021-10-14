@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject,AfterViewChecked} from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, ParamMap, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { DataSelected, ListSelectMaster } from 'src/app/class/common.class';
+import { MyPlanApp, ComfirmDialogParam, DataSelected, ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { CacheStore, PlanSpotList, tarms } from 'src/app/class/planspotlist.class';
 import { isPlatformBrowser } from '@angular/common';
@@ -97,6 +97,24 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
   async ngOnInit() {
     this.guid= await this.commonService.getGuid();
     this.recoveryQueryParams();
+
+    // 共有プランの場合
+    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: ParamMap) => {
+      const id = params.get("id");
+      if (id){
+        // 編集中のプランを確認して共有プランを開く
+        await this.checkPlan(id);
+/*
+        if(isPlatformBrowser(this.platformId)){
+          history.replaceState(id, "", "");
+          // history back desabled
+          history.pushState(null,null,null);
+          window.onpopstate = () =>{
+            history.pushState(null,null,null);
+          }
+        }*/
+      }
+    });
 
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
@@ -257,10 +275,10 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         history.replaceState(
           "search_key",
           "",
-          location.pathname.substring(1) + "?" + searchParams
+          location.pathname.substring(1, location.pathname.lastIndexOf("/")) + "?" + searchParams
         );
       } else {
-        history.replaceState("search_key", "", location.pathname.substring(1));
+        history.replaceState("search_key", "", location.pathname.substring(1, location.pathname.lastIndexOf("/")));
       }
       // history back desabled
       history.pushState(null,null,null);
@@ -416,4 +434,45 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     item.isFavorite = !item.isFavorite;
   }
 
+  async checkPlan(id: string){
+    // 編集中のプランを取得
+    let myPlan: any = await this.indexedDBService.getEditPlan();
+    const myPlanApp: MyPlanApp = myPlan;
+
+    if (myPlanApp && !myPlanApp.isSaved){
+      // 確認ダイアログの表示
+      const param = new ComfirmDialogParam();
+      param.title = "EditPlanConfirmTitle";
+      param.text = "EditPlanConfirmText";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
+        } else {
+          // 共有プランを開く
+          this.openSharedPlan(id);
+        }
+      });
+    } else {
+      // 共有プランを開く
+      this.openSharedPlan(id);
+    }
+  }
+
+  openSharedPlan(id: string){
+    // DBから取得
+    this.myplanService.getPlanUser(id).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      if (!r) {
+        // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
+        // return;
+      }
+      // プラン作成に反映
+      this.myplanService.onPlanUserChanged(r);
+      // プランを保存
+      this.indexedDBService.registPlan(r);
+      // マイプランパネルを開く
+      this.commonService.onNotifyIsShowCart(true);
+    });
+  }
 }

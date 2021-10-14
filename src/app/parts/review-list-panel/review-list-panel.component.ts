@@ -17,14 +17,14 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ["./review-list-panel.component.scss"]
 })
 export class ReviewListPanelComponent implements OnInit, OnDestroy {
-  
+
   @Input() reviewResult: ReviewResult;
   @Input() type: number; // 1:スポット 2:Remojuプラン 3:ユーザプラン
   @Input() id: number;
   @Input() spotplanName: string;
-  
+
   private onDestroy$ = new Subject();
-  
+
   constructor(
     private commonService: CommonService,
     private spotService: SpotService,
@@ -87,12 +87,12 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
         this.commonService.snackBarDisp("ReviewSaved");
         this.reviewResult = r;
         this.dispReview(0);
-        
+
         console.log(r.avgEvaluation);
         this.avgEvaluation = r.avgEvaluation.toFixed(2);
       }
     });
-  }  
+  }
 
   onClickMore(){
     if (this.dispQty + this.reviewResult.qty > this.reviewResult.reviews.length){
@@ -100,7 +100,7 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
     } else {
       this.dispQty += this.reviewResult.qty;
     }
-   this.dispReview(this.dispQty); 
+   this.dispReview(this.dispQty);
   }
 
   dispReview(startidx: number){
@@ -149,8 +149,6 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "ReviewRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // レビューを削除する
@@ -197,8 +195,6 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
     const param = new ComfirmDialogParam();
     param.title = "ReportReviewConfirmTitle";
     param.text = "ReportReviewConfirmText";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {

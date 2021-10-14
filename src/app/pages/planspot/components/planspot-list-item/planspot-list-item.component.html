@@ -71,7 +71,7 @@
             </span>
             <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
-            
+
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot" >
             <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>

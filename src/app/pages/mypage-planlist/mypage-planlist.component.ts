@@ -89,8 +89,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     else {
       param.title = "ReleaseConfirm";
     }
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
@@ -120,8 +118,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "PlanRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // プランを削除する
@@ -270,16 +266,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       const param = new ComfirmDialogParam();
       param.title = "EditPlanConfirmTitle";
       param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
         if (r === "ok") {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        } else {
           // プランを取得してプラン作成に反映
           this.getPlan(planUserId);
+        } else {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
         }
       });
     } else {

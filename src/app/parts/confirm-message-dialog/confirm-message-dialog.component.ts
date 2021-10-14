@@ -18,10 +18,10 @@ export class ConfirmMessageDialogComponent implements OnInit {
 
   ngOnInit() {
     if (!this.data.leftButton){
-      this.data.leftButton = "Cancel";
+      this.data.leftButton = "OK";
     }
     if (!this.data.rightButton){
-      this.data.rightButton = "OK";
+      this.data.rightButton = "Cancel";
     }
   }
 
