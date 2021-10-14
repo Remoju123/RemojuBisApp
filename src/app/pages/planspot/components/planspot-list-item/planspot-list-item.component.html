@@ -70,7 +70,7 @@
             </span>
             <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
-            
+
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot" >
             <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>
@@ -166,7 +166,7 @@
             <span class="note">
               Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。
             </span>
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
           </mat-list-item>
           <mat-list-item class="row mt1">
