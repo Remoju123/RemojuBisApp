@@ -4,7 +4,7 @@
       {{ "ArragePlan" | translate }}
     </div>
     <div class="switchView" [ngClass]="{'en':lang==='en'}">
-      <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+      <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row?.planSpots">
       <label for="switch-view"><span></span></label>
       <div id="swImg"></div>
     </div>
@@ -14,7 +14,7 @@
   <mat-card *ngIf="isEdit" class="myplan-edit">
     <mat-card-content>
       <mat-accordion #mepPlan="matAccordion">
-        <mat-expansion-panel id="edit" #mep class="edit" [hideToggle]=true [disabled]="!row">
+        <mat-expansion-panel id="edit" #mep class="edit" [hideToggle]=true [disabled]="!row?.planSpots">
           <mat-expansion-panel-header>
             <div class="myplan-edit-box">
               <div class="lt">
@@ -25,7 +25,7 @@
               </div>
               <div class="rt" (click)="$event.stopPropagation()">
                 <!-- バス -->
-                <button class="option" (click)="onClickBus()" [disabled]="!row">
+                <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
                   <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
                   <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
                   <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
@@ -34,7 +34,7 @@
                 </button>
 
                 <!-- 最短ルート -->
-                <button class="option" (click)="onClickAuto()" [disabled]="!row">
+                <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
                   <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
                   <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
                     <img src="/assets/img/keiro.svg" alt="Auto">
@@ -126,7 +126,7 @@
       <div class="set depart">
         <div class="lt">
           <!-- 出発地を設定 -->
-          <button id="dept" type="button" class="setting" mat-button (click)="onClickStartEndSelect(true)" [disabled]="!row">
+          <button id="dept" type="button" class="setting" mat-button (click)="onClickStartEndSelect(true)" [disabled]="!row?.planSpots">
           </button>
           <label for="dept" *ngIf="!row?.startPlanSpot?.spotName; else startSpot">{{ "SetDeparturePoint" | translate }}</label>
           <ng-template #startSpot>
@@ -338,7 +338,7 @@
       <!-- 到着地を設定 -->
       <div class="set arrival">
         <div class="lt">
-          <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)" [disabled]="!row"></button>
+          <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)" [disabled]="!row?.planSpots"></button>
           <label for="arri" *ngIf="!row?.endPlanSpot?.spotName; else endSpot">{{ "SetDestination" | translate }}</label>
           <ng-template #endSpot>
             <span>{{ row?.endPlanSpot.spotName }}</span>
@@ -350,7 +350,7 @@
       <div class="bottom">
         <div></div>
         <div class="switchView" [ngClass]="{'en':lang==='en'}">
-          <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+          <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row?.planSpots">
           <label for="switch-view"><span></span></label>
           <div id="swImg"></div>
         </div>
@@ -561,7 +561,7 @@
     <div class="bottom prev">
       <div></div>
       <div class="switchView" [ngClass]="{'en':lang==='en'}">
-        <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+        <input type="checkbox" id="switch-view" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row?.planSpots">
         <label for="switch-view"><span></span></label>
         <div id="swImg"></div>
       </div>
