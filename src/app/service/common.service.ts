@@ -214,14 +214,12 @@ export class CommonService implements OnDestroy{
     if(myPlanApp && !myPlanApp.isSaved){
       // 削除確認
       const param = new ComfirmDialogParam();
-      param.title = "EditPlanConfirmTitle";
-      param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
+      param.title = "LogoutConfirmTitle";
+      param.text = "LogoutConfirmText";
       const dialog = this.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
         // プランを破棄してログアウト
-        if (result === "cancel"){
+        if (result === "ok"){
           this.indexedDBService.clearMyPlan();
           localStorage.removeItem("iskeep");
           this.oauthService.logOut();

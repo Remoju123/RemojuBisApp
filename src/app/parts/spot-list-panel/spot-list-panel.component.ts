@@ -37,7 +37,7 @@ export class SpotListPanelComponent implements OnInit {
 
   //GUID
   guid: string;
-  
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -79,8 +79,6 @@ export class SpotListPanelComponent implements OnInit {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "FavoriteRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // お気に入りを削除する
@@ -96,7 +94,7 @@ export class SpotListPanelComponent implements OnInit {
     if (await this.commonService.checkAddPlan(1) === false){
       return;
     }
-    
+
     // プランに追加
     this.spotListService
     .addSpot(row.spotId, row.googleSpot ? 2 : 1, row.googleSpot).then(result => {
@@ -111,7 +109,7 @@ export class SpotListPanelComponent implements OnInit {
         }
       });
     });
-  }  
+  }
 
   // スポット詳細へ遷移
   linktoSpot(id:any){

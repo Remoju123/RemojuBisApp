@@ -304,8 +304,6 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
         const param = new ComfirmDialogParam();
         param.title = "CreatedPlanSaveTitle";
         param.text = "CreatedPlanSaveText";
-        param.leftButton = "Cancel";
-        param.rightButton = "OK";
         const dialog = this.commonService.confirmMessageDialog(param);
         dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
           // このページにとどまる

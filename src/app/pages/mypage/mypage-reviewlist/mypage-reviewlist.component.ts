@@ -59,7 +59,7 @@ export class MypageReviewlistComponent implements OnInit {
   }
 
   onClickPosted(review?: Review){
-    
+
     const dialog = this.dialog.open(ReviewPostDialogComponent, {
       maxWidth: "100%",
       width: "92vw",
@@ -72,10 +72,10 @@ export class MypageReviewlistComponent implements OnInit {
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (r && r !== "cancel"){
         this.commonService.snackBarDisp("ReviewSaved");
-        
+
         //this.reviewResult = r;
         //this.dispReview(0);
-        
+
         //console.log(r.avgEvaluation);
         //this.avgEvaluation = r.avgEvaluation.toFixed(2);
         this.getMyReview();
@@ -87,8 +87,6 @@ export class MypageReviewlistComponent implements OnInit {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "ReviewRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if(d === "ok"){
