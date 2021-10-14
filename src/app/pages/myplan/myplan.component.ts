@@ -378,8 +378,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "SpotAllClearConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
@@ -547,8 +545,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       // 確認ダイアログの表示
       const param = new ComfirmDialogParam();
       param.title = "SavePlanConfirm";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {
@@ -702,8 +698,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       const param = new ComfirmDialogParam();
       param.title = "NewPlanConfirmTitle";
       param.text = "NewPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         // 新しいプランを作成する
@@ -832,7 +826,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
-      data: this.row.isShare && this.row.isSaved ? this.baseUrl + this.lang + "/sharedplan/" + this.row.shareUrl : "",
+      data: this.row.isShare && this.row.isSaved ? this.baseUrl + this.lang + "/planspot/" + this.row.shareUrl : "",
       autoFocus: false
     });
   }

@@ -182,8 +182,8 @@
   "Preview": "プレビュー表示",
   "EndOfPublication": "掲載終了",
   "ShowRoute": "経路を表示",
-  "EditPlanConfirmTitle": "編集中のプランがあります。戻って編集を再開しますか？",
-  "EditPlanConfirmText": "「いいえ」を選択した場合、未保存の編集内容は削除されます。",
+  "EditPlanConfirmTitle": "このプランを編集しますか？（未保存のプランがあります。）",
+  "EditPlanConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "Close": "閉じる",
   "PlanSaved": "プランを保存しました。",
   "PlanClearConfirm": "このプランを本当に破棄しますか？",
@@ -280,5 +280,7 @@
   "isSave":"保存する",
   "ViewUserPost":"この投稿者の投稿一覧へ",
   "ViewReview":"投稿したレビューを見る",
-  "NoReviewMsg":"投稿中のレビューはありません"
+  "NoReviewMsg":"投稿中のレビューはありません",
+  "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
+  "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。"
 }

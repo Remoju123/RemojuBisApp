@@ -280,5 +280,7 @@
   "isSave":"保存する",
   "ViewUserPost":"この投稿者の投稿一覧へ",
   "ViewReview":"投稿したレビューを見る",
-  "NoReviewMsg":"投稿中のレビューはありません"
+  "NoReviewMsg":"投稿中のレビューはありません",
+  "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
+  "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。"
 }

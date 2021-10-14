@@ -3,6 +3,6 @@
   <div style="word-wrap: break-word;">{{ data }}</div>
 </mat-dialog-content>
 <mat-dialog-actions>
+  <button mat-raised-button (click)="onClickCopy()">{{ 'Copy' | translate }}</button>
   <button mat-raised-button mat-dialog-close="cancel">{{ 'Return' | translate }}</button>
-  <button *ngIf="data" mat-raised-button (click)="onClickCopy()">{{ 'Copy' | translate }}</button>
 </mat-dialog-actions>
