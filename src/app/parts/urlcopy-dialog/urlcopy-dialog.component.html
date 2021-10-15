@@ -1,8 +1,9 @@
-<h2 mat-dialog-title>{{ 'SharePlanSave' | translate }}</h2>
+<h2 mat-dialog-title>URL共有</h2>
+<p>このリンクを知っているユーザーに共有できます。</p>
 <mat-dialog-content>
-  <div style="word-wrap: break-word;">{{ data }}</div>
+  <div class="url">{{ data }}</div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button (click)="onClickCopy()">{{ 'Copy' | translate }}</button>
+  <button mat-raised-button class="ok" (click)="onClickCopy()">{{ 'Copy' | translate }}</button>
   <button mat-raised-button mat-dialog-close="cancel">{{ 'Return' | translate }}</button>
 </mat-dialog-actions>

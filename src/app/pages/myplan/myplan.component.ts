@@ -823,6 +823,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // URL共有ダイアログの表示
   shareDialog() {
     this.dialog.open(UrlcopyDialogComponent, {
+      id:"urlShare",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
