@@ -169,8 +169,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "FavoriteRemoveConfirm";
-    // param.leftButton = "OK";
-    // param.rightButton = "Cancel";
+    // param.leftButton = "Cancel";
+    // param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // お気に入りを削除する
