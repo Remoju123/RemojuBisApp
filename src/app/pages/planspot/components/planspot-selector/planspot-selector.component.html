@@ -1,22 +1,35 @@
 <mat-card id="planspot-selector">
   <mat-card-content>
-    <div class='row title'>
-      みんなのおすすめを探す
+    <div class='row title' *ngIf="!myFavorite">
+      {{ "FindEveryoneRecommendations" | translate}}
     </div>
-    <div class='row'>
-      <input type="search" 
-        placeholder="「京都女子旅」「スカイツリー」..." 
+    <div class='row input' *ngIf="!myFavorite">
+      <input type="text"
+        placeholder="「京都女子旅」「スカイツリー」..."
         class="keyword"
+        #keywordInput
         [value]="condition.keyword"
         (keyup.enter)="onKeywordSearch($event)"
-        (search)="onKeywordSearch($event)"
+        (blur)="onKeywordSearch($event)"
       />
-    </div>
-    <div class='row button'>
-      <!-- <span>{{condition.select}}</span> -->
-      <button mat-button class="spot-search">
-        {{ 'AreaAndCommitment' | translate }}
+      <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="">
+      <button mat-button class="reset" (click)="inputClear()">
+        <img src="../../../../../assets/img/reset_btn.svg" alt="reset">
       </button>
+    </div>
+    <div class='row switch'>
+      <div class="switch-toggle">
+        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
+        <label for="all" class="all" value="all">All</label>
+        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
+        <label for="spot" class="spot" value="spot">Spot</label>
+        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
+        <label for="plan" class="plan">Plan</label>
+        <ng-container *ngIf="!myFavorite" >
+          <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
+          <label for="google" class="google">Google</label>
+        </ng-container>
+      </div>
     </div>
     <div class='row info'>
       <div class='count'>
@@ -29,14 +42,39 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="switch-toggle">
-        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
-        <label for="spot" class="spot" value="spot">Spot</label>
-        <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
-        <label for="all" class="all" value="all">All</label>
-        <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
-        <label for="plan" class="plan">Plan</label>
+      <div class='buttons' *ngIf="!myFavorite">
+        <button mat-button class="spot-search" (click)="openDialog(0)">
+          {{ 'AreaAndCommitment' | translate }}
+        </button>
       </div>
     </div>
+    <div class='row result' [ngClass]="{'on':this.chkTarms()}">
+      <button class='popupItem are' (click)="openDialog(0)">
+        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
+      </button>
+      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
+        <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
+      </button>
+      <button class="popupItem reset" (click)="condReset()">
+        <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
+      </button>
+    </div>
   </mat-card-content>
+
+  <div class='popup' [ngClass]="{'on':isChk}">
+    <div class='popupInner'>
+      <button class="popupItem cnt">
+        <span>{{count}}件</span>
+      </button>
+      <button class='popupItem are' (click)="openDialog(0)">
+        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
+      </button>
+      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
+        <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
+      </button>
+      <button class="popupItem reset" (click)="condReset()">
+        <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
+      </button>
+    </div>
+  </div>
 </mat-card>

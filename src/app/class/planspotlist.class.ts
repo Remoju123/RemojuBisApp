@@ -1,4 +1,4 @@
-import { DataSelected } from "./common.class";
+import { DataSelected, ListSelectMaster } from "./common.class";
 import { SpotSearchCategory } from "./spotlist.class";
 import { PlanSearchCategory, PlanSpotName } from "./planlist.class";
 
@@ -16,8 +16,6 @@ export interface NestDataSelected {
   selected: boolean;
 }
 export class PlanSpotListSearchResult {
-    // 1ページあたりの表示件数
-    pageViewQty: number;
     // 検索結果
     planSpotList: PlanSpotList[];
     // 営業曜日
@@ -54,7 +52,7 @@ export class PlanSpotList_bk {
   releaseCreateDatetime: string;
   // 検索カテゴリ
   spotSearchCategories: SpotSearchCategory[];
-  
+
   planSearchCategories: PlanSearchCategory[];
 
   pictures: string[];
@@ -62,7 +60,7 @@ export class PlanSpotList_bk {
   isEndOfPublication: boolean;
 
   objectId:string;
-  
+
   guid:string;
 }
 
@@ -110,16 +108,35 @@ export class PlanSpotList {
   userPictureUrl: string;
   versionNo: number;
 }
+export class UserPlanList {
+  userPlans:PlanSpotList[];
+  searchCategories:string[];
 
+  constructor(){
+    this.userPlans = [];
+    this.searchCategories = [];
+  }
+
+  reset():void{
+    this.userPlans = [];
+    this.searchCategories = [];
+  }
+}
 
 export class searchResult{
   constructor(){
     this.searchParamsObj = new SearchParamsObj;
   }
   list: PlanSpotList[];
-  searchTarm: string;
+  searchTarm: tarms;
   searchParams: string;
   searchParamsObj: SearchParamsObj;
+  googleSearchArea: string;
+}
+
+export class tarms{
+  area:string;
+  cate:string;
 }
 
 export class SearchParamsObj{
@@ -130,6 +147,7 @@ export class SearchParamsObj{
   srt: string;
   rep: boolean;
   usp:boolean;
+  kwd: string;
 }
 
 
@@ -190,6 +208,11 @@ export class CacheStore {
   sortval:string;
   keyword:string;
   mSort:DataSelected[];
+  isList:boolean;
+  tabIndex:number;
+  ListSelectMaster:ListSelectMaster;
+  optionKeywords: tarms;
+  googleSearchArea: string;
 }
 
 export class GoogleSpot {
@@ -219,4 +242,11 @@ export class MArea {
   map_url: string;
   area_name_1: string;
   area_name_2: string;
+}
+
+export class GoogleSearchResult {
+    // 次ページ検索token
+    tokenGoogle: string;
+    // 検索結果
+    planSpotList: PlanSpotList[];
 }

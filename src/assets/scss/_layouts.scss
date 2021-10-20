@@ -1,4 +1,6 @@
 // margin & padding指定の汎用クラス
+@use "sass:math";
+
 $num:4;
 
 @for $i from 0 through 10 {
@@ -55,9 +57,10 @@ $fs-max: 20;
 
 // width カラム幅指定の汎用クラス
 @for $i from 1 through 8 {
-  $width: percentage(1 / $i);
+  $width: percentage( math.div(1, $i));
 
   .col#{$i} {
     width: $width;
   }
 }
+

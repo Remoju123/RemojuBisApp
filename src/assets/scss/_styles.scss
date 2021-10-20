@@ -6,6 +6,7 @@ body {
   color: #666;
   -webkit-font-smoothing: antialiased;
   touch-action: pan-x pan-y;
+  -webkit-touch-callout:none; /* リンク長押しのポップアップを無効化 */
 }
 
 body {
@@ -23,7 +24,7 @@ h6 {
 
 p {
   font-family: "Noto Sans JP";
-  line-height: 1.8;
+  line-height: 1.7;
   text-align: justify;
   text-justify: inter-ideograph;
   color: #4d4d4d;

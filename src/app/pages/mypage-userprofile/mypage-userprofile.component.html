@@ -1,3 +1,20 @@
+<div class='header'>
+  <div class='row'>
+    <div class='title'>{{"UserProfile"|translate}}</div>
+    <button type="button" class="edit" (click)="onClickPreviewSwitch()">
+      <ng-container *ngIf="isPreview; else isEdit">
+        {{"isEdit"|translate}}
+      </ng-container>
+      <ng-template #isEdit>
+        {{"Preview"|translate}}
+      </ng-template>
+    </button>
+  </div>
+  <div class='label'>
+    {{"EditUserProfileTitle"|translate}}
+  </div>
+</div>
+
 <form [formGroup]="myForm" (ngSubmit)="onClickUpdate()" id="uprof">
   <ng-container *ngIf="data && !isPreview">
     <mat-card>
@@ -8,27 +25,11 @@
               <button mat-button class="return" (click)="onClickPreviewSwitch()">{{ "Preview" | translate }}</button>
               <div class="wrap">
                 <img
-                  *ngIf="
-                    data.coverPreviewUrl !== null && data.coverPreviewUrl !== undefined
-                  "
-                  [src]="data.coverPreviewUrl"
+                  *ngIf="data.coverImageCropped || data.coverPreviewUrl || data.coverUrl"
+                  [src]="data.coverImageCropped ?? data.coverPreviewUrl ?? data.coverUrl"
                   alt=""
                 />
-                <img
-                  *ngIf="
-                  (data.coverPreviewUrl === null || data.coverPreviewUrl === undefined) 
-                  && data.coverUrl !== null && data.coverUrl !== undefined
-                  "
-                  [src]="data.coverUrl"
-                  alt=""
-                />
-                <span
-                  *ngIf="
-                    (data.coverPreviewUrl === null || data.coverPreviewUrl === undefined)
-                    && (data.coverUrl === null || data.coverUrl === undefined)
-                  "
-                  >no image</span
-                >
+                <span *ngIf="!data.coverImageCropped && !data.coverPreviewUrl && !data.coverUrl">no image</span>
               </div>
               <input
                 type="file"
@@ -37,34 +38,23 @@
                 accept="image/*"
                 (change)="onChangeCoverFileInput()"
               />
-              <button type="button" mat-button class="edit" (click)="onClickCoverFileInputButton()">
+              <button type="button" mat-button class="edit" [matMenuTriggerFor]="coverMenu">
                 {{ "editCoverImage" | translate }}
               </button>
+              <mat-menu #coverMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="onClickCoverFileInputButton()"><mat-icon>photo</mat-icon>写真を選択する</button>
+                <button [disabled]="!data.coverFile" mat-menu-item (click)="onClickCropCover()"><mat-icon>crop</mat-icon>{{"Edit"|translate}}</button>
+                <button [disabled]="!data.coverFile" mat-menu-item (click)="onDeleteCoverFile()"><mat-icon>delete</mat-icon>削除する</button>
+              </mat-menu>
             </div>
             <div class="user">
               <div class="wrap">
                 <img
-                  *ngIf="
-                    data.picturePreviewUrl !== null && data.picturePreviewUrl !== undefined
-                  "
-                  [src]="data.picturePreviewUrl"
+                  *ngIf="data.imageCropped || data.picturePreviewUrl || data.pictureUrl"
+                  [src]="data.imageCropped ?? data.picturePreviewUrl ?? data.pictureUrl"
                   alt=""
                 />
-                <img
-                  *ngIf="
-                  (data.picturePreviewUrl === null || data.picturePreviewUrl === undefined) 
-                  && data.pictureUrl !== null && data.pictureUrl !== undefined
-                  "
-                  [src]="data.pictureUrl"
-                  alt=""
-                />
-                <span
-                  *ngIf="
-                    (data.picturePreviewUrl === null || data.picturePreviewUrl === undefined)
-                    && (data.pictureUrl === null || data.pictureUrl === undefined)
-                  "
-                  >no image</span
-                >
+                <span *ngIf="!data.imageCropped && !data.picturePreviewUrl && !data.pictureUrl">no image</span>
               </div>
               <input
                 type="file"
@@ -73,9 +63,14 @@
                 accept="image/*"
                 (change)="onChangeFileInput()"
               />
-              <button type="button" mat-button class="edit" (click)="onClickFileInputButton()">
+              <button type="button" mat-button class="edit" [matMenuTriggerFor]="userMenu">
                 {{ "SelectPhoto" | translate }}
               </button>
+              <mat-menu #userMenu="matMenu" xPosition="before">
+                <button mat-menu-item (click)="onClickFileInputButton()"><mat-icon>photo</mat-icon>写真を選択する</button>
+                <button mat-menu-item (click)="onClickCropUser()" [disabled]="!data.pictureFile"><mat-icon>crop</mat-icon>{{"Edit"|translate}}</button>
+                <button mat-menu-item (click)="onDeleteUserFile()" [disabled]="!data.pictureFile"><mat-icon>delete</mat-icon>削除する</button>
+              </mat-menu>
             </div>
           </div>
         </div>
@@ -84,9 +79,6 @@
 
     <!-- プロフィール編集 -->
     <mat-card>
-      <mat-card-header>
-        <h4>{{ "EditUserProfileTitle" | translate }}</h4>
-      </mat-card-header>
       <mat-card-content>
         <mat-list>
           <!-- ユーザー名 -->
@@ -116,7 +108,7 @@
               <mat-select formControlName="country">
                 <mat-option *ngFor="let c of $country" [value]="c.id">{{c.name}}</mat-option>
               </mat-select>
-            </mat-form-field>        
+            </mat-form-field>
           </mat-list-item>
           <!-- 自己紹介 -->
           <mat-list-item>
@@ -134,87 +126,106 @@
         </mat-list>
       </mat-card-content>
     </mat-card>
-    
-    <!-- 非公開情報 -->
-    <mat-card>
-      <mat-card-header>
-        <h4>{{ "PrivateInformation" | translate }}</h4>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list>
-          <!-- メールアドレス -->
-          <mat-list-item>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ "EMail" | translate }}</mat-label>
-              <input
-              matInput
-              formControlName="email"
-              />
-            </mat-form-field>
-          </mat-list-item>
-          <!-- パスワード -->
-          <mat-list-item class="pw">
-            <mat-form-field appearance="outline">
-              <mat-label>{{ "Password" | translate }}</mat-label>
-              <input
-              matInput
-              formControlName="password"
-              />
-            </mat-form-field>
-            <button type="button" mat-button class="pwchange" (click)="onClickChangePassword()">
-              {{ "ChangePassword" | translate }}
-            </button>
-          </mat-list-item>
-          <!-- 姓 -->
-          <mat-list-item>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ "Surname" | translate }}</mat-label>
-              <input
-                matInput
-                #surname
-                maxlength="20"
-                formControlName="surname"
-              />
-              <mat-hint align="end">{{surname.value?.length || 0}}/20{{ "Characters" | translate }}</mat-hint>
-            </mat-form-field>
-          </mat-list-item>
-          <!-- 名 -->
-          <mat-list-item>
-            <mat-form-field appearance="outline">
-              <mat-label>{{ "GivenName" | translate }}</mat-label>
-              <input
-                matInput
-                #givenName
-                maxlength="20"
-                formControlName="givenName"
-              />
-              <mat-hint align="end">{{givenName.value?.length || 0}}/20{{ "Characters" | translate }}</mat-hint>
-            </mat-form-field>
-          </mat-list-item>
-          <!-- 生年月日 -->
-          <mat-list-item class="birthday">
-            <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline">
-              <mat-label>{{ "Birthday" | translate }}</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                name="birthday"
-                formControlName="birthday"
-              />
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          </mat-list-item>
-          <mat-list-item class="bottom">
-            <button type="submit" class="save"
-              mat-button
-            >
-              {{ "Registration" | translate }}
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </mat-card-content>
-    </mat-card>
   </ng-container>
-  <app-userprofile-panel *ngIf="data && isPreview" [user]="data" [country]="countryAll" [edit]="isPreview" (event)="onClickPreviewSwitch()"></app-userprofile-panel>
+  
+  <mat-card>
+    <app-userprofile-panel *ngIf="data && isPreview" [user]="data" [country]="countryAll" [edit]="isPreview" (event)="onClickPreviewSwitch()"></app-userprofile-panel>
+  </mat-card>
+
+  <!-- 非公開情報 -->
+  <mat-card class="private">
+    <mat-card-header>
+      <div class='label'>{{ "PrivateInformation" | translate }}</div>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <!-- メールアドレス -->
+        <mat-list-item>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "EMail" | translate }}</mat-label>
+            <input
+            matInput
+            formControlName="email"
+            />
+          </mat-form-field>
+        </mat-list-item>
+        <!-- パスワード -->
+        <mat-list-item class="pw">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "Password" | translate }}</mat-label>
+            <input
+            matInput
+            formControlName="password"
+            />
+          </mat-form-field>
+          <button type="button" mat-button class="pwchange" (click)="onClickChangePassword()">
+            {{ "ChangePassword" | translate }}
+          </button>
+        </mat-list-item>
+        <!-- 姓 -->
+        <mat-list-item>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "Surname" | translate }}</mat-label>
+            <input
+              matInput
+              #surname
+              maxlength="20"
+              formControlName="surname"
+            />
+            <mat-hint align="end">{{surname.value?.length || 0}}/20{{ "Characters" | translate }}</mat-hint>
+          </mat-form-field>
+        </mat-list-item>
+        <!-- 名 -->
+        <mat-list-item>
+          <mat-form-field appearance="outline">
+            <mat-label>{{ "GivenName" | translate }}</mat-label>
+            <input
+              matInput
+              #givenName
+              maxlength="20"
+              formControlName="givenName"
+            />
+            <mat-hint align="end">{{givenName.value?.length || 0}}/20{{ "Characters" | translate }}</mat-hint>
+          </mat-form-field>
+        </mat-list-item>
+        <!-- 生年月日 -->
+        <mat-list-item class="birthday">
+          <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline">
+            <mat-label>{{ "Birthday" | translate }}</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              name="birthday"
+              formControlName="birthday"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <!-- <mat-hint style="color: red;">&emsp;年代は公表されます</mat-hint> -->
+            <div class='hint-end'>年代は公表されます</div>
+          </mat-form-field>
+        </mat-list-item>
+        <mat-list-item class="bottom" *ngIf="!isPreview">
+          <button type="submit" class="save"
+            mat-button
+          >
+            {{ "Registration" | translate }}
+          </button>
+        </mat-list-item>
+      </mat-list>
+      <div class='overray' *ngIf="isPreview"></div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class='footer'>
+    <div class='row'>
+      <button type="button" class="edit" (click)="onClickPreviewSwitch()">
+        <ng-container *ngIf="isPreview; else isEdit">
+        {{"isEdit"|translate}}
+      </ng-container>
+      <ng-template #isEdit>
+        {{"Preview"|translate}}
+      </ng-template>
+      </button>
+    </div>
+  </div>
 </form>

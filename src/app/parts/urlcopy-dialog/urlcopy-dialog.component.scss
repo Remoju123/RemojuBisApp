@@ -1,0 +1,67 @@
+@import "../../../assets/scss/vars";
+::ng-deep.cdk-global-overlay-wrapper{
+  align-items: center!important;
+}
+
+//::ng-deep.mat-dialog-container{
+::ng-deep{
+  #urlShare{
+    border-radius: 10px;
+    padding: 30px 26px!important;
+    .mat-dialog-title{
+      font-size: 16px;
+      display: inline-flex;
+      &::before{
+        content: url("../../../assets/img/icon_share.svg");
+        width: 28px;
+        height: 28px;
+        margin-right: 6px;
+        margin-top: 3px;
+      }
+      margin-bottom: 0;
+    }
+    p{
+      margin-top: 0;
+    }
+    .mat-dialog-content{
+      .url{
+        word-wrap: break-word;
+        font-size: 14px;
+        padding: 3px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      .text{
+        display: block;
+        font-size:14px;
+        margin-bottom: 0.5rem;
+      }
+      .subtext{
+        display: block;
+        font-size:12px;
+        color: #5e5e5e;
+      }
+    }
+    .mat-dialog-actions{
+      justify-content: space-between;
+      margin-top: 30px;
+      margin-bottom: -20px;
+      button{
+        width: 100px;
+        height: 40px;
+  
+        &.cancel{
+          border:1px solid $color-gry04;
+          color:$color-gry04;
+          font-size:15px;
+        }
+  
+        &.ok{
+          background-color: $color-gld01;
+          color:#fff;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}

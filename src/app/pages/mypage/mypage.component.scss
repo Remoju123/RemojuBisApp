@@ -5,10 +5,10 @@
   height: 36px;
   font-size: 14px;
   align-items: center;
-  color: #bfa060;
+  //color: #bfa060;
 }
 
-.mat-tab-group{
+#mypage{// .mat-tab-group{
   ::ng-deep.mat-tab-header{
       background-color: #ece9e7;
       height: 55px;
@@ -60,6 +60,11 @@
             }
           }
         }
+      }
+
+      .mat-tab-header-pagination{
+        min-width: 20px;
+        box-shadow: none;
       }
 
       ::ng-deep.mat-ink-bar{

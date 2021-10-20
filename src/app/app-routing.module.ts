@@ -16,6 +16,7 @@ import { MypageComponent } from './pages/mypage/mypage.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { UserComponent } from './pages/user/user.component';
+import { PlanspotComponent } from './pages/planspot/planspot.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
       component:RootComponent,
       children:[
         { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
+        { path: "planspot/:id",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
         { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent},
         { path: "spots/detail/:id", component: SpotDetailComponent},
@@ -33,12 +35,11 @@ const routes: Routes = [
         { path: "plans/detail", component: PlanDetailComponent },
         { path: "plans/detail/:id", component: PlanDetailComponent },
         { path: "mypage", component: MypageComponent, canActivate:[AuthGuard] },
-        { path: "sharedplan/:id", component: SpotListComponent },
         { path: "user/:id", component: UserComponent },
         { path: "home", component: TopComponent },
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/top",pathMatch:"full" },
-        { path: '404', component: NotfoundComponent }
+        { path: '404', component: NotfoundComponent },
       ]
     },
     {

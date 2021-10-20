@@ -6,6 +6,7 @@ import {
 } from "../class/common.class";
 import { MypagePlanAppList, MypagePlanAppListSearchResult } from "../class/mypageplanlist.class";
 import { CommonService } from "./common.service";
+import { Review } from "../class/review.class";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -69,6 +70,14 @@ export class MypagePlanListService {
         planUserId: String(planUserId),
         objectId: this.commonService.objectId
       }
+    });
+  }
+
+  //
+  getMyPageReviewList(){
+    const url = this.host + "/api/MypageReviewList/Search";
+    return this.http.get<Review[]>(url, {
+      params: { objectId: this.commonService.objectId}
     });
   }
 }

@@ -48,7 +48,7 @@ export class CommonService implements OnDestroy{
 
   private logoChange = new Subject<boolean>();
   public logoChange$ = this.logoChange.asObservable();
-  
+
   public loggedIn:boolean = false;
 
   private onDestroy$ = new Subject();
@@ -139,7 +139,7 @@ export class CommonService implements OnDestroy{
     const myPlanApp: MyPlanApp = myPlan;
 
     // 6スポットを超える場合
-    if (myPlanApp.planSpots.length + addSpotQty > 6){
+    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
       this.messageDialog("ErrorMsgAddSpot");
       return false;
     } else {
@@ -202,8 +202,8 @@ export class CommonService implements OnDestroy{
 
   // ログイン
   public login(){
-    const state = this.router.routerState.snapshot;
-    this.oauthService.initImplicitFlow(state.url);
+    //const state = this.router.routerState.snapshot;
+    this.oauthService.initImplicitFlow(this.router.url);
   }
 
   // ログアウト
@@ -214,14 +214,12 @@ export class CommonService implements OnDestroy{
     if(myPlanApp && !myPlanApp.isSaved){
       // 削除確認
       const param = new ComfirmDialogParam();
-      param.title = "EditPlanConfirmTitle";
-      param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
+      param.title = "LogoutConfirmTitle";
+      param.text = "LogoutConfirmText";
       const dialog = this.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
         // プランを破棄してログアウト
-        if (result === "cancel"){
+        if (result === "ok"){
           this.indexedDBService.clearMyPlan();
           localStorage.removeItem("iskeep");
           this.oauthService.logOut();
@@ -440,7 +438,7 @@ export class CommonService implements OnDestroy{
         resolve(result);
       };
     });
-  }  
+  }
 
   // 通知
   snackBarDisp(message: string) {
@@ -474,7 +472,7 @@ export class CommonService implements OnDestroy{
       id:"cmd"
     });
   }
-  
+
   // マイプランパネル状態変更
   public onNotifyIsShowCart(state:boolean){
     this.isshowcart.next(state)
@@ -499,9 +497,9 @@ export class CommonService implements OnDestroy{
   public onNotifySelectedSpotId(id:number){
     this.selectedSpotId.next(id);
   }
-  
+
   ngOnDestroy(){
     this.onDestroy$.next();
   }
-  
+
 }

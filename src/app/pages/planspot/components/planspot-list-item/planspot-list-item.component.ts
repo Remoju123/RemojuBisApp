@@ -17,10 +17,13 @@ import { environment } from 'src/environments/environment';
 export class PlanspotListItemComponent implements OnInit {
   @Input() item: PlanSpotList;
   @Input() lang: string;
-  @Input() isFavorite: boolean;
+  @Input() myFavorite: boolean;
 
   @Output() linked = new EventEmitter<number>();
-
+  @Output() addMyPlan = new EventEmitter<PlanSpotList>();
+  @Output() setFav = new EventEmitter<PlanSpotList>();
+  @Output() delFav = new EventEmitter<PlanSpotList>();
+  
   isProd:boolean;
   
   constructor(
@@ -121,9 +124,18 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
-  onClickAddToPlan(item:any){
-    //
+  onClickAddToPlan(item:PlanSpotList){
+    this.addMyPlan.emit(item);
   }
+
+  onClickFavorite(item:PlanSpotList){
+    this.setFav.emit(item);
+  }
+
+  onClickDeleteFavorite(item:PlanSpotList){
+    this.delFav.emit(item);
+  }
+  
 
   mainOptions: any = {
     rewindSpeed:0,

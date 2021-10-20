@@ -52,7 +52,7 @@ button {
   position: fixed;
   margin: auto;
   right: 17px;
-  bottom: 101px;
+  bottom: 90px;
   z-index: 100;
   padding: 0;
   opacity: 0;
@@ -61,7 +61,7 @@ button {
   @include ios-reset();
 
   img {
-    width: 59px;
+    width: 49px;
   }
 }
 
@@ -77,8 +77,8 @@ button {
   @include ios-reset();
 
   img {
-    width: 80px;
-    height: 80px;
+    width: 63px;
+    height: 63px;
   }
 
   ::ng-deep .mat-button-ripple{
@@ -88,7 +88,7 @@ button {
   ::ng-deep .mat-badge-content{
     position: absolute;
     right: 0!important;
-    top:0;
+    top:-6px;
     // background-color: #000;
     color: #fff;
     background: url("../../../assets/img/icon_badge0.svg") no-repeat;
@@ -159,8 +159,8 @@ mat-sidenav-content {
     @include ios-reset();
 
     img {
-      width: 80px;
-      height: 80px;
+      width: 63px;
+      height: 63px;
     }
   }
 }

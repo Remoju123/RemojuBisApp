@@ -89,8 +89,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     else {
       param.title = "ReleaseConfirm";
     }
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
@@ -120,8 +118,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "PlanRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // プランを削除する
@@ -188,12 +184,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       .getMypagePlanList()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-          return;
-        }
         this.rows = r.mypagePlanAppList;
-        //this.pageSize = r.pageViewQty;
         this.pageSize = 40;
         this.p = 1;
 
@@ -275,16 +266,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       const param = new ComfirmDialogParam();
       param.title = "EditPlanConfirmTitle";
       param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
         if (r === "ok") {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        } else {
           // プランを取得してプラン作成に反映
           this.getPlan(planUserId);
+        } else {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
         }
       });
     } else {
@@ -302,10 +291,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
         // return;
       }
-      // プラン作成　一旦削除
-      this.myplanService.onPlanUserRemoved();
       // プラン作成に反映
-      this.myplanService.onPlanUserChanged(r);
+      this.myplanService.onPlanUserEdit(r);
       // プラン保存
       this.indexedDBService.registPlan(r);
       // subject更新
@@ -325,8 +312,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     if (myPlanApp && delPlanUserId === myPlanApp.planUserId){
       this.indexedDBService.clearMyPlan();
       // プラン作成に反映
-      const p = new MyPlanApp();
-      this.myplanService.onPlanUserChanged(p);
+      this.myplanService.onPlanUserRemoved();
     }
   }
 

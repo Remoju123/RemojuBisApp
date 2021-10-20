@@ -3,7 +3,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { PlanListService } from "../../service/planlist.service";
-import { SpotListService } from "../../service/spotlist.service";
 import { SpotService } from "../../service/spot.service";
 import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
@@ -14,7 +13,8 @@ import {
   PlanSpotCommon,
   PlanUserPicture,
   MapFullScreenParam,
-  ListSelectedPlan } from "../../class/common.class";
+  ListSelectedPlan,
+  ImageCropperParam} from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { searchResult, PlanAppList } from "../../class/planlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
@@ -33,6 +33,9 @@ import { environment } from "../../../environments/environment";
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
+import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
+import { Catch } from "src/app/class/log.class";
+import { HttpUrlEncodingCodec } from "@angular/common/http";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -57,6 +60,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   private onDestroy$ = new Subject();
   private baseUrl:string;
   private currentlang:string;
+  codec = new HttpUrlEncodingCodec;
 
   constructor(
     private commonService: CommonService,
@@ -64,7 +68,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private indexedDBService: IndexedDBService,
     private planListService: PlanListService,
     private planService: PlanService,
-    private spotListService: SpotListService,
     private spotService: SpotService,
     private translate: TranslateService,
     public dialog: MatDialog,
@@ -78,6 +81,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.baseUrl = document.getElementsByTagName("base")[0].href;
       this.currentlang = localStorage.getItem("gml");
     }
+    this.condition = new ListSearchCondition();
   }
 
   @ViewChild("mepPlan") accordionPlan: MatAccordion;
@@ -87,6 +91,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   isEdit:boolean = true;
   // スポット0件時のダミー表示
   spotZero: PlanSpotCommon[];
+  // 初期プラン
+  initRow: MyPlanApp;
   // 作成中のプラン
   row: MyPlanApp;
   // プランの終了時間
@@ -104,11 +110,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   isOpen = true;
 
-  //currentlang = localStorage.getItem("gml");
+  step = 999;
+
+  condition: ListSearchCondition;
+
+  isVal:boolean = false;
+
+  isSaving = false;
 
   get lang() {
     return this.translate.currentLang;
   }
+
+  pictureUrl:string = "../../../assets/img/icon_who.svg";
+
+  @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   /*------------------------------
    *
@@ -135,18 +151,26 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
     });
 
-    // 追加通知
-    this.myplanService.PlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
+    // プラン編集変更通知
+    this.myplanService.PlanUserEdit$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
       // 編集モードにする
       this.isEdit = true;
+      this.row = x;
+      this.dataFormat();
+    });
+
+    // 追加通知
+    this.myplanService.PlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
       this.setUserPicture(x);
+      // プレビュー表示
+      this.isEdit = false;
+      // 変更を保存
+      this.registPlan(false);
       this.myplanService.FetchMyplanSpots();
     });
 
     // スポット削除通知
     this.myplanService.RemoveDisplayOrder$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      // 編集モードにする
-      this.isEdit = true;
       // 削除したスポットを取得
       const planSpot = this.row.planSpots.find(spots => spots.displayOrder === x);
       // スポットを削除
@@ -179,7 +203,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               this.setUserPicture(r);
-              this.setPreviewPicture();
+              // 変更を保存
+              this.registPlan(false);
               ref.close();
             }
           });
@@ -197,7 +222,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       const img = await this.commonService.imageSize(file);
       this.row.picturePreviewUrl = img.previewUrl;
       this.row.pictureFile = img.file;
-      this.row.pictureFileExt = this.getImageExt(img.file.name);
       this.onChange(false);
     }
   }
@@ -207,8 +231,39 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.row.pictureFile = null;
     this.row.picturePreviewUrl = null;
     this.row.pictureUrl = null;
-    this.row.pictureFileExt = null;
+    this.row.imageCropped = null;
+    this.row.cropperPosition = null;
     this.onChange(false);
+  }
+
+  onClickCropPlan() {
+    let param = new ImageCropperParam();
+
+    param.isAspectRatio = true;
+    param.aspectRatio = this.row.aspectRatio;
+    param.cropperPosition = this.row.cropperPosition;
+    param.imageCropped = this.row.imageCropped;
+    param.pictureFile = this.row.pictureFile;
+    param.picturePreviewUrl = this.row.picturePreviewUrl;
+    //console.log(param);
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
+      maxWidth: "100%",
+      width: "100vw",
+      position: { top: "0px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        //console.log(r);
+        this.row.imageCropped = r.imageCropped;
+        this.row.aspectRatio = r.aspectRatio;
+        this.row.cropperPosition = r.cropperPosition;
+        this.onChange(false);
+      }
+    });
   }
 
   // エリア・カテゴリ選択
@@ -258,7 +313,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           }
           picture.pictureFile = img.file;
           picture.picturePreviewUrl = img.previewUrl;
-          picture.pictureFileExt = this.getImageExt(img.file.name);
           if (planSpot.planUserpictures){
             planSpot.planUserpictures.push(picture);
           } else {
@@ -283,6 +337,53 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       picture.picture_display_order = i++;
     });
     this.onChange(false);
+  }
+
+  onClickCropSpot(planSpot: PlanSpotCommon, picture: PlanUserPicture) {
+    let param = new ImageCropperParam();
+    if (picture.picture_display_order === 1) {
+      param.isAspectRatio = true;
+    } else {
+      param.isAspectRatio = false;
+    }
+    param.aspectRatio = planSpot.aspectRatio;
+    param.cropperPosition = picture.cropperPosition;
+    param.imageCropped = picture.imageCropped;
+    param.pictureFile = picture.pictureFile;
+    param.picturePreviewUrl = picture.picturePreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        const idx = this.row.planSpots.findIndex(x => x.displayOrder === planSpot.displayOrder);
+        const idxPic = this.row.planSpots[idx].planUserpictures.findIndex(x => x.picture_display_order === picture.picture_display_order);
+
+        this.row.planSpots[idx].planUserpictures[idxPic].imageCropped = r.imageCropped;
+        this.row.planSpots[idx].aspectRatio = r.aspectRatio;
+        this.row.planSpots[idx].planUserpictures[idxPic].cropperPosition = r.cropperPosition;
+        this.onChange(false);
+      }
+    });
+  }
+
+  // スポット全削除
+  onClickClearAllSpot() {
+    // 確認ダイアログの表示
+    const param = new ComfirmDialogParam();
+    param.title = "SpotAllClearConfirm";
+    const dialog = this.commonService.confirmMessageDialog(param);
+    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+      if (d === "ok") {
+        this.spotAllRemove();
+      }
+    });
   }
 
   // バスON・OFF
@@ -348,11 +449,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // スポットを追加する
   async onClickAddSpot(){
     // スポット数チェック
-    if (await this.commonService.checkAddPlan(1) === false){
+    if (this.row.planSpots && await this.commonService.checkAddPlan(1) === false){
       return;
     }
 
-    this.router.navigate(["/" + this.lang + "/spots"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
 
     // スライドを閉じる
     this.commonService.onNotifyIsShowCart(false);
@@ -397,9 +498,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   // スポット削除
   onClickSpotDelete(planSpot: PlanSpotCommon) {
-    // 1スポット削除して0スポットになる場合は一括クリアと同じ処理
+    // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if(this.row.planSpots.length === 1){
-      this.planRemove();
+      this.spotAllRemove();
     } else {
       // スポットを削除
       this.row.planSpots.splice(
@@ -411,41 +512,92 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       // 表示順設定
       let i = 1;
       this.row.planSpots.forEach(x => x.displayOrder = i++);
-
-      // 保存
-      this.onChange(true);
     }
+    // 保存
+    this.onChange(true);
     // subject更新
     this.myplanService.FetchMyplanSpots();
   }
 
-  // プランを共有する
-  onClickSharePlan() {
-    // プラン保存済み
-    if (this.row.planUserId > 0 && this.row.isSaved && !this.row.isShare){
-      this.myplanService.registShare(this.row.planUserId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (r !== null) {
-          this.row.isShare = true;
-          this.row.shareUrl = r;
-          this.shareDialog();
-        }
-      });
-    } else {
-      this.shareDialog();
-    }
+  // 画像順番入れ替え
+  onClickSpotPicture(picture: PlanUserPicture) {
+    const index = picture.picture_display_order - 1;
+    let pictures = this.row.planSpots[picture.display_order - 1].planUserpictures;
+    // 下の画像-1
+    pictures[index + 1].picture_display_order -= 1;
+    // 上の画像+1
+    pictures[index].picture_display_order += 1;
+    // 配列の入れ替え
+    [pictures[index], pictures[index + 1]] = [pictures[index + 1], pictures[index]];
+    // 保存
+    this.onChange(false);
   }
 
-  // プランを保存する
-  onClickSavePlan() {
+  // プランを共有する
+  onClickSharePlan() {
     if (!this.commonService.loggedIn) {
       // ログイン画面へ
       this.commonService.login();
       return;
     }
 
+    if (!this.row.isSaved) {
+      // 確認ダイアログの表示
+      const param = new ComfirmDialogParam();
+      param.title = "SavePlanConfirm";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // 保存
+          this.row.isShare = true;
+          this.onClickSavePlan(true);
+        }
+      });
+    // プラン保存済み
+    } else {
+      // URL共有更新
+      this.myplanService.registShare(this.row.planUserId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (r !== null) {
+          if (!this.row.isShare) {
+            this.row.isShare = true;
+            // 変更を保存
+            this.registPlan(true);
+          }
+          this.row.shareUrl = r;
+          this.shareDialog();
+        }
+      });
+    }
+  }
+
+  // 保存ボタンの制御
+  disabledSavePlan(): boolean {
+    if (this.isSaving) {
+      return true;
+    }
+    // プラン名、スポット名必須
+    if (!this.row?.planName || !this.row?.planSpots
+      || this.row?.planSpots.reduce((sum, planSpot) => sum + (planSpot.spotName ? 0 : 1), 0) > 0
+      ) {
+      return true;
+    }
+    return false;
+  }
+
+  // プランを保存する
+  onClickSavePlan(isShare: boolean) {
+    if (!this.commonService.loggedIn) {
+      // ログイン画面へ
+      this.commonService.login();
+      return;
+    }
+
+    // 保存ボタンロック
+    this.isSaving = true;
+
     // プランメイン写真の画像URL(ファイル名はプランユーザID＋拡張子)
     if (this.row.pictureFile) {
-      this.row.pictureUrl = environment.blobUrl + "/pr{0}/{0}" + this.row.pictureFileExt;
+      this.row.pictureUrl = environment.blobUrl + "/pr{0}/{0}_{1}.webp";
     }
 
     // スポット写真
@@ -456,7 +608,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
             this.row.planSpots[i].planUserpictures[j].picture_url = environment.blobUrl + "/pr{0}/" +
               this.row.planSpots[i].displayOrder + "_" + this.row.planSpots[i].planUserpictures[j].picture_display_order
-              + "_{1}" + this.row.planSpots[i].planUserpictures[j].pictureFileExt;
+              + "_{1}.webp";
           }
         }
       }
@@ -468,13 +620,24 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 保存
     this.myplanService.registPlan().then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-        if(r){
+        //if(r){
           // プランメイン写真
           if (this.row.pictureFile) {
-            // 画像保存処理
-            await this.saveImagePlan(this.row.pictureFile
-              , r.pictureUrl,
-              r.planUserId);
+            if (this.row.imageCropped) {
+              // blobに再変換
+              var blob = this.commonService.base64toBlob(this.row.imageCropped);
+              // blob object array( fileに再変換 )
+              var file = this.commonService.blobToFile(blob, Date.now() + this.row.pictureFile.name);
+              // 画像保存処理
+              await this.saveImagePlan(file
+                , r.pictureUrl,
+                r.planUserId);
+            } else {
+              // 画像保存処理
+              await this.saveImagePlan(this.row.pictureFile
+                , r.pictureUrl,
+                r.planUserId);
+            }
           }
 
           // スポット写真
@@ -482,10 +645,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
             if (this.row.planSpots[i].planUserpictures) {
               for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
                 if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
-                  // 画像保存処理
-                  await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
-                    , r.planSpots[i].planUserpictures[j].picture_url,
-                    r.planUserId);
+                  if (this.row.planSpots[i].planUserpictures[j].imageCropped) {
+                    // blobに再変換
+                    var blob = this.commonService.base64toBlob(this.row.planSpots[i].planUserpictures[j].imageCropped);
+                    // blob object array( fileに再変換 )
+                    var file = this.commonService.blobToFile(blob, Date.now() + this.row.planSpots[i].planUserpictures[j].pictureFile.name);
+                    // 画像保存処理
+                    await this.saveImagePlan(file
+                      , r.planSpots[i].planUserpictures[j].picture_url,
+                      r.planUserId);
+                  } else {
+                    // 画像保存処理
+                    await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
+                      , r.planSpots[i].planUserpictures[j].picture_url,
+                      r.planUserId);
+                  }
                 }
               }
             }
@@ -498,29 +672,32 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           this.dataFormat();
           // 変更を保存
           this.registPlan(true);
-
           // 保存完了
           this.commonService.snackBarDisp("PlanSaved");
-        } else {
-          this.router.navigate(["/" + this.lang + "/systemerror"]);
-          return;
-        }
+
+          // URL共有の場合
+          if (isShare) {
+            this.shareDialog();
+          }
+
+          // 保存ボタンロック解除
+          this.isSaving = false;
+
+        // } else {
+        //   //this.router.navigate(["/" + this.lang + "/systemerror"]);
+        //   //return;
+        // }
       });
     });
   }
 
-  // 破棄(新規)・新規プラン作成ボタンクリック時
-  onClickBatchClear(isNew: boolean) {
+  // 新規プラン作成ボタンクリック時
+  onClickNewPlan() {
     if (this.row && !this.row.isSaved){
       // 確認ダイアログの表示
       const param = new ComfirmDialogParam();
-      if (isNew) {
-        param.title = "NewPlanConfirm";
-      } else {
-        param.title = "PlanClearConfirm";
-      }
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
+      param.title = "NewPlanConfirmTitle";
+      param.text = "NewPlanConfirmText";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         // 新しいプランを作成する
@@ -531,32 +708,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     } else {
       this.planRemove();
     }
-  }
-
-  // 破棄(変更)
-  onClickReset(){
-    // 確認ダイアログの表示
-    const param = new ComfirmDialogParam();
-    param.title = "ResetPlanConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
-    const dialog = this.commonService.confirmMessageDialog(param);
-    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-      // 編集をリセット
-      if (d === "ok") {
-        // DBから取得
-        this.myplanService.getPlanUser(this.row.planUserId.toString()).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (r) {
-            // 画面に反映
-            this.row = r;
-            // プラン保存
-            this.indexedDBService.registPlan(r);
-            // subject更新
-            this.myplanService.FetchMyplanSpots();
-          }
-        });
-      }
-    });
   }
 
   /*------------------------------
@@ -576,7 +727,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         this.listSelectedPlan.mArea.map(x => x.isHighlight = false);
         this.listSelectedPlan.planList = new Array<PlanAppList>();
         this.listSelectedPlan.isList = false;
-        this.spotZero = r.planSpots;
+        this.spotZero = r.myPlan.planSpots;
+        this.initRow = JSON.parse(JSON.stringify(r.myPlan));
+        this.initRow.planSpots = null;
         for (let i = 0; i < this.spotZero.length; i++) {
           // 多言語項目の使用言語で設定
           this.commonService.setAddPlanLang(this.spotZero[i], this.lang);
@@ -603,11 +756,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 写真を戻すために先にバインドしておく
           this.row = myPlanApp;
           this.setUserPicture(r);
+          if (this.row.planSpots && this.row.planSpots.length > 0) {
+            this.isEdit = false;
+          }
+          // 保存
+          this.indexedDBService.registPlan(this.row);
         });
       });
-    } else if (!this.$stayTime) {
-      // 選択リストを取得
-      await this.getListSelected();
+    } else {
+      if (!this.$stayTime) {
+        // 選択リストを取得
+        await this.getListSelected();
+        this.row =  JSON.parse(JSON.stringify(this.initRow));
+        // 保存
+        this.indexedDBService.registPlan(this.row);
+      }
     }
   }
 
@@ -620,36 +783,61 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.historyPlan = hisPlan.reverse();
   }*/
 
+  // スポット一括クリア
+  spotAllRemove() {
+    this.row.isTransferSearch = false;
+    this.row.timeRequired = null;
+    this.row.timeRequiredDisp = null;
+    this.endTime = null;
+    this.row.planSpots = null;
+    this.isEdit = true;
+    this.registPlan(false);
+    this.step = 999;
+    this.accordionSpot.closeAll();
+    this.myplanService.FetchMyplanSpots();
+  }
+
   // 一括クリア
   planRemove(){
     // 編集エリアを閉じる
-    this.accordionPlan.closeAll();
-    this.accordionSpot.closeAll();
+    this.step = 999;
+    if (this.accordionPlan) {
+      this.accordionPlan.closeAll();
+    }
+    if (this.accordionSpot) {
+      this.accordionSpot.closeAll();
+    }
     // プラン初期化
-    this.row = null;
+    this.row = JSON.parse(JSON.stringify(this.initRow));
     // 終了時間を削除
     this.endTime = null;
     // エリア・カテゴリの選択状態を解除
     this.listSelectedPlan.condition = null;
-    // ストレージから削除
-    this.indexedDBService.clearMyPlan();
-
+    // 変更を保存
+    this.indexedDBService.registPlan(this.row);
+    this.isEdit = true;
+    // subject更新
     this.myplanService.FetchMyplanSpots();
   }
 
-  // 共有ダイアログの表示
+  // URL共有ダイアログの表示
   shareDialog() {
     this.dialog.open(UrlcopyDialogComponent, {
+      id:"urlShare",
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
-      data: this.row.isShare && this.row.isSaved ? this.baseUrl + this.lang + "/sharedplan/" + this.row.shareUrl : "",
+      data: this.row.isShare && this.row.isSaved ? this.baseUrl + this.lang + "/planspot/" + this.row.shareUrl : "",
       autoFocus: false
     });
   }
 
-  dataFormat() {
+  async dataFormat() {
     const langpipe = new LangFilterPipe();
+
+    if (!this.$stayTime){
+      await this.getListSelected();
+    }
 
     if (!this.listSelectedPlan.condition){
       this.listSelectedPlan.condition = new ListSearchCondition();
@@ -664,6 +852,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.listSelectedPlan.condition.searchCategories = this.row.categories;
     }
     this.planListService.getSearchFilter(this.listSelectedPlan, this.listSelectedPlan.condition);
+
+    // プレビュー用の画像を設定
+    this.setPreviewPicture();
 
     // 出発地が設定されている場合
     if (this.row.startPlanSpot){
@@ -718,43 +909,45 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.row.planSpots[this.row.planSpots.length - 1].destination = this.row.endPlanSpot.spotName;
     }
 
-    for (let i = 0; i < this.row.planSpots.length; i++) {
-      // 多言語項目の使用言語で設定
-      this.commonService.setAddPlanLang(this.row.planSpots[i], this.lang);
+    if (this.row.planSpots) {
+      for (let i = 0; i < this.row.planSpots.length; i++) {
+        // 多言語項目の使用言語で設定
+        this.commonService.setAddPlanLang(this.row.planSpots[i], this.lang);
 
-      if (this.row.planSpots[i].type === 1) {
-        // 営業時間
-        this.row.planSpots[i].businessHourHead = this.spotService.getBusinessHourHead(
-          this.row.planSpots[i].businessHours
-        );
-        // 定休日
-        this.row.planSpots[i].holiday = this.spotService.getRegularholidays(
-          this.row.planSpots[i].regularHoliday
-        );
-      }
-
-      // 移動方法
-      if (this.row.planSpots[i].transfer) {
-        // 次のスポットがある場合
-        if (i + 1 < this.row.planSpots.length) {
-          if (this.row.planSpots[i + 1].type === 1) {
-            this.row.planSpots[i].destination = this.commonService.isValidJson(this.row.planSpots[i + 1].spotName, this.lang);
-          } else {
-            this.row.planSpots[i].destination = this.row.planSpots[i + 1].spotName;
-          }
+        if (this.row.planSpots[i].type === 1) {
+          // 営業時間
+          this.row.planSpots[i].businessHourHead = this.spotService.getBusinessHourHead(
+            this.row.planSpots[i].businessHours
+          );
+          // 定休日
+          this.row.planSpots[i].holiday = this.spotService.getRegularholidays(
+            this.row.planSpots[i].regularHoliday
+          );
         }
+
         // 移動方法
-        let transfer: any;
-        try {
-          transfer = this.commonService.isValidJson(this.row.planSpots[i].transfer, this.lang);
-        }
-        catch{
-          transfer = JSON.parse(this.row.planSpots[i].transfer)[0].text;
-        }
+        if (this.row.planSpots[i].transfer) {
+          // 次のスポットがある場合
+          if (i + 1 < this.row.planSpots.length) {
+            if (this.row.planSpots[i + 1].type === 1) {
+              this.row.planSpots[i].destination = this.commonService.isValidJson(this.row.planSpots[i + 1].spotName, this.lang);
+            } else {
+              this.row.planSpots[i].destination = this.row.planSpots[i + 1].spotName;
+            }
+          }
+          // 移動方法
+          let transfer: any;
+          try {
+            transfer = this.commonService.isValidJson(this.row.planSpots[i].transfer, this.lang);
+          }
+          catch{
+            transfer = JSON.parse(this.row.planSpots[i].transfer)[0].text;
+          }
 
-        this.row.planSpots[i].line = this.planService.transline(transfer);
-        this.row.planSpots[i].transtime = this.planService.transtimes(transfer);
-        this.row.planSpots[i].transflow = this.planService.transflows(transfer);
+          this.row.planSpots[i].line = this.planService.transline(transfer);
+          this.row.planSpots[i].transtime = this.planService.transtimes(transfer);
+          this.row.planSpots[i].transflow = this.planService.transflows(transfer);
+        }
       }
     }
   }
@@ -775,14 +968,10 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   genStartTimes(){
-    for (let hour = 7; hour < 24; hour++){
+    for (let hour = 0; hour < 24; hour++){
       this.$startTime.push(moment({hour}).format('HH:mm'));
       this.$startTime.push(moment({hour,minute:30}).format('HH:mm'));
     }
-  }
-
-  getImageExt(fileName: string) {
-    return fileName.substring(fileName.lastIndexOf(".") ,fileName.length);
   }
 
   saveImagePlan(file: File, pictureUrl: string, planId: number){
@@ -803,33 +992,30 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       // 画像ファイル、プレビューURLを設定
       myPlanApp.picturePreviewUrl = this.row.picturePreviewUrl;
       myPlanApp.pictureFile = this.row.pictureFile;
-      for(let i = 0; i < myPlanApp.planSpots.length; i++) {
-        let planSpot = this.row.planSpots.find(x => x.displayOrder === myPlanApp.planSpots[i].displayOrder);
-        if (planSpot?.planUserpictures) {
-          myPlanApp.planSpots[i].planUserpictures = planSpot.planUserpictures;
+      if (myPlanApp.planSpots && this.row.planSpots) {
+        for(let i = 0; i < myPlanApp.planSpots.length; i++) {
+          let planSpot = this.row.planSpots.find(x => x.displayOrder === myPlanApp.planSpots[i].displayOrder);
+          if (planSpot?.planUserpictures) {
+            myPlanApp.planSpots[i].planUserpictures = planSpot.planUserpictures;
+          }
         }
       }
     }
 
     this.row = myPlanApp;
-    if (this.$stayTime){
-      this.dataFormat();
-    } else {
-      await this.getListSelected();
-      this.dataFormat();
-    }
-    // 変更を保存
-    this.registPlan(false);
+    this.dataFormat();
   }
 
   // プレビュー用の画像設定
   setPreviewPicture() {
     // 表示する画像を設定
-    for (let i = 0; i < this.row.planSpots.length; i++) {
-      if (this.row.planSpots[i].planUserpictures?.length > 0) {
-        this.row.planSpots[i].previewPictures = this.row.planSpots[i].planUserpictures.map(x => x.picturePreviewUrl ?? x.picture_url);
-      } else {
-        this.row.planSpots[i].previewPictures = this.row.planSpots[i].pictures;
+    if (this.row.planSpots) {
+      for (let i = 0; i < this.row.planSpots.length; i++) {
+        if (this.row.planSpots[i].planUserpictures?.length > 0) {
+          this.row.planSpots[i].previewPictures = this.row.planSpots[i].planUserpictures.map(x => x.imageCropped ?? x.picturePreviewUrl ?? x.picture_url);
+        } else {
+          this.row.planSpots[i].previewPictures = this.row.planSpots[i].pictures;
+        }
       }
     }
   }
@@ -853,4 +1039,28 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     items: 1,
     nav: true
   };
+
+  setStep(i:number){
+    this.step = i;
+  }
+
+  onKeywordSearch(e){
+    const val = e.target.value.toLowerCase();
+    val!==""?this.isVal=true:false;
+    if(val!==""){
+      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:val}});
+
+      if(~this.router.url.indexOf('planspot')){
+        this.condition.keyword = val;
+        this.indexedDBService.registListSearchCondition(this.condition);
+        window.location.reload();
+      }
+    }
+  }
+
+  inputClear(){
+    this.isVal=false;
+    this.keywordInput.nativeElement.value="";
+    return;
+  }
 }

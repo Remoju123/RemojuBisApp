@@ -1,20 +1,37 @@
 <div class="spotdtl">
-  <mat-card id="header" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
-    <mat-card-header>
-      <div class="lt">
-        <span class="spotName">
-          {{ data.spotName | langFilter: lang }}
-        </span>
+  <mat-card id="spotdtlheader" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
+    <div class='link' (click)="linktolist()">{{"BackEveryoneRecommendations" | translate}}</div>
+    <mat-card-content>
+      <div class='header'>
+        <div class='lt'>
+          <span class='avatar'>
+            <img
+                src="{{ $userStaff?.pictureUrl }}"
+                alt=""
+              />
+            <span class="username">{{$userStaff?.romanLetterName|langFilter:lang}}</span>
+          </span>
+        </div>
+        <div class='rt'>
+          <div class='name'>
+            <span class='mark'>
+              <img src="../../../assets/img/mark_spot.svg" alt="mark">
+            </span>
+            <span class='title'>
+              {{ data.spotName | langFilter: lang }}
+            </span>
+          </div>
+          <div class='buttons'>
+            <button mat-icon-button class="plan_fav" (click)="onClickFavorite()">
+              <img src="../../../assets/img/hart_small.svg" alt="">
+            </button>
+            <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
+              <img src="{{addplanbtn_src}}" alt="add to plan">
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="rt">
-        <button mat-icon-button class="plan_fav" (click)="onClickFavorite()">
-          <img src="../../../assets/img/hart_small.svg" alt="">
-        </button>
-        <button mat-icon-button (click)="onClickAddToPlan()">
-          <img src="{{addplanbtn_src}}" alt="add to plan">
-        </button>
-      </div>
-    </mat-card-header>
+    </mat-card-content>
   </mat-card>
   
   <mat-card id="mainPictures">
@@ -22,7 +39,7 @@
       <owl-carousel-o *ngIf="isMulti; else singlePict" [options]="mainOptions">
         <ng-container *ngFor="let item of mainPictures; index as i">
           <ng-template carouselSlide id="item.spot_id">
-            <div class="thumbmain">
+            <div class="thumb">
               <img
                 [src]="item.picture_url"
                 [alt]="item.spot_id"
@@ -34,34 +51,46 @@
       </owl-carousel-o>
   
       <ng-template #singlePict>
-        <ng-container *ngFor="let item of mainPictures; index as i">
-          <div class="thumbmain">
+          <div class="thumb">
             <img
-              [src]="item.picture_url"
-              [alt]="item.spot_id"
-              [title]="item.spot_id"
+              [src]="mainPicturesSingle?.picture_url"
+              [alt]="mainPicturesSingle?.spot_id"
+              [title]="mainPicturesSingle?.spot_id"
             />
           </div>
-        </ng-container>
       </ng-template>
     </mat-card-content>
-    
+    <div class='info'>
+      <div class='lt'>
+        <span class="areaName" *ngIf="data.areaName1">
+          {{ data.areaName1 | langFilter: lang }}
+        </span>
+        <span class="category" *ngIf="data.areaName2">
+          {{ data.areaName2 | langFilter: lang }}
+        </span>
+      </div>
+      <div class='rt'>
+        <div class="view">
+          {{ data.pvQty }}<span>view</span>
+        </div>
+      </div>
+    </div>
   </mat-card>
   
   <mat-card class="p0" id="spotHeader">
     <mat-card-content>    
       <mat-list class="spot-info">
         <mat-list-item class="title">
-          <span class="spotName">{{ data.spotName | langFilter: lang }}</span>
+          {{ "BasicInfomation" | translate }}
         </mat-list-item>
-        <mat-list-item
+        <!-- <mat-list-item
           class="row view">
           <span>
             {{data.pvQty?.toLocaleString()}}&nbsp;View
           </span>
-        </mat-list-item>
+        </mat-list-item> -->
         <mat-list-item
-          class="row"
+          class="row pt8"
           *ngIf="($nearest | langFilter: lang) !== ''"
         >
           <span class="{{ $access}}">
@@ -87,11 +116,14 @@
   
   <mat-card id="content">
     <mat-card-content>
+      <div class='avatar'>
+        <img src="{{ $userStaff?.pictureUrl }}" alt=""/>
+      </div>
       <p [innerHTML]="data.spotOverview | langFilter: lang | replaceNewline"></p>
     </mat-card-content>
   </mat-card>
   
-  <mat-card class="p0">
+  <mat-card>
     <mat-card-content>
       <ng-container *ngFor="let item of spotPictures; index as i">
         <h4
@@ -106,7 +138,6 @@
           />
         </div>
         <p
-          class="pl16 pr16"
           [innerHTML]="item.comment | langFilter: lang | replaceNewline"
         ></p>
       </ng-container>
@@ -116,7 +147,7 @@
   <mat-card id="spot-detail">
     <mat-card-header>
       <h4 class="header">
-        {{ "BasicInfomation" | translate }}
+        {{ "MoreInformation" | translate }}
       </h4>
     </mat-card-header>
     <mat-divider class="rj-linecolor"></mat-divider>
@@ -197,6 +228,7 @@
       <h4 class="header">
         {{ "NearbySpots" | translate }}
       </h4>
+      <img class="mark" src="../../../assets/img/mark_spot.svg" alt="mark">
     </mat-card-header>
     <mat-divider class="rj-linecolor"></mat-divider>
     <mat-card-content class="mt16">
@@ -222,6 +254,7 @@
       <h4 class="header">
         {{ "RecommendedPlanwithSpot" | translate }}
       </h4>
+      <img class="mark" src="../../../assets/img/mark_plan.svg" alt="mark">
     </mat-card-header>
     <mat-divider class="rj-linecolor"></mat-divider>
     <mat-card-content class="mt16">
@@ -250,28 +283,42 @@
       </h4>
     </mat-card-header>
     <mat-divider class="rj-linecolor"></mat-divider>
-    <mat-card-content class="mt16">
-      <mat-list>
-        <mat-list-item style="height: auto;">
-          <dl class="profile">
-            <dt>
-              <img
-                src="{{ $userStaff?.pictureUrl }}"
-                alt="{{ $userStaff?.romanLetterName | langFilter }}"
-              />
-            </dt>
-            <dd>
-              {{ $userStaff?.romanLetterName | langFilter: lang }}<br />
-              <span class="division">{{ $userStaff?.departmentName | langFilter: lang }}</span>
-            </dd>
-          </dl>
-        </mat-list-item>
-        <mat-list-item class="intoro" style="height: auto;">
-          <p>
-            {{ $userStaff?.introduction | langFilter: lang }}
-          </p>
-        </mat-list-item>
-      </mat-list>
+    
+    <mat-card-content>
+      <div class="card-box">
+        <div class="card-header">
+          <div class="cover">
+            <div class="wrap">
+              
+            </div>
+          </div>
+          <div class="user">
+            <div class="wrap">
+              <img src="{{ $userStaff?.pictureUrl }}" alt=""/>
+            </div>
+          </div>
+        </div>
+        <div class="card-info">
+          <div class="username">
+            {{$userStaff?.romanLetterName|langFilter:lang}}
+          </div>
+          <div class="gender">
+            <span class="country"></span>
+            <span>{{ "Age" | translate }}</span>
+            <span>/{{ "Female" | translate }}</span>
+            <span>/{{ "Male" | translate }}</span>
+  
+          </div>
+          <div class="about">
+            <p>{{ $userStaff?.introduction | langFilter: lang }}</p>
+          </div>
+        </div>
+      </div>
     </mat-card-content>
+
+    <div class='buttons'>
+      <button mat-button disableRipple matBadge="4" matBadgeSize="small" >この投稿者の投稿一覧へ</button>
+    </div>
   </mat-card>
+  <!-- <app-userprofile-panel [detail]="true"></app-userprofile-panel> -->
 </div>

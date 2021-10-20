@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input } from '@angular/core';
+import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 
 @Component({
   selector: 'app-planspot-list',
@@ -9,7 +10,9 @@ import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input
 export class PlanspotListComponent implements OnInit {
 
   @Input() isList:boolean;
+  @Input() condition:ListSearchCondition;
   @Output() scrolled = new EventEmitter();
+  @Output() glink = new EventEmitter<any>();
   
   constructor() { }
 
@@ -18,6 +21,10 @@ export class PlanspotListComponent implements OnInit {
 
   scrolledEmit(){
     this.scrolled.emit();
+  }
+
+  googleLink(e:any){
+    this.glink.emit(e);
   }
 
 }

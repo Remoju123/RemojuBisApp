@@ -114,14 +114,14 @@ export class SpotListComponent implements OnInit, OnDestroy {
       }
     });
 
-    
+
     this.spotListService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result:searchResult)=>{
       this.rows = result.list;
       this.temp = [...this.rows];
       this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
       // location.pathname　/言語/spots～　または　/言語/sharedplan～ ⇒/を抜くためのsubstring(1)
       let url = location.pathname.substring(1);
-      
+
       /* --only browser task: browser object history,location -- */
       if(isPlatformBrowser(this.platformId)){
         // 共有プランの場合、spotsにする
@@ -144,7 +144,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
 
       // 条件更新
       this.recoveryQueryParams(result.searchParamsObj);
-      
+
       // 詳細データを初期化
       this.p = 1;
       // キーワードをクリア
@@ -163,7 +163,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
 
   ngAfterViewChecked(){
     if(this.offset>0){
-      window.scrollTo(0,this.offset); 
+      window.scrollTo(0,this.offset);
       setTimeout(() => {
         this.offset = 0;
       }, 300);
@@ -185,7 +185,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
 
     this.router.navigate(["/" + this.lang + "/spots/detail/", id]);
   }
-  
+
   selectedChange(index: number){
     if(index === 1){
       this.router.navigate([location.pathname.replace("spots", "plans")]);
@@ -207,7 +207,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
     // 検索条件更新
     this.indexedDBService.registListSearchConditionSpot(this.condition);
   }
-  
+
   /*------------------------------
    *
    * メソッド
@@ -267,7 +267,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
   }
 
   // スポット一覧詳細取得
-  getSpotListDetail() {    
+  getSpotListDetail() {
     let startidx = 0;
     /* --only browser task: browser object sessionStorage -- */
     if(isPlatformBrowser(this.platformId)){
@@ -293,7 +293,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
         // ローディングを閉じる
         if(this.ref){
           this.ref.close();
-        }        
+        }
       } else {
         // 表示開始位置 = 表示グループ * 6(初回0、次の更新時 1 * 6 = 6)
         startidx = (this.p - 1) * this.pageSize;
@@ -352,12 +352,12 @@ export class SpotListComponent implements OnInit, OnDestroy {
       if(r){
         if(this.ref){
           this.ref.close();
-        }        
+        }
       }
     });
   }
-    
-  
+
+
 
   // スクロール
   onScrollDownSpot() {
@@ -378,10 +378,10 @@ export class SpotListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
       this.p = 1;
       this.rows = result;
-      this.listsort(this.rows, this.sortval);  
+      this.listsort(this.rows, this.sortval);
     });
   }
-  
+
   getGoogleSpot(val: string) {
     return new Promise<SpotAppList[]>(resolve => {
       this.spotListService.getGoogleSpotList(val, this.lang, this.guid)
@@ -479,7 +479,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
 
   async listsort(rows: SpotAppList[], v: number) {
     let _temp: SpotAppList[];
-    
+
     switch (v) {
       // 有料スポットの近い順
       case 0:
@@ -552,7 +552,7 @@ export class SpotListComponent implements OnInit, OnDestroy {
           if(a.areaId2 !== b.areaId2){
             return a.areaId2 > b.areaId2 ? 1 : -1
           }
-          return 0          
+          return 0
         });
         break;
       }
@@ -566,14 +566,12 @@ export class SpotListComponent implements OnInit, OnDestroy {
     // 編集中のプランを取得
     let myPlan: any = await this.indexedDBService.getEditPlan();
     const myPlanApp: MyPlanApp = myPlan;
-    
+
     if (myPlanApp && !myPlanApp.isSaved){
       // 確認ダイアログの表示
       const param = new ComfirmDialogParam();
       param.title = "EditPlanConfirmTitle";
       param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {

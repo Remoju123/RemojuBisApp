@@ -7,7 +7,7 @@
           <span class="username">{{genUserName()}}</span>
         </span>
       </div>
-      <div class='rt'>
+      <div class='rt' [ngClass]="{'fav':myFavorite}">
         <span class='mark'>
           <img [src]="genMarkPath()" alt="mark">
         </span>
@@ -15,6 +15,7 @@
           {{genTitle()}}
         </span>
       </div>
+      <button *ngIf="myFavorite" type="button" class="delete" (click)="onClickDeleteFavorite(item)"></button>
     </div>
     <div class='card-box'>
       <div class='card-header'>
@@ -68,8 +69,9 @@
             <span *ngIf="!isProd">
               {{item.id}}
             </span>
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
+
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot" >
             <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>
@@ -130,7 +132,7 @@
           <span class="username">google</span>
         </span>
       </div>
-      <div class='rt'>
+      <div class='rt' [ngClass]="{'fav':myFavorite}">
         <span class='mark'>
           <img [src]="genMarkPath()" alt="mark">
         </span>
@@ -138,6 +140,7 @@
           {{ item.googleSpot.spot_name}}
         </span>
       </div>
+      <button *ngIf="myFavorite" type="button" class="delete" (click)="onClickDeleteFavorite(item)"></button>
     </div>
     <div class='card-box'>
       <div class='card-header'>
@@ -153,7 +156,7 @@
         </div>
         <div class='info'>
           <div class='lt'>
-            <span class="areaName" *ngIf="item.googleSpot.mArea.area_name_1">
+            <span class="areaName" *ngIf="item.googleSpot.mArea?.area_name_1">
               {{ item.googleSpot.mArea.area_name_1 | langFilter: lang }}
             </span>
           </div>
@@ -165,7 +168,7 @@
             <span class="note">
               Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。
             </span>
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}">
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
           </mat-list-item>
           <mat-list-item class="row mt1">

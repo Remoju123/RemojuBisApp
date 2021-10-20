@@ -1,14 +1,35 @@
 <div class="box"
 infinite-scroll
-[infiniteScrollDistance]="5"
+[infiniteScrollDistance]="isList ? 5 : 2"
 [infiniteScrollUpDistance]="1.5"
 [infiniteScrollThrottle]="150"
 (scrolled)="scrolledEmit()">
-  <mat-card id="nolist" *ngIf="!isList">
+  <!-- <mat-card id="nolist" *ngIf="!isList && (condition.select==='spot' || condition.select==='all')">
     <mat-card-content>
       みんなのおすすめは、見つかりませんでした。<br>
       代わりにGoogleにてヒットしたスポットを表示します。<br>
       （これらのスポットもプランに入れることができます。）
+    </mat-card-content>
+  </mat-card> -->
+  <mat-card id="nolist" *ngIf="!isList && condition.select!=='google'">
+    <mat-card-content>
+      みんなのおすすめは、見つかりませんでした。<br>
+      代わりに<a href="javascript:void(0);" class="glink" (click)="googleLink('google')">Google検索</a>でスポットを検索できます。
+    </mat-card-content>
+  </mat-card>
+  <mat-card id="nolist" *ngIf="!isList && condition.select==='google'">
+    <mat-card-content>
+      Googleで任意のスポットを検索できます。<br>
+      キーワードを入れ替えて検索してください。<br>
+      （これらのスポットもプランに入れることができます。）
+    </mat-card-content>
+  </mat-card>
+  <mat-card id="nolist" *ngIf="!isList && condition.select==='user'">
+    <mat-card-content>
+      <!-- みんなのおすすめは、見つかりませんでした。<br>
+      代わりにGoogle検索でスポットを検索できます。<br>
+      （上のgoogleを選択して検索してください。） -->
+      ユーザープラン
     </mat-card-content>
   </mat-card>
   <ng-content>
