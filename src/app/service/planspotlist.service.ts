@@ -155,7 +155,10 @@ export class PlanSpotListService {
 
     // キーワード検索
     if(cond.keyword !== ""){
-      _result = _result.filter(d => JSON.stringify(d.keyword).indexOf(cond.keyword) !== -1 || !cond.keyword);
+      const keywords = cond.keyword.replace('　', ' ').split(' ');
+      if (keywords.length > 0) {
+        _result = _result.filter(d => keywords.every(x => d.keyword && d.keyword.indexOf(x) !== -1));
+      }
     }
 
     return _result;

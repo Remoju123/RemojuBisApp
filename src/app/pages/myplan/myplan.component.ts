@@ -963,8 +963,12 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.indexedDBService.registPlan(this.row);
   }
 
-  linktoSpot(sid:any){
-    this.router.navigate(["/" + this.lang + "/spots/detail/",sid]);
+  linktoSpot(planSpot: PlanSpotCommon){
+    if (planSpot.type === 1) {
+      this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
+    } else {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
+    }
   }
 
   genStartTimes(){
