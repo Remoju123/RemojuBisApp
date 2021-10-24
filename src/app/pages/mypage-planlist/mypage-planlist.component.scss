@@ -374,8 +374,8 @@
       padding: 0.1875rem;
     }
   }
-    
-    
+
+
   .current {
     padding: 0.2rem !important;
     border-radius: 50%;
@@ -686,7 +686,7 @@ span.sortlink {
   margin-top: 16px;
   ::ng-deep .mat-card{
     padding: 0;
-  
+
     .card-box{
       border: #edeae8 solid 1px;
       border-radius: 10px;
@@ -706,7 +706,7 @@ span.sortlink {
           ::ng-deep.owl-item {
             position: relative;
             width: 25%!important;
-        
+
             .thumbspots {
               .thumbnum {
                 position: absolute;
@@ -718,15 +718,15 @@ span.sortlink {
                 text-align: center;
                 background-image: url("../../../assets/img/pin_red.svg");
                 background-repeat: no-repeat;
-                
+
                 span {
                   color: white;
                   font-size: 12px;
                 }
               }
-        
+
               // display: inline-flex !important;
-        
+
               img {
                 margin-top: 10px;
                 width: 100%;
@@ -736,10 +736,10 @@ span.sortlink {
                 @include copy-protect;
               }
             }
-        
+
             .thumbname {
               overflow: hidden;
-        
+
               span {
                 display: block;
                 overflow: hidden;
@@ -754,7 +754,7 @@ span.sortlink {
 
         ::ng-deep .owl-carousel .owl-stage {
           padding-left: 0 !important;
-        
+
         }
       }
 
@@ -769,7 +769,7 @@ span.sortlink {
           .mat-list-item-content{
             padding: 0 10px;
           }
-          
+
           &.top{
             margin: 10px 0 4px;
             .mat-list-item-content{
@@ -804,7 +804,7 @@ span.sortlink {
                     border: none;
                     width: 24px;
                     height: 24px;
-              
+
                     > i {
                       color: #fff;
                       font-size: 15px;
@@ -812,7 +812,7 @@ span.sortlink {
                   }
                 }
               }
-              
+
             }
           }
 
@@ -829,7 +829,7 @@ span.sortlink {
               margin-left: 15px;
             }
           }
-  
+
           &.bottom{
             font-size: 10px;
             line-height: 2;
@@ -837,7 +837,7 @@ span.sortlink {
               padding: 0 12px 12px;
               justify-content: space-between;
             }
-  
+
             .edit-to-plan{
               color: #fff;
               font-size: 13px;
@@ -850,13 +850,28 @@ span.sortlink {
               width: 100px;
               white-space: nowrap;
             }
+
+            .share{
+              margin-top: $mtop;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              min-width: $width;
+              button{
+                background: url("../../../assets/img/btn_share.svg") no-repeat;
+                border: 0;
+                width: 40px;
+                height: 40px;
+                min-width: initial;
+              }
+            }
           }
 
 
         }
       }
     }
-    
+
   }
 
 

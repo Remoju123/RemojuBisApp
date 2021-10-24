@@ -570,15 +570,9 @@
   <div class="footer">
     <!-- 保存 -->
     <div class="save">
-      <button mat-button type="button" id="plansave" [disabled]="disabledSavePlan()" (click)="onClickSavePlan(false)">
+      <button mat-button type="button" id="plansave" [disabled]="disabledSavePlan()" (click)="onClickSavePlan()">
       </button>
       <label for="plansave">{{ "Save" | translate }}</label>
-    </div>
-    <!-- URL共有 -->
-    <div class="share">
-      <button mat-button type="button" id="planshare" (click)="onClickSharePlan()">
-      </button>
-      <label for="planshare">{{ "SharePlan" | translate }}</label>
     </div>
     <!-- 新規プラン作成 -->
     <div class="newplan">
