@@ -23,7 +23,6 @@ import { MatAccordion } from "@angular/material/expansion";
 import { GoogleSpotDialogComponent } from "../../parts/google-spot-dialog/google-spot-dialog.component";
 import { MapDialogComponent } from "../../parts/map-dialog/map-dialog.component";
 import { SearchDialogFormPlanComponent } from "../../parts/search-dialog-form-plan/search-dialog-form-plan.component";
-import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -533,43 +532,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.onChange(false);
   }
 
-  // プランを共有する
-  onClickSharePlan() {
-    if (!this.commonService.loggedIn) {
-      // ログイン画面へ
-      this.commonService.login();
-      return;
-    }
-
-    if (!this.row.isSaved) {
-      // 確認ダイアログの表示
-      const param = new ComfirmDialogParam();
-      param.title = "SavePlanConfirm";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if (d === "ok") {
-          // 保存
-          this.row.isShare = true;
-          this.onClickSavePlan(true);
-        }
-      });
-    // プラン保存済み
-    } else {
-      // URL共有更新
-      this.myplanService.registShare(this.row.planUserId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (r !== null) {
-          if (!this.row.isShare) {
-            this.row.isShare = true;
-            // 変更を保存
-            this.registPlan(true);
-          }
-          this.row.shareUrl = r;
-          this.shareDialog();
-        }
-      });
-    }
-  }
-
   // 保存ボタンの制御
   disabledSavePlan(): boolean {
     if (this.isSaving) {
@@ -585,7 +547,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   // プランを保存する
-  onClickSavePlan(isShare: boolean) {
+  onClickSavePlan() {
     if (!this.commonService.loggedIn) {
       // ログイン画面へ
       this.commonService.login();
@@ -674,11 +636,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           this.registPlan(true);
           // 保存完了
           this.commonService.snackBarDisp("PlanSaved");
-
-          // URL共有の場合
-          if (isShare) {
-            this.shareDialog();
-          }
 
           // 保存ボタンロック解除
           this.isSaving = false;
@@ -818,18 +775,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.isEdit = true;
     // subject更新
     this.myplanService.FetchMyplanSpots();
-  }
-
-  // URL共有ダイアログの表示
-  shareDialog() {
-    this.dialog.open(UrlcopyDialogComponent, {
-      id:"urlShare",
-      maxWidth: "100%",
-      width: "92vw",
-      position: { top: "10px" },
-      data: this.row.isShare && this.row.isSaved ? this.baseUrl + this.lang + "/planspot/" + this.row.shareUrl : "",
-      autoFocus: false
-    });
   }
 
   async dataFormat() {

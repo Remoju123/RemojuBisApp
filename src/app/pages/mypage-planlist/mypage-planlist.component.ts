@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { MypagePlanListService } from "../../service/mypageplanlist.service";
@@ -12,6 +12,8 @@ import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
+import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-mypage-planlist",
@@ -20,6 +22,7 @@ import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 })
 export class MypagePlanListComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
+  private baseUrl:string;
 
   constructor(
     private commonService: CommonService,
@@ -28,8 +31,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     private indexedDBService: IndexedDBService,
     private translate: TranslateService,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if(isPlatformBrowser(this.platformId)){
+      this.baseUrl = document.getElementsByTagName("base")[0].href;
+      this.currentlang = localStorage.getItem("gml");
+    }
+  }
 
   // マイページプラン一覧
   rows: MypagePlanAppList[];
@@ -41,7 +50,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
   p: number;
   pageSize: number;
 
-  currentlang = this.lang;
+  currentlang: string;
 
   get lang() {
     return this.translate.currentLang;
@@ -157,6 +166,21 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     }
   }
 
+  // プランを共有する
+  onClickSharePlan(row: MypagePlanAppList) {
+    if (!row.isShare) {
+      // URL共有更新
+      this.myplanService.registShare(row.planUserId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (r) {
+          row.isShare = true;
+          row.shareUrl = r;
+          this.shareDialog(row);
+        }
+      });
+    } else {
+      this.shareDialog(row);
+    }
+  }
   /*------------------------------
    *
    * メソッド
@@ -314,6 +338,18 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       // プラン作成に反映
       this.myplanService.onPlanUserRemoved();
     }
+  }
+
+  // URL共有ダイアログの表示
+  shareDialog(row: MypagePlanAppList) {
+    this.dialog.open(UrlcopyDialogComponent, {
+      id:"urlShare",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: this.baseUrl + this.lang + "/planspot/" + row.shareUrl,
+      autoFocus: false
+    });
   }
 
   /*------------------------------

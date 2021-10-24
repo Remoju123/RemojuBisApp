@@ -40,6 +40,10 @@ export class MypagePlanAppList {
   objectId: string;
   // true:プラン作成 false:プラン投稿
   isCreation: boolean;
+  // true:URL共有済 false:URL共有していない
+  isShare: boolean;
+  // URL
+  shareUrl: string;
   // プランユーザスポットリスト
   spots: PlanSpotCommon[];
 }

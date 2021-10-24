@@ -70,6 +70,12 @@
               <button  mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
                 {{ "EditPlan" | translate }}
               </button>
+              <!-- URL共有 -->
+              <div class="share">
+                <button mat-button type="button" id="planshare" (click)="onClickSharePlan(row)">
+                </button>
+                <label for="planshare">{{ "SharePlan" | translate }}</label>
+              </div>
             </mat-list-item>
           </mat-list>
 
