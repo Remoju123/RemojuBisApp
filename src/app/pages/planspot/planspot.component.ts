@@ -40,6 +40,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   result:Observable<PlanSpotList>[] = [];
 
+  myPlanSpots:any;
+
   p: number;
   limit: number;
   end: number;
@@ -102,17 +104,7 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: ParamMap) => {
       const id = params.get("id");
       if (id){
-        // 編集中のプランを確認して共有プランを開く
         await this.checkPlan(id);
-/*
-        if(isPlatformBrowser(this.platformId)){
-          history.replaceState(id, "", "");
-          // history back desabled
-          history.pushState(null,null,null);
-          window.onpopstate = () =>{
-            history.pushState(null,null,null);
-          }
-        }*/
       }
     });
 
@@ -140,6 +132,11 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.optionKeywords = result.searchTarm;
       this.historyReplace(result.searchParams);
       this.count = result.list.length;
+    })
+
+    this.myplanService.FetchMyplanSpots();
+    this.myplanService.MySpots$.subscribe(r=>{
+      this.myPlanSpots = r;
     })
   }
 
@@ -350,7 +347,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       width: "92vw",
       position: { top: "10px" },
       data: this.listSelectMaster,
-      autoFocus: false
+      autoFocus: false,
+      id:"searchDialog"
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(condition => {

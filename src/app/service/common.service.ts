@@ -472,7 +472,8 @@ export class CommonService implements OnDestroy{
       width: "92vw",
       position: { top: "10px" },
       data: message,
-      autoFocus: false
+      autoFocus: false,
+      id:"mesdlg"
     });
   }
 

@@ -19,8 +19,24 @@
             <div class="myplan-edit-box">
               <div class="lt">
                 <div class="container">
-                  <span class="label color-silver">{{ "PlanName" | translate }}<span *ngIf="!row?.planName" class="required">&nbsp;{{ "Required" | translate }}</span></span>
-                  <span class="text">{{ row?.planName }}</span>
+                  <!-- <span class="label color-silver">{{ "PlanName" | translate }}<span *ngIf="!row?.planName" class="required">&nbsp;{{ "Required" | translate }}</span></span>
+                  <span class="text">{{ row?.planName }}</span> -->
+                  <ng-container *ngIf="row">
+                    <mat-form-field>
+                      <mat-label>{{ 'PlanName' | translate }}</mat-label>
+                      <input 
+                      #inpName
+                      id="planName"
+                      name="planName"
+                      maxlength="30"
+                      required
+                      matInput placeholder="{{ 'PlanName' | translate }}"
+                      [(ngModel)]="row.planName">
+                      <button *ngIf="row.planName" matSuffix mat-icon-button aria-label="Clear" (click)="row.planName=''">
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </ng-container>
                 </div>
               </div>
               <div class="rt" (click)="$event.stopPropagation()">
@@ -44,22 +60,7 @@
               </div>
             </div>
           </mat-expansion-panel-header>
-          <!-- プラン名 -->
           <ng-container *ngIf="row">
-            <mat-form-field appearance="outline" hintLabel="{{ 'Required' | translate }}" class="pname">
-              <!-- <mat-label>{{ "PlanName" | translate }}</mat-label> -->
-              <input
-                matInput
-                #planName
-                name="planName"
-                maxlength="30"
-                placeholder="{{ 'PlanName' | translate }}"
-                required
-                #inputinfo="ngModel"
-                [(ngModel)]="row.planName"
-                (change)="onChange(false)"/>
-                <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
-            </mat-form-field>
             <!-- 写真 -->
             <div class='select'>
               <div class="fileselector">
@@ -300,7 +301,7 @@
             </mat-expansion-panel>
           </mat-accordion>
         </div>
-
+        <!-- _blank view -->
         <div id="overlay" *ngIf="!row.planSpots">
           <div class="guide">
             <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
@@ -319,6 +320,7 @@
             </div>
             <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
             <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
+            <p class='under'>{{ "MyPlan#notice" | translate }}</p>
           </div>
         </div>
       </div>
@@ -410,16 +412,23 @@
       </mat-list>
     </div>
     <!-- 出発地 -->
-    <div class="startSpot" *ngIf="row.startPlanSpot">
-      <div class="lt">
-        <span class="mark"></span>
-        <span class="time">{{ row.startTime }}</span>
+    <ng-container *ngIf="row.startPlanSpot">
+      <div class="startSpot">
+        <div class="lt">
+          <span class="mark"></span>
+          <span class="time">{{ row.startTime }}</span>
+        </div>
+        <div class="rt">
+          <span>{{ row.startPlanSpot.spotName }}</span>
+        </div>
+        <span class="label">{{ "PointOfDeparture" | translate }}</span>
       </div>
-      <div class="rt">
-        <span>{{ row.startPlanSpot.spotName }}</span>
+      <div class='down_fill'>
+        <img src='../../../assets/img/allow_down_fill.svg' alt=''>
       </div>
-      <span class="label">{{ "PointOfDeparture" | translate }}</span>
-    </div>
+    </ng-container>
+    
+
     <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer"
     [item]="row.startPlanSpot"></app-transfer-panel>
     <div class="box" *ngIf="row.planSpots">
@@ -495,20 +504,27 @@
               <div class="card-bottom">
                 <mat-list class="pt0">
                   <mat-list-item class="subheading">
-                    <p class="memo" *ngIf="item.memo">{{ item.memo }}</p>
+                    <p class="memo" [ngClass]="{'close':!collapse}" *ngIf="item.memo">{{ item.memo }}</p>
+                    <div class="close" (click)="isCollapse()">閉じる</div>
                     <p *ngIf="!item.memo">{{ item.subheading }}</p>
                   </mat-list-item>
                   <mat-list-item class="row"
-                    *ngIf="item.spotAccess && (item.spotAccess.nearest | langFilter: lang) !== ''">
+                    *ngIf="item.spotAccess && (item.spotAccess.nearest | langFilter: lang) !== '';else empNearrest">
                     <span class="directions">
                       {{ item.spotAccess.nearest | langFilter: lang }}
                     </span>
                   </mat-list-item>
+                  <ng-template #empNearrest>
+                    <span>empty nearest</span>
+                  </ng-template>
                   <mat-list-item class="row">
-                    <span class="businesshour" *ngIf="item.businessHourHead">
+                    <span class="businesshour" *ngIf="item.businessHourHead;else empBusinessHour">
                       <span class="color">{{ "Businesshours" | translate }}</span>：{{ item.businessHourHead }}</span>
                       <span class="regularholiday" *ngIf="item.holiday">
                         &emsp;{{ "Holiday" | translate }}：{{ item.holiday }}</span>
+                      <ng-template #empBusinessHour>
+                        <span>empty businesshour</span>
+                      </ng-template>
                   </mat-list-item>
                 </mat-list>
               </div>

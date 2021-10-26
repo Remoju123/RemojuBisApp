@@ -117,6 +117,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   isSaving = false;
 
+  collapse:boolean = false;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -1011,5 +1013,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.isVal=false;
     this.keywordInput.nativeElement.value="";
     return;
+  }
+
+  isCollapse(){
+    return this.collapse = !this.collapse;
   }
 }

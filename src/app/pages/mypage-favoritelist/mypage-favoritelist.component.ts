@@ -95,7 +95,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   getPlanSpotDataSet() {
     this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      console.log(r);
       this.planspots.filteringData(r,this.condition,this.listSelectMaster);
       this.mergeNextDataSet();
     })

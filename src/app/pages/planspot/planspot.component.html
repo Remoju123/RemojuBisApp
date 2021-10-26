@@ -15,6 +15,7 @@
     *ngFor="let item of details$"
     [item]="item"
     [lang]="lang"
+    [myPlanSpots]="myPlanSpots"
     (linked)="linktoDetail($event)"
     (addMyPlan)="addMyPlan($event)"
     (setFav)="setFavorite($event)"
