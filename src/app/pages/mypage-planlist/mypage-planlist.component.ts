@@ -89,6 +89,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
 
   // 公開・非公開切り替え
   onClickRelease(row: MypagePlanAppList) {
+    if (row.spots.length === 0) {
+      return;
+    }
+
     const param = new ComfirmDialogParam();
     // 公開⇒非公開
     if (row.isRelease) {

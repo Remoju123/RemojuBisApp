@@ -14,7 +14,7 @@
   <mat-card *ngIf="isEdit" class="myplan-edit">
     <mat-card-content>
       <mat-accordion #mepPlan="matAccordion">
-        <mat-expansion-panel id="edit" #mep class="edit" [hideToggle]=true [disabled]="!row">
+        <mat-expansion-panel id="edit" #mep="matExpansionPanel" class="edit" [hideToggle]=true [disabled]="!row">
           <mat-expansion-panel-header>
             <div class="myplan-edit-box">
               <div class="lt">
@@ -41,7 +41,7 @@
               </div>
               <div class="rt" (click)="$event.stopPropagation()">
                 <!-- バス -->
-                <button class="option" (click)="onClickBus()" [disabled]="!row">
+                <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
                   <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
                   <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
                   <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
@@ -50,7 +50,7 @@
                 </button>
 
                 <!-- 最短ルート -->
-                <button class="option" (click)="onClickAuto()" [disabled]="!row">
+                <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
                   <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
                   <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
                     <img src="/assets/img/keiro.svg" alt="Auto">
@@ -586,7 +586,7 @@
   <div class="footer">
     <!-- 保存 -->
     <div class="save">
-      <button mat-button type="button" id="plansave" [disabled]="disabledSavePlan()" (click)="onClickSavePlan()">
+      <button mat-button type="button" id="plansave" (click)="onClickSavePlan()">
       </button>
       <label for="plansave">{{ "Save" | translate }}</label>
     </div>
