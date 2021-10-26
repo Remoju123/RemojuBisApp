@@ -19,7 +19,7 @@ import { ListSearchCondition } from "../../class/indexeddb.class";
 import { searchResult, PlanAppList } from "../../class/planlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
-import { MatAccordion } from "@angular/material/expansion";
+import { MatAccordion, MatExpansionPanel } from "@angular/material/expansion";
 import { GoogleSpotDialogComponent } from "../../parts/google-spot-dialog/google-spot-dialog.component";
 import { MapDialogComponent } from "../../parts/map-dialog/map-dialog.component";
 import { SearchDialogFormPlanComponent } from "../../parts/search-dialog-form-plan/search-dialog-form-plan.component";
@@ -84,6 +84,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   @ViewChild("mepPlan") accordionPlan: MatAccordion;
+  @ViewChild("mep") expansionPanelPlan: MatExpansionPanel;
   @ViewChild("mepSpot") accordionSpot: MatAccordion;
 
   // 編集/プレビュー
@@ -394,7 +395,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   // 経路最適化
   onClickAuto() {
-    this.row.isAuto = true;
+    this.row.isAuto = !this.row.isAuto;
     // 保存
     this.onChange(true);
   }
@@ -532,20 +533,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.onChange(false);
   }
 
-  // 保存ボタンの制御
-  disabledSavePlan(): boolean {
-    if (this.isSaving) {
-      return true;
-    }
-    // プラン名、スポット名必須
-    if (!this.row?.planName || !this.row?.planSpots
-      || this.row?.planSpots.reduce((sum, planSpot) => sum + (planSpot.spotName ? 0 : 1), 0) > 0
-      ) {
-      return true;
-    }
-    return false;
-  }
-
   // プランを保存する
   onClickSavePlan() {
     if (!this.commonService.loggedIn) {
@@ -553,6 +540,25 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.commonService.login();
       return;
     }
+
+    // プラン名必須チェック
+    if (!this.row.planName) {
+      this.expansionPanelPlan.expanded = true;;
+      this.commonService.messageDialog("ErrorMsgRequiredPlanName");
+      return;
+    }
+
+    if (this.row.planSpots) {
+      for (let i = 0; i < this.row.planSpots.length; i++) {
+        if (!this.row.planSpots[i].spotName)
+        {
+          this.step = i;
+          this.commonService.messageDialog("NoSpotName");
+          return;
+        }
+      }
+    }
+
 
     // 保存ボタンロック
     this.isSaving = true;
@@ -563,14 +569,16 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     }
 
     // スポット写真
-    for (let i = 0; i < this.row.planSpots.length; i++) {
-      if (this.row.planSpots[i].planUserpictures) {
-        for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
-          if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
-            // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
-            this.row.planSpots[i].planUserpictures[j].picture_url = environment.blobUrl + "/pr{0}/" +
-              this.row.planSpots[i].displayOrder + "_" + this.row.planSpots[i].planUserpictures[j].picture_display_order
-              + "_{1}.webp";
+    if (this.row.planSpots) {
+      for (let i = 0; i < this.row.planSpots.length; i++) {
+        if (this.row.planSpots[i].planUserpictures) {
+          for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
+            if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
+              // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
+              this.row.planSpots[i].planUserpictures[j].picture_url = environment.blobUrl + "/pr{0}/" +
+                this.row.planSpots[i].displayOrder + "_" + this.row.planSpots[i].planUserpictures[j].picture_display_order
+                + "_{1}.webp";
+            }
           }
         }
       }
@@ -603,24 +611,26 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           }
 
           // スポット写真
-          for (let i = 0; i < this.row.planSpots.length; i++) {
-            if (this.row.planSpots[i].planUserpictures) {
-              for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
-                if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
-                  if (this.row.planSpots[i].planUserpictures[j].imageCropped) {
-                    // blobに再変換
-                    var blob = this.commonService.base64toBlob(this.row.planSpots[i].planUserpictures[j].imageCropped);
-                    // blob object array( fileに再変換 )
-                    var file = this.commonService.blobToFile(blob, Date.now() + this.row.planSpots[i].planUserpictures[j].pictureFile.name);
-                    // 画像保存処理
-                    await this.saveImagePlan(file
-                      , r.planSpots[i].planUserpictures[j].picture_url,
-                      r.planUserId);
-                  } else {
-                    // 画像保存処理
-                    await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
-                      , r.planSpots[i].planUserpictures[j].picture_url,
-                      r.planUserId);
+          if (this.row.planSpots) {
+            for (let i = 0; i < this.row.planSpots.length; i++) {
+              if (this.row.planSpots[i].planUserpictures) {
+                for (let j = 0; j < this.row.planSpots[i].planUserpictures.length; j++) {
+                  if (this.row.planSpots[i].planUserpictures[j].pictureFile) {
+                    if (this.row.planSpots[i].planUserpictures[j].imageCropped) {
+                      // blobに再変換
+                      var blob = this.commonService.base64toBlob(this.row.planSpots[i].planUserpictures[j].imageCropped);
+                      // blob object array( fileに再変換 )
+                      var file = this.commonService.blobToFile(blob, Date.now() + this.row.planSpots[i].planUserpictures[j].pictureFile.name);
+                      // 画像保存処理
+                      await this.saveImagePlan(file
+                        , r.planSpots[i].planUserpictures[j].picture_url,
+                        r.planUserId);
+                    } else {
+                      // 画像保存処理
+                      await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
+                        , r.planSpots[i].planUserpictures[j].picture_url,
+                        r.planUserId);
+                    }
                   }
                 }
               }
