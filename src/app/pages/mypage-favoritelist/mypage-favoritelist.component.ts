@@ -33,7 +33,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.condition = new ListSearchCondition();
   }
 
-  @Input() myFavorite:Boolean; 
+  @Input() myFavorite:Boolean;
 
   // 初回表示制御
   guid: string;
@@ -95,7 +95,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   getPlanSpotDataSet() {
     this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      console.log(r);
       this.planspots.filteringData(r,this.condition,this.listSelectMaster);
       this.mergeNextDataSet();
     })
@@ -194,8 +193,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     .subscribe(()=>{
       this.mypageFavoriteListService.GetFavoriteCount(this.guid);
     });
-    item.isFavorite = !item.isFavorite;
-
     this.details$.splice(
       this.details$.findIndex(v=> v.id === item.id),1
     )

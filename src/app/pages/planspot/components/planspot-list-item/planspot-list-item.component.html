@@ -114,7 +114,7 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button mat-flat-button class="add-to-plan" (click)="onClickAddToPlan(item)">
+            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}" (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
             </button>
           </mat-list-item>
@@ -176,7 +176,7 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button mat-flat-button class="add-to-plan" (click)="onClickAddToPlan(item)">
+            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}" (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
             </button>
           </mat-list-item>

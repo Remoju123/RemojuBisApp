@@ -43,7 +43,8 @@
 
       .myplan-edit-box {
         padding: 3px 16px;
-        border: $color-gld06 1px solid;
+        border-top: $color-gld06 1px solid;
+        border-bottom: $color-gld06 1px solid;
         display: flex;
         box-shadow: 0 4px 6px #0000001f;
         height: 65px;
@@ -82,7 +83,7 @@
           display: flex;
           flex-direction: column;
           .container{
-            overflow: hidden;
+            //overflow: hidden;
 
             .label{
               position: absolute;
@@ -99,6 +100,15 @@
 
             span>span.required{
               color: red;
+            }
+
+            ::ng-deep{
+              .mat-form-field{
+                padding-top: 1.4em;
+                .mat-form-field-infix{
+                  padding: 0.4375em 0;
+                }
+              }
             }
           }
         }
@@ -561,7 +571,8 @@
               top: 0;
             }
             .mat-form-field-infix{
-              border-top: 0;
+              // border-top: 0;
+              padding-top: 5px;
             }
           }
 
@@ -817,14 +828,13 @@
     display: flex;
     align-items: center;
     position: relative;
-
+    justify-content: center;
     button.add-spot{
       display: flex;
       align-items:flex-start;
       font-size: 16px;
       color: $color-pnk02;
-      padding-left: 44px;
-
+      
       &::before{
         content: url("../../../assets/img/add_spot.svg");
         width: 40px;
@@ -1029,6 +1039,14 @@
     }
   }
 
+  .down_fill{
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+    img{
+      width: 16px;
+    }
+  }
 
   .box{
     margin-top: 16px;
@@ -1047,7 +1065,7 @@
 
         .lt{
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           .mark{
             min-width: 30px;
             height: 36px;
@@ -1495,11 +1513,14 @@
 
             &.subheading{
               overflow: hidden;
+              ::ng-deep .mat-list-item-content{
+                flex-direction: column;
+              }
               p{
                 font-size: 15px;
                 font-weight: 400;
                 margin-block-start: 1em;
-                margin-block-end: 1em;
+                margin-block-end: 1.5em;
                 line-height: 1.8;
                 color: #4d4d4d;
                 display: -webkit-box;
@@ -1508,11 +1529,45 @@
                 // margin-block-end: 1em;
                 // -webkit-line-clamp: 2;
 
+                
                 &.memo{
                   background-color: #f6f5ef;
                   padding: 0.3em 0.5em;
                   border-radius: 0.5em;
                   width: 100%;
+
+                  &.exps{
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                  }
+                }
+              }
+
+              .close{
+                line-height: 14px;
+                background-color: #878787;
+                border-radius: 3px;
+                padding: 1px 4px;
+                display: flex;
+                position: absolute;
+                bottom: 4px;
+                right: 7px;
+                font-size: 12px;
+                color: #fff;
+                font-weight: 100;
+                &.dw{
+                  &::before{
+                    content: url("../../../assets/img/arrow_up_wt.svg");
+                    width: 10px;
+                  }
+                }
+                &.up{
+                  &::before{
+                    content: url("../../../assets/img/arrow_dw_wt.svg");
+                    width: 10px;
+                  }
                 }
               }
             }
@@ -1745,21 +1800,6 @@
       &:disabled{
         opacity: 0.5;
       }
-    }
-  }
-
-  .share{
-    margin-top: $mtop;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: $width;
-    button{
-      background: url("../../../assets/img/btn_share.svg") no-repeat;
-      border: 0;
-      width: 40px;
-      height: 40px;
-      min-width: initial;
     }
   }
 

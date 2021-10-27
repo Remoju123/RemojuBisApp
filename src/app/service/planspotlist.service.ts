@@ -155,7 +155,10 @@ export class PlanSpotListService {
 
     // キーワード検索
     if(cond.keyword !== ""){
-      _result = _result.filter(d => JSON.stringify(d.keyword).indexOf(cond.keyword) !== -1 || !cond.keyword);
+      const keywords = cond.keyword.replace('　', ' ').split(' ');
+      if (keywords.length > 0) {
+        _result = _result.filter(d => keywords.every(x => d.keyword && d.keyword.indexOf(x) !== -1));
+      }
     }
 
     return _result;
@@ -416,15 +419,23 @@ export class PlanSpotListService {
       }
     }else{
       param = new RegistFavorite();
-      param.spotFavorite = {
-        spot_id: id,
-        google_spot_id: 0,
-        guid: guid,
-        is_delete: !isFavorite,
-        objectId: this.commonService.objectId
-      };
-      if (id === 0) {
+      if (googleSpot) {
+        param.spotFavorite = {
+          spot_id: 0,
+          google_spot_id: id,
+          guid: guid,
+          is_delete: !isFavorite,
+          objectId: this.commonService.objectId
+        };
         param.googleSpot = googleSpot;
+      } else {
+        param.spotFavorite = {
+          spot_id: id,
+          google_spot_id: 0,
+          guid: guid,
+          is_delete: !isFavorite,
+          objectId: this.commonService.objectId
+        };
       }
       url = this.host + "/api/SpotList/Favorite";
     }

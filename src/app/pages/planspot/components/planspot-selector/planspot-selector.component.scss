@@ -12,7 +12,7 @@
       position: relative;
       &.title{
         font-size: 14px;
-        padding: 6px 12px;
+        padding: 0 12px 10px;
       }
       
       &.input{
@@ -74,14 +74,14 @@
   
             &#spot{
               &:checked + label{
-                background: #ABD9D9;
+                background: #679ecf;
                 //border-radius: 12px 0 0 12px;
               }
             }
   
             &#plan{
               &:checked + label{
-                background: #F6C57D;
+                background: #fabd00;
                 //border-radius: 0 12px 12px 0;
               }
             }
@@ -116,15 +116,15 @@
                 vertical-align: middle;
                 margin-left: 2px;
               }
-              &::after{
-                position: absolute;
-                margin: auto;
-                content: url("../../../../../assets/img/icon_recomm.svg");
-                width: 50px;
-                top:-5px;
-                left: 0;
-                right: 0;
-              }
+              // &::after{
+              //   position: absolute;
+              //   margin: auto;
+              //   content: url("../../../../../assets/img/icon_recomm.svg");
+              //   width: 50px;
+              //   top:-5px;
+              //   left: 0;
+              //   right: 0;
+              // }
             }
             &.spot{
               //width: 58px;
@@ -138,15 +138,15 @@
                 vertical-align: middle;
                 margin-right: 2px;
               }
-              &::after{
-                position: absolute;
-                margin: auto;
-                content: url("../../../../../assets/img/icon_recomm.svg");
-                width: 50px;
-                top:-5px;
-                left: 0;
-                right: 0;
-              }
+              // &::after{
+              //   position: absolute;
+              //   margin: auto;
+              //   content: url("../../../../../assets/img/icon_recomm.svg");
+              //   width: 50px;
+              //   top:-5px;
+              //   left: 0;
+              //   right: 0;
+              // }
             }
             &.google{
               //width: 36px;
@@ -198,6 +198,9 @@
             font-size: 12px;
             color: $color-gld02;
             padding: 0 8px 0 12px;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
         
             &::before{
               content: url("../../../../../assets/img/searchplus.svg");

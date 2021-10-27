@@ -67,9 +67,16 @@
               <span>
                 {{ "LastUpdated" | translate }} : {{ row.updateDatetime | date:"yyyy/MM/dd" }}<br />
               </span>
-              <button  mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
+              <button mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
                 {{ "EditPlan" | translate }}
               </button>
+              <!-- URL共有 -->
+              <div class="share">
+                <button mat-flat-button class="share" id="planshare" (click)="onClickSharePlan(row)">
+                  <mat-icon>share</mat-icon>
+                  {{ "SharePlan" | translate }}
+                </button>
+              </div>
             </mat-list-item>
           </mat-list>
 

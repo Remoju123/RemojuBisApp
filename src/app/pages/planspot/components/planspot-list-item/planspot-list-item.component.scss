@@ -39,7 +39,7 @@
         flex-basis: 41px;
         img{
           width: 41px;
-          height: 16px;
+          height: 22px;
           margin: auto 12px;
         }
       }
@@ -721,6 +721,18 @@
             line-height: 27px;
             // width: 150px;
             white-space: nowrap;
+
+            &.on{
+              &::after{
+                content: "";
+                background: url("../../../../../assets/img/icon_onplan.svg") no-repeat;
+                width: 24px;
+                height: 28px;
+                position: absolute;
+                right: 0px;
+                bottom: 18px;
+              }
+            }
           }
 
           .add-to-favorite {

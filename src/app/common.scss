@@ -114,3 +114,7 @@ https://material.io/design/layout/responsive-layout-grid.html#breakpoints
 ::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #666;
 }
+
+::ng-deep.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  background: #e2d5c9;
+}

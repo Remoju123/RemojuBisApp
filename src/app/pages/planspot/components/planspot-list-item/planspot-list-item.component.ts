@@ -6,6 +6,7 @@ import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
 import { LangFilterPipe } from 'src/app/utils/lang-filter.pipe';
 import { environment } from 'src/environments/environment';
+import { runInThisContext } from 'vm';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() item: PlanSpotList;
   @Input() lang: string;
   @Input() myFavorite: boolean;
+  @Input() myPlanSpots:any;
 
   @Output() linked = new EventEmitter<number>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
@@ -135,7 +137,25 @@ export class PlanspotListItemComponent implements OnInit {
   onClickDeleteFavorite(item:PlanSpotList){
     this.delFav.emit(item);
   }
-  
+
+  chkInMyPlanspot(item:PlanSpotList){
+    if(!this.myFavorite){
+      if(item.isPlan===1){
+        if(item.planSpotNames!==null){
+          let planSpotIds = [];
+          Array.from(item.planSpotNames).map(n => {
+            planSpotIds.push(n.spotId);
+          });
+          return this.getIsDuplicate(planSpotIds,this.myPlanSpots)
+        }
+        return false;
+      }else{
+        return Array.from(this.myPlanSpots).includes(item.id)
+      }
+    }else{
+      return false;
+    }
+  }
 
   mainOptions: any = {
     rewindSpeed:0,
@@ -154,5 +174,11 @@ export class PlanspotListItemComponent implements OnInit {
     items: 1,
     nav: true
   };
+
+
+  // 比較関数（同じ配列同士で重複する値があるか否か）
+  getIsDuplicate(arr1, arr2) {
+    return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
+  }
 
 }

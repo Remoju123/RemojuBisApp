@@ -1,75 +1,90 @@
 @import "../../../assets/scss/vars";
 
-::ng-deep mat-dialog-container#gspot{
+::ng-deep{
+  #gspot{
 
-  h2{
-    font-size: 17px;
-    display: inline-flex;
-    &::before{
-      content: url("../../../assets/img/icon_alert.svg");
-      width: 28px;
-      height: 28px;
-      margin-right: 6px;
-      margin-top: 3px;
+    h2{
+      font-size: 17px;
+      display: inline-flex;
+      &::before{
+        content: url("../../../assets/img/icon_alert.svg");
+        width: 28px;
+        height: 28px;
+        margin-right: 6px;
+        margin-top: 3px;
+      }
+      span{
+        font-size: 12px;
+        margin-left: 6px;
+      }
     }
-    span{
-      font-size: 12px;
-      margin-left: 6px;
-    }
-  }
-  mat-dialog-content{
-    .form{
-      .mat-form-field{
-        .mat-form-field-wrapper{
-          .mat-form-field-flex{
-            .mat-form-field-infix{
-              padding: 1em 0 0.9em 0;
-              border-top: 0;
+    mat-dialog-content{
+      .form{
+        .mat-form-field{
+          .mat-form-field-wrapper{
+            .mat-form-field-flex{
+              .mat-form-field-infix{
+                //padding: 1em 0 0.9em 0;
+                //border-top: 0;
+              }
             }
           }
         }
       }
-    }
-
-    .mapDiv {
-      position: relative;
-      .map {
-        height: 91vw;
+  
+      .mapDiv {
+        position: relative;
+        .map {
+          height: 91vw;
+        }
+        .map-center-overlay {
+          margin: 0;
+          position: absolute;
+          top: 50%; 
+          left: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+        }
       }
-      .map-center-overlay {
-        margin: 0;
-        position: absolute;
-        top: 50%; 
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
+    }
+  
+    .mat-dialog-actions{
+      display: flex;
+      justify-content: center;
+      button{
+        width: 80px;
+        height: 32px;
+        &.setting{
+          background-color: #de7274;
+          color: #fff;
+          border-radius: 16px;
+          line-height: 32px;  
+        }
+  
+        &.cancel{
+          background-color:#fff;
+          color: #de7274;
+          border: 1px solid #de7274;
+          border-radius: 16px;
+          line-height: 32px;
+        }
+  
+        &.abscancel{
+          all:unset;
+          position: absolute;
+          width: 23px;
+          top: 2px;
+          right: 7px;
+          &::before{
+            content: url("../../../assets/img/btn_delete.svg");
+          }
+        }
       }
+  
     }
+  
   }
-
-  .mat-dialog-actions{
-    display: flex;
-    justify-content: center;
-    button.cancel{
-      width: 80px;
-      height: 32px;
-      background-color:#fff;
-      color: #de7274;
-      border: 1px solid #de7274;
-      border-radius: 16px;
-      line-height: 32px;
-    }
-    button.setting{
-      width: 80px;
-      height: 32px;
-      background-color: #de7274;
-      color: #fff;
-      border-radius: 16px;
-      line-height: 32px;
-    }
-  }
-
-}
+} 
 
 
 

@@ -380,6 +380,21 @@ export class CommonService implements OnDestroy{
     }
   }
 
+  // 外部地図アプリまたはページへ連携
+  locationPlaceIdGoogleMap(currentlang: any, latitude: string, longitude: string, placeId: string) {
+    if(isPlatformBrowser(this.platformId)){
+      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
+        if (navigator.userAgent === "Android") {
+          location.href = `https://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
+        } else {
+          location.href = `comgooglemapsurl://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
+        }
+      } else {
+        window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`, "_blank");
+      }
+    }
+  }
+
   base64toBlob(base64: string) {
     // カンマで分割して以下のようにデータを分ける
     // tmp[0] : データ形式（data:image/png;base64）
@@ -457,7 +472,8 @@ export class CommonService implements OnDestroy{
       width: "92vw",
       position: { top: "10px" },
       data: message,
-      autoFocus: false
+      autoFocus: false,
+      id:"mesdlg"
     });
   }
 
