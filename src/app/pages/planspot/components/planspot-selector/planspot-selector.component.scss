@@ -88,7 +88,8 @@
   
             &#all{
               &:checked + label{
-                background:#797E86;
+                //background:#797E86;
+                background: #de7274;
                 border-radius: $r 0 0 $r;
               }
             }
