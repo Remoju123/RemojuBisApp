@@ -185,6 +185,7 @@
   "EditPlanConfirmTitle": "このプランを編集しますか？（未保存のプランがあります。）",
   "EditPlanConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "Close": "閉じる",
+  "Open": "広げる",
   "PlanSaved": "プランを保存しました。",
   "PlanClearConfirm": "このプランを本当に破棄しますか？",
   "ShareYourOwnTrip": "自分だけの旅をシェアしよう",
@@ -193,7 +194,7 @@
   "PlanNameEx": "（例）海のきれいな街で日帰り女子旅♡",
   "PlanExplanationEx": "プランのメモ",
   "labelClear":"クリア",
-  "MemoEx": "スポットのおすすめポイント",
+  "MemoEx": "このスポットのおすすめポイント",
   "SelectAPhoto": "写真を選択しよう（最大8枚）",
   "SaveDraft": "下書き保存",
   "Release": "公開",
@@ -243,7 +244,7 @@
   "PrivateSaved": "非公開にしました",
   "DuringRouteCalculation": "経路計算中・・・",
   "SpotNameEx": "スポット名",
-  "SpotExplanationEx": "スポットのおすすめポイント",
+  "SpotExplanationEx": "このスポットで何をしますか？（メモ）",
   "FavoriteRemoveConfirm": "お気に入りを削除しますか？",
   "FavoriteRemoved": "お気に入りを削除しました。",
   "PlanName": "プラン名",
@@ -271,7 +272,7 @@
   "ReportPlanUser": "プランを違反報告",
   "ReportPlanUserConfirmTitle": "不適切なプランを報告しますか？",
   "ReportPlanUserConfirmText": "ご報告いただいたプランについて、担当者が数営業日以内に確認します。",
-  "Selectimagespot": "スポットのイメージ画像を選択",
+  "Selectimagespot": "スポットの画像を変更できます。",
   "Roundspot": "周遊スポット",
   "Max6spots": "最大６ヶ所",
   "Option": "※オプション",
@@ -284,5 +285,7 @@
   "ViewReview":"投稿したレビューを見る",
   "NoReviewMsg":"投稿中のレビューはありません",
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
-  "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。"
+  "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
+  "NearestSt": "最寄駅",
+  "SearchGuide": "「温泉」「京都女子旅」..."
 }

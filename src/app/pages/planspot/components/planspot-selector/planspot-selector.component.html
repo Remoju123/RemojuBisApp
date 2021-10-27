@@ -5,7 +5,7 @@
     </div>
     <div class='row input' *ngIf="!myFavorite">
       <input type="text"
-        placeholder="「京都女子旅」「スカイツリー」..."
+        placeholder="{{'SearchGuide'|translate}}"
         class="keyword"
         #keywordInput
         [value]="condition.keyword"
@@ -48,7 +48,7 @@
         </button>
       </div>
     </div>
-    <div class='row result' [ngClass]="{'on':this.chkTarms()}">
+    <!-- <div class='row result' [ngClass]="{'on':this.chkTarms()}">
       <button class='popupItem are' (click)="openDialog(0)">
         <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
       </button>
@@ -58,7 +58,7 @@
       <button class="popupItem reset" (click)="condReset()">
         <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
       </button>
-    </div>
+    </div> -->
   </mat-card-content>
 
   <div class='popup' [ngClass]="{'on':isChk}">
