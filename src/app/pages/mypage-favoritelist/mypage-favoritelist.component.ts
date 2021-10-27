@@ -80,6 +80,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       this.rows = result.list;
       this.optionKeywords = result.searchTarm;
       this.count = result.list.length;
+      console.log(result.list.length);
     })
   }
 
@@ -117,7 +118,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
             this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
 
             this.details$ = this.rows.slice(0,this.end);
-            this.count = this.details$.length;
+            //this.count = this.details$.length;
           })
         }
       }
