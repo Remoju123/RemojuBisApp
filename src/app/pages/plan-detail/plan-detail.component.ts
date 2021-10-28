@@ -113,7 +113,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   ngOnInit() {
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(v=>{
-      console.log(v);
       this.myPlanSpots = v;
     })
 

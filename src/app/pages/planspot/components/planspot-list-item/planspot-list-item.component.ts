@@ -146,7 +146,6 @@ export class PlanspotListItemComponent implements OnInit {
           Array.from(item.planSpotNames).map(n => {
             planSpotIds.push(n.spotId);
           });
-          console.log("psIds:%o mps:%o",planSpotIds,this.myPlanSpots);
           return this.getIsDuplicate(planSpotIds,this.myPlanSpots);
         }
         return false;
