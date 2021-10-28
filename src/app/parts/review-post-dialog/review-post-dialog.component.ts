@@ -1,9 +1,11 @@
 import { Component, Inject, OnInit, OnDestroy, ViewChild } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ReviewResult, Review, ReviewPicture, 
-  SpotReviews, SpotReviewsPicture, 
-  PlanReviews, PlanReviewsPicture, 
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { ImageCropperParam } from "../../class/common.class";
+import { ReviewResult, Review, ReviewPicture,
+  SpotReviews, SpotReviewsPicture,
+  PlanReviews, PlanReviewsPicture,
   PlanUserReviews, PlanUserReviewsPicture } from "../../class/review.class";
+import { ImageCropperDialogComponent } from "../image-cropper-dialog/image-cropper-dialog.component";
 import { CommonService } from "../../service/common.service";
 import { PlanService } from "../../service/plan.service";
 import { SpotService } from "../../service/spot.service";
@@ -33,6 +35,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
     private spotService: SpotService,
     private planService: PlanService,
     private translate: TranslateService,
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<ReviewPostDialogComponent>,
     private datePipe:DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -54,7 +57,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
       this.review.pictures = new Array<ReviewPicture>();
     }
     this.rating = this.review.evaluation?this.review.evaluation.toFixed(1):"0.0";
-    
+
     if(this.review.visitDate){
       this.visitDate = this.datePipe.transform(this.review.visitDate,"yyyy-MM-dd");
     }
@@ -77,16 +80,46 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
       // 画像表示
       for(let i = 0; i < files.length; i++)
       {
-        let reviewPicture = await this.imageSize(files[i]);
+        const img = await this.commonService.imageSize(files[i]);
+        let reviewPicture = new ReviewPicture();
         reviewPicture.picturedisplayOrder = this.review.pictures.length + 1;
+        reviewPicture.pictureFile = img.file;
+        reviewPicture.picturePreviewUrl = img.previewUrl;
         // 追加
         this.review.pictures.push(reviewPicture)
       }
     }
   }
 
+  onClickCrop(picture: ReviewPicture) {
+    let param = new ImageCropperParam();
+
+    param.isAspectRatio = false;
+    param.aspectRatio = "1";
+    param.cropperPosition = picture.cropperPosition;
+    param.imageCropped = picture.imageCropped;
+    param.pictureFile = picture.pictureFile;
+    param.picturePreviewUrl = picture.picturePreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        const idx = this.review.pictures.findIndex(x => x.picturedisplayOrder === picture.picturedisplayOrder);
+        this.review.pictures[idx].imageCropped = r.imageCropped;
+        this.review.pictures[idx].cropperPosition = r.cropperPosition;
+      }
+    });
+  }
+
   // 画像削除
-  onClickSpotDelete(picture: ReviewPicture){
+  onClickImageDelete(picture: ReviewPicture){
     this.review.pictures.splice(
       this.review.pictures.findIndex(
         v => v.picturedisplayOrder === picture.picturedisplayOrder
@@ -98,7 +131,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
       picture.picturedisplayOrder = i++;
     });
   }
-  
+
   // 保存
   onClickSave(){
     // コンテナ名設定
@@ -113,10 +146,7 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
       if (this.review.pictures[i].pictureFile) {
         // 画像URLを設定(ファイル名は表示順(display_order)_画像表示順(picture_display_order)＋拡張子)
         this.review.pictures[i].pictureUrl = environment.blobUrl + "/" + container + this.review.id + "/" +
-          "r{0}_" + this.review.pictures[i].picturedisplayOrder
-          + this.review.pictures[i].pictureFile.name.substring(
-            this.review.pictures[i].pictureFile.name.lastIndexOf(".")
-          ,this.review.pictures[i].pictureFile.name.length);
+          "r{0}_" + this.review.pictures[i].picturedisplayOrder + "_{1}.webp";
       }
     }
 
@@ -154,10 +184,12 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
             result = r.reviewResult;
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
+                const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
                 await this.saveImageSpot(this.review.pictures[i].pictureFile
-                  , this.review.pictures[i].pictureUrl.replace("{0}", r.displayOrder.toString()),
-                  this.review.id);
+                  , this.review.pictures[i].imageCropped
+                  , registReview.pictures[i].pictureUrl
+                  , this.review.id);
               }
             }
             //this.commonService.onSetReviewAve(result.avgEvaluation);
@@ -194,10 +226,12 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
             result = r.reviewResult;
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
+                const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
                 await this.saveImagePlan(this.review.pictures[i].pictureFile
-                  , this.review.pictures[i].pictureUrl.replace("{0}", r.displayOrder.toString()),
-                  this.review.id);
+                  , this.review.pictures[i].imageCropped
+                  , registReview.pictures[i].pictureUrl
+                  , this.review.id);
               }
             }
             this.dialogRef.close(result);
@@ -233,9 +267,11 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
             result = r.reviewResult;
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
+                const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
                 await this.saveImagePlan(this.review.pictures[i].pictureFile
-                  , this.review.pictures[i].pictureUrl.replace("{0}", r.displayOrder.toString()),
+                  , this.review.pictures[i].imageCropped
+                  , registReview.pictures[i].pictureUrl,
                   this.review.id);
               }
             }
@@ -252,61 +288,57 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
    *
    * -----------------------------*/
 
-  // 画像サイズ変更
-  async imageSize(file: File): Promise<ReviewPicture>{
+  saveImageSpot(pictureFile: File, imageCropped: any, pictureUrl: string, spotId: number){
     return new Promise((resolve, reject) => {
-      let reviewPicture = new ReviewPicture();
-
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        const width = img.width;
-        const height = img.height;
-        // 縮小後のサイズを計算。ここでは横幅 (width) を指定
-        const dstWidth = 1024;
-        const scale = dstWidth / width;
-        const dstHeight = height * scale;
-        // Canvas オブジェクトを使い、縮小後の画像を描画
-        const canvas = document.createElement("canvas");
-        canvas.width = dstWidth;
-        canvas.height = dstHeight;
-        const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, dstWidth, dstHeight);
-        // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/webp",0.75);
-        reviewPicture.picturePreviewUrl = resized;
+      // 画像アップロード
+      if (imageCropped){
         // blobに再変換
-        var blob = this.commonService.base64toBlob(resized);
+        var blob = this.commonService.base64toBlob(imageCropped);
         // blob object array( fileに再変換 )
-        reviewPicture.pictureFile = this.commonService.blobToFile(blob, Date.now() + file.name);
-        resolve(reviewPicture);
-      };
+        var file = this.commonService.blobToFile(blob, pictureFile.name);
+        this.spotService.fileUpload(file
+          , pictureUrl.substring(
+            pictureUrl.lastIndexOf("/") + 1
+            , pictureUrl.length)
+          , spotId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            resolve(true);
+          });
+      } else {
+        this.spotService.fileUpload(pictureFile
+          , pictureUrl.substring(
+            pictureUrl.lastIndexOf("/") + 1
+            , pictureUrl.length)
+          , spotId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            resolve(true);
+          });
+      }
     });
   }
 
-  saveImageSpot(file: File, pictureUrl: string, spotId: number){
+  saveImagePlan(pictureFile: File, imageCropped: any, pictureUrl: string, planId: number){
     return new Promise((resolve, reject) => {
-    // 画像アップロード
-    this.spotService.fileUpload(file
-      , pictureUrl.substring(
-        pictureUrl.lastIndexOf("/") + 1
-        , pictureUrl.length)
-      , spotId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        resolve(true);
-      });
-    });
-  }
-
-  saveImagePlan(file: File, pictureUrl: string, planId: number){
-    return new Promise((resolve, reject) => {
-    // 画像アップロード
-    this.planService.fileUpload(file
-      , pictureUrl.substring(
-        pictureUrl.lastIndexOf("/") + 1
-        , pictureUrl.length)
-      , planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        resolve(true);
-      });
+      // 画像アップロード
+      if (imageCropped){
+        // blobに再変換
+        var blob = this.commonService.base64toBlob(imageCropped);
+        // blob object array( fileに再変換 )
+        var file = this.commonService.blobToFile(blob, pictureFile.name);
+        this.planService.fileUpload(file
+          , pictureUrl.substring(
+            pictureUrl.lastIndexOf("/") + 1
+            , pictureUrl.length)
+          , planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            resolve(true);
+          });
+      } else {
+        this.planService.fileUpload(pictureFile
+          , pictureUrl.substring(
+            pictureUrl.lastIndexOf("/") + 1
+            , pictureUrl.length)
+          , planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            resolve(true);
+          });
+      }
     });
   }
 

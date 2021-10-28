@@ -9,29 +9,51 @@
     .row{
       display: flex;
       justify-content: center;
+      position: relative;
       &.title{
         font-size: 14px;
-        padding: 12px 12px 16px;
+        padding: 0 12px 10px;
       }
       
-      input{
-        width: 100%;
-        height: 34px;
-        line-height: 34px;
-        border: 1px solid #B7B7B7;
-        border-radius: 17px;
-        padding: 0 17px;
-        font-size: 16px;
-        -webkit-appearance: none;
+      &.input{
+        input{
+          width: 100%;
+          height: 34px;
+          line-height: 34px;
+          border: 1px solid #B7B7B7;
+          border-radius: 17px;
+          padding: 0 17px 0 27px;
+          font-size: 16px;
+          -webkit-appearance: none;
+        }
+        img.prefix{
+          position: absolute;
+          left: 0;
+          width: 18px;
+          top: 7px;
+          left: 7px;
+        }
+        button.reset{
+          all:unset;
+          position: absolute;
+          right: 8px;
+          top: 0;
+          bottom: 0;
+          img{
+            width: 18px;
+          }
+        }
       }
+      
 
       &.switch{
-        margin: 0.7em 0 0.2em;
+        $r:4px;
+        margin: 0.9em 0 0.2em;
         justify-content: flex-end;
         .switch-toggle {
           background: #7D9E9F;
-          height: 24px;
-          border-radius: 6px;
+          height: 34px;
+          border-radius: $r;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -52,29 +74,30 @@
   
             &#spot{
               &:checked + label{
-                background: #ABD9D9;
+                background: #679ecf;
                 //border-radius: 12px 0 0 12px;
               }
             }
   
             &#plan{
               &:checked + label{
-                background: #F6C57D;
+                background: #fabd00;
                 //border-radius: 0 12px 12px 0;
               }
             }
   
             &#all{
               &:checked + label{
-                background:#797E86;
-                border-radius: 6px 0 0 6px;
+                //background:#797E86;
+                background: #de7274;
+                border-radius: $r 0 0 $r;
               }
             }
 
             &#google{
               &:checked + label{
                 background:#797E86;
-                border-radius: 0 6px 6px 0;
+                border-radius: 0 $r $r 0;
               }
             }
           }
@@ -84,6 +107,7 @@
             width: 74px;
             &.plan{
               //width: 58px;
+              position: relative;
               &::before{
                 content: "";
                 display: inline-block;
@@ -93,9 +117,19 @@
                 vertical-align: middle;
                 margin-left: 2px;
               }
+              // &::after{
+              //   position: absolute;
+              //   margin: auto;
+              //   content: url("../../../../../assets/img/icon_recomm.svg");
+              //   width: 50px;
+              //   top:-5px;
+              //   left: 0;
+              //   right: 0;
+              // }
             }
             &.spot{
               //width: 58px;
+              position: relative;
               &::before{
                 content: "";
                 display: inline-block;
@@ -105,6 +139,15 @@
                 vertical-align: middle;
                 margin-right: 2px;
               }
+              // &::after{
+              //   position: absolute;
+              //   margin: auto;
+              //   content: url("../../../../../assets/img/icon_recomm.svg");
+              //   width: 50px;
+              //   top:-5px;
+              //   left: 0;
+              //   right: 0;
+              // }
             }
             &.google{
               //width: 36px;
@@ -139,32 +182,43 @@
         }
 
         .mat-form-field.condition{
+          flex-basis: 77px;
           ::ng-deep.mat-form-field-wrapper{
             padding-bottom: 0;
             ::ng-deep.mat-form-field-infix{
-              width: 90px;
+              width: 77px;
+            }
+          }
+        }
+
+        .buttons{
+          flex-basis: 48%;
+          height: 37px;
+          display: flex;
+          button.spot-search{
+            font-size: 12px;
+            color: $color-gld02;
+            padding: 0 8px 0 12px;
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        
+            &::before{
+              content: url("../../../../../assets/img/searchplus.svg");
+              display: inline-block;
+              width: 15px;
+              height: 15px;
+              padding-right: 3px;
+              vertical-align: sub;
+            }
+        
+            ::ng-deep.mat-button-focus-overlay{
+              background-color: transparent!important; 
             }
           }
         }
         
-        button.spot-search{
-          font-size: 12px;
-          color: $color-gld02;
-          padding: 0 8px 0 16px;
-      
-          &::before{
-            content: url("../../../../../assets/img/searchplus.svg");
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            padding-right: 3px;
-            vertical-align: sub;
-          }
-      
-          ::ng-deep.mat-button-focus-overlay{
-            background-color: transparent!important; 
-          }
-        }
+        
         
 
         // button{
@@ -189,6 +243,141 @@
         // }
 
         
+      }
+
+      &.result{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin: 0;
+        height: 0;
+        visibility: hidden;
+        transition: all 200ms 0s ease;
+        button.popupItem{
+          all: unset;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          height: 100%;
+          padding: 0 4px;
+          span{
+            font-size: 12px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          &.are{
+            width: 35%;
+            &::before{
+              content:url('../../../../../assets/img/pop_area.svg')!important;
+              width: 9px;
+              height: 16px;
+              padding-right: 2px;
+            }
+          }
+          &.cat{
+            width: 40%;
+            border-right: none;
+            &::before{
+              content:url('../../../../../assets/img/pop_keyword.svg')!important;
+              width: 12px;
+              height: 16px;
+              padding-right: 2px;
+            }
+          }
+          &.reset{
+            border-right: none;
+            img{
+              width: 18px;
+              margin: auto 4px;
+            }
+          }
+        }
+        &.on{
+          height: 23px;
+          margin: 0.3em 0;
+          visibility:visible;
+        }
+      }
+    }
+  }
+
+  .popup{
+    position: fixed;
+    width: calc(100% - 32px);
+    height: 44px;
+    right: 0;
+    left: 0;
+    top: -100px;
+    margin: auto;
+    background-color: #ffffffeb;
+    //border: 1px solid #B7B7B7;
+    border-radius: 0 0 8px 8px;
+    z-index: 20;
+    box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+    transition: all 300ms 0s ease;
+    
+    &.on{
+      top:0;
+    }
+
+    .popupInner{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: 13px;
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      height: 100%;
+
+      button.popupItem{
+        all: unset;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        height: 100%;
+        padding: 0 4px;
+        border-right: 1px solid #eee;
+        span{
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        &.cnt{
+          width: 15%;
+          text-align: center;
+        }
+        &.are{
+          width: 35%;
+          &::before{
+            content:url('../../../../../assets/img/pop_area.svg')!important;
+            width: 9px;
+            height: 11px;
+            padding-right: 2px;
+          }
+        }
+        &.cat{
+          width: 40%;
+          border-right: none;
+          &::before{
+            content:url('../../../../../assets/img/pop_keyword.svg')!important;
+            width: 12px;
+            height: 13px;
+            padding-right: 2px;
+          }
+        }
+        &.reset{
+          border-right: none;
+          img{
+            width: 18px;
+            margin: auto 4px;
+          }
+        }
       }
     }
   }

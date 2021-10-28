@@ -1,5 +1,5 @@
 <form #formCheck="ngForm">
-  
+
   <button
     mat-mini-fab
     aria-label="close"
@@ -9,8 +9,8 @@
   >
     <mat-icon>clear</mat-icon>
   </button>
-  
-  
+
+
   <mat-dialog-content>
     <div class="header">
       <h1>{{ data.spotplanName }}</h1>
@@ -20,35 +20,35 @@
       <mat-list-item>
         <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
           <mat-label>{{ "TitleEx" | translate }}</mat-label>
-          <input 
-            matInput 
+          <input
+            matInput
             #title
             name="title"
             maxlength="20"
-            placeholder="{{ 'TitleEx' | translate }}" 
-            required 
-            #inputinfo="ngModel" 
+            placeholder="{{ 'TitleEx' | translate }}"
+            required
+            #inputinfo="ngModel"
             [(ngModel)]="review.title" />
           <mat-hint align="end">{{ title.value?.length || 0 }}/20{{ "Characters" | translate }}</mat-hint>
-        </mat-form-field>  
+        </mat-form-field>
       </mat-list-item>
       <!-- 本文 -->
       <mat-list-item>
         <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
           <mat-label>{{ "contentsEx" | translate }}</mat-label>
-          <textarea 
-            matInput 
+          <textarea
+            matInput
             #contents
-            name="contents" 
+            name="contents"
             maxlength="1000"
-            placeholder="{{ 'contentsEx' | translate }}" 
-            required 
-            #inputinfo="ngModel" 
+            placeholder="{{ 'contentsEx' | translate }}"
+            required
+            #inputinfo="ngModel"
             [(ngModel)]="review.contents"></textarea>
           <mat-hint align="end">{{ contents.value?.length || 0 }}/1000{{ "Characters" | translate }}</mat-hint>
         </mat-form-field>
       </mat-list-item>
-      
+
       <mat-list-item class="evaluation">
         <label>{{ "SelectRating" | translate }}</label>
         <div class="evaluation-field">
@@ -68,14 +68,14 @@
             matInput
             [matDatepicker]="picker"
             name="VisitDate"
-            #inputinfo="ngModel" 
-            [(ngModel)]="visitDate"            
+            #inputinfo="ngModel"
+            [(ngModel)]="visitDate"
           />
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </mat-list-item>
-      
+
       <mat-list-item>
         <input
           type="file"
@@ -90,9 +90,10 @@
         <div class="pic">
           <div *ngFor="let item of review.pictures; index as i">
             <div class="thumbnail">
-              <img [src]="item.picturePreviewUrl ? item.picturePreviewUrl : item.pictureUrl" alt="" />
-              <button type="button" class="delete" (click)="onClickSpotDelete(item)"></button>
+              <img [src]="item.imageCropped ?? item.picturePreviewUrl ??item.pictureUrl" alt="" />
+              <button type="button" class="delete" (click)="onClickImageDelete(item)"></button>
             </div>
+            <button *ngIf="item.pictureFile" type="button" class="crop" (click)="onClickCrop(item)">{{"Edit"|translate}}</button>
           </div>
         </div>
       </mat-list-item>

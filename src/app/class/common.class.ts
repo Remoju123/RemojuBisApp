@@ -1,4 +1,4 @@
-import { Accesses, Businesshours }  from "./spot.class";
+import { Businesshours }  from "./spot.class";
 import {
   GoogleSpot,
   SpotFavorite,
@@ -9,7 +9,6 @@ import { Line } from "./plan.class";
 import { PlanAppList } from "./planlist.class";
 import { ListSearchCondition } from "./indexeddb.class";
 import { PlanSpotList } from "./planspotlist.class";
-import { Observable } from "rxjs";
 
 // 選択
 export interface DataSelected {
@@ -58,8 +57,8 @@ export class ListSelectMaster{
   isList: boolean;
   // 検索ダイアログtab
   tabIndex: number;
-  // プランスポット一覧
-  planSpotList: PlanSpotList[];
+  // Google検索の場合true
+  isGoogle: boolean;
 }
 
 export class ListSelected {
@@ -84,6 +83,8 @@ export class ListSelected {
   isList: boolean;
   // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
   condition: ListSearchCondition;
+
+  isGoogle: boolean;
 }
 
 export class ListSelectedPlan {
@@ -142,6 +143,8 @@ export class AddSpot {
   type: number;
   // Googleスポット(登録時のみ指定)
   googleSpot: GoogleSpot;
+  // ベースプランID
+  basePlanId: number;
 }
 
 // 現在地
@@ -176,7 +179,6 @@ export class MyPlanApp {
   memo: string;
   timeRequired: string;
   isRelease: boolean;
-//  isAnonymous: boolean;
   isShare: boolean;
   shareUrl: string;
   isCreation: boolean;
@@ -201,8 +203,11 @@ export class MyPlanApp {
   picturePreviewUrl: string;
   // 写真
   pictureFile: File;
-  // 写真拡張子
-  pictureFileExt: string;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
+  // 画角
+  aspectRatio: string;
   // エリアID(登録用)
   areaId: number;
   areaId2: number;
@@ -276,6 +281,8 @@ export class PlanSpotCommon {
   googleSpot: GoogleSpot;
   // GoogleプレイスID(選択値)
   place_id: string;
+  // 画角
+  aspectRatio: string;
 }
 
 export class PlanUserPicture {
@@ -289,8 +296,9 @@ export class PlanUserPicture {
   picturePreviewUrl: string;
   // 写真
   pictureFile: File;
-  // 写真拡張子
-  pictureFileExt: string;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
 }
 
 export class GoogleNearBySearch {
@@ -401,6 +409,18 @@ export class ComfirmDialogParam{
   subText: string;
   leftButton: string;
   rightButton: string;
+}
+
+export class ImageCropperParam {
+  // 画角指定可能フラグ(roundCropperがtrueの場合は指定しなくてよい)
+  isAspectRatio: boolean;
+  // 画角(roundCropperがtrueの場合は指定しなくてよい)
+  aspectRatio: string;
+  pictureFile: File;
+  cropperPosition: any;
+  picturePreviewUrl: string;
+  imageCropped: any;
+  roundCropper: boolean;
 }
 
 export interface OAuthErrorEventParams {

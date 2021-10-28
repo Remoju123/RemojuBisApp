@@ -8,13 +8,11 @@ import { PlanspotSelectorComponent } from './components/planspot-selector/plansp
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 import { PlanspotListItemComponent } from './components/planspot-list-item/planspot-list-item.component';
 
-//import { MatCardModule } from '@angular/material/card';
 import { MaterialModule } from "../../material/material.module";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UtilsModule } from "../../utils/utils.module";
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
-
 
 @NgModule({
   declarations: [
@@ -27,7 +25,6 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
   imports: [
     CommonModule,
     PlanspotRoutingModule,
-    //MatCardModule,
     MaterialModule,
     InfiniteScrollModule,
     UtilsModule,
@@ -36,7 +33,10 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
     ReactiveFormsModule,
   ],
   exports: [
-    PlanspotComponent
+    PlanspotComponent,
+    PlanspotListComponent,
+    PlanspotListItemComponent,
+    PlanspotSelectorComponent
   ]
 })
 export class PlanspotModule { }

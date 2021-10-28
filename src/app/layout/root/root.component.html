@@ -23,7 +23,6 @@
     [(opened)]="cartopened"
     [fixedInViewport]="true"
     class="cartnav"
-    (swiperight)="onSwipeRight()"
     >
     <button mat-button class="close-my-plan" (click)="onhandleCartNav(true)">
       <img src="{{backbtn_src}}" alt="close my plan"/>
@@ -68,7 +67,6 @@
             class="view-my-plan" [ngClass]="{'on':spots > 0}" disableRipple="true">
             <img src="{{viewbtn_src}}" alt="view my plan"/>
           </button>
-
         </div>
       </div>
       <!--footer-->

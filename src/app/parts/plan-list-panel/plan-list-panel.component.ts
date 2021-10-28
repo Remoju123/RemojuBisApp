@@ -24,7 +24,7 @@ export class PlanListPanelComponent implements OnInit {
 
   @Output() scrolled = new EventEmitter();
   @Output() event = new EventEmitter<Number>();
-  
+
   private onDestroy$ = new Subject();
 
   constructor(
@@ -46,7 +46,7 @@ export class PlanListPanelComponent implements OnInit {
 
   modelPlan_src:string;
   usersPlan_src:string;
-  
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -67,7 +67,7 @@ export class PlanListPanelComponent implements OnInit {
       this.modelPlan_src = "../../../assets/img/model-plan" + suffix + ".svg";
       this.usersPlan_src = "../../../assets/img/users-plan" + suffix + ".svg";
     }
-    
+
 
 
   }
@@ -109,8 +109,6 @@ export class PlanListPanelComponent implements OnInit {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "FavoriteRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // お気に入りを削除する
@@ -165,7 +163,7 @@ export class PlanListPanelComponent implements OnInit {
     //this.planDetail.emit();
     this.commonService.snackBarDisp("FavoriteRemoved");
   }
-  
+
   genPlanSpotNames(item:any){
     const arr: any[] = [];
     item.map((x: { isRemojuSpot: any; spotName: string; })=>{
@@ -212,7 +210,7 @@ export class PlanListPanelComponent implements OnInit {
   match(spots:any,plans:any){
     try{
       if(spots){
-        const res = Array.from(spots).every(v => 
+        const res = Array.from(spots).every(v =>
           Array.from(plans).includes(v)
         );
         return res;

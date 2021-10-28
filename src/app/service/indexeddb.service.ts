@@ -12,9 +12,10 @@ export class IndexedDBService {
 
   // DB
   dbName = "Remoju";
-  version = 4;
+  version = 6;
 
   // オブジェクトストア
+  storeListSearchConditionMyfav = "ListSearchConditionMyfav";
   storeListSearchCondition = "ListSearchCondition";
   storeListSearchConditionSpot = "ListSearchConditionSpot";
   storeListSearchConditionPlan = "ListSearchConditionPlan";
@@ -23,11 +24,16 @@ export class IndexedDBService {
   storeHistorySpot = "HistorySpot";
   storeHistoryPlan = "HistoryPlan";
 
+  // マイページお気に入り一覧検索条件
+  async getListSearchConditionMyfav(){
+    return this.getStoreValue(this.storeListSearchConditionMyfav);
+  }
+
   async getListSearchCondition(){
     return this.getStoreValue(this.storeListSearchCondition);
   }
 
-  // スポット一覧検索条件取得
+  // スポット一覧検索条件取得　
   async getListSearchConditionSpot() {
     return this.getStoreValue(this.storeListSearchConditionSpot);
   }
@@ -58,11 +64,13 @@ export class IndexedDBService {
       if (myPlan.pictureFile) {
         myPlan.pictureFile = null;
       }
-      myPlan.planSpots.forEach(x => {
-        if (x.planUserpictures) {
-          x.planUserpictures.forEach(y => y.pictureFile = null);
-        }
-      });
+      if (myPlan.planSpots) {
+        myPlan.planSpots.forEach(x => {
+          if (x.planUserpictures) {
+            x.planUserpictures.forEach(y => y.pictureFile = null);
+          }
+        });
+      }
     }
 
     return myPlan;
@@ -83,6 +91,10 @@ export class IndexedDBService {
     return this.getStoreValue(this.storeHistoryPlan);
   }
 
+  async registListSearchConditionMyfav(value: ListSearchCondition) {
+    return this.registStore(this.storeListSearchConditionMyfav, value);
+  }
+
   async registListSearchCondition(value: ListSearchCondition) {
     return this.registStore(this.storeListSearchCondition, value);
   }
@@ -96,7 +108,7 @@ export class IndexedDBService {
   async registListSearchConditionPlan(value: ListSearchCondition) {
     return this.registStore(this.storeListSearchConditionPlan, value);
   }
-  
+
   // プラン保存
   async registPlan(myPlanApp: MyPlanApp){
     // 保存用クラスに変換
@@ -109,7 +121,9 @@ export class IndexedDBService {
       travelDate: myPlanApp.travelDate,
       planName: myPlanApp.planName,
       pictureFile: myPlanApp.pictureFile,
-      pictureFileExt: myPlanApp.pictureFileExt,
+      imageCropped: myPlanApp.imageCropped,
+      cropperPosition: myPlanApp.cropperPosition,
+      aspectRatio: myPlanApp.aspectRatio,
       pictureUrl: myPlanApp.pictureUrl,
       picturePreviewUrl: myPlanApp.picturePreviewUrl,
       planExplanation: myPlanApp.planExplanation,
@@ -123,7 +137,7 @@ export class IndexedDBService {
       timeRequiredDisp: myPlanApp.timeRequiredDisp,
       startTime: myPlanApp.startTime,
       lastUpdatetime: new Date().toLocaleString(),
-      planSpots: myPlanApp.planSpots.reduce((x, c) => {
+      planSpots: myPlanApp.planSpots ? myPlanApp.planSpots.reduce((x, c) => {
         x.push({
           type: c.type,
           displayOrder: c.displayOrder,
@@ -134,6 +148,7 @@ export class IndexedDBService {
           longitude: c.longitude,
           startTime: c.startTime,
           stayTime: c.stayTime,
+          aspectRatio: c.aspectRatio,
           transfer: c.transfer,
           basePlanId: c.basePlanId,
           line: c.line,
@@ -142,7 +157,7 @@ export class IndexedDBService {
           planUserpictures: c.planUserpictures
         });
         return x;
-      }, []),
+      }, []) : null,
       startPlanSpot: myPlanApp.startPlanSpot ? {
         type: myPlanApp.startPlanSpot.type,
         displayOrder: myPlanApp.startPlanSpot.displayOrder,
@@ -153,6 +168,7 @@ export class IndexedDBService {
         longitude: myPlanApp.startPlanSpot.longitude,
         startTime: myPlanApp.startPlanSpot.startTime,
         stayTime: myPlanApp.startPlanSpot.stayTime,
+        aspectRatio: null,
         transfer: myPlanApp.startPlanSpot.transfer,
         basePlanId: null,
         line: myPlanApp.startPlanSpot.line,
@@ -170,6 +186,7 @@ export class IndexedDBService {
         longitude: myPlanApp.endPlanSpot.longitude,
         startTime: myPlanApp.endPlanSpot.startTime,
         stayTime: myPlanApp.endPlanSpot.stayTime,
+        aspectRatio: null,
         transfer: myPlanApp.endPlanSpot.transfer,
         basePlanId: null,
         line: myPlanApp.endPlanSpot.line,
@@ -182,7 +199,21 @@ export class IndexedDBService {
     // 保存
     return this.registStore(this.storeMyplan, myPlan);
   }
-
+/*
+  // ImageCropperEventがそのままだと保存できないので変換
+  getImageCropper(event: ImageCroppedEvent) : ImageCropped{
+    let imageCropped = new ImageCropped();
+    if (event) {
+      imageCropped.base64 = event.base64;
+      imageCropped.cropperPosition = event.cropperPosition;
+      imageCropped.height = event.height;
+      imageCropped.imagePosition = event.imagePosition;
+      imageCropped.offsetImagePosition = event.offsetImagePosition;
+      imageCropped.width = event.width;
+    }
+    return imageCropped;
+  }
+*/
   // GUID保存
   async registGuid(value: string) {
     return this.registStore(this.storeGuid, value);
@@ -233,6 +264,7 @@ export class IndexedDBService {
   // DBオープン、オブジェクトストア作成
   openDb(){
     const openRequest = indexedDB.open(this.dbName, this.version);
+    const storeListSearchConditionMyfav = this.storeListSearchConditionMyfav;
     const storeListSearchCondition = this.storeListSearchCondition;
     const storeListSearchConditionSpot = this.storeListSearchConditionSpot;
     const storeListSearchConditionPlan = this.storeListSearchConditionPlan;
@@ -245,29 +277,35 @@ export class IndexedDBService {
     openRequest.onupgradeneeded = function(){
       let db = openRequest.result;
       // オブジェクトストアを削除
+      if (db.objectStoreNames.contains(storeListSearchConditionMyfav)) {
+        db.deleteObjectStore(storeListSearchConditionMyfav);
+      }
       if (db.objectStoreNames.contains(storeListSearchCondition)) {
         db.deleteObjectStore(storeListSearchCondition);
       }
       if (db.objectStoreNames.contains(storeListSearchConditionSpot)) {
         db.deleteObjectStore(storeListSearchConditionSpot);
-      }      
+      }
       if (db.objectStoreNames.contains(storeListSearchConditionPlan)) {
         db.deleteObjectStore(storeListSearchConditionPlan);
-      }      
+      }
       if (db.objectStoreNames.contains(storeMyplan)) {
         db.deleteObjectStore(storeMyplan);
-      }      
+      }
       if (db.objectStoreNames.contains(storeGuid)) {
         db.deleteObjectStore(storeGuid);
-      }      
+      }
       if (db.objectStoreNames.contains(storeHistorySpot)) {
         db.deleteObjectStore(storeHistorySpot);
-      }      
+      }
       if (db.objectStoreNames.contains(storeHistoryPlan)) {
         db.deleteObjectStore(storeHistoryPlan);
-      }      
+      }
 
       // オブジェクトストアを作成
+      if (!db.objectStoreNames.contains(storeListSearchConditionMyfav)){
+        db.createObjectStore(storeListSearchConditionMyfav);
+      }
       if (!db.objectStoreNames.contains(storeListSearchCondition)){
         db.createObjectStore(storeListSearchCondition);
       }
@@ -300,7 +338,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;
@@ -313,7 +351,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(){
-          console.log("error");
+          console.log("get store value error");
         };
       });
     }
@@ -325,7 +363,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;
@@ -341,7 +379,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(){
-          console.log("error");
+          console.log("regist store error");
         };
       });
     }
@@ -353,7 +391,7 @@ export class IndexedDBService {
       return new Promise(resolve => {
         // DBオープン、オブジェクトストア作成
         const openRequest = this.openDb();
-  
+
         // 接続成功
         openRequest.onsuccess = function(){
           let db = openRequest.result;
@@ -366,7 +404,7 @@ export class IndexedDBService {
           db.close();
         };
         openRequest.onerror = function(event){
-          console.log("error");
+          console.log("clear store error");
         };
       });
     }

@@ -24,6 +24,9 @@ export class Review {
   // expantion flag & label
   ismore:boolean;
   label:string;
+  isPlan:boolean;
+  planSpotName:string;
+  type:number;
 }
 
 export class ReviewPicture {
@@ -31,6 +34,9 @@ export class ReviewPicture {
   pictureUrl: string;
   picturePreviewUrl: string;
   pictureFile: File;
+  // トリミング画像
+  imageCropped: any;
+  cropperPosition: any;
 }
 
 export class RegistReviewResult{

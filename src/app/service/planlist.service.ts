@@ -125,6 +125,7 @@ export class PlanListService {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
+    myPlan.isTransferSearch = true;
 
     let addPlan: AddPlan = new AddPlan();
     addPlan = {
@@ -144,7 +145,7 @@ export class PlanListService {
    *  -------------------------------------*/
 
   public result = new searchResult();
-  
+
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
 
@@ -326,7 +327,7 @@ export class PlanListService {
       return item.isRemojuPlan ? item.isRemojuPlan === condition.isRemojuRecommended
       : !item.isRemojuPlan === condition.isUserPost;
     })
-    
+
     return filterd3;
   }
 

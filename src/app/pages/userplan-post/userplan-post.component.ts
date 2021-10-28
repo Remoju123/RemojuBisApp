@@ -7,11 +7,10 @@ import { GoogleSpotDialogComponent } from "../../parts/google-spot-dialog/google
 import { SearchDialogFormPlanComponent } from "../../parts/search-dialog-form-plan/search-dialog-form-plan.component";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from '../../service/myplan.service';
-import { PlanService } from "../../service/plan.service";
 import { PlanListService } from "../../service/planlist.service";
 import { UserplanpostService } from "../../service/userplanpost.service"
 import { TranslateService } from "@ngx-translate/core";
-import { FormBuilder, FormControl, FormGroupDirective, NgForm, Validators, FormGroup, AbstractControl } from "@angular/forms";
+import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
@@ -45,7 +44,6 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private myplanService: MyplanService,
-    private planService: PlanService,
     private planListService: PlanListService,
     private router: Router,
     private translate: TranslateService,
@@ -149,7 +147,7 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
         // 追加
         this.row.planSpots.push(planSpot)
       }
-  
+
       // 撮影日時順に並び替え
       this.onChangeStartTime();
     }
@@ -158,8 +156,8 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
   // 到着時間変更時
   onChangeStartTime() {
     // 到着時間順に並び替え
-    this.row.planSpots = this.row.planSpots.sort((a, b) => { 
-      return a.startTime > b.startTime ? 1 : -1; 
+    this.row.planSpots = this.row.planSpots.sort((a, b) => {
+      return a.startTime > b.startTime ? 1 : -1;
     });
     // 表示順設定
     this.setDisplayOrder();
@@ -181,9 +179,9 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
         this.setGoogleSpot(result);
       }
     });
-    
+
   }
-  
+
   // スポット削除ボタンクリック時
   onClickSpotDelete(planSpot: PlanSpotCommon) {
     this.row.planSpots.splice(
@@ -220,7 +218,8 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
             is_main: false,
             pictureFile: files[i],
             picturePreviewUrl: URL.createObjectURL(files[i]),
-            pictureFileExt: files[i].name
+            cropperPosition: null,
+            imageCropped: null
           });
         } else {
           isError = true;
@@ -239,7 +238,7 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
         v => v.picture_display_order === video.picture_display_order
       ),
       1
-    );    
+    );
     for (let i = 0; i < item.planUserpictures.length; i++){
       item.planUserpictures[i].picture_display_order = i + 1;
     }
@@ -305,8 +304,6 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
         const param = new ComfirmDialogParam();
         param.title = "CreatedPlanSaveTitle";
         param.text = "CreatedPlanSaveText";
-        param.leftButton = "Cancel";
-        param.rightButton = "OK";
         const dialog = this.commonService.confirmMessageDialog(param);
         dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
           // このページにとどまる
@@ -415,7 +412,7 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   // 画像サイズ変更
   async imageSize(file: File): Promise<PlanUserPicture>{
     return new Promise((resolve, reject) => {

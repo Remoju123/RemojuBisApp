@@ -1,63 +1,29 @@
 <!-- マイページお気に入り一覧 -->
-<mat-tab-group (selectedIndexChange)="tabChange($event)" >
-  <!-- スポット -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      {{ 'Spot' | translate }}
-      <span class="count">
-        {{ rowsSpot?.length }}
-      </span>
-    </ng-template>
-    <!-- <mat-card>
-      <mat-card-content class="sort">
-        <mat-form-field class="right">
-          <mat-select (selectionChange)="sortChangeSpot($event)" [(value)]="sortvalSpot">
-            <mat-option *ngFor="let item of $mSortSpot" [value]="item.id">
-              {{ item.name | langFilter: lang }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </mat-card-content>
-    </mat-card> -->
-
-    <!-- スポット一覧 -->
-    <app-spot-list-panel *ngIf="rowsSpot && pageSizeSpot && pSpot" 
-    [rows]="rowsSpot" [isFavoriteList]="true"
-    (spotDetail)="getSpotListDetail()"></app-spot-list-panel>
-
-    <!--pagination-controls
-     (pageChange)="pSpot = $event;pageChangeSpot($event)"
-     previousLabel="{{ 'Previous' | translate }}"
-     nextLabel="{{ 'Next' | translate }}" id="spot">
-    </pagination-controls-->
-  </mat-tab>
-  
-  <!-- プラン -->
-  <mat-tab>
-    <ng-template mat-tab-label>
-      {{ 'Plan' | translate }}
-      <span class="count">
-        {{ rowsPlan?.length }}
-      </span>
-    </ng-template>
-    <ng-container *ngIf="plan">
-      <!-- <mat-card>
-        <mat-card-content class="sort">
-          <mat-form-field class="right">
-            <mat-select (selectionChange)="sortChangePlan($event)" [(value)]="sortvalPlan">
-              <mat-option *ngFor="let item of $mSortPlan" [value]="item.id">
-                {{ item.name | langFilter: lang }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-card-content>
-      </mat-card> -->
-
-      <!-- プラン一覧 -->
-      <app-plan-list-panel *ngIf="rowsPlan && pageSizePlan && pPlan" 
-      [rows]="rowsPlan" [isFavoriteList]="true"
-      (planDetail)="getPlanListDetail()"></app-plan-list-panel>
-      
-    </ng-container>
-  </mat-tab>
-</mat-tab-group>
+<app-planspot-selector
+  [count]="count"
+  [condition]="condition"
+  [mSort]="$mSort"
+  [searchTarms]="optionKeywords"
+  [myFavorite]=true
+  (event)="onPlanSpotChange($event)"
+  (sort)="sortChange($event)"
+>
+</app-planspot-selector>
+<div class='rows'
+  infinite-scroll
+  [infiniteScrollDistance]="5"
+  [infiniteScrollUpDistance]="1.5"
+  [infiniteScrollThrottle]="150"
+  (scrolled)="onScrollDown()">
+  <app-planspot-list-item 
+    *ngFor="let item of details$" 
+    [item]="item" 
+    [lang]="lang" 
+    [myFavorite]="true"
+    [myPlanSpots]="myPlanSpots"
+    (linked)="linktoDetail($event)" 
+    (addMyPlan)="addMyPlan($event)" 
+    (setFav)="setFavorite($event)"
+    (delFav)="deleteFavorite($event)">
+  </app-planspot-list-item>
+</div>

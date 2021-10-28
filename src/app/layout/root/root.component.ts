@@ -199,7 +199,7 @@ export class RootComponent implements OnInit, OnDestroy {
   onReceivePPisShowChild(val:boolean){
     //
     this.showPlanpanel = val;
-    console.log(val);
+    //console.log(val);
   }
 
   // カート開閉状態の切り替え
@@ -217,7 +217,7 @@ export class RootComponent implements OnInit, OnDestroy {
   }
   
   onSwipeDown(event: any){
-    console.log(event);
+    //console.log(event);
     window.location.reload();
   }
 }

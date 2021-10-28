@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { TranslateService } from "@ngx-translate/core";
 import { UserService } from "../../service/user.service";
+import { ImageCropperParam } from "../../class/common.class";
 import { User } from "../../class/user.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { environment } from "../../../environments/environment";
@@ -14,6 +15,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { isPlatformBrowser } from "@angular/common";
+import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 
 export class MypageErrorStateMatcher implements ErrorStateMatcher{
   isErrorState(control:FormControl | null,form:FormGroupDirective | NgForm | null):boolean{
@@ -70,12 +72,14 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   isPreview = true;
   currentlang:string;
 
+  _coverUrl:any;
+
   get lang() {
     return this.translate.currentLang;
   }
 
   myForm:FormGroup;
-  
+
   get diplayName():any{
     return this.myForm.get("displayName");
   }
@@ -183,7 +187,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
           }
         )
       })
-      
+
       let _world = temp.sort((a,b)=>{
         return a.name.localeCompare(b.name,this.lang)
       })
@@ -194,7 +198,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     // ユーザ情報取得
     this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r =>{
       this.data = r;
-      
+
       if(r){
         this.myForm.patchValue({
           displayName:r.displayName,
@@ -216,6 +220,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
   // プレビュー表示切り替え
   onClickPreviewSwitch() {
+
     this.isPreview = !this.isPreview;
   }
 
@@ -231,7 +236,40 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
       this.imageSize(file, true);
     }
   }
-  
+
+  // カバー写真を削除
+  onDeleteCoverFile():void{
+    if(this.data.coverImageCropped){
+      this.data.coverImageCropped = null;
+    }
+    this.data.coverPreviewUrl = this.data.coverUrl;
+    this.data.coverFile=null;
+  }
+
+  onClickCropCover(): void {
+    let param = new ImageCropperParam();
+    param.isAspectRatio = false;
+    param.aspectRatio = "16 / 9";
+    param.cropperPosition = this.data.coverCropperPosition;
+    param.imageCropped = this.data.coverImageCropped;
+    param.pictureFile = this.data.coverFile;
+    param.picturePreviewUrl = this.data.coverPreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id:"imgcrop",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        this.data.coverImageCropped = r.imageCropped;
+        this.data.coverCropperPosition = r.cropperPosition;
+      }
+    });
+  }
+
   // プロフィール画像：ファイルを選択ボタンクリック時(見えているボタン)
   onClickFileInputButton(): void {
     this.fileInput.nativeElement.click();
@@ -245,7 +283,39 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     }
   }
 
-  
+  // プロフィール写真を削除
+  onDeleteUserFile():void{
+    if(this.data.imageCropped){
+      this.data.imageCropped = null;
+    }
+    this.data.picturePreviewUrl = this.data.pictureUrl;
+    this.data.pictureFile=null;
+  }
+
+  onClickCropUser(): void {
+    let param = new ImageCropperParam();
+    param.roundCropper = true;
+    param.aspectRatio = "1 / 1";
+    param.cropperPosition = this.data.cropperPosition;
+    param.imageCropped = this.data.imageCropped;
+    param.pictureFile = this.data.pictureFile;
+    param.picturePreviewUrl = this.data.picturePreviewUrl;
+    const dialogRef = this.dialog.open(ImageCropperDialogComponent, {
+      id: "imgcrop",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: param,
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+      if (r && r !== "cancel"){
+        this.data.imageCropped = r.imageCropped;
+        this.data.cropperPosition = r.cropperPosition;
+      }
+    });
+  }
 
   // パスワードを変更クリック時
   onClickChangePassword() {
@@ -322,9 +392,9 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
       var blob = this.commonService.base64toBlob(resized);
       // blob object array( fileに再変換 )
       if (isCover){
-        this.data.coverFile = this.commonService.blobToFile(blob, Date.now() + file.name);
+        this.data.coverFile = this.commonService.blobToFile(blob, Date.now() + file.name + ".webp");
       } else{
-        this.data.pictureFile = this.commonService.blobToFile(blob, Date.now() + file.name);
+        this.data.pictureFile = this.commonService.blobToFile(blob, Date.now() + file.name + ".webp");
       }
     };
   }

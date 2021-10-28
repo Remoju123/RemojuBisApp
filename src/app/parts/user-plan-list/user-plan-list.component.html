@@ -1,0 +1,29 @@
+<div class='listheader'>
+  <button mat-icon-button (click)="onClose()"><mat-icon>arrow_back</mat-icon>戻る</button>
+  <span>{{data.user.displayName}}さんの投稿一覧</span>
+</div>
+<!-- user-profile -->
+<app-userprofile-panel *ngIf="data.user && data.country" [otherUser]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
+
+<h4>私がおすすめの旅プラン</h4>
+
+<dl class='category' *ngIf="data.rows.searchCategories.length>0">
+  <dd *ngFor="let item of data.rows.searchCategories">
+    {{ item | langFilter:lang}}
+  </dd>
+</dl>
+
+<div class='rows'>
+  <app-planspot-list-item
+    *ngFor="let item of data.rows.userPlans" 
+    [item]="item" 
+    [lang]="lang" 
+    [myPlanSpots]="myPlanSpots"
+    (linked)="linktoDetail($event)" 
+    (addMyPlan)="addMyPlan($event)" 
+    (setFav)="setFavorite($event)">
+  </app-planspot-list-item>
+</div>
+
+
+

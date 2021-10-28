@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { MypagePlanListService } from "../../service/mypageplanlist.service";
@@ -12,6 +12,8 @@ import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
+import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-mypage-planlist",
@@ -20,6 +22,7 @@ import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 })
 export class MypagePlanListComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
+  private baseUrl:string;
 
   constructor(
     private commonService: CommonService,
@@ -28,8 +31,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     private indexedDBService: IndexedDBService,
     private translate: TranslateService,
     private router: Router,
-    public dialog: MatDialog
-  ) {}
+    public dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if(isPlatformBrowser(this.platformId)){
+      this.baseUrl = document.getElementsByTagName("base")[0].href;
+      this.currentlang = localStorage.getItem("gml");
+    }
+  }
 
   // マイページプラン一覧
   rows: MypagePlanAppList[];
@@ -41,7 +50,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
   p: number;
   pageSize: number;
 
-  currentlang = this.lang;
+  currentlang: string;
 
   get lang() {
     return this.translate.currentLang;
@@ -80,6 +89,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
 
   // 公開・非公開切り替え
   onClickRelease(row: MypagePlanAppList) {
+    if (row.spots.length === 0) {
+      return;
+    }
+
     const param = new ComfirmDialogParam();
     // 公開⇒非公開
     if (row.isRelease) {
@@ -89,8 +102,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     else {
       param.title = "ReleaseConfirm";
     }
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
@@ -120,8 +131,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "PlanRemoveConfirm";
-    param.leftButton = "Cancel";
-    param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // プランを削除する
@@ -161,6 +170,21 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     }
   }
 
+  // プランを共有する
+  onClickSharePlan(row: MypagePlanAppList) {
+    if (!row.isShare) {
+      // URL共有更新
+      this.myplanService.registShare(row.planUserId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (r) {
+          row.isShare = true;
+          row.shareUrl = r;
+          this.shareDialog(row);
+        }
+      });
+    } else {
+      this.shareDialog(row);
+    }
+  }
   /*------------------------------
    *
    * メソッド
@@ -188,12 +212,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       .getMypagePlanList()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-          return;
-        }
         this.rows = r.mypagePlanAppList;
-        //this.pageSize = r.pageViewQty;
         this.pageSize = 40;
         this.p = 1;
 
@@ -275,16 +294,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       const param = new ComfirmDialogParam();
       param.title = "EditPlanConfirmTitle";
       param.text = "EditPlanConfirmText";
-      param.leftButton = "Cancel";
-      param.rightButton = "OK";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
         if (r === "ok") {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        } else {
           // プランを取得してプラン作成に反映
           this.getPlan(planUserId);
+        } else {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
         }
       });
     } else {
@@ -302,10 +319,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
         // return;
       }
-      // プラン作成　一旦削除
-      this.myplanService.onPlanUserRemoved();
       // プラン作成に反映
-      this.myplanService.onPlanUserChanged(r);
+      this.myplanService.onPlanUserEdit(r);
       // プラン保存
       this.indexedDBService.registPlan(r);
       // subject更新
@@ -325,9 +340,20 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     if (myPlanApp && delPlanUserId === myPlanApp.planUserId){
       this.indexedDBService.clearMyPlan();
       // プラン作成に反映
-      const p = new MyPlanApp();
-      this.myplanService.onPlanUserChanged(p);
+      this.myplanService.onPlanUserRemoved();
     }
+  }
+
+  // URL共有ダイアログの表示
+  shareDialog(row: MypagePlanAppList) {
+    this.dialog.open(UrlcopyDialogComponent, {
+      id:"urlShare",
+      maxWidth: "100%",
+      width: "92vw",
+      position: { top: "10px" },
+      data: this.baseUrl + this.lang + "/planspot/" + row.shareUrl,
+      autoFocus: false
+    });
   }
 
   /*------------------------------
