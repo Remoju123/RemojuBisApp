@@ -182,25 +182,37 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   // プランに追加する
   async onClickAddToPlan(spot?: PlanSpotCommon) {
     // スポット数チェック
-    if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length)){
-      // プランに追加
-      if (spot) {
-        this.spotListService.addSpot(spot.spotId, spot.type, null, this.$planId).then(result => {
-          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-            if (myPlanApp) {
-              this.addToPlanAfter(myPlanApp);
-            }
-          });
+    if(await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
+      return;
+    }
+
+    // プランに追加
+    if (spot) {
+      this.spotListService.addSpot(spot.spotId, spot.type, null, this.$planId).then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+          if (myPlanApp) {
+            this.addToPlanAfter(myPlanApp);
+          }
         });
-      } else {
-        this.planListService.addPlan(this.$isRemojuPlan, this.$planId).then(result => {
-          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-            if (myPlanApp) {
-              this.addToPlanAfter(myPlanApp);
-            }
-          });
+      });
+    } else {
+      this.planListService.addPlan(this.$isRemojuPlan, this.$planId).then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+          if (myPlanApp) {
+            this.addToPlanAfter(myPlanApp);
+          }
         });
-      }
+      });
     }
   }
 

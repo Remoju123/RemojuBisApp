@@ -1,8 +1,7 @@
-<h2 mat-dialog-title>Remoju</h2>
+<h2 mat-dialog-title>Message</h2>
 <mat-dialog-content>
-  <span>{{ data | translate }}</span>
+  <span class="text">{{ data | translate }}</span>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button mat-dialog-close="ok">{{ "Close" | translate }}</button>
+  <button type="button" mat-dialog-close="cancel" class="abscancel"></button>
 </mat-dialog-actions>
-

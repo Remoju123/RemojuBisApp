@@ -123,8 +123,15 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
   onClickDeletePlan(row: MypagePlanAppList) {
     // ログインチェック
     if(!this.commonService.loggedIn){
-      // ログイン画面へ
-      this.commonService.login();
+      const param = new ComfirmDialogParam();
+      param.title = "LoginConfirmTitle";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // ログイン画面へ
+          this.commonService.login();
+        }
+      });
       return;
     }
 

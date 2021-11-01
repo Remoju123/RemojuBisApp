@@ -5,7 +5,7 @@ import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
 import { SpotService } from "../../service/spot.service";
 import { SpotListService } from "../../service/spotlist.service";
-import { Recommended } from "../../class/common.class"
+import { Recommended, ComfirmDialogParam } from "../../class/common.class";
 import {
   SpotApp,
   Pictures
@@ -43,7 +43,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     private translate: TranslateService,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
-  
+
   @Input() spotId: string;
 
   data: SpotApp = new SpotApp();
@@ -61,7 +61,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
   $areaName1: string;
   $areaName2: string;
-  $searchCategories: SpotSearchCategory[];  
+  $searchCategories: SpotSearchCategory[];
 
   $spotId: number;
   $versionNo: number;
@@ -103,8 +103,8 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   myPlanSpots:any;
 
   ngOnInit() {
-  
-    if(isPlatformBrowser(this.platformId)){  
+
+    if(isPlatformBrowser(this.platformId)){
       this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
         let id = params.get("id");
         if (this.spotId !== undefined && this.spotId !== null) {
@@ -122,7 +122,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       this.myplanService.MySpots$.subscribe((v)=>{
         this.myPlanSpots = v;
       })
-    
+
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
@@ -228,10 +228,10 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     }
     // 検索条件更新
     this.indexedDBService.registListSearchConditionSpot(condition);
-    
+
     sessionStorage.removeItem("caches");
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/spots"]);  
+    this.router.navigate(["/" + this.lang + "/spots"]);
   }
 
   // カテゴリ
@@ -247,11 +247,11 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     }
     // 検索条件更新
     this.indexedDBService.registListSearchConditionSpot(condition);
-    
+
     sessionStorage.removeItem("caches");
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/spots"]);  
-  }  
+    this.router.navigate(["/" + this.lang + "/spots"]);
+  }
 
   /*------------------------------
    *
@@ -295,7 +295,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       ]);
 
       this.reviewResult = r.reviewResult;
-      
+
       this.nearbySpots = r.nearbySpotList.filter((e: any) => {
         return e.pictureUrl !== null;
       });
@@ -399,7 +399,17 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   // プランに追加
   async addToPlan(){
     // スポット数チェック
-    if (await this.commonService.checkAddPlan(1) === false){
+    if(await this.commonService.checkAddPlan(1) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
       return;
     }
 
@@ -426,7 +436,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   linktolist(){
     this.router.navigate(["/" + this.lang + "/planspot"]);
   }
-  
+
   /*------------------------------
    *
    * owl carousel option nearbySpot/popularSpot/recommendPlan

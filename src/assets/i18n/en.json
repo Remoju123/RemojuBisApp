@@ -287,5 +287,7 @@
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
-  "SearchGuide": "「温泉」「京都女子旅」..."
+  "SearchGuide": "「温泉」「京都女子旅」...",
+  "CreateNew": "新規作成する",
+  "LoginConfirmTitle": "ログイン画面に遷移します。よろしいですか？"
 }

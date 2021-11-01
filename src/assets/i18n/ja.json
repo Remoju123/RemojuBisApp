@@ -203,7 +203,7 @@
   "ShareYourPlanWithOtherUsers": "自分のプランを他のユーザーにも共有しよう",
   "CreatedPlanSaveTitle": "作成したプランを保存しました。",
   "CreatedPlanSaveText": "他のユーザーが投稿したプランを見ますか？",
-  "NoSpotName": "スポット名が登録されていない写真があるため、公開（下書き保存）できませんでした。全てのスポット名を登録してから公開・または下書き保存ボタンを押して下さい。",
+  "NoSpotName": "スポット名を入力してください。",
   "NoSpot": "住所を直接入力する",
   "RegisterSpot": "スポットを登録",
   "NoReview": "まだレビューがありません。",
@@ -287,5 +287,7 @@
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
-  "SearchGuide": "「温泉」「京都女子旅」..."
+  "SearchGuide": "「温泉」「京都女子旅」..." ,
+  "CreateNew": "新規作成する",
+  "LoginConfirmTitle": "ログイン画面に遷移します。よろしいですか？"
 }
