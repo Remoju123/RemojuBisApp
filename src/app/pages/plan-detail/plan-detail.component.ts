@@ -185,12 +185,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     if(await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
-      param.leftButton = "CreateNew";
+      param.leftButton = "EditPlanProgress";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if(d === "ok"){
-          // プラン新規作成
-          this.myplanService.onPlanUserRemoved();
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
         }
       });
       return;
