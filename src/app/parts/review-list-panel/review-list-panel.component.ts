@@ -66,6 +66,20 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
   }
 
   onClickPosted(review?: Review){
+    // ログインチェック
+    if(!this.commonService.loggedIn){
+      const param = new ComfirmDialogParam();
+      param.title = "LoginConfirmTitle";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // ログイン画面へ
+          this.commonService.login();
+        }
+      });
+      return;
+    }
+
     if (!review){
       review = new Review();
       review.id = this.id;
@@ -141,8 +155,15 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
   onClickDelete(review: Review) {
     // ログインチェック
     if(!this.commonService.loggedIn){
-      // ログイン画面へ
-      this.commonService.login();
+      const param = new ComfirmDialogParam();
+      param.title = "LoginConfirmTitle";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // ログイン画面へ
+          this.commonService.login();
+        }
+      });
       return;
     }
 

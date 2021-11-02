@@ -24,7 +24,7 @@
                   <ng-container *ngIf="row">
                     <mat-form-field>
                       <mat-label>{{ 'PlanName' | translate }}</mat-label>
-                      <input 
+                      <input
                       #inpName
                       id="planName"
                       name="planName"
@@ -192,7 +192,7 @@
         <div *ngFor="let item of row.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
           (cdkDragMoved)="setStep(999)">
           <mat-accordion #mepSpot="matAccordion" multi>
-            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpot{{i}} class="transfer" hideToggle [ngClass]="{'zero':!row.planSpots}">
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpotPanel="matExpansionPanel" class="transfer" hideToggle [ngClass]="{'zero':!row.planSpots}">
               <mat-expansion-panel-header
                 [@.disabled]="true"
               >
@@ -390,14 +390,14 @@
     <!-- 出発時間 -->
     <!-- 終了時間 -->
     <!-- <div class="set">
-      <div class="date">        
+      <div class="date">
         <span>{{ row.travelDate | date:"yyyy/MM/dd (EEE)" }}</span>
       </div>
-      <div class="time">        
+      <div class="time">
         <span>{{"StartTime"|translate}}：{{ row.startTime }}</span>
         <span>
           <img src="../../../assets/img/line24.svg" alt=""/>
-        </span>        
+        </span>
         <span>{{"EndTime"|translate}}：{{ endTime }}</span>
       </div>
     </div> -->
@@ -427,7 +427,7 @@
         <img src='../../../assets/img/allow_down_fill.svg' alt=''>
       </div>
     </ng-container>
-    
+
 
     <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer"
     [item]="row.startPlanSpot"></app-transfer-panel>
@@ -536,7 +536,7 @@
                         &emsp;{{ "Holiday" | translate }}&nbsp;{{ item.holiday }}</span>
                   </mat-list-item>
                   <ng-template #empBusinessHour>
-                    <mat-list-item class="row">                      
+                    <mat-list-item class="row">
                       <span class="businesshour">
                         <span class="color">{{ "Businesshours" | translate }}</span>&nbsp;ー:ー&nbsp;~&nbsp;ー:ー</span>
                     </mat-list-item>

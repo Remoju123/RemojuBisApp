@@ -130,7 +130,7 @@ export class CommonService implements OnDestroy{
 
   // スポットまたはプラン追加時のチェック
   // 戻り値 true: プランを追加する false:エラーなのでプランを追加しない
-  async checkAddPlan(addSpotQty: number){
+  async checkAddPlan(addSpotQty: number): Promise<boolean>{
     // 作成中プラン取得
     const myPlan: any = await this.indexedDBService.getEditPlan();
     if (!myPlan){
@@ -140,12 +140,10 @@ export class CommonService implements OnDestroy{
 
     // 6スポットを超える場合
     if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
-      this.messageDialog("ErrorMsgAddSpot");
       return false;
     } else {
       return true;
     }
-    return true;
   }
 
   // 有料スポットURL取得

@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserPlanData } from 'src/app/class/plan.class';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
+import { ComfirmDialogParam } from 'src/app/class/common.class';
 import { CommonService } from 'src/app/service/common.service';
 import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
@@ -20,7 +21,7 @@ import { threadId } from 'worker_threads';
 })
 export class UserPlanListComponent implements OnInit {
   private onDestroy$ = new Subject();
-  
+
   constructor(
     private translate: TranslateService,
     private commonService: CommonService,
@@ -33,7 +34,7 @@ export class UserPlanListComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: UserPlanData
   ) {
     this.myPlanSpots = this.data.myplanspot;
-  }  
+  }
 
   myPlanSpots:any;
   get lang() {
@@ -49,9 +50,19 @@ export class UserPlanListComponent implements OnInit {
   // プランに追加
   async addMyPlan(item:PlanSpotList){
     const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
-    if(await this.commonService.checkAddPlan(tempqty) === false){
-      return
-    };
+    if(await this.commonService.checkAddPlan(tempqty) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
+      return;
+    }
 
     this.planspots.addPlan(
       item.isRemojuPlan,
@@ -103,5 +114,5 @@ export class UserPlanListComponent implements OnInit {
   onClose(){
     this.dialogRef.close()
   }
-  
+
 }

@@ -149,9 +149,19 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   // プランに追加
   async addMyPlan(item:PlanSpotList){
     const tempqty:number = item.isPlan===1 ? item.spotQty : 1;
-    if(await this.commonService.checkAddPlan(tempqty) === false){
-      return
-    };
+    if(await this.commonService.checkAddPlan(tempqty) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
+      return;
+    }
 
     this.planspots.addPlan(
       item.isRemojuPlan,

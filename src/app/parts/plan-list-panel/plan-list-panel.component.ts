@@ -121,7 +121,17 @@ export class PlanListPanelComponent implements OnInit {
   // プランに追加する
   async onClickAddToPlan(row: PlanAppList) {
     // スポット数チェック
-    if (await this.commonService.checkAddPlan(row.spotQty) === false){
+    if(await this.commonService.checkAddPlan(row.spotQty) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
       return;
     }
 

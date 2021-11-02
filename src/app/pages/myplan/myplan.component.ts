@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Injectable, ViewChild, PLATFORM_ID } from "@angular/core";
+import { Component, Inject, OnInit, OnDestroy, Injectable, ViewChild, ViewChildren, PLATFORM_ID, QueryList } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -86,6 +86,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   @ViewChild("mepPlan") accordionPlan: MatAccordion;
   @ViewChild("mep") expansionPanelPlan: MatExpansionPanel;
   @ViewChild("mepSpot") accordionSpot: MatAccordion;
+  @ViewChildren('mepSpotPanel') expansionPanelSpots:QueryList<MatExpansionPanel>;
 
   // 編集/プレビュー
   isEdit:boolean = true;
@@ -451,7 +452,17 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // スポットを追加する
   async onClickAddSpot(){
     // スポット数チェック
-    if (this.row.planSpots && await this.commonService.checkAddPlan(1) === false){
+    if(await this.commonService.checkAddPlan(1) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.planRemove();
+        }
+      });
       return;
     }
 
@@ -538,14 +549,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // プランを保存する
   onClickSavePlan() {
     if (!this.commonService.loggedIn) {
-      // ログイン画面へ
-      this.commonService.login();
+      const param = new ComfirmDialogParam();
+      param.title = "LoginConfirmTitle";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          // ログイン画面へ
+          this.commonService.login();
+        }
+      });
       return;
     }
 
     // プラン名必須チェック
     if (!this.row.planName) {
-      this.expansionPanelPlan.expanded = true;;
+      this.expansionPanelPlan.expanded = true;
       this.commonService.messageDialog("ErrorMsgRequiredPlanName");
       return;
     }
@@ -554,13 +572,12 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       for (let i = 0; i < this.row.planSpots.length; i++) {
         if (!this.row.planSpots[i].spotName)
         {
-          this.step = i;
+          this.expansionPanelSpots.find((template, index)=> index === i).expanded = true;
           this.commonService.messageDialog("NoSpotName");
           return;
         }
       }
     }
-
 
     // 保存ボタンロック
     this.isSaving = true;

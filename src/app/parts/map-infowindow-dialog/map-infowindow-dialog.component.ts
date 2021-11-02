@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit ,OnDestroy} from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
-import { MapSpot, MyPlanApp, PlanSpotCommon } from "../../class/common.class";
+import { MapSpot, ComfirmDialogParam } from "../../class/common.class";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from "../../service/myplan.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -77,7 +77,17 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
   // プランに追加
   async onClickAddToPlan() {
     // スポット数チェック
-    if (await this.commonService.checkAddPlan(1) === false){
+    if(await this.commonService.checkAddPlan(1) === false) {
+      const param = new ComfirmDialogParam();
+      param.text = "ErrorMsgAddSpot";
+      param.leftButton = "CreateNew";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if(d === "ok"){
+          // プラン新規作成
+          this.myplanService.onPlanUserRemoved();
+        }
+      });
       return;
     }
 
