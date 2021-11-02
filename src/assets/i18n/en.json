@@ -83,7 +83,7 @@
   "Save": "Save",
   "AddSpot": "Add new spot",
   "BatchClear": "Batch clear",
-  "ErrorMsgRequiredPlanName": "Please enter the title",
+  "ErrorMsgRequiredPlanName": "Please enter the title.",
   "Copy": "Copy",
   "Access": "Access",
   "DirectionsFromCurrentLocation": "Directions from current location",
@@ -289,5 +289,6 @@
   "NearestSt": "最寄駅",
   "SearchGuide": "「温泉」「京都女子旅」...",
   "CreateNew": "新規作成する",
-  "LoginConfirmTitle": "ログイン画面に遷移します。よろしいですか？"
+  "LoginConfirmTitle": "プランの保存には、ログインが必要です。ログイン画面(ユーザ登録画面)に移動しますか？",
+  "RequiredPlanName": "Please enter the title."
 }

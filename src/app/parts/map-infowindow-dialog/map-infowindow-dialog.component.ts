@@ -78,16 +78,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
   async onClickAddToPlan() {
     // スポット数チェック
     if(await this.commonService.checkAddPlan(1) === false) {
-      const param = new ComfirmDialogParam();
-      param.text = "ErrorMsgAddSpot";
-      param.leftButton = "CreateNew";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if(d === "ok"){
-          // プラン新規作成
-          this.myplanService.onPlanUserRemoved();
-        }
-      });
+      this.commonService.messageDialog("ErrorMsgAddSpot");
       return;
     }
 

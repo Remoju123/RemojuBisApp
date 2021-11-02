@@ -453,16 +453,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   async onClickAddSpot(){
     // スポット数チェック
     if(await this.commonService.checkAddPlan(1) === false) {
-      const param = new ComfirmDialogParam();
-      param.text = "ErrorMsgAddSpot";
-      param.leftButton = "CreateNew";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if(d === "ok"){
-          // プラン新規作成
-          this.planRemove();
-        }
-      });
+      this.commonService.messageDialog("ErrorMsgAddSpot");
       return;
     }
 
@@ -547,7 +538,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   // プランを保存する
-  onClickSavePlan() {
+  async onClickSavePlan() {
     if (!this.commonService.loggedIn) {
       const param = new ComfirmDialogParam();
       param.title = "LoginConfirmTitle";
@@ -563,8 +554,12 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
     // プラン名必須チェック
     if (!this.row.planName) {
-      this.expansionPanelPlan.expanded = true;
       this.commonService.messageDialog("ErrorMsgRequiredPlanName");
+      if (!this.isEdit) {
+        this.isEdit = true;
+        await this.sleep(500);
+      }
+      this.expansionPanelPlan.expanded = true;
       return;
     }
 
@@ -572,8 +567,12 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       for (let i = 0; i < this.row.planSpots.length; i++) {
         if (!this.row.planSpots[i].spotName)
         {
-          this.expansionPanelSpots.find((template, index)=> index === i).expanded = true;
           this.commonService.messageDialog("NoSpotName");
+          if (!this.isEdit) {
+            this.isEdit = true;
+            await this.sleep(500);
+          }
+          this.expansionPanelSpots.find((template, index)=> index === i).expanded = true;
           return;
         }
       }
@@ -684,6 +683,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       const param = new ComfirmDialogParam();
       param.title = "NewPlanConfirmTitle";
       param.text = "NewPlanConfirmText";
+      param.leftButton = "CreateNew";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         // 新しいプランを作成する
@@ -1044,5 +1044,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   isCollapse(){
     return this.collapse = !this.collapse;
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
