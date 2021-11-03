@@ -89,7 +89,8 @@ export class PlanSpotList {
   overview: null;//
   pictures: string[];
   planName: string;
-  planSpotNames: PlanSpotName[];//
+  planSpotNames: PlanSpotName[];
+  planSpotQty: number;
   pvQtyAll: number;
   regularHoliday: string;
   releaseCreateDatetime: string;
