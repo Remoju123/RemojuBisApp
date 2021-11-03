@@ -358,7 +358,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
-      data: this.baseUrl + this.lang + "/planspot/" + row.shareUrl,
+      data: this.baseUrl + this.lang + "/plans/detail/" + row.shareUrl,
       autoFocus: false
     });
   }
