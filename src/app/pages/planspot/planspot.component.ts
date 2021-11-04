@@ -100,14 +100,6 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
     this.guid= await this.commonService.getGuid();
     this.recoveryQueryParams();
 
-    // 共有プランの場合
-    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: ParamMap) => {
-      const id = params.get("id");
-      if (id){
-        await this.checkPlan(id);
-      }
-    });
-
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
       this.listSelectMaster.isList = true;
@@ -440,47 +432,5 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.mypageFavoriteListService.GetFavoriteCount(this.guid);
     });
     item.isFavorite = !item.isFavorite;
-  }
-
-  async checkPlan(id: string){
-    // 編集中のプランを取得
-    let myPlan: any = await this.indexedDBService.getEditPlan();
-    const myPlanApp: MyPlanApp = myPlan;
-
-    if (myPlanApp && !myPlanApp.isSaved){
-      // 確認ダイアログの表示
-      const param = new ComfirmDialogParam();
-      param.title = "EditPlanConfirmTitle";
-      param.text = "EditPlanConfirmText";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if (d === "ok") {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        } else {
-          // 共有プランを開く
-          this.openSharedPlan(id);
-        }
-      });
-    } else {
-      // 共有プランを開く
-      this.openSharedPlan(id);
-    }
-  }
-
-  openSharedPlan(id: string){
-    // DBから取得
-    this.myplanService.getPlanUser(id).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (!r) {
-        // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-        // return;
-      }
-      // プラン作成に反映
-      this.myplanService.onPlanUserChanged(r);
-      // プランを保存
-      this.indexedDBService.registPlan(r);
-      // マイプランパネルを開く
-      this.commonService.onNotifyIsShowCart(true);
-    });
   }
 }

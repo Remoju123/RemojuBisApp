@@ -189,7 +189,9 @@ export class PlanSpotListService {
         })
         break;
       case 9: // プランに追加された件数
-
+        _result = _result.sort((a,b) => {
+          return a.planSpotQty < b.planSpotQty ? 1: -1
+        })
         break;
     }
 
