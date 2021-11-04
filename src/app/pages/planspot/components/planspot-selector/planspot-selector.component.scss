@@ -70,6 +70,10 @@
               align-items: center;
               justify-content: center;
               height: inherit;
+
+              &.google{
+                border-left: 1px solid #fff;
+              }
             }
   
             &#spot{
@@ -201,15 +205,20 @@
             padding: 0 8px 0 12px;
             display: flex;
             justify-content: flex-end;
+            align-items: center;
             width: 100%;
+
+            &.on{
+              font-weight: 700;
+            }
         
             &::before{
               content: url("../../../../../assets/img/searchplus.svg");
               display: inline-block;
               width: 15px;
-              height: 15px;
+              height: 30px;
               padding-right: 3px;
-              vertical-align: sub;
+              //vertical-align: sub;
             }
         
             ::ng-deep.mat-button-focus-overlay{

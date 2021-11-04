@@ -406,17 +406,26 @@
         // display: flex;
         // flex-direction: row;
         font-size: 11px;
-        color:#8E8E8E;
-        height: 26px;
+        color:#4E4E4E;
+        // height: 26px;
         align-items: center;
         position: relative;
-        .date{
-          flex-basis: 84px;
-          // padding: 12px;
+        ::ng-deep .mat-list-item-content{
+          flex-direction: column;
+          .row{
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            align-items: center;
+            .view{
+              flex-basis: 48%;
+            }
+          }
         }
-        .view{
-          flex-basis: 60px;
-        }
+
+        
+        
+        
         .note{
           flex-basis: 90%;
         }

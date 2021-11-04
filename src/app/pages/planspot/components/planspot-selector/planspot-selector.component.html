@@ -43,7 +43,7 @@
         </mat-select>
       </mat-form-field>
       <div class='buttons' *ngIf="!myFavorite">
-        <button mat-button class="spot-search" (click)="openDialog(0)">
+        <button mat-button class="spot-search" (click)="openDialog(0)" [ngClass]="{'on':this.chkTarms()}">
           {{ 'AreaAndCommitment' | translate }}
         </button>
       </div>

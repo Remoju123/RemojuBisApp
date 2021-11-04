@@ -60,24 +60,27 @@
       <div class='card-bottom'>
         <mat-list>
           <mat-list-item class="bottom-view">
-            <span class='date'>
-              {{item.releaseCreateDatetime | date:'yyyy/MM/dd'}}
-            </span>
-            <span class='view'>
-              {{item.pvQtyAll}} view
-            </span>
-            <span class='view'>
-              プランに入れた人{{item.planSpotQty}} 人
-            </span>
-            <span class='view'>
-              レビュー評価{{item.reviewAvg}}
-            </span>
-            <span *ngIf="!isProd">
+            <div class='row'>
+              <span class='view'>
+                {{'PostedDate'|translate}}：{{item.releaseCreateDatetime | date:'yyyy/MM/dd'}}
+              </span>
+              <span class='view'>
+                {{item.pvQtyAll}} view
+              </span>
+            </div>
+            <div class='row'>
+              <span class='view'>
+                {{'InplanCount'|translate}}：{{item.planSpotQty}} 人
+              </span>
+              <span class='view'>
+                {{'ReviewRate'|translate}}：{{item.reviewAvg}}
+              </span>
+            </div>
+            <!-- <span *ngIf="!isProd">
               {{item.id}}
-            </span>
+            </span> -->
             <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
             </button>
-
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot" >
             <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>
