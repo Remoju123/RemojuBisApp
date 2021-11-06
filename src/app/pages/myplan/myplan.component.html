@@ -381,7 +381,7 @@
               <span class="label">{{ "TimeRequired" | translate }}</span>
               <span class="total">{{ row.timeRequiredDisp  }}</span>
             </div>
-            <button mat-fab [ngClass] ="{'isList':isMapDisp}" class="myplan-map" (click)="onClickMap() "></button>
+            <button mat-fab [ngClass] ="{'isList':isMapDisp}" class="myplan-map" (click)="onClickMap()" [disabled]="!row?.planSpots"></button>
           </div>
         </div>
       </mat-card-content>

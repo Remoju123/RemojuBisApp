@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from "@angular/core";
+import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
 import { GoogleSpot } from "../../class/spotlist.class";
 import { PlanSpotCommon } from "../../class/common.class";
 import { SpotListService } from "../../service/spotlist.service";
@@ -23,6 +23,8 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: [ PlanSpotCommon, boolean ]
   ) { }
 
+  @ViewChild("keyword") keyrowd: ElementRef;
+
   private onDestroy$ = new Subject();
   map: any;
   zoom: number;
@@ -42,7 +44,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     if (!this.data[0]){
       this.data[0] = new PlanSpotCommon();
     }
-    
+
     if (this.data[0].latitude){
       this.place = {
         name: this.data[0].spotName,
@@ -85,7 +87,25 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
       set.apply(this, arguments);
     };
 
-    this.googleAutocomplete();
+    // const input = document.getElementById("keyword") as HTMLInputElement;
+    const options = {
+      fields: ["geometry", "name"]
+    };
+    const autocomplete = new google.maps.places.Autocomplete(this.keyrowd.nativeElement, options);
+
+    autocomplete.addListener("place_changed", () => {
+      this.place = autocomplete.getPlace();
+
+      if (!this.place.geometry || !this.place.geometry.location) {
+        // window.alert("No details available for input: '" + this.place.name + "'");
+        return;
+      }
+
+      this.map.setCenter(this.place.geometry.location);
+      this.map.setZoom(17);
+
+      this.keyrowd.nativeElement.value = this.place.name;
+    });
   }
 
   onClickOK(): void {
@@ -95,27 +115,5 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     this.data[0].longitude = String(this.map.center.lng());
 
     this.dialogRef.close(this.data[0]);
-  }
-
-  googleAutocomplete() {
-    const input = document.getElementById("keyword") as HTMLInputElement;
-    const options = {
-      fields: ["geometry", "name"]
-    };    
-    const autocomplete = new google.maps.places.Autocomplete(input, options);
-
-    autocomplete.addListener("place_changed", () => {
-      this.place = autocomplete.getPlace();
-  
-      if (!this.place.geometry || !this.place.geometry.location) {
-        // window.alert("No details available for input: '" + this.place.name + "'");
-        return;
-      }
-  
-      this.map.setCenter(this.place.geometry.location);
-      this.map.setZoom(17);
-
-      input.value = this.place.name;
-    });
   }
 }

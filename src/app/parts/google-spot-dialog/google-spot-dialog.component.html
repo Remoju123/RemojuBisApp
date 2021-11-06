@@ -6,6 +6,7 @@
       <mat-label>{{ 'GoogleKeyword' | translate }}</mat-label>
       <input
         matInput
+        #keyword
         id="keyword"
         value="{{ place ? place.name : '' }}" />
     </mat-form-field>
