@@ -51,12 +51,12 @@ export class MypageComponent implements OnInit, OnDestroy {
         // お気に入り一覧を表示
         this.tabIndex = 1;
         this.tabChange(1);
-      } else if (fragment === "review"){
-        // レビュー一覧
-        this.tabIndex = 2;
-        this.tabChange(2);
       } else if (fragment === "profile") {
         // プロフィール
+        this.tabIndex = 2;
+        this.tabChange(2);
+      } else if (fragment === "review"){
+        // レビュー一覧
         this.tabIndex = 3;
         this.tabChange(3);
       } else {
@@ -85,12 +85,12 @@ export class MypageComponent implements OnInit, OnDestroy {
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'})
     }
     if ($event === 2){
-      this.review = true;
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'review'})
-    }
-    if ($event === 3){
       this.profile = true;
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'profile'})
+    }
+    if ($event === 3){
+      this.review = true;
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'review'})
     }
   }
 

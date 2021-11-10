@@ -8,6 +8,7 @@
             <mat-list-item class="top">
               <div class="lt">
                 <div class="areaName">{{ row.areaName | langFilter: lang }}</div>
+                <div class='update'>{{ "LastUpdated" | translate }} : {{ row.updateDatetime | date:"yyyy/MM/dd" }}</div>
               </div>
               <div class="rt">
                 <div class="release" (click)="onClickRelease(row)">
@@ -64,12 +65,6 @@
           </owl-carousel-o>
           <mat-list>
             <mat-list-item class="row bottom">
-              <span>
-                {{ "LastUpdated" | translate }} : {{ row.updateDatetime | date:"yyyy/MM/dd" }}<br />
-              </span>
-              <button mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
-                {{ "EditPlan" | translate }}
-              </button>
               <!-- URL共有 -->
               <div class="share">
                 <button mat-flat-button class="share" id="planshare" (click)="onClickSharePlan(row)">
@@ -77,6 +72,9 @@
                   {{ "SharePlan" | translate }}
                 </button>
               </div>
+              <button mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
+                {{ "EditPlan" | translate }}
+              </button>
             </mat-list-item>
           </mat-list>
 

@@ -69,7 +69,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   countryAll: any[];
   $country: any[];
   // プレビューモード
-  isPreview = true;
+  isPreview:boolean = true;
   currentlang:string;
 
   _coverUrl:any;
@@ -220,7 +220,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
   // プレビュー表示切り替え
   onClickPreviewSwitch() {
-
     this.isPreview = !this.isPreview;
   }
 

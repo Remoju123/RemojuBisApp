@@ -173,6 +173,13 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     this.router.navigate(["/" + this.currentLang + "/mypage"],navigationExtras);
   }
 
+  linktoMyplan(){
+    let navigationExtras:NavigationExtras = {
+      fragment:'list'
+    }
+    this.router.navigate(["/" + this.currentLang + "/mypage"],navigationExtras);
+  }
+
   ngOnDestroy(){
     this.onDestroy$.next();
   }

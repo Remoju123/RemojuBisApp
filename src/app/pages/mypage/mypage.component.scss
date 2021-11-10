@@ -36,7 +36,7 @@
 
           &:nth-of-type(1){
             .mat-tab-label-content::before{
-              content: url("../../../assets/img/icon_myprof.svg"); 
+              content: url("../../../assets/img/icon_myplanlist.svg"); 
               width: 14px;
               height: 15px;
               margin-right: 6px;
@@ -54,6 +54,14 @@
           &:nth-of-type(3){
             .mat-tab-label-content::before{
               content: url("../../../assets/img/icon_myplan.svg"); 
+              width: 14px;
+              height: 15px;
+              margin-right: 6px;
+            }
+          }
+          &:nth-of-type(4){
+            .mat-tab-label-content::before{
+              content: url("../../../assets/img/icon_myprof.svg"); 
               width: 14px;
               height: 15px;
               margin-right: 6px;

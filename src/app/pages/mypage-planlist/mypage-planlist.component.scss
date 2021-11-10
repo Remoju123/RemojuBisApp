@@ -776,6 +776,8 @@ span.sortlink {
               justify-content: space-between;
               align-items:end;
               .lt{
+                display: flex;
+                
                 .areaName{
                   border: 1px solid #5e5e5e;
                   padding: 0 4px;
@@ -835,7 +837,7 @@ span.sortlink {
             line-height: 2;
             .mat-list-item-content{
               padding: 0 12px 12px;
-              justify-content: space-between;
+              justify-content: end;
             }
 
             .edit-to-plan{
@@ -861,7 +863,7 @@ span.sortlink {
               background: #EBEBEB;
               // padding: 0 25px;
               line-height: 27px;
-              width: 90px;
+              width: 108px;
               white-space: nowrap;
               padding: 0;
 
