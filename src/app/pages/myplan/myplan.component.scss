@@ -159,6 +159,32 @@
       .mat-expansion-panel-body{
         background-color: $color-gld06;
         padding-top: 24px;
+        .sub{
+          display: flex;
+          align-items: center;
+          color: #fff;
+          font-size: 13px;
+          font-weight: bold;
+          &::before{
+            content: '';
+            background-image: url('../../../assets/img/icon_bookmark.svg');
+            background-repeat: no-repeat;
+            width: 17px;
+            height: 22px;
+            margin-right: 0.5em;
+          }
+        }
+        .select{
+          display: flex;
+          align-items: center;
+          .fileselector{
+            white-space: nowrap;
+          }
+          label{
+            line-height: 1;
+            padding-left: 8px!important;
+          }
+        }
         .mat-form-field{
           width: 100%;
           font-size: 16px!important;
@@ -545,6 +571,22 @@
         background-color: $color-gld06;
         .mat-expansion-panel-body{
           padding-top: 16px;
+          .sub{
+            display: flex;
+            align-items: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            &::before{
+              content: '';
+              background-image: url('../../../assets/img/icon_bookmark.svg');
+              background-repeat: no-repeat;
+              width: 17px;
+              height: 22px;
+              margin-right: 0.5em;
+            }
+          }
           .mat-form-field{
             width: 100%;
             font-size: 16px!important;
@@ -577,6 +619,8 @@
           }
 
           .select{
+            display: flex;
+            align-items: center;
             .fileselector{
               border: 1px solid $color-gld01;
               border-radius: 12px;
@@ -587,6 +631,7 @@
               margin-bottom: 0.8em;
               color: $color-gld01;
               background-color: #fff;
+              white-space: nowrap;
               input[type="file"] {
                 height: 100%;
                 left: 0;
@@ -600,6 +645,7 @@
               color: #fff;
               font-size: 12px;
               padding-left: 16px;
+              line-height: 1;
             }
           }
 
