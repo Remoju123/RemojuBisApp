@@ -47,6 +47,7 @@ export class MypageReviewlistComponent implements OnInit {
 
   getMyReview():void {
     this.mypagePlanListService.getMyPageReviewList().subscribe((result)=>{
+      console.log(result);
       this.myReviews = result;
     })
   }

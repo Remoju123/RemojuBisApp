@@ -1,7 +1,3 @@
-<div class='head'>
-  <p>{{ name }}{{ "Sanno" | translate }}投稿中レビュー</p>
-</div>
-
 <div class='container'>
   <mat-list>
     <ng-container *ngIf="myReviews?.length>0; else noReview">
@@ -59,8 +55,13 @@
           <button class="edit" mat-stroked-button (click)="onClickPosted(item)">
             {{ "Edit" | translate }}
           </button>
-          <button class="remove" mat-stroked-button (click)="onClickDelete(item)">
+          <!-- <button class="remove" mat-stroked-button (click)="onClickDelete(item)">
             {{ "Remove" | translate }}
+          </button> -->
+        </div>
+        <div class="delete">
+          <button class="deletePlan" (click)="onClickDelete(item)">
+            <i class="material-icons">clear</i>
           </button>
         </div>
       </mat-list-item>
