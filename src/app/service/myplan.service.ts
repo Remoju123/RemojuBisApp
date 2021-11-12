@@ -77,13 +77,14 @@ export class MyplanService  {
   }
 
   // スポット入れ替え・バスONOFF・経路最適化ONOFF
-  async setTransfer() {
+  async setTransfer(isAuto: boolean) {
     let myPlan:any = null;
     if(isPlatformBrowser(this.platformId)){
       myPlan = await this.indexedDBService.getEditPlan(true);
     }
     const myPlanApp: MyPlanApp = myPlan;
     this.SetItem(myPlanApp);
+    myPlanApp.isAuto = isAuto;
     const url = this.host + "/api/Myplan/SetTransfer";
     return this.http.post<MyPlanApp>(url, myPlanApp, httpOptions);
   }

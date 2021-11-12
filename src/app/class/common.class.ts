@@ -406,7 +406,9 @@ export class FavoriteCount{
 export class ComfirmDialogParam{
   title: string;
   text: string;
+  textRep: string[];
   subText: string;
+  subTextRep: string[];
   leftButton: string;
   rightButton: string;
 }

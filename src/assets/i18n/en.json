@@ -292,5 +292,8 @@
   "LoginConfirmTitle": "プランの保存には、ログインが必要です。ログイン画面(ユーザ登録画面)に移動しますか？",
   "RequiredPlanName": "Please enter the title.",
   "InplanCount":"プランに入れた人",
-  "ReviewRate":"レビュー評価"
+  "ReviewRate":"レビュー評価",
+  "AutoSearchConfirmTitle": "最短ルートを検索します。よろしいですか？",
+  "AutoSearchConfirmText": "出発地 ：<br>　{0}<br>到着地 ：<br>　{1}",
+  "ErrorMsgAuto": "最短ルートの検索には4スポット以上必要です。"
 }

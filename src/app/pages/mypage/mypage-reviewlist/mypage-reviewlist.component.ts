@@ -64,7 +64,7 @@ export class MypageReviewlistComponent implements OnInit {
       maxWidth: "100%",
       width: "92vw",
       position: { top: "10px" },
-      data: { review: review, type: 1, spotplanName: ""},
+      data: { review: review, type: review.type, spotplanName: this.commonService.isValidJson(review.planSpotName, this.lang)},
       autoFocus: false,
       id:"review-post"
     });
