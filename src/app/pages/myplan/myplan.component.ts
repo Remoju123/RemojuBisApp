@@ -34,7 +34,7 @@ import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { Catch } from "src/app/class/log.class";
-import { HttpUrlEncodingCodec } from "@angular/common/http";
+import { HttpUrlEncodingCodec, HTTP_INTERCEPTORS } from "@angular/common/http";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -195,19 +195,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   // 編集・プレビュー切り替え
-  onClickEdit(){
+  onClickEdit(isAuto: boolean = false){
     this.isEdit = !this.isEdit;
     // プレビューの場合
     if (!this.isEdit) {
       // 移動方法取得処理
       if (this.row.isTransferSearch){
         const ref = this.loading.show();
-        this.myplanService.setTransfer().then(result => {
+        this.myplanService.setTransfer(isAuto).then(result => {
           result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               this.setUserPicture(r);
               // 変更を保存
               this.registPlan(false);
+              // 最適化OFF
+              this.row.isAuto = false;
               ref.close();
             }
           });
@@ -398,9 +400,49 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   // 経路最適化
   onClickAuto() {
-    this.row.isAuto = !this.row.isAuto;
-    // 保存
-    this.onChange(true);
+    // 出発地、到着地を含めてスポットが4つ以上あること
+    let cnt = 0;
+    if (this.row.startPlanSpot) {
+      cnt += 1;
+    }
+    if (this.row.planSpots) {
+      cnt += this.row.planSpots.length;
+    }
+    if (this.row.endPlanSpot) {
+      cnt +~ 1;
+    }
+    if (cnt < 4) {
+      this.commonService.messageDialog("ErrorMsgAuto");
+      return;
+    }
+
+    // 最適化ON
+    this.row.isAuto = true;
+    this.row.isTransferSearch = true;
+
+    const param = new ComfirmDialogParam();
+    param.title = "AutoSearchConfirmTitle";
+    param.text = "AutoSearchConfirmText";
+    if (this.row.startPlanSpot) {
+      param.textRep = [ this.row.startPlanSpot.spotName ];
+    } else {
+      param.textRep = [ this.row.planSpots[0].spotName ];
+    }
+    if (this.row.endPlanSpot) {
+      param.textRep.push(this.row.endPlanSpot.spotName);
+    } else {
+      param.textRep.push(this.row.planSpots[this.row.planSpots.length - 1].spotName);
+    }
+    const dialog = this.commonService.confirmMessageDialog(param);
+    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+      if (d === "ok") {
+        //  最適化
+        this.onClickEdit(true);
+      } else {
+        // 最適化OFF
+        this.row.isAuto = false;
+      }
+    });
   }
 
   // 出発地・到着地を設定
