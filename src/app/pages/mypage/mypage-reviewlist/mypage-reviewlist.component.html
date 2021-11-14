@@ -7,6 +7,9 @@
             {{ "PostedDate" | translate }} : {{ item.postedDate | date:"yyyy/MM/dd" }}
           </div>
         </div>
+        <div class='row picture'>
+          <img src="{{item.pictureUrl}}" alt="">
+        </div>
         <div class='row planspot'>
           <div class='mark'>
             <img src={{genMarkPath(item)}} alt="" />

@@ -16,6 +16,7 @@ export class Review {
   postedDate: string;
   objectId: string;
   userName: string;
+  pictureUrl: string;
   pictures: ReviewPicture[];
   reviews: Review[];
   // 表示時に取得
