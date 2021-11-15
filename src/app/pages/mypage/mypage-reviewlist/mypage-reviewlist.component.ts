@@ -1,19 +1,17 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MypagePlanListService } from 'src/app/service/mypageplanlist.service';
 import { ReviewPostDialogComponent } from '../../../parts/review-post-dialog/review-post-dialog.component';
-import { Review, ReviewResult } from "../../../class/review.class";
+import { Review } from "../../../class/review.class";
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { CommonService } from 'src/app/service/common.service';
 import { ComfirmDialogParam } from 'src/app/class/common.class';
 import { SpotService } from 'src/app/service/spot.service';
 import { PlanService } from 'src/app/service/plan.service';
-import { async } from '@angular/core/testing';
 import { UserService } from 'src/app/service/user.service';
 import { User } from 'src/app/class/user.class';
-import { NgxMaterialTimepicker24HoursFaceComponent } from 'ngx-material-timepicker';
 import { Router } from '@angular/router';
 
 

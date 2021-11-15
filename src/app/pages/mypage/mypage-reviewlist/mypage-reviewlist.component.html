@@ -95,8 +95,10 @@
       </mat-list-item>
     </ng-container>
     <ng-template #noReview>
-      <div class='noReviewbox'>
-        <p>{{"NoReviewMsg"|translate}}</p>
-      </div>
+      <mat-card id="noReview">
+        <mat-card-content>
+          <p>{{"NoReviewMsg"|translate}}</p>
+        </mat-card-content>
+      </mat-card>
     </ng-template>
   
