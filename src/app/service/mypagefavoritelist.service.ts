@@ -62,7 +62,6 @@ export class MypageFavoriteListService implements OnDestroy {
 
   // お気に入り数取得
   GetFavoriteCount(guid: string) {
-    console.log('guid:%o objecyId:%o',guid,this.commonService.objectId);
     if(guid!==""){
       const url = this.host + "/api/MypageFavoriteList/GetFavoriteCount";
       this.http.get<FavoriteCount>(url,  {
@@ -71,7 +70,6 @@ export class MypageFavoriteListService implements OnDestroy {
       })
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((v)=>{
-        console.log(v);
         this.myfavCount.next(v);
       });
     }

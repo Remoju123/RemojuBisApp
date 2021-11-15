@@ -11,6 +11,10 @@ import { ComfirmDialogParam } from 'src/app/class/common.class';
 import { SpotService } from 'src/app/service/spot.service';
 import { PlanService } from 'src/app/service/plan.service';
 import { async } from '@angular/core/testing';
+import { UserService } from 'src/app/service/user.service';
+import { User } from 'src/app/class/user.class';
+import { NgxMaterialTimepicker24HoursFaceComponent } from 'ngx-material-timepicker';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,6 +31,8 @@ export class MypageReviewlistComponent implements OnInit {
     private commonService: CommonService,
     private spotService: SpotService,
     private planService: PlanService,
+    private userService: UserService,
+    private router: Router,
   ) { }
 
   @Input() name:any;
@@ -35,20 +41,27 @@ export class MypageReviewlistComponent implements OnInit {
 
   myReviews:Review[];
   type:number;
+  user:User;
 
   get lang() {
     return this.translate.currentLang;
   }
 
   ngOnInit(): void {
-
+    this.getUser();
     this.getMyReview();
+    
   }
 
   getMyReview():void {
     this.mypagePlanListService.getMyPageReviewList().subscribe((result)=>{
-      console.log(result);
       this.myReviews = result;
+    })
+  }
+
+  getUser():void{
+    this.userService.getUser().subscribe(u => {
+      this.user = u;
     })
   }
 
@@ -137,8 +150,8 @@ export class MypageReviewlistComponent implements OnInit {
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
-    margin: 5,
-    items:4,
+    margin: 0,
+    items:3,
     nav: false,
     autoHeight: false
   };
@@ -153,6 +166,33 @@ export class MypageReviewlistComponent implements OnInit {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+
+  // ユーザー写真
+  genUserPicture(){
+    return this.user?.pictureUrl ? this.user.pictureUrl:'../../../../../assets/img/icon_who.svg';
+  }
+
+  // ユーザー名
+  genUserName(){
+    return this.user?.user_name?this.user.user_name:'---';
+  }
+
+  // タイトル
+  genTitle(item){
+    return item.isPlan?
+      this.commonService.isValidJson(item.planName,this.lang):
+      this.commonService.isValidJson(item.spotName,this.lang);
+  }
+
+  linktoDetail(id:number){
+    // 5digits or more is Plan
+    if(id > 10000){
+      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
+    }else{
+      this.router.navigate(["/" + this.lang + "/plans/detail",id]);
     }
   }
 

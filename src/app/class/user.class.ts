@@ -15,6 +15,7 @@ export class User {
   object_id: string;
   gender: string;
   user_staff_id: boolean;
+  user_name:string;
   last_login_datetime: string;
 
   // 以下、ADの項目
