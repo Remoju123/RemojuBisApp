@@ -7,9 +7,9 @@
       <input
         matInput
         #keyword
-        id="keyword"
-        value="{{ place ? place.name : '' }}" />
+        id="keyword" />
     </mat-form-field>
+    <span>{{ place ? place.name : '' }}</span>
   </div>
   <div class="mapDiv">
     <agm-map

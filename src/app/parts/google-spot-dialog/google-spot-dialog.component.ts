@@ -104,7 +104,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
       this.map.setCenter(this.place.geometry.location);
       this.map.setZoom(17);
 
-      this.keyrowd.nativeElement.value = this.place.name;
+      // this.keyrowd.nativeElement.value = this.place.name;
     });
   }
 
