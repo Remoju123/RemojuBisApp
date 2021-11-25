@@ -1,0 +1,51 @@
+@import "../../../assets/scss/vars";
+::ng-deep.cdk-global-overlay-wrapper{
+  align-items: center!important;
+}
+
+::ng-deep.mat-dialog-container{
+  border-radius: 10px;
+  padding: 30px 26px!important;
+  position: relative;
+  .mat-dialog-title{
+    font-size: 16px;
+    display: inline-flex;
+    &::before{
+      content: url("../../../assets/img/icon_alert.svg");
+      width: 28px;
+      height: 28px;
+      margin-right: 6px;
+      margin-top: 3px;
+    }
+  }
+
+  .mat-dialog-actions{
+    // justify-content: space-between;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: -20px;
+    button{
+      //width: 100px;
+      min-width: 100px;
+      height: 40px;
+
+      &.ok{
+        background-color: $color-gld01;
+        color:#fff;
+        font-size: 20px;
+      }
+
+      &.abscancel{
+        all:unset;
+        position: absolute;
+        width: 23px;
+        top: 7px;
+        right: 7px;
+        &::before{
+          content: url("../../../assets/img/btn_delete.svg");
+        }
+
+      }
+    }
+  }
+}
