@@ -1,8 +1,19 @@
-<h2 mat-dialog-title>{{ 'Memo' | translate }}</h2>
+<h2 mat-dialog-title>{{ 'ReleaseConfirm' | translate }}</h2>
 <mat-dialog-content>
-  <textarea matInput placeholder="{{ 'Memo' | translate }}" [(ngModel)]="data"></textarea>
+  <mat-form-field>
+    <mat-label>{{ 'Memo' | translate }}</mat-label>
+    <textarea
+      matInput
+      #memo
+      name="memo"
+      rows="5"
+      placeholder="{{ 'Memo' | translate }}"
+      #inputinfo="ngModel"
+      [(ngModel)]="data"></textarea>
+    <mat-hint align="end">{{ data?.length || 0}}/100{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="data='';">{{"labelClear" | translate}}</a></mat-hint>
+  </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button (click)="onClickOK()">{{ 'OK' | translate }}</button>
-  <button mat-raised-button mat-dialog-close="cancel">{{ 'Cancel' | translate }}</button>
+  <button mat-raised-button (click)="onClickOK()" class="ok">{{ 'OK' | translate }}</button>
+  <button type="button" mat-dialog-close="cancel" class="abscancel"></button>
 </mat-dialog-actions>

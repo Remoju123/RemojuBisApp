@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
+import { MemoDialogComponent } from "../../parts/memo-dialog/memo-dialog.component";
 import { isPlatformBrowser } from "@angular/common";
 
 @Component({
@@ -97,26 +98,39 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     // 公開⇒非公開
     if (row.isRelease) {
       param.title = "PrivateConfirm";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            if (r) {
+              row.isRelease = !row.isRelease;
+              this.commonService.snackBarDisp("PrivateSaved");
+            }
+          });
+        }
+      });
     }
     // 非公開⇒公開
     else {
-      param.title = "ReleaseConfirm";
-    }
-    const dialog = this.commonService.confirmMessageDialog(param);
-    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-      if (d === "ok") {
-        this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (r) {
-            row.isRelease = !row.isRelease;
-            if (row.isRelease) {
+      const dialog = this.dialog.open(MemoDialogComponent, {
+        id:"urlShare",
+        maxWidth: "100%",
+        width: "92vw",
+        position: { top: "10px" },
+        data: row.memo,
+        autoFocus: false
+      });
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d && d !== "cancel") {
+          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            if (r) {
+              row.isRelease = !row.isRelease;
               this.commonService.snackBarDisp("ReleaseSaved");
-            } else {
-              this.commonService.snackBarDisp("PrivateSaved");
             }
-          }
-        });
-      }
-    });
+          });
+        }
+      });
+    }
   }
 
   // 削除する

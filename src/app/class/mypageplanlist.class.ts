@@ -44,6 +44,8 @@ export class MypagePlanAppList {
   isShare: boolean;
   // URL
   shareUrl: string;
+  // メモ
+  memo: string;
   // プランユーザスポットリスト
   spots: PlanSpotCommon[];
 }

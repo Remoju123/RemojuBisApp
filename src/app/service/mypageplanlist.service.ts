@@ -51,12 +51,14 @@ export class MypagePlanListService {
   // 公開・非公開登録
   registIsRelease(
     planUserId: number,
-    isRelease: boolean) {
+    isRelease: boolean,
+    memo: string) {
     const url = this.host + "/api/MypagePlanList/RegistIsRelease";
     return this.http.get<ListSelected>(url, {
       params: {
         planUserId: String(planUserId),
-        isRelease: String(isRelease)
+        isRelease: String(isRelease),
+        memo
       }
     });
   }
