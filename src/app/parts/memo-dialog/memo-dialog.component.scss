@@ -3,49 +3,97 @@
   align-items: center!important;
 }
 
-::ng-deep.mat-dialog-container{
-  border-radius: 10px;
-  padding: 30px 26px!important;
-  position: relative;
-  .mat-dialog-title{
-    font-size: 16px;
-    display: inline-flex;
-    &::before{
-      content: url("../../../assets/img/icon_alert.svg");
-      width: 28px;
-      height: 28px;
-      margin-right: 6px;
-      margin-top: 3px;
-    }
-  }
 
-  .mat-dialog-actions{
-    // justify-content: space-between;
-    justify-content: center;
-    margin-top: 30px;
-    margin-bottom: -20px;
-    button{
-      //width: 100px;
-      min-width: 100px;
-      height: 40px;
-
-      &.ok{
-        background-color: $color-gld01;
-        color:#fff;
-        font-size: 20px;
+  ::ng-deep.mat-dialog-container#urlShare{
+    border-radius: 10px;
+    padding: 30px 26px!important;
+    position: relative;
+    .mat-dialog-title{
+      font-size: 16px;
+      display: inline-flex;
+      &::before{
+        content: url("../../../assets/img/icon_asia.svg");
+        width: 28px;
+        height: 28px;
+        margin-right: 6px;
+        margin-top: 3px;
       }
+    }
+    .mat-dialog-content{
+      .mat-form-field{
+        width: 100%;
+        .mat-form-field-wrapper{
+          .mat-form-field-flex{
 
-      &.abscancel{
-        all:unset;
-        position: absolute;
-        width: 23px;
-        top: 7px;
-        right: 7px;
-        &::before{
-          content: url("../../../assets/img/btn_delete.svg");
+            .mat-form-field-infix{
+              padding: 0;
+              height: 27px;
+
+              .mat-input-element{
+                font-size: 16px;
+              }
+
+              .mat-select{
+                font-size: 16px;
+              }
+
+              textarea.mat-input-element{
+                margin-top: 0;
+                margin-bottom: 10px;
+                height: 116px;
+                font-size: 16px;
+                padding-top: 10px;
+                line-height: 1.7;
+              }
+
+              .hint-end{
+                font-size: 10px;
+                position: absolute;
+                top: 29px;
+                left: 40px;
+                color: red;
+              }
+            }
+            
+          }
+          .mat-form-field-subscript-wrapper{
+            margin-top: -3px;
+            font-size: 9px;
+          }
         }
-
+      }
+    }
+  
+    .mat-dialog-actions{
+      // justify-content: space-between;
+      justify-content: center;
+      margin-top: 30px;
+      margin-bottom: -20px;
+      button{
+        //width: 100px;
+        min-width: 100px;
+        height: 40px;
+  
+        &.ok{
+          background-color: $color-gld01;
+          color:#fff;
+          font-size: 20px;
+        }
+  
+        &.abscancel{
+          all:unset;
+          position: absolute;
+          width: 23px;
+          top: 7px;
+          right: 7px;
+          &::before{
+            content: url("../../../assets/img/btn_delete.svg");
+          }
+  
+        }
       }
     }
   }
-}
+
+
+
