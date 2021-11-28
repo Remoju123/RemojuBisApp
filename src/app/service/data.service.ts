@@ -198,7 +198,7 @@ export class DataService {
     // タイマー名の累積カウンタをリセット
     localStorage.setItem("count", "0");
     // トップページの表示
-    location.reload(true); // = "/";
+    location.reload(); // = "/";
 
     this.router.navigate(["/"]);
     // Service Worker登録
