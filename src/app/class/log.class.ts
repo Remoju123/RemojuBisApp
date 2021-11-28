@@ -58,7 +58,7 @@ export function Catch(isAutoCatch?: boolean) {
           return result;
         } catch (error) {
           // ------------例外処理---------------
-          console.log(`エラー ${error.message}`);
+          //console.log(`エラー ${error.message}`);
         }
         // --------------------------------
       };
