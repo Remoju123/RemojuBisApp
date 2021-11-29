@@ -26,7 +26,7 @@ const routes: Routes = [
       path:"",
       component:RootComponent,
       children:[
-        { path: "planspot", component: PlanspotComponent},
+        { path: "planspot",loadChildren:() => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule)},
         { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent},
         { path: "spots/detail/:id", component: SpotDetailComponent},
@@ -37,7 +37,7 @@ const routes: Routes = [
         { path: "user/:id", component: UserComponent },
         { path: "home", component: TopComponent },
         { path: "systemerror", component: SystemErrorComponent },
-        { path: "", redirectTo:"/ja/top",pathMatch:"full" },
+        { path: "", redirectTo:"/ja/planspot",pathMatch:"full" },
         { path: '404', component: NotfoundComponent },
       ]
     },
@@ -50,7 +50,7 @@ const routes: Routes = [
       ]
     }]
   },
-  { path: "**", redirectTo: "/ja/top", pathMatch: "full" }
+  { path: "**", redirectTo: "/ja/planspot", pathMatch: "full" }
 ];
 
 @NgModule({
