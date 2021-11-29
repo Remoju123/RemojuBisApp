@@ -121,7 +121,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         autoFocus: false
       });
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if (d && d !== "cancel") {
+        if (d === "cancel") {
+        } else {
           this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               row.isRelease = !row.isRelease;
