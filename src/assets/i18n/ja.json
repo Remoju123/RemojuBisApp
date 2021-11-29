@@ -294,6 +294,6 @@
   "InplanCount":"プランに入れた人",
   "ReviewRate":"レビュー評価",
   "AutoSearchConfirmTitle": "最短ルートを検索します。よろしいですか？",
-  "AutoSearchConfirmText": "出発地 ：<br>　{0}<br>到着地 ：<br>　{1}",
+  "AutoSearchConfirmText": "<span class='route'>出発地 ：<br>　{0}<br>到着地 ：<br>　{1}</span>",
   "ErrorMsgAuto": "最短ルートの検索には4スポット以上必要です。"
 }
