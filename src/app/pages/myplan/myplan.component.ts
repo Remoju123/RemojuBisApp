@@ -400,6 +400,12 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   // 経路最適化
   onClickAuto() {
+    // 最適化していないこと
+    if (this.row.optimized) {
+      this.commonService.messageDialog("Optimized");
+      return;
+    }
+
     // 出発地、到着地を含めてスポットが4つ以上あること
     let cnt = 0;
     if (this.row.startPlanSpot) {
@@ -409,7 +415,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       cnt += this.row.planSpots.length;
     }
     if (this.row.endPlanSpot) {
-      cnt +~ 1;
+      cnt += 1;
     }
     if (cnt < 4) {
       this.commonService.messageDialog("ErrorMsgAuto");
@@ -486,6 +492,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 移動方法(一旦trueになったらfalseがきてもtrueのままにする)
     if (!this.row.isTransferSearch){
       this.row.isTransferSearch = value;
+    }
+    if (value) {
+      this.row.optimized = false;
     }
     // 保存
     this.registPlan(false);
@@ -817,6 +826,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.row.timeRequired = null;
     this.row.timeRequiredDisp = null;
     this.row.isAuto = false;
+    this.row.optimized = false;
     this.row.isBus = false;
     this.endTime = null;
     this.row.planSpots = null;

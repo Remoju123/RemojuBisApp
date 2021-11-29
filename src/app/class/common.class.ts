@@ -173,6 +173,7 @@ export class MyPlanApp {
   planUserId: number;
   isBus: boolean;
   isAuto: boolean;
+  optimized: boolean;
   travelDate: string;
   planName: string;
   planExplanation: string;

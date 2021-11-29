@@ -48,6 +48,8 @@ export class MyPlan {
   planUserId: number;
   // バス検索フラグ
   isBus: boolean;
+  // 最適化済み
+  optimized: boolean;
   // 旅行予定日
   travelDate: string;
   // プラン名
