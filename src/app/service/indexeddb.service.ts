@@ -12,7 +12,7 @@ export class IndexedDBService {
 
   // DB
   dbName = "Remoju";
-  version = 6;
+  version = 7;
 
   // オブジェクトストア
   storeListSearchConditionMyfav = "ListSearchConditionMyfav";
@@ -118,6 +118,7 @@ export class IndexedDBService {
       isTransferSearch: myPlanApp.isTransferSearch,
       planUserId: myPlanApp.planUserId,
       isBus: myPlanApp.isBus,
+      optimized: myPlanApp.optimized,
       travelDate: myPlanApp.travelDate,
       planName: myPlanApp.planName,
       pictureFile: myPlanApp.pictureFile,
