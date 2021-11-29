@@ -264,10 +264,16 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
         history.replaceState(
           "search_key",
           "",
-          location.pathname.substring(1, location.pathname.lastIndexOf("/")) + "?" + searchParams
+          //location.pathname.substring(1, location.pathname.lastIndexOf("/")) + "?" + searchParams
+          location.pathname.substring(0) + "?" + searchParams
         );
       } else {
-        history.replaceState("search_key", "", location.pathname.substring(1, location.pathname.lastIndexOf("/")));
+        history.replaceState(
+          "search_key", 
+          "", 
+          //location.pathname.substring(1, location.pathname.lastIndexOf("/")));
+          location.pathname.substring(0)
+        );
       }
       // history back desabled
       history.pushState(null,null,null);
