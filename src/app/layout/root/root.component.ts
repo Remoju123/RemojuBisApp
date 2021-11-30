@@ -42,6 +42,7 @@ export class RootComponent implements OnInit, OnDestroy {
 
   showPlanpanel:boolean = true;
   expandHeader:boolean = true;
+  jumpFooter:boolean = false;
   
   cartopened:boolean | undefined;
   myPlanSpots:any;
@@ -117,6 +118,8 @@ export class RootComponent implements OnInit, OnDestroy {
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
     }
+
+    console.log(document.documentElement.offsetHeight)
   }
 
   ngOnDestroy(){
@@ -149,6 +152,17 @@ export class RootComponent implements OnInit, OnDestroy {
       this.showScroll = false;
       this.showPlanpanel = true;
     }
+
+    if((document.documentElement.offsetHeight + document.documentElement.scrollTop) > (document.documentElement.scrollHeight-122)){
+      this.jumpFooter = true;
+    }else{
+      this.jumpFooter = false;
+    }
+    //console.log(this.jumpFooter);
+    // console.log(
+    //   'sh:%i ch"%i',
+    //   (document.documentElement.offsetHeight + document.documentElement.scrollTop),
+    //   document.documentElement.scrollHeight-122)
   }
 
   // Topへ戻るボタン

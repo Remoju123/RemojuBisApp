@@ -1,5 +1,5 @@
 <footer>
-  <mat-nav-list class="footerlink">
+  <!-- <mat-nav-list class="footerlink">
     <mat-list-item *ngFor="let item of menuItems.getMenuitem()">
       <a class="" [routerLink]="['/', item.state]">
         <span>{{ item.name }}</span>
@@ -13,7 +13,22 @@
         <span>{{ item.name }}</span>
       </a>
     </mat-list-item>
-  </mat-nav-list>
+  </mat-nav-list> -->
+  <div class='row public'>
+    <div class='col about'>
+      <img class="icon" src='../../../assets/img/icon_about.svg' alt='about'>
+      <div>アバウト</div>
+    </div>
+    <div class='col guide'>
+      <img class="icon" src='../../../assets/img/icon_guide.svg' alt='guide'>
+      <div>ガイド</div>
+    </div>
+    <div class='col policy'>
+      <img class="icon" src='../../../assets/img/icon_policy.svg' alt='policy'>
+      <div>プライバシーポリシー</div>
+    </div>
+  </div>
 
-  <p id="Copyright">Copyright © Remoju. All rights reserved.</p>
+
+  <p id="Copyright">© Remoju</p>
 </footer>

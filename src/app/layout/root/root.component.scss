@@ -21,9 +21,9 @@
 }
 
 .outletArea {
-  //padding-top: 58px;
+  // footer(new) height:122px
   width: 100%;
-  min-height: calc(100vh - 300px - 58px);
+  min-height: calc(100vh - 122px - 58px);
 }
 
 @media screen and (min-width: 768px) {
@@ -38,8 +38,8 @@
 }
 
 footer {
-  height: 300px;
-  margin-top: -300px;
+  height: 122px;
+  margin-top: -122px;
   background: #4a4a4a;
 }
 
@@ -62,6 +62,10 @@ button {
 
   img {
     width: 49px;
+  }
+
+  &.up{
+    bottom: 198px;
   }
 }
 
@@ -101,6 +105,10 @@ button {
     ::ng-deep .mat-badge-content{
       background-image: url("../../../assets/img/icon_badge.svg");
     }
+  }
+
+  &.up{
+    bottom:116px;
   }
 }
 
