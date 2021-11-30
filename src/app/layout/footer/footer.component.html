@@ -16,16 +16,22 @@
   </mat-nav-list> -->
   <div class='row public'>
     <div class='col about'>
-      <img class="icon" src='../../../assets/img/icon_about.svg' alt='about'>
-      <div>アバウト</div>
+      <a (click)="linkto('about')">
+        <img class="icon" src='../../../assets/img/icon_about.svg' alt='about'>
+        <div>アバウト</div>
+      </a>
     </div>
     <div class='col guide'>
-      <img class="icon" src='../../../assets/img/icon_guide.svg' alt='guide'>
-      <div>ガイド</div>
+      <a (click)="linkto('guide')">
+        <img class="icon" src='../../../assets/img/icon_guide.svg' alt='guide'>
+        <div>ガイド</div>
+      </a>
     </div>
     <div class='col policy'>
-      <img class="icon" src='../../../assets/img/icon_policy.svg' alt='policy'>
-      <div>プライバシーポリシー</div>
+      <a (click)="linkto('privacy')">
+        <img class="icon" src='../../../assets/img/icon_policy.svg' alt='policy'>
+        <div>プライバシーポリシー</div>
+      </a>
     </div>
   </div>
 

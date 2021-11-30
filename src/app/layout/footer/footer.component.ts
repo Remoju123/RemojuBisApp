@@ -1,5 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { MenuItems } from "../../shared/menu-items/menu-items";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: "app-footer",
@@ -7,7 +9,20 @@ import { MenuItems } from "../../shared/menu-items/menu-items";
   styleUrls: ["./footer.component.scss"]
 })
 export class FooterComponent implements OnInit {
-  constructor(public menuItems: MenuItems) {}
+  get lang() {
+    return this.translate.currentLang;
+  }
+  
+  constructor(
+    private router:Router,
+    private translate: TranslateService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
+
+  linkto(page:any){
+    this.router.navigate(['/'+ this.lang + '/' + page])
+  }
 }

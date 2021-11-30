@@ -16,7 +16,9 @@ import { MypageComponent } from './pages/mypage/mypage.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { UserComponent } from './pages/user/user.component';
-import { PlanspotComponent } from './pages/planspot/planspot.component';
+// official
+import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
+
 
 const routes: Routes = [
   {
@@ -39,6 +41,7 @@ const routes: Routes = [
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/planspot",pathMatch:"full" },
         { path: '404', component: NotfoundComponent },
+        { path: 'privacy',component:PrivacyComponent}
       ]
     },
     {
