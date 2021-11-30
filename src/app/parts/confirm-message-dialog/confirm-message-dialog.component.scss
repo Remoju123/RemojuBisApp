@@ -24,6 +24,27 @@
       display: block;
       font-size:14px;
       margin-bottom: 0.5rem;
+      dl.route{
+        text-align: center;
+        dt,dd{
+          margin: unset;
+        }
+        dt{
+          font-weight: 700;
+          &::before{
+            content: "";
+            width: 15px;
+            height: 21px;
+            background: url("../../../assets/img/pop_area.svg") no-repeat;
+            display: inline-block;
+            vertical-align: -6px;
+            margin-right: 4px;
+          }
+          &:first-child + dd{
+            margin-bottom: 1em;
+          }
+        }
+      }
     }
     .subtext{
       display: block;
