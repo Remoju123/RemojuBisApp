@@ -22,9 +22,10 @@
           line-height: 34px;
           border: 1px solid #B7B7B7;
           border-radius: 17px;
-          padding: 0 17px 0 27px;
+          padding: 0 40px 0 27px;
           font-size: 16px;
           -webkit-appearance: none;
+          text-overflow:ellipsis;
         }
         img.prefix{
           position: absolute;

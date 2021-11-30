@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { Router } from '@angular/router';
 import { PlanAppList } from 'src/app/class/planlist.class';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
@@ -25,12 +26,14 @@ export class PlanspotListItemComponent implements OnInit {
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
   @Output() setFav = new EventEmitter<PlanSpotList>();
   @Output() delFav = new EventEmitter<PlanSpotList>();
+  @Output() keyword = new EventEmitter<any>();
   
   isProd:boolean;
   
   constructor(
     private commonService: CommonService,
     private spotService: SpotService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -179,6 +182,10 @@ export class PlanspotListItemComponent implements OnInit {
   // 比較関数（同じ配列同士で重複する値があるか否か）
   getIsDuplicate(arr1, arr2) {
     return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
+  }
+
+  toPostUser(id:any){
+    this.keyword.emit(id);
   }
 
 }

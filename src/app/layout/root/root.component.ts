@@ -118,8 +118,6 @@ export class RootComponent implements OnInit, OnDestroy {
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
     }
-
-    console.log(document.documentElement.offsetHeight)
   }
 
   ngOnDestroy(){

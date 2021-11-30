@@ -91,6 +91,7 @@ export class PlanSpotList {
   planName: string;
   planSpotNames: PlanSpotName[];
   planSpotQty: number;
+  postObjectId:string;
   pvQtyAll: number;
   regularHoliday: string;
   releaseCreateDatetime: string;

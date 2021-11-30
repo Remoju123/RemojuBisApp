@@ -3,8 +3,10 @@
     <div class='header'>
       <div class='lt'>
         <span class='avatar'>
-          <img [src]="genUserPicture()" [alt]="genUserName()">
-          <span class="username">{{genUserName()}}</span>
+          <a (click)="toPostUser(item.postObjectId)">
+            <img [src]="genUserPicture()" [alt]="genUserName()">
+            <span class="username">{{genUserName()}}</span>
+          </a>
         </span>
       </div>
       <div class='rt' [ngClass]="{'fav':myFavorite}">
