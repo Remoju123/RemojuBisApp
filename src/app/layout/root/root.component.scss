@@ -176,7 +176,8 @@ mat-sidenav-content {
 
 @media screen and (min-width: 1024px) { 
   div.body{
-    width: 1024px;
-    margin: auto;
+    width: 640px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
