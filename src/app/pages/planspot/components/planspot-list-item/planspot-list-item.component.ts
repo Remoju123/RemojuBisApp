@@ -181,7 +181,12 @@ export class PlanspotListItemComponent implements OnInit {
 
   // 比較関数（同じ配列同士で重複する値があるか否か）
   getIsDuplicate(arr1, arr2) {
-    return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
+    if(arr2){
+      return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
+    }else{
+      return false;
+    }
+    
   }
 
   toPostUser(id:any){
