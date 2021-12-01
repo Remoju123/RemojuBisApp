@@ -156,11 +156,6 @@ export class RootComponent implements OnInit, OnDestroy {
     }else{
       this.jumpFooter = false;
     }
-    //console.log(this.jumpFooter);
-    // console.log(
-    //   'sh:%i ch"%i',
-    //   (document.documentElement.offsetHeight + document.documentElement.scrollTop),
-    //   document.documentElement.scrollHeight-122)
   }
 
   // Topへ戻るボタン

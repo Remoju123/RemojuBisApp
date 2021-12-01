@@ -173,3 +173,10 @@ mat-sidenav-content {
     }
   }
 }
+
+@media screen and (min-width: 1024px) { 
+  div.body{
+    width: 1024px;
+    margin: auto;
+  }
+}
