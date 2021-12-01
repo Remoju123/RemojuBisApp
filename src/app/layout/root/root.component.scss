@@ -23,18 +23,19 @@
 .outletArea {
   // footer(new) height:122px
   width: 100%;
-  min-height: calc(100vh - 122px - 58px);
+  min-height: calc(100vh - 170px);
 }
 
 @media screen and (min-width: 768px) {
   .outletArea {
-    min-height: calc(100vh - 300px - 122px);
-    //padding-top: 122px;
+    min-height: calc(100vh - 170px);
+    
   }
 }
 
 .outletWidth {
   max-width: 100%;
+  //min-height: calc(100vh - 170px);
 }
 
 footer {
