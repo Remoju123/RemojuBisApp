@@ -2010,6 +2010,23 @@
   form#myplan{
     margin: auto 98px;
   }
+  .inputWrapper{
+    input.keyword{
+      width: 62vw!important;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px) { 
+  form#myplan{
+    width: 640px;
+    margin: auto;
+  }
+  .inputWrapper{
+    input.keyword{
+      width: 540px!important;
+    }
+  }
 }
 
 
