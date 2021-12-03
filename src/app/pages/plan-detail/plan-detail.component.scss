@@ -288,7 +288,8 @@ div.plandtl{
           }
         }
   
-        @media screen and (min-width: 415px) and (max-width: 1024px) { 
+        //@media screen and (min-width: 415px) and (max-width: 1024px) { 
+        @media screen and (min-width: 415px) { 
           .thumbspots {
             height: 20.4vw;
           }  
@@ -607,12 +608,20 @@ div.plandtl{
     }
   }
   
-  @media screen and (min-width: 415px) and (max-width: 1024px) { 
+  @media screen and (min-width: 415px) { 
     .box{
       .spotinfo{
         .card-box{
           .spot-image{
             height: 307px!important;
+            .thumbmain{
+              height: 307px;
+              img {
+                height: auto!important;
+                object-fit: cover;
+                @include copy-protect;
+              }
+            }
           }
         }
       }

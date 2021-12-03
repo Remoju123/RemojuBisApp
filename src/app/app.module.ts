@@ -114,6 +114,8 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserPlanListComponent } from './parts/user-plan-list/user-plan-list.component';
 import { MypageReviewlistComponent } from './pages/mypage/mypage-reviewlist/mypage-reviewlist.component';
 import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
+import { AboutComponent } from './pages/offcial/about/about.component';
+import { GuideComponent } from './pages/offcial/guide/guide.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -192,7 +194,9 @@ export const MATERIAL_MODULES = [
     ImageCropperDialogComponent,
     UserPlanListComponent,
     MypageReviewlistComponent,
-    PrivacyComponent
+    PrivacyComponent,
+    AboutComponent,
+    GuideComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

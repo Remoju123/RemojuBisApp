@@ -18,6 +18,8 @@ import { SystemErrorComponent } from './pages/system-error/system-error.componen
 import { UserComponent } from './pages/user/user.component';
 // official
 import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
+import { AboutComponent } from './pages/offcial/about/about.component';
+import { GuideComponent } from './pages/offcial/guide/guide.component';
 
 
 const routes: Routes = [
@@ -41,7 +43,9 @@ const routes: Routes = [
         { path: "systemerror", component: SystemErrorComponent },
         { path: "", redirectTo:"/ja/planspot",pathMatch:"full" },
         { path: '404', component: NotfoundComponent },
-        { path: 'privacy',component:PrivacyComponent}
+        { path: 'privacy',component:PrivacyComponent},
+        { path: 'about',component:AboutComponent},
+        { path: 'guide',component:GuideComponent}
       ]
     },
     {
