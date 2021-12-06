@@ -23,6 +23,8 @@ export class NavMenuComponent {
   @Input()
   currentlang!: string;
 
+  isJP:boolean = true;
+
   constructor(
     private router: Router,
     public common: CommonService, 
@@ -49,5 +51,9 @@ export class NavMenuComponent {
     }else{
       this.router.navigate(["/" + this.lang + "/" + page + "/"],{fragment:frag});
     }
+  }
+
+  onClickSwitchLang(){
+    
   }
 }

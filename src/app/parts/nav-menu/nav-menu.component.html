@@ -6,6 +6,14 @@
       </a>
     </div>
     <div class="nav-wrap">
+      <mat-nav-list class="language">
+        <div class="switchViewLang" [ngClass]="{'en':lang==='en'}">
+          <input type="checkbox" id="switch-view1" (click)="onClickSwitchLang()">
+          <label for="switch-view1"><span></span></label>
+          <div id="swImg"></div>
+        </div>
+      </mat-nav-list>
+
       <mat-nav-list class="user">
         <span *ngIf="!common.loggedIn">
           <a mat-list-item (click)="common.login()" *ngIf="!common.loggedIn">{{ "PleaseLogin" | translate }}</a>
@@ -21,7 +29,7 @@
           </span>
         </div>
       </mat-nav-list>
-  
+
       <mat-nav-list class="status">
       </mat-nav-list>
       

@@ -550,6 +550,7 @@ $color-grn01: #81C5B4;
   }
 }
 
+// マイプラン編集・プレビュー切り替え
 @mixin switchView {
   .switchView{
     $edit:"編集";
@@ -683,6 +684,7 @@ $color-grn01: #81C5B4;
   margin: auto!important;
 }
 
+// プロフィール編集・プレビュー切り替え
 @mixin switchViewProf {
   .switchViewProf{
     $edit:"編集する";
@@ -776,6 +778,106 @@ $color-grn01: #81C5B4;
 
       &::before{
         content: $edit;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// メニュー言語切り替え
+@mixin switchViewLang {
+  .switchViewLang{
+    $edit:"英語";
+    $preview:"日本語";
+    $edit_en:"English";
+    $preview_en:"Japanese";
+    $height:32px;
+    $radius:16px;
+
+    line-height: $height;
+    letter-spacing: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bolder;
+
+    position: relative;
+    width: 130px;
+    background: #fff;
+
+    &.en{
+      input[type="checkbox"]{
+        &:checked +label{
+          span::after{
+            content: $preview_en;
+          }
+        }
+        &:checked ~#swImg{
+          &::before{
+            content: $edit_en;
+          }
+        }
+      }
+
+      label{
+        span::after{
+          content: $edit_en;
+        }
+      }
+
+      #swImg{
+        &::before{
+          content: $preview_en;
+        }
+      }
+    }
+
+    input[type="checkbox"]{
+      display: none;
+      &:checked +label{
+        border-color: $color-pnk02;
+        span::after{
+          content: $preview;
+          padding: 0 65px 0 0;
+          color: $color-pnk02;
+        }
+      }
+
+      &:checked ~#swImg{
+        transform: translateX(60px);
+        background: $color-pnk02;
+        &::before{
+          content: $edit;
+          color: #fff;
+        }
+      }
+    }
+
+    label{
+      display: block;
+      box-sizing: border-box;
+      height: $height;
+      border: 1px solid $color-pnk02;
+      border-radius: $radius;
+
+      span::after{
+        content: $edit;
+        padding: 0 0 0 67px;
+        color: $color-pnk02;
+      }
+    }
+
+    #swImg{
+      position:absolute;
+      width: 70px;
+      height: $height;
+      background: $color-pnk02;
+      top: 0px;
+      left: 0px;
+      border-radius: $radius;
+      transition: .2s;
+
+      &::before{
+        content: $preview;
         color: #fff;
       }
     }
