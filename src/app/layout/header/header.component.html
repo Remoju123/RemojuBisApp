@@ -3,20 +3,27 @@
     <mat-toolbar-row>
       <span class="logo">
         <!-- Remoju -->
-        <a href="/{{ currentLang }}/" style="min-height:54px;">
+        <a routerLink="planspot" style="min-height:54px;">
           <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" />
         </a>
       </span>
 
       <span class="menu">
-        <button mat-icon-button class="favorite" aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small"
+        <!-- <button mat-icon-button class="favorite" aria-label="favorite" matBadge="{{ favcount }}" matBadgeSize="small"
           (click)="linktoFavorite()">
           <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
-        </button>
+        </button> -->
+        <a routerLink="mypage" fragment="favorite" class="favorite">
+          <img src="../../../assets/img/icon_fav.svg" alt="link to Favorite">
+        </a>
 
-        <button mat-icon-button class="user" aria-label="user" (click)="linktoMyplan()">
+        <a routerLink="mypage" fragment="list" class="user">
           <img src="{{pictureUrl}}" alt="user">
-        </button>
+        </a>
+
+        <!-- <button mat-icon-button class="user" aria-label="user" (click)="linktoMyplan()">
+          <img src="{{pictureUrl}}" alt="user">
+        </button> -->
 
         <button mat-icon-button class="menu" color="primary" aria-label="menu" (click)="toggleactive()">
           <mat-icon>more_vert</mat-icon>

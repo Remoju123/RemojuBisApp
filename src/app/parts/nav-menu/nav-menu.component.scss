@@ -53,6 +53,13 @@
         padding-top: 0;
         margin-left: 13px;
       }
+
+      &.language{
+        display: flex;
+        justify-content: end;
+        margin-bottom: 1em;
+        @include switchViewLang();
+      }
     }
     
 

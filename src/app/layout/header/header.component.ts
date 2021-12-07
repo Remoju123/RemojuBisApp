@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
 
   languages = environment.languages;
   
-  currentLang: string = "ja";
+  currentLang: string = environment.defaultLang;
 
   // サイドナビバインドプロパティ
   @Output() event = new EventEmitter<boolean>();

@@ -87,14 +87,20 @@ header {
   }
   .menu{
     z-index: 2;
-    .mat-icon-button.favorite{
+    display: flex;
+    align-items: center;
+    a{
+      display: flex;
+      padding: 0 4px;
+    }
+    .favorite{
       img{
         width: 27px;
         height: 27px;
       }
     }
 
-    .mat-icon-button.user{
+    .user{
       img{
         width: 27px;
         height: 27px;

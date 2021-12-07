@@ -23,6 +23,8 @@ export class NavMenuComponent {
   @Input()
   currentlang!: string;
 
+  isEn:boolean = true;
+
   constructor(
     private router: Router,
     public common: CommonService, 
@@ -49,5 +51,20 @@ export class NavMenuComponent {
     }else{
       this.router.navigate(["/" + this.lang + "/" + page + "/"],{fragment:frag});
     }
+  }
+
+  onClickSwitchLang(e){
+    //checked:true ==> 'en'
+    //checked:false ==> 'ja'
+
+    if(e.target.checked){
+      this.translate.use('en')
+      this.translate.currentLang = 'en'
+    }else{
+      this.translate.use('ja')
+      this.translate.currentLang = 'ja';
+    }
+
+    
   }
 }
