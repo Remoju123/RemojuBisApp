@@ -23,7 +23,7 @@ export class NavMenuComponent {
   @Input()
   currentlang!: string;
 
-  isJP:boolean = true;
+  isEn:boolean = true;
 
   constructor(
     private router: Router,
@@ -53,7 +53,18 @@ export class NavMenuComponent {
     }
   }
 
-  onClickSwitchLang(){
+  onClickSwitchLang(e){
+    //checked:true ==> 'en'
+    //checked:false ==> 'ja'
+
+    if(e.target.checked){
+      this.translate.use('en')
+      this.translate.currentLang = 'en'
+    }else{
+      this.translate.use('ja')
+      this.translate.currentLang = 'ja';
+    }
+
     
   }
 }
