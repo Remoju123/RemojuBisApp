@@ -27,7 +27,7 @@ export class NavMenuComponent {
 
   constructor(
     private router: Router,
-    public common: CommonService, 
+    public common: CommonService,
     public menuItems: MenuItems,
     private translate: TranslateService
     ) {
@@ -53,6 +53,10 @@ export class NavMenuComponent {
     }
   }
 
+  onNavgateFeature(page:string){
+    location.href = `${location.origin}/contents/ja-jp/${page}`;
+  }
+
   onClickSwitchLang(e){
     /*----------------------
     *checked:true ==> 'en'
@@ -66,6 +70,6 @@ export class NavMenuComponent {
       this.translate.currentLang = 'ja';
     }
 
-    
+
   }
 }
