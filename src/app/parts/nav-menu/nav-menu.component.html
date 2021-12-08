@@ -20,8 +20,8 @@
         </span>
         <div class="logout" *ngIf="common.loggedIn">
           <span>
-            {{ "Welcome" | translate }} 
-            {{common.name}} 
+            {{ "Welcome" | translate }}
+            {{common.name}}
             {{ "San" | translate }}
           </span>
           <span>
@@ -32,7 +32,7 @@
 
       <mat-nav-list class="status">
       </mat-nav-list>
-      
+
       <mat-nav-list>
         <div class="header">{{ "MakeATripPlan" | translate }}</div>
         <mat-nav-list class="sub">
@@ -40,14 +40,14 @@
           <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a> -->
           <a mat-list-item (click)="onNavgate('planspot')">{{ "FindEveryoneRecommendations" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','favorite')">{{ "SearchByFavorite" | translate }}</a>
-          
+
         </mat-nav-list>
       </mat-nav-list>
       <mat-nav-list>
         <div class="header">{{ "ViewFeaturedArticles" | translate }}</div>
         <mat-nav-list class="sub">
-          <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto/jyoshitabi.html">{{ "RecommendedTripForGirls" | translate }}</a>
-          <a mat-list-item href="https://www.remoju.com/contents/ja-jp/area/kyoto_guidemap.html">{{ "LetsGoToKyotoNow" | translate }}</a>
+          <a mat-list-item (click)="onNavgateFeature('area/kyoto/jyoshitabi.html')">{{ "RecommendedTripForGirls" | translate }}</a>
+          <a mat-list-item (click)="onNavgateFeature('area/kyoto_guidemap.html')">{{ "LetsGoToKyotoNow" | translate }}</a>
           <a mat-list-item href="">{{ "ExcitingTripForKids" | translate }}</a>
           <a mat-list-item href="">{{ "SeeOther" | translate }}</a>
         </mat-nav-list>
@@ -60,14 +60,13 @@
           <a mat-list-item  (click)="onNavgate('mypage','review')">{{ "ViewReview" | translate }}</a>
           <a mat-list-item (click)="onNavgate('mypage','profile')">{{ "EditProfile" | translate }}</a>
         </mat-nav-list>
-        
+
       </mat-nav-list>
       <mat-nav-list>
         <div class='header'>その他</div>
         <mat-nav-list class="sub">
-          
+
         </mat-nav-list>
       </mat-nav-list>
     </div>
   </nav>
-  
