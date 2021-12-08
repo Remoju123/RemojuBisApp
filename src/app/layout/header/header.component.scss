@@ -12,12 +12,12 @@ header {
     // box-shadow: 0 4px 6px #0000001f;
   }
 
-  &.collapse{
+  &.collapse {
     margin-top: -44px;
   }
 }
 
-.mat-toolbar-multiple-rows{
+.mat-toolbar-multiple-rows {
   min-height: 44px;
 }
 
@@ -27,7 +27,7 @@ header {
   display: flex;
   justify-content: space-between;
   height: 50px;
-  padding: 0!important;
+  padding: 0 !important;
   position: relative;
 
   .imgpc {
@@ -42,7 +42,7 @@ header {
   }
 
   //@media screen and (min-width: 415px) and (max-width: 1024px) { 
-    @media screen and (min-width: 415px) { 
+  @media screen and (min-width: 415px) {
     .imgsp {
       margin-top: 1vw;
       margin-left: 16px;
@@ -65,12 +65,13 @@ header {
     }
   }
 
-  .mat-icon-button{
+  .mat-icon-button {
+
     // height: 20px;
     // line-height: 20px;
     // width: 32px;
     &.mat-badge-small {
-      .mat-badge-content{
+      .mat-badge-content {
         top: 2px;
         right: -2px;
         //background-color: $color-pnk04;
@@ -82,58 +83,65 @@ header {
 
 ::ng-deep.mat-toolbar.mat-primary {
   color: #666;
-  .logo{
+
+  .logo {
     z-index: 2;
   }
-  .menu{
+
+  .menu {
     z-index: 2;
     display: flex;
     align-items: center;
-    a{
+
+    a {
       display: flex;
       padding: 0 4px;
     }
-    .favorite{
-      img{
+
+    .favorite {
+      img {
         width: 27px;
         height: 27px;
       }
     }
 
-    .user{
-      img{
+    .user {
+      img {
         width: 27px;
         height: 27px;
         border-radius: 50%;
       }
     }
-    
-    .mat-icon{
+
+    .mat-icon {
       font-size: 24px;
       height: auto;
       width: auto;
     }
 
-    .mat-icon-button.mat-primary{
-        color: $color-gry06;
+    .mat-icon-button.mat-primary {
+      display: flex;
+      justify-content: center;
+      color: $color-gry06;
     }
   }
 
-  .feature{
-    button{
-      img{
+  .feature {
+    button {
+      img {
         width: 27px;
         height: 27px;
       }
-      &.user{
-        img{
+
+      &.user {
+        img {
           border-radius: 50%;
         }
       }
     }
   }
 
-  .guide{
+  .guide {
     position: absolute;
     font-size: 13px;
     font-weight: 700;
@@ -142,7 +150,7 @@ header {
     margin: auto;
     text-align: center;
   }
-  
+
 }
 
 .humbmenu {
@@ -203,8 +211,7 @@ $menu_line: 2px;
 
     span {
       &:nth-of-type(1) {
-        -webkit-transform: translateY(($menu_height - $menu_line)*0.5)
-          rotate(-45deg);
+        -webkit-transform: translateY(($menu_height - $menu_line)*0.5) rotate(-45deg);
         transform: translateY(($menu_height - $menu_line)*0.5) rotate(-45deg);
       }
 

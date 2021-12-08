@@ -54,9 +54,10 @@ export class NavMenuComponent {
   }
 
   onClickSwitchLang(e){
-    //checked:true ==> 'en'
-    //checked:false ==> 'ja'
-
+    /*----------------------
+    *checked:true ==> 'en'
+    *checked:false ==> 'ja'
+    -----------------------*/
     if(e.target.checked){
       this.translate.use('en')
       this.translate.currentLang = 'en'

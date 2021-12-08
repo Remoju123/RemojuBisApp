@@ -88,10 +88,6 @@ export class MapComponent implements OnInit {
   async getPlanDetail(id: string) {
     const guid = await this.commonService.getGuid();
     this.planService.getPlanDetail(id, guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (!r) {
-        this.router.navigate(["/" + this.lang + "/systemerror"]);
-        return;
-      }
       const langpipe = new LangFilterPipe();
       this.planSpots = r.spots.map(x => {
         this.commonService.setAddPlanLang(x, this.lang);
@@ -115,10 +111,6 @@ export class MapComponent implements OnInit {
       // Googleスポット、プラン名補完
       this.myplanService.getPlanComplement().then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (!r) {
-            this.router.navigate(["/" + this.lang + "/systemerror"]);
-            return;
-          }
           this.planSpots = r.planSpots.map(x => {
             this.commonService.setAddPlanLang(x, this.lang);
             return x;
@@ -133,10 +125,6 @@ export class MapComponent implements OnInit {
     // 保存済みのユーザ作成プランかつ編集中のプランがない場合はDBから取得
     if(this.userplanid){
       this.myplanService.getPlanUser(this.userplanid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.lang + "/systemerror"]);
-          return;
-        }
         this.planSpots = r.planSpots.map(x => {
           this.commonService.setAddPlanLang(x, this.lang);
           return x;
