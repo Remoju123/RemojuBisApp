@@ -87,12 +87,13 @@
                 matInput
                 #planExplanation
                 name="planExplanation"
+                maxlength="1000"
                 rows="5"
                 placeholder="{{ 'PlanExplanationEx' | translate }}"
                 #inputinfo="ngModel"
                 [(ngModel)]="row.planExplanation"
                 (change)="onChange(false)"></textarea>
-                <mat-hint align="end">{{planExplanation.value?.length || 0}}/100{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
+                <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
             </mat-form-field>
             <!-- フリー文章 -->
             <mat-form-field appearance="outline" *ngIf="row.isRelease">
@@ -100,12 +101,13 @@
                 matInput
                 #memo
                 name="memo"
+                maxlength="1000"
                 rows="5"
                 placeholder="{{ 'FreeMemoEx' | translate }}"
                 #inputinfo="ngModel"
                 [(ngModel)]="row.memo"
                 (change)="onChange(false)"></textarea>
-                <mat-hint align="end">{{memo.value?.length || 0}}/100{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="row.memo='';">{{"labelClear" | translate}}</a></mat-hint>
+                <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="row.memo='';">{{"labelClear" | translate}}</a></mat-hint>
             </mat-form-field>
             <!-- カテゴリー選択ボタン -->
             <button mat-stroked-button (click)="onClickAreaCategory()">
@@ -276,6 +278,7 @@
                     matInput
                     #memo
                     name="memo{{i}}"
+                    maxlength="1000"
                     rows="5"
                     placeholder="{{ 'SpotExplanationEx' | translate }}"
                     #inputinfo="ngModel"
@@ -283,7 +286,7 @@
                     [(ngModel)]="item.memo"
                     (change)="onChange(false)">
                   </textarea>
-                  <mat-hint align="end">{{memo.value?.length || 0}}/100{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="item.memo='';">{{"labelClear" | translate}}</a></mat-hint>
+                  <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="item.memo='';">{{"labelClear" | translate}}</a></mat-hint>
                 </mat-form-field>
 
                 <!-- 滞在時間 -->
