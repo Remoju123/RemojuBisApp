@@ -84,7 +84,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   isMobile: boolean;
   guid: string;
 
-  user_plans: PlanSpotList[] = [];
+  // user_plans: PlanSpotList[] = [];
 
   userData: UserPlanList = new UserPlanList();
 

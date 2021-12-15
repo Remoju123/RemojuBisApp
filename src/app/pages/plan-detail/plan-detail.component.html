@@ -325,7 +325,7 @@
     <ng-template #profile>
       <app-userprofile-panel *ngIf="data.user && data.country" [otherUser]="data.user" [country]="data.country" [detail]="true" [memo]="data.memo"></app-userprofile-panel>
       <div class='buttons'>
-        <button mat-button disableRipple matBadge="{{user_plans.length}}" matBadgeSize="small" (click)="onViewUserPost()">{{"ViewUserPost"|translate}}</button>
+        <button mat-button disableRipple matBadge="{{userData.userPlans.length}}" matBadgeSize="small" (click)="onViewUserPost()">{{"ViewUserPost"|translate}}</button>
       </div>
     </ng-template>
   </mat-card>
