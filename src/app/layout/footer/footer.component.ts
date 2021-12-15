@@ -12,6 +12,8 @@ export class FooterComponent implements OnInit {
   get lang() {
     return this.translate.currentLang;
   }
+
+  year:Date = new Date();
   
   constructor(
     private router:Router,

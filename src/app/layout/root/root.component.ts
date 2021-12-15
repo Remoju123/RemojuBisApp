@@ -51,6 +51,8 @@ export class RootComponent implements OnInit, OnDestroy {
   viewbtn_src:string | undefined;
   backbtn_src:string | undefined;
 
+  isMobile:boolean = true;
+
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
   @ViewChild(HeaderComponent)
@@ -117,6 +119,12 @@ export class RootComponent implements OnInit, OnDestroy {
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
+    }
+
+    if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
+      this.isMobile = true;
+    }else{
+      this.isMobile = false;
     }
   }
 

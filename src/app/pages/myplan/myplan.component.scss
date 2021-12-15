@@ -2017,14 +2017,51 @@
   }
 }
 
-@media screen and (min-width: 1025px) { 
-  form#myplan{
-    width: 640px;
-    margin: auto;
-  }
+// @media screen and (min-width: 1025px) { 
+//   form#myplan{
+//     width: 640px;
+//     margin: auto;
+//   }
+//   .inputWrapper{
+//     input.keyword{
+//       width: 540px!important;
+//     }
+//   }
+// }
+
+@media screen and (min-width: 1025px) {
   .inputWrapper{
     input.keyword{
-      width: 540px!important;
+      width: 280px!important;
+    }
+  }
+  .card-box{
+    .card-header{
+      height: auto!important;
+      .thumbmain{
+        //position: relative;
+        //overflow: hidden;
+        padding-top: 30%;
+        height: 200px;
+        img{
+          // width: 100%;
+          // height: 20vh;
+          // object-fit: cover;
+          position: absolute;
+          top:50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          width: 100%;
+          height: 100%;
+          //object-fit: cover;
+        }
+      
+      }
+      ::ng-deep{
+        .owl-carousel{
+          height: 292px;
+        }
+      }
     }
   }
 }

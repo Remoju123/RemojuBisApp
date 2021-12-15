@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy, Injectable, ViewChild, ViewChildren, PLATFORM_ID, QueryList } from "@angular/core";
+import { Component, Inject, OnInit, OnDestroy, Injectable, ViewChild, ViewChildren, PLATFORM_ID, QueryList, Input } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -87,6 +87,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   @ViewChild("mep") expansionPanelPlan: MatExpansionPanel;
   @ViewChild("mepSpot") accordionSpot: MatAccordion;
   @ViewChildren('mepSpotPanel') expansionPanelSpots:QueryList<MatExpansionPanel>;
+  @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
 
   // 編集/プレビュー
   isEdit:boolean = true;
@@ -127,7 +128,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   pictureUrl:string = "../../../assets/img/icon_who.svg";
 
-  @ViewChild("keywordInput") keywordInput:{ nativeElement: any };
+  @Input() isMobile:boolean = true;
 
   /*------------------------------
    *
@@ -140,7 +141,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.setEditPlan();
     // 閲覧履歴を取得
     // this.getHistory();
-
     // カレンダーの言語切り替え
     if(this.currentlang!=="ja"){
       this.dateAdapter.setLocale('en-EN'); //暫定、日本語以外は英語表記に
@@ -794,7 +794,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           this.row = myPlanApp;
           this.setUserPicture(r);
           if (this.row.planSpots && this.row.planSpots.length > 0) {
-            this.isEdit = false;
+            this.isEdit = this.isMobile?false:true;
           }
           // 保存
           this.indexedDBService.registPlan(this.row);

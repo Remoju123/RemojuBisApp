@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, EventEmitter, Output, Input, ViewChild, ElementRef } from '@angular/core';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 
 @Component({
@@ -13,6 +13,8 @@ export class PlanspotListComponent implements OnInit {
   @Input() condition:ListSearchCondition;
   @Output() scrolled = new EventEmitter();
   @Output() glink = new EventEmitter<any>();
+
+  @ViewChild('box') box:ElementRef;
   
   constructor() { }
 

@@ -6,7 +6,12 @@
 
 .box{
   margin-top: 16px;
-
+  height: 100%;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
   .glink{
     background-color: #7E9E9F;
     padding: 3px 6px;
