@@ -1,76 +1,56 @@
-<!-- <app-pull-to-refresh></app-pull-to-refresh> -->
-<mat-sidenav-container autosize>
-  <!-- app-menu -->
-  <mat-sidenav
-    #sidenav
-    mode="over"
-    [(opened)]="opened"
-    [fixedInViewport]="true"
-  >
-    <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
-    <img
-      src="../../../assets/img/nav-close.svg"
-      alt=""
-      class="navclose"
-      (click)="onhandleSiteNav(true)"
-    />
-  </mat-sidenav>
-  <!-- myplan(cart) -->
-  <mat-sidenav 
-    #cart 
-    position="end" 
-    mode="push"
-    [(opened)]="cartopened"
-    [fixedInViewport]="true"
-    class="cartnav"
-    >
-    <button mat-button class="close-my-plan" (click)="onhandleCartNav(true)">
-      <img src="{{backbtn_src}}" alt="close my plan"/>
-    </button>
-    <app-myplan></app-myplan>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <div class="body">
-      <!--header-->
-      <app-header
-        (event)="onhandleSiteNav($event)"
-        [sidenav_closed]="!sidenav.opened"
-        (cartevent)="onhandleCartNav($event)"
-        [cartnav_closed]="!cart.opened"        
-      ></app-header>
-      <div class="wrapper" [ngClass]="{'off':!expandHeader,'on':expandHeader}">
-        <!--ルータ切り替え画面の表示エリア-->
-        <div class="outletArea">
-          <!--背景を暗くする-->
-          <!--div *ngIf="dataService.bgMessage" class="darkBackground">
-            <span class="darkBackgroundText">
-              {{ dataService.bgMessage }}
-            </span>
-          </div-->
-
-          <!--ここにルータで切り替えられたコンポーネントが挿入されます-->
+<ng-container *ngIf="isMobile;else isPC">
+  <mat-sidenav-container autosize>
+    <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
+      <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
+      <img src="../../../assets/img/nav-close.svg" alt="" class="navclose" (click)="onhandleSiteNav(true)" />
+    </mat-sidenav>
+    <mat-sidenav #cart position="end" mode="push" [(opened)]="cartopened" [fixedInViewport]="true" class="cartnav">
+      <button mat-button class="close-my-plan" (click)="onhandleCartNav(true)">
+        <img src="{{backbtn_src}}" alt="close my plan" />
+      </button>
+      <app-myplan></app-myplan>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <div class="body">
+        <app-header (event)="onhandleSiteNav($event)" [sidenav_closed]="!sidenav.opened"
+          (cartevent)="onhandleCartNav($event)" [cartnav_closed]="!cart.opened"></app-header>
+        <div class="wrapper" [ngClass]="{'off':!expandHeader,'on':expandHeader}">
+          <div class="outletArea">
+            <router-outlet class="outletWidth"></router-outlet>
+            <button [ngClass]="{ 'show-scroll': showScroll,'up': jumpFooter }" (click)="scrollToTop()"
+              class="scroll-to-top">
+              <img src="../../../assets/img/toTop3.svg" alt="toTop" />
+            </button>
+            <button mat-button matBadge="{{spots}}" (click)="togglecart()" class="view-my-plan"
+              [ngClass]="{'on':spots > 0,'up':jumpFooter}" disableRipple="true">
+              <img src="{{viewbtn_src}}" alt="view my plan" />
+            </button>
+          </div>
+        </div>
+        <app-footer></app-footer>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-container>
+<ng-template #isPC>
+  <mat-sidenav-container autosize>
+    <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
+      <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
+      <img src="../../../assets/img/nav-close.svg" alt="" class="navclose" (click)="onhandleSiteNav(true)" />
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <app-header (event)="onhandleSiteNav($event)" [sidenav_closed]="!sidenav.opened"></app-header>
+      <div id='pc'>
+        <div class='left'>
+          <app-myplan [isMobile]="isMobile"></app-myplan>
+        </div>
+        <div class='right'>
+          <div class='menu'></div>
           <router-outlet class="outletWidth"></router-outlet>
-
-          <!--Scroll to top-->
-          <button
-            [ngClass]="{ 'show-scroll': showScroll,'up': jumpFooter }"
-            (click)="scrollToTop()"
-            class="scroll-to-top"
-          >
-            <img src="../../../assets/img/toTop3.svg" alt="toTop" />
-          </button>
-
-          <!-- view my plan -->
-          <button mat-button matBadge="{{spots}}"
-            (click)="togglecart()"
-            class="view-my-plan" [ngClass]="{'on':spots > 0,'up':jumpFooter}" disableRipple="true">
-            <img src="{{viewbtn_src}}" alt="view my plan"/>
-          </button>
         </div>
       </div>
-      <!--footer-->
       <app-footer></app-footer>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</ng-template>
+

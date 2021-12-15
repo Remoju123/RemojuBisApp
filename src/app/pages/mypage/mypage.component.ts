@@ -1,4 +1,4 @@
-import { ActivatedRoute, Params,Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonService } from "../../service/common.service";
 import { Subject } from 'rxjs';

@@ -174,10 +174,39 @@ mat-sidenav-content {
   }
 }
 
-@media screen and (min-width: 1024px) { 
-  div.body{
-    width: 640px;
-    margin-left: auto;
-    margin-right: auto;
+@media screen and (min-width: 1025px) { 
+  mat-sidenav-container,
+  mat-sidenav-content {
+    background-color: #F0F2F5;
+  }
+    
+}
+
+
+#pc{
+  width: 1024px;
+  display: flex;
+  //justify-content: center;
+  margin: auto;
+  .left{
+    overflow-y: scroll;
+    height: calc(100vh - 172px);
+    width: 360px;
+    background-color: #fff;
+    margin-right: 10px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .right {
+    //flex-basis: 70%;
+    width: 700px;
+    height: calc(100vh - 172px);
+    overflow-y: scroll;
+    scrollbar-width: none;
+    background-color: #fff;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

@@ -49,6 +49,9 @@ export class CommonService implements OnDestroy{
   private logoChange = new Subject<boolean>();
   public logoChange$ = this.logoChange.asObservable();
 
+  private isMobile = new Subject<boolean>();
+  public isMobile$ = this.isMobile.asObservable();
+
   public loggedIn:boolean = false;
 
   private onDestroy$ = new Subject();
@@ -510,6 +513,11 @@ export class CommonService implements OnDestroy{
   // スポット一覧　選択ID
   public onNotifySelectedSpotId(id:number){
     this.selectedSpotId.next(id);
+  }
+
+  // モバイル判定（root検知）
+  public onNotifyIsMobile(state:boolean){
+    this.isMobile.next(state);
   }
 
   ngOnDestroy(){
