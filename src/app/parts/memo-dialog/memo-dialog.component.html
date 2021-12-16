@@ -11,7 +11,7 @@
       [(ngModel)]="data"
       maxlength="100"
       ></textarea>
-    <mat-hint align="end">{{ data?.length || 0}}/100{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="data='';">{{"labelClear" | translate}}</a></mat-hint>
+    <mat-hint align="end">{{ data?.length || 0}}/100{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" class="aclear" (click)="data='';"><span class="material-icons">backspace</span></a></mat-hint>
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

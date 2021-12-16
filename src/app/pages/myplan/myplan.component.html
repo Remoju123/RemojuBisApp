@@ -93,7 +93,7 @@
                 #inputinfo="ngModel"
                 [(ngModel)]="row.planExplanation"
                 (change)="onChange(false)"></textarea>
-                <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="row.planExplanation='';">{{"labelClear" | translate}}</a></mat-hint>
+                <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a href="javascript:void(0);" (click)="row.planExplanation='';"><span class="material-icons">backspace</span></a></mat-hint>
             </mat-form-field>
             <!-- フリー文章 -->
             <mat-form-field appearance="outline" *ngIf="row.isRelease">
@@ -107,7 +107,7 @@
                 #inputinfo="ngModel"
                 [(ngModel)]="row.memo"
                 (change)="onChange(false)"></textarea>
-                <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="row.memo='';">{{"labelClear" | translate}}</a></mat-hint>
+                <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="row.memo='';"><span class="material-icons">backspace</span></a></mat-hint>
             </mat-form-field>
             <!-- カテゴリー選択ボタン -->
             <button mat-stroked-button (click)="onClickAreaCategory()">
@@ -286,7 +286,7 @@
                     [(ngModel)]="item.memo"
                     (change)="onChange(false)">
                   </textarea>
-                  <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="item.memo='';">{{"labelClear" | translate}}</a></mat-hint>
+                  <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" class="aclear" (click)="item.memo='';"><span class="material-icons">backspace</span></a></mat-hint>
                 </mat-form-field>
 
                 <!-- 滞在時間 -->
@@ -358,8 +358,8 @@
       <div class="bottom">
         <div></div>
         <div class="switchView" [ngClass]="{'en':lang==='en'}">
-          <input type="checkbox" id="switch-view2" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
-          <label for="switch-view2"><span></span></label>
+          <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+          <label for="switch-view1"><span></span></label>
           <div id="swImg"></div>
         </div>
       </div>
@@ -599,8 +599,8 @@
     <div class="bottom prev">
       <div></div>
       <div class="switchView" [ngClass]="{'en':lang==='en'}">
-        <input type="checkbox" id="switch-view3" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
-        <label for="switch-view3"><span></span></label>
+        <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+        <label for="switch-view1"><span></span></label>
         <div id="swImg"></div>
       </div>
     </div>
