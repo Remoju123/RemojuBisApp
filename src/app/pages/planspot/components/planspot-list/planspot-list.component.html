@@ -1,11 +1,12 @@
+
 <div class="box"
 infinite-scroll
 [infiniteScrollDistance]="isList ? 5 : 2"
 [infiniteScrollUpDistance]="1.5"
 [infiniteScrollThrottle]="150"
 [infiniteScrollContainer]="box"
-[scrollWindow]="false"
-[fromRoot]=true
+[scrollWindow]="isMobile?true:false"
+[fromRoot]="isMobile?false:true"
 (scrolled)="scrolledEmit()">
   <!-- <mat-card id="nolist" *ngIf="!isList && (condition.select==='spot' || condition.select==='all')">
     <mat-card-content>

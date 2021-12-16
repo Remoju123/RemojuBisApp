@@ -15,10 +15,18 @@ export class PlanspotListComponent implements OnInit {
   @Output() glink = new EventEmitter<any>();
 
   @ViewChild('box') box:ElementRef;
+
+  isMobile:boolean;
   
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
+      this.isMobile = true;
+    }else{
+      this.isMobile = false;
+    }
   }
 
   scrolledEmit(){
