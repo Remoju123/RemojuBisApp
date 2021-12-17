@@ -1,13 +1,13 @@
-import { Component, Input } from "@angular/core";
-import { MenuItems } from "../../shared/menu-items/menu-items";
-import { CommonService } from "../../service/common.service";
-import { Router } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MenuItems } from '../../shared/menu-items/menu-items';
+import { CommonService } from '../../service/common.service';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: "app-nav-menu",
-  templateUrl: "./nav-menu.component.html",
-  styleUrls: ["./nav-menu.component.scss"]
+  selector: 'app-nav-menu',
+  templateUrl: './nav-menu.component.html',
+  styleUrls: ['./nav-menu.component.scss'],
 })
 export class NavMenuComponent {
   isAuthenticated = false;
@@ -23,15 +23,16 @@ export class NavMenuComponent {
   @Input()
   currentlang!: string;
 
-  isEn:boolean = true;
+  @Output() sideClose = new EventEmitter();
+
+  isEn: boolean = true;
 
   constructor(
     private router: Router,
     public common: CommonService,
     public menuItems: MenuItems,
     private translate: TranslateService
-    ) {
-  }
+  ) {}
 
   collapse() {
     this.isExpanded = false;
@@ -45,31 +46,36 @@ export class NavMenuComponent {
     return flg === null || flg === this.isAuthenticated;
   }
 
-  onNavgate(page:string,frag?:string){
-    if(frag===""){
-      this.router.navigate(["/" + this.lang + "/" + page + "/"]);
-    }else{
-      this.router.navigate(["/" + this.lang + "/" + page + "/"],{fragment:frag});
+  onNavgate(page: string, frag?: string) {
+    if (frag === '') {
+      this.router.navigate(['/' + this.lang + '/' + page + '/']);
+    } else {
+      this.router.navigate(['/' + this.lang + '/' + page + '/'], {
+        fragment: frag,
+      });
     }
+    this.onClose();
   }
 
-  onNavgateFeature(page:string){
+  onNavgateFeature(page: string) {
     location.href = `${location.origin}/contents/ja-jp/${page}`;
   }
 
-  onClickSwitchLang(e){
+  onClickSwitchLang(e) {
     /*----------------------
     *checked:true ==> 'en'
     *checked:false ==> 'ja'
     -----------------------*/
-    if(e.target.checked){
-      this.translate.use('en')
-      this.translate.currentLang = 'en'
-    }else{
-      this.translate.use('ja')
+    if (e.target.checked) {
+      this.translate.use('en');
+      this.translate.currentLang = 'en';
+    } else {
+      this.translate.use('ja');
       this.translate.currentLang = 'ja';
     }
+  }
 
-
+  onClose(){
+    this.sideClose.emit();
   }
 }

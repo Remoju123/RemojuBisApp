@@ -19,6 +19,7 @@ import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from "../header/header.component";
 import { isPlatformBrowser } from "@angular/common";
+import { MatSidenav } from "@angular/material/sidenav";
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
@@ -58,6 +59,7 @@ export class RootComponent implements OnInit, OnDestroy {
   @ViewChild(HeaderComponent)
   protected headerCompornent!: HeaderComponent;
 
+  @ViewChild(MatSidenav) sidenav:MatSidenav;
 
   constructor(
     public router: Router,
@@ -234,5 +236,9 @@ export class RootComponent implements OnInit, OnDestroy {
   onSwipeDown(event: any){
     //console.log(event);
     window.location.reload();
+  }
+
+  onSideNavClose(){
+    this.sidenav?.close();
   }
 }

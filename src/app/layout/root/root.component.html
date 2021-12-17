@@ -1,7 +1,7 @@
 <ng-container *ngIf="isMobile;else isPC">
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
-      <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
+      <app-nav-menu [currentlang]="currentLang" (sideClose)="onSideNavClose()"></app-nav-menu>
       <img src="../../../assets/img/nav-close.svg" alt="" class="navclose" (click)="onhandleSiteNav(true)" />
     </mat-sidenav>
     <mat-sidenav #cart position="end" mode="push" [(opened)]="cartopened" [fixedInViewport]="true" class="cartnav">
@@ -35,7 +35,7 @@
 <ng-template #isPC>
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
-      <app-nav-menu [currentlang]="currentLang"></app-nav-menu>
+      <app-nav-menu [currentlang]="currentLang" (sideClose)="onSideNavClose()"></app-nav-menu>
       <img src="../../../assets/img/nav-close.svg" alt="" class="navclose" (click)="onhandleSiteNav(true)" />
     </mat-sidenav>
     <mat-sidenav-content>
