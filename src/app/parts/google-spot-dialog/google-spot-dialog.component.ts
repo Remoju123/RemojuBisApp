@@ -29,12 +29,28 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
   map: any;
   zoom: number;
   place: any;
+  autocomplete: any;
 
   ngOnInit() {
 
   }
 
   ngOnDestroy(){
+    google.maps.event.clearInstanceListeners(this.autocomplete);
+    const place: Object = this.autocomplete.gm_accessors_.place;
+
+    const placeKey = Object.keys(place).find((value) => (
+       (typeof(place[value]) === 'object') && (place[value].hasOwnProperty('gm_accessors_'))
+    ));
+
+    const input = place[placeKey].gm_accessors_.input[placeKey];
+
+    const inputKey = Object.keys(input).find((value) => (
+      (input[value].classList && input[value].classList.contains('pac-container'))
+    ));
+
+    input[inputKey].remove();
+
     this.onDestroy$.next();
   }
 
@@ -91,10 +107,10 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     const options = {
       fields: ["geometry", "name"]
     };
-    const autocomplete = new google.maps.places.Autocomplete(this.keyrowd.nativeElement, options);
+    this.autocomplete = new google.maps.places.Autocomplete(this.keyrowd.nativeElement, options);
 
-    autocomplete.addListener("place_changed", () => {
-      this.place = autocomplete.getPlace();
+    this.autocomplete.addListener("place_changed", () => {
+      this.place = this.autocomplete.getPlace();
 
       if (!this.place.geometry || !this.place.geometry.location) {
         // window.alert("No details available for input: '" + this.place.name + "'");
@@ -104,7 +120,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
       this.map.setCenter(this.place.geometry.location);
       this.map.setZoom(17);
 
-      // this.keyrowd.nativeElement.value = this.place.name;
+      this.keyrowd.nativeElement.value = this.place.name;
     });
   }
 
