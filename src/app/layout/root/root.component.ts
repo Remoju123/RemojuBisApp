@@ -22,6 +22,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { MatSidenav } from "@angular/material/sidenav";
 
 import { DeviceDetectorService } from 'ngx-device-detector';
+import * as e from "express";
 
 
 @Component({
@@ -45,25 +46,27 @@ export class RootComponent implements OnInit, OnDestroy {
 
   currentLang: string | undefined;
 
-  showPlanpanel:boolean = true;
-  expandHeader:boolean = true;
-  jumpFooter:boolean = false;
-  
-  cartopened:boolean | undefined;
-  myPlanSpots:any;
+  showPlanpanel: boolean = true;
+  expandHeader: boolean = true;
+  jumpFooter: boolean = false;
+
+  cartopened: boolean | undefined;
+  myPlanSpots: any;
   spots!: number;
 
-  viewbtn_src:string | undefined;
-  backbtn_src:string | undefined;
+  viewbtn_src: string | undefined;
+  backbtn_src: string | undefined;
 
-  isMobile:boolean = true;
+  isMobile: boolean = true;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
+
+  deviceInfo = null;
 
   @ViewChild(HeaderComponent)
   protected headerCompornent!: HeaderComponent;
 
-  @ViewChild(MatSidenav) sidenav:MatSidenav;
+  @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   constructor(
     public router: Router,
@@ -74,7 +77,7 @@ export class RootComponent implements OnInit, OnDestroy {
     private loadNotifyService: LoadNotifyService,
     translate: TranslateService,
     private deviceService: DeviceDetectorService,
-    @Inject(PLATFORM_ID) private platformId:Object) {
+    @Inject(PLATFORM_ID) private platformId: Object) {
     translate.setDefaultLang("ja");
     translate.use("ja");
     // translate.use(
@@ -92,62 +95,51 @@ export class RootComponent implements OnInit, OnDestroy {
         // window.scrollTo(0,0);
       }
     });
-
   }
 
   ngOnInit() {
-    
-    this.loadNotifyService.requestLoad$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+
+    this.loadNotifyService.requestLoad$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       //this.reloadRequestCount$.next(++this.reloadRequestCount);
       location.reload();
     })
 
-    this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+    this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       this.expandHeader = v;
       this.changeDetectionRef.detectChanges();
     })
 
-    this.commonService.isshowcart$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+    this.commonService.isshowcart$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       this.cartopened = v;
       this.changeDetectionRef.detectChanges();
     })
 
-    this.commonService.isshowmenu$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+    this.commonService.isshowmenu$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       this.opened = v;
       this.changeDetectionRef.detectChanges();
     })
 
     this.myplanService.FetchMyplanSpots();
-    this.myplanService.MySpots$.subscribe((v:any)=>{
+    this.myplanService.MySpots$.subscribe((v: any) => {
       this.spots = Array.from(v).length;
     })
 
-    if(isPlatformBrowser(this.platformId)){
-      let suffix = localStorage.getItem("gml")==="en"?"_en":"";
+    if (isPlatformBrowser(this.platformId)) {
+      let suffix = localStorage.getItem("gml") === "en" ? "_en" : "";
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
     }
 
-    // if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
-    //   this.isMobile = true;
-    // }else{
-    //   this.isMobile = false;
-    // }
-    //this.isMobile = this.deviceService.isMobile();
-    
-    if(this.deviceService.isMobile()){
-      this.isMobile = true;
-    }
-    if(this.deviceService.isTablet()){
-      this.isMobile = true;
-    }
-    if(this.deviceService.isDesktop()){
-      this.isMobile = false;
-    }
+    this.isMobile = this.detectIsMobile(window.innerWidth);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    this.isMobile = this.detectIsMobile(window.innerWidth);
   }
 
   // ブラウザが閉じるイベントを検出
@@ -177,9 +169,9 @@ export class RootComponent implements OnInit, OnDestroy {
       this.showPlanpanel = true;
     }
 
-    if((document.documentElement.offsetHeight + document.documentElement.scrollTop) > (document.documentElement.scrollHeight-122)){
+    if ((document.documentElement.offsetHeight + document.documentElement.scrollTop) > (document.documentElement.scrollHeight - 122)) {
       this.jumpFooter = true;
-    }else{
+    } else {
       this.jumpFooter = false;
     }
   }
@@ -229,32 +221,40 @@ export class RootComponent implements OnInit, OnDestroy {
     this.opened = !eventData;
   }
 
-  onReceivePPisShowChild(val:boolean){
+  onReceivePPisShowChild(val: boolean) {
     //
     this.showPlanpanel = val;
     //console.log(val);
   }
 
   // カート開閉状態の切り替え
-  onhandleCartNav(e:boolean){
+  onhandleCartNav(e: boolean) {
     this.cartopened = !e;
   }
 
   // slide to myplan panel
-  togglecart(){
+  togglecart() {
     this.headerCompornent.togglecart();
   }
 
   onSwipeRight() {
     this.cartopened = false;
   }
-  
-  onSwipeDown(event: any){
+
+  onSwipeDown(event: any) {
     //console.log(event);
     window.location.reload();
   }
 
-  onSideNavClose(){
+  onSideNavClose() {
     this.sidenav?.close();
+  }
+
+  detectIsMobile(w:any){
+    if(w<1024){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
