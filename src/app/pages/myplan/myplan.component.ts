@@ -660,6 +660,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.myplanService.registPlan().then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
         //if(r){
+          const result = [];
           // プランメイン写真
           if (this.row.pictureFile) {
             if (this.row.imageCropped) {
@@ -668,14 +669,14 @@ export class MyplanComponent implements OnInit ,OnDestroy{
               // blob object array( fileに再変換 )
               var file = this.commonService.blobToFile(blob, Date.now() + this.row.pictureFile.name);
               // 画像保存処理
-              await this.saveImagePlan(file
+              result.push(this.saveImagePlan(file
                 , r.pictureUrl,
-                r.planUserId);
+                r.planUserId));
             } else {
               // 画像保存処理
-              await this.saveImagePlan(this.row.pictureFile
+              result.push(this.saveImagePlan(this.row.pictureFile
                 , r.pictureUrl,
-                r.planUserId);
+                r.planUserId));
             }
           }
 
@@ -691,20 +692,22 @@ export class MyplanComponent implements OnInit ,OnDestroy{
                       // blob object array( fileに再変換 )
                       var file = this.commonService.blobToFile(blob, Date.now() + this.row.planSpots[i].planUserpictures[j].pictureFile.name);
                       // 画像保存処理
-                      await this.saveImagePlan(file
+                      result.push(this.saveImagePlan(file
                         , r.planSpots[i].planUserpictures[j].picture_url,
-                        r.planUserId);
+                        r.planUserId));
                     } else {
                       // 画像保存処理
-                      await this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
+                      result.push(this.saveImagePlan(this.row.planSpots[i].planUserpictures[j].pictureFile
                         , r.planSpots[i].planUserpictures[j].picture_url,
-                        r.planUserId);
+                        r.planUserId));
                     }
                   }
                 }
               }
             }
           }
+
+          await Promise.all(result);
 
           // マイページに保存通知
           this.myplanService.onPlanUserSaved(r);
