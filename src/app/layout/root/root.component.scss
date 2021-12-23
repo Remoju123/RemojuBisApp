@@ -178,8 +178,7 @@ mat-sidenav-content {
   mat-sidenav-container,
   mat-sidenav-content {
     background-color: #F0F2F5;
-  }
-    
+  } 
 }
 
 
@@ -190,7 +189,7 @@ mat-sidenav-content {
   margin: auto;
   .left{
     overflow-y: scroll;
-    height: calc(100vh - 172px);
+    height: calc(100vh - 182px);
     width: 360px;
     background-color: #fff;
     margin-right: 10px;
@@ -201,7 +200,7 @@ mat-sidenav-content {
   .right {
     //flex-basis: 70%;
     width: 700px;
-    height: calc(100vh - 172px);
+    height: calc(100vh - 182px);
     overflow-y: scroll;
     scrollbar-width: none;
     background-color: #fff;

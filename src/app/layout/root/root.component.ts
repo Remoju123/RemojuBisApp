@@ -20,6 +20,10 @@ import { takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from "../header/header.component";
 import { isPlatformBrowser } from "@angular/common";
 import { MatSidenav } from "@angular/material/sidenav";
+
+import { DeviceDetectorService } from 'ngx-device-detector';
+
+
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
@@ -69,6 +73,7 @@ export class RootComponent implements OnInit, OnDestroy {
     private changeDetectionRef: ChangeDetectorRef,
     private loadNotifyService: LoadNotifyService,
     translate: TranslateService,
+    private deviceService: DeviceDetectorService,
     @Inject(PLATFORM_ID) private platformId:Object) {
     translate.setDefaultLang("ja");
     translate.use("ja");
@@ -123,9 +128,20 @@ export class RootComponent implements OnInit, OnDestroy {
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
     }
 
-    if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
+    // if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
+    //   this.isMobile = true;
+    // }else{
+    //   this.isMobile = false;
+    // }
+    //this.isMobile = this.deviceService.isMobile();
+    
+    if(this.deviceService.isMobile()){
       this.isMobile = true;
-    }else{
+    }
+    if(this.deviceService.isTablet()){
+      this.isMobile = true;
+    }
+    if(this.deviceService.isDesktop()){
       this.isMobile = false;
     }
   }
