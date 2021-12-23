@@ -84,4 +84,14 @@
       }
       
   }
+
+  @media screen and (min-width: 1025px) {
+    ::ng-deep.mat-tab-header{
+      .mat-tab-labels{
+        .mat-tab-label{
+          width: auto;
+        }
+      }
+    }
+  }
 }
