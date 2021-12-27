@@ -31,6 +31,7 @@
   .box {
     height: 100%;
     overflow-y: scroll;
+    display: flow-root;
 
     &::-webkit-scrollbar {
       display: none;
