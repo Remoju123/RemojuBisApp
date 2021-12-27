@@ -22,11 +22,7 @@ export class PlanspotListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (navigator.userAgent.match(/iPhone|iPad|Android.+Mobile/)) {
-      this.isMobile = true;
-    }else{
-      this.isMobile = false;
-    }
+    this.isMobile = this.detectIsMobile(window.innerWidth);
   }
 
   scrolledEmit(){
@@ -35,6 +31,14 @@ export class PlanspotListComponent implements OnInit {
 
   googleLink(e:any){
     this.glink.emit(e);
+  }
+
+  detectIsMobile(w:any){
+    if(w<1024){
+      return true;
+    }else{
+      return false;
+    }
   }
 
 }
