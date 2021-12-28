@@ -166,7 +166,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.myplanService.PlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(async x => {
       this.setUserPicture(x);
       // プレビュー表示
-      this.isEdit = false;
+      // this.isEdit = false;
+      // 編集モードにする
+      this.isEdit = true;
       // 変更を保存
       this.registPlan(false);
       this.myplanService.FetchMyplanSpots();
