@@ -125,13 +125,13 @@ export class PlanListService {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
-    myPlan.isTransferSearch = true;
 
     let addPlan: AddPlan = new AddPlan();
     addPlan = {
       MyPlan: myPlan,
       isRemojuPlan: isRemojuPlan,
-      planId: planId
+      planId: planId,
+      isTransferSearch: false
     };
     const url = this.host + "/api/PlanList/Addplan";
     return this.http.post<MyPlanApp>(url, addPlan, httpOptions);

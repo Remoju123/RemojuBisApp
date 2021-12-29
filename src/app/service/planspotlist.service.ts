@@ -451,14 +451,14 @@ export class PlanSpotListService {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
-    myPlan.isTransferSearch = true;
 
     if(isPlan === 1){
       let addPlan: AddPlan = new AddPlan();
       addPlan = {
         MyPlan: myPlan,
         planId: id,
-        isRemojuPlan: isRemojuPlan
+        isRemojuPlan: isRemojuPlan,
+        isTransferSearch: false // trueにするとスポットを追加して駅探検索する
       };
       const url = this.host + "/api/PlanList/Addplan";
       return this.http.post<MyPlanApp>(url, addPlan, httpOptions);
@@ -469,7 +469,8 @@ export class PlanSpotListService {
         spotId: id,
         type: googleSpot ? 2 : 1,
         googleSpot: googleSpot,
-        basePlanId: null
+        basePlanId: null,
+        isTransferSearch: false // trueにするとスポットを追加して駅探検索する
       };
       const url = this.host + "/api/SpotList/AddSpot";
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
