@@ -145,6 +145,8 @@ export class AddSpot {
   googleSpot: GoogleSpot;
   // ベースプランID
   basePlanId: number;
+  // 経路検索する
+  isTransferSearch: boolean;
 }
 
 // 現在地
@@ -165,6 +167,8 @@ export class AddPlan {
   isRemojuPlan: boolean;
   // 追加するプランID
   planId: number;
+  // 経路検索する
+  isTransferSearch: boolean;
 }
 
 export class MyPlanApp {

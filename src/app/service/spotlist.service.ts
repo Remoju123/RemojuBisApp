@@ -180,7 +180,6 @@ export class SpotListService implements OnDestroy {
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
-    myPlan.isTransferSearch = true;
 
     let addSpot: AddSpot = new AddSpot();
     addSpot = {
@@ -188,7 +187,8 @@ export class SpotListService implements OnDestroy {
       spotId: spotId,
       type: type,
       googleSpot: googleSpot,
-      basePlanId: basePlanId
+      basePlanId: basePlanId,
+      isTransferSearch: false
     };
     const url = this.host + "/api/SpotList/AddSpot";
     return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
