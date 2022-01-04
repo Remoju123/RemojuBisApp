@@ -13,6 +13,8 @@ export const authConfig:AuthConfig = {
 
   //silentRefreshRedirectUri:window.location.origin + '/silent-refresh.html',
   silentRefreshRedirectUri: environment.location + 'silent-refresh.html',
+
+  useSilentRefresh: true,
  
   // The SPA's id. The SPA is registered with this id at the auth-server
   clientId: '3e5bffaf-86d7-4a4c-bcde-6ba4d1cb52d3',
