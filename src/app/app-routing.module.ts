@@ -55,8 +55,10 @@ const routes: Routes = [
         { path: "top", component: TopComponent },
         { path: "map", component: MapComponent }
       ]
-    }]
+    },
+  ]
   },
+  { path: "", redirectTo: "/ja/planspot",pathMatch:"full"},
   { path: "**", redirectTo: "/ja/planspot", pathMatch: "full" }
 ];
 
