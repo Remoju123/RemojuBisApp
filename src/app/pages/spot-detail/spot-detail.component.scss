@@ -159,6 +159,11 @@ p{
     box-sizing: border-box;
     height: 150px;
 
+    @media screen and (min-width: 415px) and (max-width: 1024px) { 
+      height: auto;
+    }
+
+
     a {
       text-decoration: none;
     }
@@ -190,6 +195,11 @@ p{
       margin: 5px;
       height: 40px;
       overflow: hidden;
+
+      @media screen and (min-width: 1025px) {
+        margin: initial;
+        line-height: 1;
+      }
     }
   }
 
