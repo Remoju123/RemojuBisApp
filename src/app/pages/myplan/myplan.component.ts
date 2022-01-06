@@ -280,8 +280,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       width: "92vw",
       position: { top: "10px" },
       data: this.listSelectedPlan,
-      autoFocus: false
+      autoFocus: false,
       // maxHeight: "80vh"
+      id:"searchDialogPlan"
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => {
@@ -594,6 +595,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   async onClickSavePlan() {
     if (!this.commonService.loggedIn) {
       const param = new ComfirmDialogParam();
+      param.id = "cmd";
       param.title = "LoginConfirmTitle";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {

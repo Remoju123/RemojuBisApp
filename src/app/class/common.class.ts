@@ -1,4 +1,4 @@
-import { Businesshours }  from "./spot.class";
+import { Businesshours } from "./spot.class";
 import {
   GoogleSpot,
   SpotFavorite,
@@ -42,7 +42,7 @@ export interface Recommended {
   pictureUrl: string;
 }
 
-export class ListSelectMaster{
+export class ListSelectMaster {
   // エリア
   mArea: NestDataSelected[];
   // 検索カテゴリ
@@ -255,9 +255,9 @@ export class PlanSpotCommon {
   transtime: string;
   transflow: string[];
   // plan-detail overview expantion flag
-  ismore:boolean;
+  ismore: boolean;
   // plan-detail overview expantion button label
-  label:string;
+  label: string;
   destination: string;
 
   // 以下、プラン作成で使用
@@ -279,7 +279,7 @@ export class PlanSpotCommon {
   // 以下、プラン投稿で使用
   // 撮影日時
   dateTimeOriginal: string;
-// Googleスポット候補
+  // Googleスポット候補
   googleSpotNearBySerach: GoogleNearBySearch[];
 
   // Googleスポット
@@ -334,35 +334,35 @@ export class GoogleTextSearch {
   user_ratings_total: number;
 }
 
-export class Geometry{
+export class Geometry {
   location: GoogleLocation;
   viewport: Viewport;
 }
 
-export class GoogleLocation{
+export class GoogleLocation {
   lat: any;
   lng: any;
 }
 
-export class Viewport{
+export class Viewport {
   northeast: GoogleLocation;
   southwest: GoogleLocation;
 }
 
-export class Photo{
+export class Photo {
   height: number;
   html_attributions: string[];
   photo_reference: string;
   width: number;
 }
 
-export class PlusCode{
+export class PlusCode {
   compound_code: string;
   global_code: string;
 }
 
 // 全画面Mapパラメータ
-export class MapFullScreenParam{
+export class MapFullScreenParam {
   planId: number;
   isDetail: boolean;
   planSpots: PlanSpotCommon[];
@@ -387,7 +387,7 @@ export class MapSpot {
   polylineColor: string;
   iconUrl: any;
   visible: boolean;
-  zIndex:number;
+  zIndex: number;
   directions: string;
   displayOrder: number;
   planId: number;
@@ -402,13 +402,14 @@ export class MapSpot {
 }
 
 // お気に入り数
-export class FavoriteCount{
+export class FavoriteCount {
   SpotCount: number;
   PlanCount: number;
 }
 
 // 確認ダイアログパラメータ
-export class ComfirmDialogParam{
+export class ComfirmDialogParam {
+  id: string;
   title: string;
   text: string;
   textRep: string[];
@@ -442,22 +443,22 @@ export class ImageSize {
   previewUrl: string;
 }
 
-export class CachePlans{
-  count:number;
-  offset:number;
-  data:PlanAppList[];
+export class CachePlans {
+  count: number;
+  offset: number;
+  data: PlanAppList[];
   keyword: string;
 }
 
-export class CacheSpots{
-  count:number;
-  offset:number;
-  data:SpotAppList[];
+export class CacheSpots {
+  count: number;
+  offset: number;
+  data: SpotAppList[];
   keyword: string;
 }
 
-export class CacheStore{
-  page:number;
-  offset:number;
-  keyword:string;
+export class CacheStore {
+  page: number;
+  offset: number;
+  keyword: string;
 }

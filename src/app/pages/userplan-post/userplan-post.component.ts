@@ -251,8 +251,9 @@ export class UserplanPostComponent implements OnInit, OnDestroy {
       width: "92vw",
       position: { top: "10px" },
       data: this.listSelectedPlan,
-      autoFocus: false
+      autoFocus: false,
       // maxHeight: "80vh"
+      id:"searchDialogPlan"
     });
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {

@@ -1,96 +1,125 @@
 @import "../../../assets/scss/vars";
-::ng-deep.cdk-global-overlay-wrapper{
-  align-items: center!important;
+
+::ng-deep.cdk-global-overlay-wrapper {
+  align-items: center !important;
+
+  .cdk-overlay-pane {
+    @media screen and (min-width: 1025px) {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }
 
-::ng-deep.mat-dialog-container{
-  border-radius: 10px;
-  padding: 30px 26px!important;
-  position: relative;
-  .mat-dialog-title{
-    font-size: 16px;
-    display: inline-flex;
-    &::before{
-      content: url("../../../assets/img/icon_alert.svg");
-      width: 28px;
-      height: 28px;
-      margin-right: 6px;
-      margin-top: 3px;
+//::ng-deep.mat-dialog-container{
+::ng-deep {
+  #cmd {
+    border-radius: 10px;
+    padding: 30px 26px !important;
+    position: relative;
+
+    @media screen and (min-width: 1025px) {
+      width: 50% !important;
     }
-  }
-  .mat-dialog-content{
-    
-    .text{
-      display: block;
-      font-size:14px;
-      margin-bottom: 0.5rem;
-      dl.route{
-        text-align: center;
-        dt,dd{
-          margin: unset;
-        }
-        dt{
-          font-weight: 700;
-          &::before{
-            content: "";
-            width: 15px;
-            height: 21px;
-            background: url("../../../assets/img/pop_area.svg") no-repeat;
-            display: inline-block;
-            vertical-align: -6px;
-            margin-right: 4px;
+
+    .mat-dialog-title {
+      font-size: 16px;
+      display: inline-flex;
+
+      &::before {
+        content: url("../../../assets/img/icon_alert.svg");
+        width: 28px;
+        height: 28px;
+        margin-right: 6px;
+        margin-top: 3px;
+      }
+    }
+
+    .mat-dialog-content {
+
+      .text {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 0.5rem;
+
+        dl.route {
+          text-align: center;
+
+          dt,
+          dd {
+            margin: unset;
           }
-          &:first-child + dd{
-            margin-bottom: 1em;
+
+          dt {
+            font-weight: 700;
+
+            &::before {
+              content: "";
+              width: 15px;
+              height: 21px;
+              background: url("../../../assets/img/pop_area.svg") no-repeat;
+              display: inline-block;
+              vertical-align: -6px;
+              margin-right: 4px;
+            }
+
+            &:first-child+dd {
+              margin-bottom: 1em;
+            }
           }
         }
       }
-    }
-    .subtext{
-      display: block;
-      font-size:12px;
-      color: #5e5e5e;
-    }
-  }
-  .mat-dialog-actions{
-    // justify-content: space-between;
-    justify-content: center;
-    margin-top: 30px;
-    margin-bottom: -20px;
-    button{
-      //width: 100px;
-      min-width: 100px;
-      height: 40px;
 
-      &.cancel{
-        border:1px solid $color-gry04;
-        color:$color-gry04;
-        font-size:15px;
+      .subtext {
+        display: block;
+        font-size: 12px;
+        color: #5e5e5e;
       }
+    }
 
-      &.ok{
-        background-color: $color-gld01;
-        color:#fff;
-        font-size: 20px;
-      }
+    .mat-dialog-actions {
+      // justify-content: space-between;
+      justify-content: center;
+      margin-top: 30px;
+      margin-bottom: -20px;
 
-      &.abscancel{
-        all:unset;
-        position: absolute;
-        width: 23px;
-        top: 7px;
-        right: 7px;
-        &::before{
-          content: url("../../../assets/img/btn_delete.svg");
+      button {
+        //width: 100px;
+        min-width: 100px;
+        height: 40px;
+
+        &.cancel {
+          border: 1px solid $color-gry04;
+          color: $color-gry04;
+          font-size: 15px;
         }
-        // &::after{
-        //   content: 'close';
-        //   font-size: 12px;
-        //   position: absolute;
-        //   top: 29px;
-        //   left: 0;
-        // }
-        
+
+        &.ok {
+          background-color: $color-gld01;
+          color: #fff;
+          font-size: 20px;
+        }
+
+        &.abscancel {
+          all: unset;
+          position: absolute;
+          width: 23px;
+          top: 7px;
+          right: 7px;
+
+          &::before {
+            content: url("../../../assets/img/btn_delete.svg");
+          }
+
+          // &::after{
+          //   content: 'close';
+          //   font-size: 12px;
+          //   position: absolute;
+          //   top: 29px;
+          //   left: 0;
+          // }
+
+        }
       }
     }
   }
