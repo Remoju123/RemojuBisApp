@@ -2,7 +2,7 @@
 
 ::ng-deep{
   #gspot{
-
+    position: relative;
     h2{
       font-size: 17px;
       display: inline-flex;
@@ -18,6 +18,18 @@
         margin-left: 6px;
       }
     }
+
+    button.abscancel{
+      all:unset;
+      position: absolute;
+      width: 23px;
+      top: 10px;
+      right: 10px;
+      &::before{
+        content: url("../../../assets/img/btn_delete.svg");
+      }
+    }
+
     mat-dialog-content{
       .form{
         .mat-form-field{
@@ -67,17 +79,6 @@
           border: 1px solid #de7274;
           border-radius: 16px;
           line-height: 32px;
-        }
-  
-        &.abscancel{
-          all:unset;
-          position: absolute;
-          width: 23px;
-          top: 2px;
-          right: 7px;
-          &::before{
-            content: url("../../../assets/img/btn_delete.svg");
-          }
         }
       }
   

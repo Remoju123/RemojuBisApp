@@ -190,7 +190,7 @@ mat-sidenav-content {
   .left{
     overflow-y: scroll;
     height: calc(100vh - 182px);
-    width: 360px;
+    width: 380px;
     background-color: #fff;
     margin-right: 10px;
     &::-webkit-scrollbar {
@@ -199,7 +199,7 @@ mat-sidenav-content {
   }
   .right {
     //flex-basis: 70%;
-    width: 700px;
+    width: 634px;
     height: calc(100vh - 182px);
     overflow-y: scroll;
     scrollbar-width: none;

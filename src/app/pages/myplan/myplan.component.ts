@@ -458,7 +458,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   async onClickStartEndSelect(isStart: boolean){
     const dialog = this.dialog.open(GoogleSpotDialogComponent, {
       maxWidth: "100%",
-      width: "92vw",
+      width: this.isMobile?"92vw":"52vw",
       maxHeight: "90vh",
       position: { top: "10px" },
       data: isStart ? [ this.row.startPlanSpot, isStart ] : [ this.row.endPlanSpot, isStart ],

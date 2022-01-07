@@ -615,12 +615,22 @@
               background-color: #fff;
               border-radius: 6px;
               top: 0;
+
+              .mat-form-field-outline-gap{
+                border-top-color: initial;
+              }
             }
             .mat-form-field-infix{
               // border-top: 0;
               padding-top: 5px;
             }
+
+            .mat-form-field-label-wrapper{
+              top:-0.6em;
+            }
           }
+
+
 
           .select{
             display: flex;
