@@ -179,7 +179,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       // 削除したスポットを取得
       const planSpot = this.row.planSpots.find(spots => spots.displayOrder === x);
       // スポットを削除
-      this.onClickSpotDelete(planSpot);
+      this.onClickSpotDelete(null,planSpot);
     });
 
     // プラン削除通知
@@ -555,7 +555,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
 
   // スポット削除
-  onClickSpotDelete(planSpot: PlanSpotCommon) {
+  onClickSpotDelete(event:any,planSpot: PlanSpotCommon) {
+    event.stopPropagation();
+    
     // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if(this.row.planSpots.length === 1){
       this.spotAllRemove();

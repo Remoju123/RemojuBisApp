@@ -201,7 +201,7 @@
               >
                 <dl class="td">
                   <dt>
-                    <button (click)="onClickSpotDelete(item)" class="remove">
+                    <button (click)="onClickSpotDelete($event,item)" class="remove">
                     </button>
                   </dt>
                   <dt>
@@ -567,7 +567,7 @@
                 <span class="subspot mk{{i+1}}"></span>
               </div>
               <div class="myplan-card-box">
-                <button class="deleteSpot" (click)="onClickSpotDelete(item)">
+                <button class="deleteSpot" (click)="onClickSpotDelete($event,item)">
                   <i class="material-icons">clear</i>
                 </button>
               </div>
