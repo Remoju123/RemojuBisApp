@@ -60,7 +60,7 @@ const routes: Routes = [
     { path: "", redirectTo: "/ja/planspot", pathMatch: "full" }
     ],
   },
-  { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
+  { path: "", redirectTo: "/ja/planspot", pathMatch:"full" },
   { path: "**", component: NotfoundComponent }
 ];
 
