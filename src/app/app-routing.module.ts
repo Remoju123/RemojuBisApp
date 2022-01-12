@@ -32,7 +32,7 @@ const routes: Routes = [
       component: RootComponent,
       children: [
         //{ path: "planspot", loadChildren: () => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule) },
-        { path: "", redirectTo: "planspot", pathMatch: "full" },
+        { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
         { path: "planspot", component: PlanspotComponent },
         { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent },
@@ -57,7 +57,7 @@ const routes: Routes = [
         { path: "map", component: MapComponent }
       ]
     },
-    { path: "", redirectTo: "planspot", pathMatch: "full" }
+    { path: "", redirectTo: "/ja/planspot", pathMatch: "full" }
     ],
   },
   { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
