@@ -20,6 +20,7 @@ import { UserComponent } from './pages/user/user.component';
 import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
 import { AboutComponent } from './pages/offcial/about/about.component';
 import { GuideComponent } from './pages/offcial/guide/guide.component';
+import { PlanspotComponent } from './pages/planspot/planspot.component';
 
 
 const routes: Routes = [
@@ -30,7 +31,8 @@ const routes: Routes = [
       path: "",
       component: RootComponent,
       children: [
-        { path: "planspot", loadChildren: () => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule) },
+        //{ path: "planspot", loadChildren: () => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule) },
+        { path: "planspot",component:PlanspotComponent},
         { path: "spots", component: SpotListComponent },
         { path: "spots/detail", component: SpotDetailComponent },
         { path: "spots/detail/:id", component: SpotDetailComponent },
