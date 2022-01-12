@@ -1,4 +1,4 @@
-<ng-container *ngIf="isMobile;else isPC">
+<ng-container>
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
       <app-nav-menu [currentlang]="currentLang" (sideClose)="onSideNavClose()"></app-nav-menu>
@@ -32,7 +32,7 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </ng-container>
-<ng-template #isPC>
+<!--ng-template #isPC>
   <mat-sidenav-container autosize>
     <mat-sidenav #sidenav mode="over" [(opened)]="opened" [fixedInViewport]="true">
       <app-nav-menu [currentlang]="currentLang" (sideClose)="onSideNavClose()"></app-nav-menu>
@@ -52,5 +52,5 @@
       <app-footer></app-footer>
     </mat-sidenav-content>
   </mat-sidenav-container>
-</ng-template>
+</ng-template-->
 
