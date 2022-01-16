@@ -7,21 +7,9 @@ import { RootComponent } from './layout/root/root.component';
 import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
-import { SpotListComponent } from './pages/spot-list/spot-list.component';
-import { PlanListComponent } from './pages/plan-list/plan-list.component';
-import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
-import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
 import { MapComponent } from './pages/map/map.component';
-import { MypageComponent } from './pages/mypage/mypage.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
-import { UserComponent } from './pages/user/user.component';
-// official
-import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
-import { AboutComponent } from './pages/offcial/about/about.component';
-import { GuideComponent } from './pages/offcial/guide/guide.component';
-import { PlanspotComponent } from './pages/planspot/planspot.component';
-
 
 const routes: Routes = [
   {
@@ -31,22 +19,21 @@ const routes: Routes = [
       path: "",
       component: RootComponent,
       children: [
-        //{ path: "planspot", loadChildren: () => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule) },
         { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
-        { path: "planspot", component: PlanspotComponent },
-        { path: "spots", component: SpotListComponent },
-        { path: "spots/detail", component: SpotDetailComponent },
-        { path: "spots/detail/:id", component: SpotDetailComponent },
-        { path: "plans", component: PlanListComponent },
-        { path: "plans/detail", component: PlanDetailComponent },
-        { path: "plans/detail/:id", component: PlanDetailComponent },
-        { path: "mypage", component: MypageComponent, canActivate: [AuthGuard] },
-        { path: "user/:id", component: UserComponent },
+        { path: "planspot", loadChildren: () => import('./pages/planspot/planspot.module').then(m => m.PlanspotModule) },
+        { path: "spots/detail", loadChildren: () => import('./pages/spot-detail/spot-detail.module').then(m => m.SpotDetailModule) },
+        { path: "spots/detail/:id", loadChildren: () => import('./pages/spot-detail/spot-detail.module').then(m => m.SpotDetailModule) },
+        { path: "plans/detail", loadChildren: () => import('./pages/plan-detail/plan-detail.module').then(m => m.PlanDetailModule) },
+        { path: "plans/detail/:id", loadChildren: () => import('./pages/plan-detail/plan-detail.module').then(m => m.PlanDetailModule) },
+        //{ path: "mypage", component: MypageComponent, canActivate: [AuthGuard] },
+        { path: "mypage", canLoad: [AuthGuard], loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MypageModule) },
+        { path: "offcial", loadChildren: () => import('./pages/offcial/offcial.module').then(m => m.OffcialModule) },
+        //{ path: "user/:id", component: UserComponent },
+        // { path: 'privacy', loadChildren: () => import('./pages/offcial/offcial.module').then(m => m.OffcialModule) },
+        // { path: 'about', loadChildren: () => import('./pages/offcial/offcial.module').then(m => m.OffcialModule) },
+        // { path: 'guide', loadChildren: () => import('./pages/offcial/offcial.module').then(m => m.OffcialModule) },
         { path: "systemerror", component: SystemErrorComponent },
         { path: '404', component: NotfoundComponent },
-        { path: 'privacy', component: PrivacyComponent },
-        { path: 'about', component: AboutComponent },
-        { path: 'guide', component: GuideComponent }
       ]
     },
     {
@@ -60,7 +47,7 @@ const routes: Routes = [
     { path: "", redirectTo: "/ja/planspot", pathMatch: "full" }
     ],
   },
-  { path: "", redirectTo: "/ja/planspot", pathMatch:"full" },
+  { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
   { path: "**", component: NotfoundComponent }
 ];
 
