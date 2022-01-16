@@ -116,6 +116,9 @@ import { MypageReviewlistComponent } from './pages/mypage/mypage-reviewlist/mypa
 import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
 import { AboutComponent } from './pages/offcial/about/about.component';
 import { GuideComponent } from './pages/offcial/guide/guide.component';
+import { SpotDetailModule } from './pages/spot-detail/spot-detail.module';
+import { MypageModule } from './pages/mypage/mypage.module';
+import { OffcialModule } from './pages/offcial/offcial.module';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -252,6 +255,9 @@ export const MATERIAL_MODULES = [
     PlanspotModule,
     PlanDetailModule,
     ImageCropperModule,
+    SpotDetailModule,
+    MypageModule,
+    OffcialModule,
   ],
   providers: [
     DataService,
