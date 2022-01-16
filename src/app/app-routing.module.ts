@@ -25,7 +25,8 @@ const routes: Routes = [
         { path: "spots/detail/:id", loadChildren: () => import('./pages/spot-detail/spot-detail.module').then(m => m.SpotDetailModule) },
         { path: "plans/detail", loadChildren: () => import('./pages/plan-detail/plan-detail.module').then(m => m.PlanDetailModule) },
         { path: "plans/detail/:id", loadChildren: () => import('./pages/plan-detail/plan-detail.module').then(m => m.PlanDetailModule) },
-        { path: "mypage", canLoad: [AuthGuard], loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MypageModule) },
+        //{ path: "mypage", canLoad: [AuthGuard], loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MypageModule) },
+        { path: "mypage", canActivate: [AuthGuard], loadChildren: () => import('./pages/mypage/mypage.module').then(m => m.MypageModule) },
         { path: "offcial", loadChildren: () => import('./pages/offcial/offcial.module').then(m => m.OffcialModule) },
         { path: "systemerror", component: SystemErrorComponent },
         { path: '404', component: NotfoundComponent }
@@ -43,7 +44,7 @@ const routes: Routes = [
     ],
   },
   { path: "", redirectTo: "/ja/planspot", pathMatch: "full" },
-  { path: "**", component: NotfoundComponent }
+  //{ path: "**", component: NotfoundComponent }
 ];
 
 @NgModule({
