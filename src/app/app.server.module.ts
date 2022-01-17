@@ -10,6 +10,10 @@ import { TransferState } from '@angular/platform-browser';
 
 import { InlineStyleComponent } from './inline-style/inline-style.component';
 import { InlineStyleModule } from './inline-style/inline-style.module';
+import { Routes, RouterModule } from '@angular/router';
+import { AppShellComponent } from './app-shell/app-shell.component';
+
+const routes: Routes = [ { path: 'shell', component: AppShellComponent }];
 
 @NgModule({
   imports: [
@@ -23,8 +27,12 @@ import { InlineStyleModule } from './inline-style/inline-style.module';
         useFactory: translateServerLoaderFactory,
         deps: [TransferState]
       }
-    })
+    }),
+    RouterModule.forRoot(routes)
   ],
   bootstrap: [AppComponent,InlineStyleComponent],
+  declarations: [
+    AppShellComponent
+  ],
 })
 export class AppServerModule {}

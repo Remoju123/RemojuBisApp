@@ -119,6 +119,7 @@ import { GuideComponent } from './pages/offcial/guide/guide.component';
 import { SpotDetailModule } from './pages/spot-detail/spot-detail.module';
 import { MypageModule } from './pages/mypage/mypage.module';
 import { OffcialModule } from './pages/offcial/offcial.module';
+import { RouterModule } from '@angular/router';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -258,6 +259,7 @@ export const MATERIAL_MODULES = [
     SpotDetailModule,
     MypageModule,
     OffcialModule,
+    RouterModule,
   ],
   providers: [
     DataService,
