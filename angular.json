@@ -179,6 +179,8 @@
         "app-shell": {
           "builder": "@angular-devkit/build-angular:app-shell",
           "options": {
+            "browserTarget": "RemojuApp-V3U:build",
+            "serverTarget": "RemojuApp-V3U:server",
             "route": "shell"
           },
           "configurations": {
