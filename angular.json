@@ -175,6 +175,23 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "app-shell": {
+          "builder": "@angular-devkit/build-angular:app-shell",
+          "options": {
+            "route": "shell"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "RemojuApp-V3U:build:production",
+              "serverTarget": "RemojuApp-V3U:server:production"
+            },
+            "development": {
+              "browserTarget": "RemojuApp-V3U:build:development",
+              "serverTarget": "RemojuApp-V3U:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
