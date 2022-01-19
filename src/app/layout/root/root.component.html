@@ -4,16 +4,16 @@
       <app-nav-menu [currentlang]="currentLang" (sideClose)="onSideNavClose()"></app-nav-menu>
       <img src="../../../assets/img/nav-close.svg" alt="" class="navclose" (click)="onhandleSiteNav(true)" />
     </mat-sidenav>
-    <!-- <mat-sidenav #cart position="end" mode="over" [(opened)]="cartopened" [fixedInViewport]="true" class="cartnav">
+    <mat-sidenav #cart position="end" mode="over" [(opened)]="cartopened" [fixedInViewport]="true" class="cartnav">
       <button mat-button class="close-my-plan" (click)="onhandleCartNav(true)">
         <img src="{{backbtn_src}}" alt="close my plan" />
       </button>
       <app-myplan></app-myplan>
-    </mat-sidenav> -->
+    </mat-sidenav>
     <mat-sidenav-content>
       <div class="body">
-        <!-- <app-header (event)="onhandleSiteNav($event)" [sidenav_closed]="!sidenav.opened"
-          (cartevent)="onhandleCartNav($event)" [cartnav_closed]="!cart.opened"></app-header> -->
+        <app-header (event)="onhandleSiteNav($event)" [sidenav_closed]="!sidenav.opened"
+          (cartevent)="onhandleCartNav($event)" [cartnav_closed]="!cart.opened"></app-header>
         <div class="wrapper" [ngClass]="{'off':!expandHeader,'on':expandHeader}">
           <div class="outletArea">
             <router-outlet class="outletWidth"></router-outlet>
