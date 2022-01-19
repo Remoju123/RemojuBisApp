@@ -88,11 +88,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterContentInit() {
-    //console.log(this.rows.length);
+    console.log(this.rows.length);
+    console.log(this.isList);
     /*0カウントフリーズ対応　20220119*/
     if (this.rows.length === 0 && this.condition.select !== 'google') {
       setTimeout(() => {
-        this.mergeNextDataSet();  
+        //this.mergeNextDataSet();  
+        this.getPlanSpotDataSet();
       }, 300);
     }
   }
