@@ -8,7 +8,7 @@
   (sort)="sortChange($event)"
   (keyword)="keywordSearch($event)"
   (open)="openDialog($event)"
-  (reset)="conditionReset()">
+  (reset)="conditionReset()" *ngIf="isBrowser">
 </app-planspot-selector>
 <app-planspot-list (scrolled)="onScrollDown()" (glink)="onPlanSpotChange($event)" [isList]="isList" [condition]="condition" *ngIf="isBrowser">
   <app-planspot-list-item
