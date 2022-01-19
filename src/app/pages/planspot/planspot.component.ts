@@ -66,6 +66,8 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
 
   codec = new HttpUrlEncodingCodec;
 
+  isBrowser:boolean = false;
+
   constructor(
     private translate: TranslateService,
     private commonService: CommonService,
@@ -82,18 +84,19 @@ export class PlanspotComponent implements OnInit,OnDestroy, AfterViewChecked {
       this.limit = 6;
       this.p = 1;
       this.condition = new ListSearchCondition();
+      this.isBrowser = isPlatformBrowser(this.platformId);
     }
 
   ngAfterViewChecked(): void {
-    if(this.offset){
-      if(this.offset > 0){
-        window.scrollTo(0,this.offset);
-      }
+    // if(this.offset){
+    //   if(this.offset > 0){
+    //     window.scrollTo(0,this.offset);
+    //   }
 
-      if(this.offset === window.pageYOffset){
-        this.offset = 0;
-      }
-    }
+    //   if(this.offset === window.pageYOffset){
+    //     this.offset = 0;
+    //   }
+    // }
   }
 
   async ngOnInit() {

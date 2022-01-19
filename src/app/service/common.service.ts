@@ -435,7 +435,8 @@ export class CommonService implements OnDestroy{
         const width = img.width;
         const height = img.height;
         // 縮小後のサイズを計算。ここでは横幅 (width) を指定
-        const dstWidth = 1024;
+        //const dstWidth = 1024;
+        const dstWidth = 800;
         const scale = dstWidth / width;
         const dstHeight = height * scale;
         // Canvas オブジェクトを使い、縮小後の画像を描画
