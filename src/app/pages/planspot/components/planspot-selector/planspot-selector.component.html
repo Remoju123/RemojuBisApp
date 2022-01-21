@@ -36,7 +36,7 @@
         {{count}}<span class="sm">&nbsp;{{ "Count" | translate }}</span>
       </div>
       <mat-form-field class='condition'>
-        <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval">
+        <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval" disableRipple="true">
           <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
             {{ item.name | langFilter:lang}}
           </mat-option>
