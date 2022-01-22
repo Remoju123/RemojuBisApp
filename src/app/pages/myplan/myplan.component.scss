@@ -108,6 +108,9 @@
                 .mat-form-field-infix{
                   padding: 0.4375em 0;
                 }
+                #planName{
+                  font-size: 16px;
+                }
               }
             }
           }
@@ -951,7 +954,7 @@
       flex-basis: 59%;
       display: flex;
       flex-direction: column;
-      .planName{
+      #planName{
         font-size: 16px;
       }
       a{
