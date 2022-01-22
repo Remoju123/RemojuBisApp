@@ -22,9 +22,6 @@ import { isPlatformBrowser } from "@angular/common";
 import { MatSidenav } from "@angular/material/sidenav";
 
 import { DeviceDetectorService } from 'ngx-device-detector';
-import * as e from "express";
-
-
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
@@ -88,9 +85,9 @@ export class RootComponent implements OnInit, OnDestroy {
     this.router.events.pipe(takeUntil(this.onDestroy$)).subscribe(e => {
       if (e instanceof NavigationEnd) {
         // this.currentlang = e.url.split("/")[1];
-        this.currentLang = "ja";
-        this.opened = false;
-        this.cartopened = false;
+        //this.currentLang = "ja";
+        // this.opened = false;
+        // this.cartopened = false;
         //ページ遷移後は全てページトップに戻す
         // window.scrollTo(0,0);
       }

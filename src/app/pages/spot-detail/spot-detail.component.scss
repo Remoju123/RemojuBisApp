@@ -1,6 +1,6 @@
 @import "../../../assets/scss/vars";
 
-@media screen and (min-width: 415px) and (max-width: 1024px) { 
+@media screen and (min-width: 429px) and (max-width: 1024px) { 
   div.spotdtl{
     margin: auto 98px;
   }
@@ -159,7 +159,7 @@ p{
     box-sizing: border-box;
     height: 150px;
 
-    @media screen and (min-width: 415px) and (max-width: 1024px) { 
+    @media screen and (min-width: 429px) and (max-width: 1024px) { 
       height: auto;
     }
 
