@@ -115,6 +115,16 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.guid = await this.commonService.getGuid();
     this.recoveryQueryParams();
 
+    this.planspots.searchFilter
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(result => {
+      this.rows = result.list;
+      this.temp = [...this.rows];
+      this.optionKeywords = result.searchTarm;
+      this.historyReplace(result.searchParams);
+      this.count = result.list.length;
+    })
+
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
       this.listSelectMaster.isList = true;
@@ -130,16 +140,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.getPlanSpotDataSet();
     }
-
-    this.planspots.searchFilter
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        this.rows = result.list;
-        this.temp = [...this.rows];
-        this.optionKeywords = result.searchTarm;
-        this.historyReplace(result.searchParams);
-        this.count = result.list.length;
-      })
 
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r => {
