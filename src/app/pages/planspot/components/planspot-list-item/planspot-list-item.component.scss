@@ -1,65 +1,76 @@
 @import "../../../../../assets/scss/vars";
 
 //::ng-deep .mat-card{
-#planspot-list-item{
+#planspot-list-item {
   padding: 0;
-  .header{
+
+  .header {
     margin: 0 16px 4px;
     display: flex;
     font-weight: normal;
-    .lt{
+
+    .lt {
       flex-basis: 32px;
-      .avatar{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        img{
-          width: 38px;
-          height: 38px;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-        .username{
-          font-size: 11px;
-          white-space: nowrap;
-          width: 38px;
-          overflow: hidden;
-          text-align: center;
+
+      .avatar {
+        a {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 50%;
+          }
+
+          .username {
+            font-size: 11px;
+            white-space: nowrap;
+            width: 38px;
+            overflow: hidden;
+            text-align: center;
+          }
         }
       }
-
     }
-    .rt{
+
+    .rt {
       display: flex;
       flex-direction: row;
       align-items: center;
       width: 100%;
-      .mark{
+
+      .mark {
         flex-basis: 41px;
-        img{
+
+        img {
           width: 41px;
           height: 22px;
           margin: auto 12px;
         }
       }
-      .title{
+
+      .title {
         font-size: 13px;
         color: #000;
         font-weight: bolder;
       }
 
-      &.fav{
+      &.fav {
         margin-right: 36px;
       }
     }
 
-    button.delete{
+    button.delete {
       all: unset;
       position: absolute;
       right: 16px;
       top: 16px;
-      &::before{
+
+      &::before {
         content: url('../../../../../assets/img/btn_delete.svg');
         display: inline-block;
         width: 20px;
@@ -69,10 +80,10 @@
     }
   }
 
-  .card-box{
+  .card-box {
     border-radius: 10px;
-    -webkit-border-radius:10px;
-    -moz-border-radius:10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     z-index: 10;
     overflow: hidden;
     margin-bottom: 20px;
@@ -81,8 +92,8 @@
     margin-right: 16px;
     margin-left: 16px;
     position: relative;
-    
-    .link-area{
+
+    .link-area {
       position: absolute;
       top: 0;
       left: 0;
@@ -95,11 +106,11 @@
       margin-top: 25%;
     }
 
-    .card-header{
+    .card-header {
       position: relative;
       height: 167px;
       overflow: hidden;
-      
+
       &::after {
         content: "";
         position: absolute;
@@ -112,7 +123,8 @@
         z-index: 1;
       }
 
-      .picture{
+      .picture {
+
         ::ng-deep .owl-prev,
         ::ng-deep .owl-next {
           position: absolute;
@@ -124,36 +136,44 @@
           border: 0 solid black;
           transform: translateY(-50%);
           z-index: auto;
-          display: flex!important;
+          display: flex !important;
           align-items: center;
+
+          &.disabled{
+            opacity: 0;
+          }
         }
-        ::ng-deep.owl-carousel{
-          ::ng-deep.owl-stage-outer{
+
+        ::ng-deep.owl-carousel {
+          ::ng-deep.owl-stage-outer {
             border-radius: 10px 10px 0 0;
             -webkit-border-radius: 10px 10px 0 0;
             -moz-border-radius: 10px 10px 0 0;
             background-color: $color-gry04;
           }
+
           z-index: 2;
-          &.owl-drag{
+
+          &.owl-drag {
             z-index: 5;
           }
         }
-  
+
         ::ng-deep .owl-prev {
           left: -14px;
         }
-      
+
         ::ng-deep .owl-next {
-          right: 0;
+          right: -2px;
         }
-      
+
         ::ng-deep .owl-prev i,
         ::ng-deep .owl-next i {
+          background-color: #000;
           color: #ccc;
           transform: scale(1);
         }
-      
+
         ::ng-deep .owl-dots {
           position: absolute;
           // top: 12px;
@@ -163,46 +183,46 @@
           right: 0;
           margin: auto;
           z-index: 100;
-      
+
           .owl-dot span {
             width: 6px;
             height: 6px;
             margin: 3px 4px;
             background-color: #fff;
           }
-    
-          .owl-dot.active span{
+
+          .owl-dot.active span {
             background-color: #666;
           }
         }
-  
+
         ::ng-deep .owl-carousel .owl-stage {
           padding-left: 0 !important;
-        }   
-      
+        }
+
         .buttons {
           position: absolute;
           bottom: 1.2em;
           right: 0;
           z-index: 1;
-      
+
           .list-horizontal {
             padding: 0;
             float: right;
             // margin-top: -10px;
             margin-top: 10px;
             // opacity: 0.5;
-      
+
             .mat-list-item {
               display: inline-block;
               height: auto;
               // width: auto;
               width: 36px;
-      
+
               ::ng-deep.mat-list-item-content {
                 padding: 0 8px;
               }
-      
+
               .material-icons,
               .material-icons-outlined {
                 font-size: 16px;
@@ -210,12 +230,12 @@
                 color: #fff;
                 // padding-right: 4px;
               }
-      
+
               .val {
                 font-size: 14px;
                 color: #999;
               }
-      
+
               .label {
                 position: absolute;
                 margin: auto;
@@ -227,7 +247,7 @@
                 text-align: center;
                 color: #fff;
               }
-      
+
               .item {
                 position: absolute;
                 margin: auto;
@@ -243,24 +263,25 @@
         }
 
 
-        .thumbmain{
+        .thumbmain {
           border-right: 1px solid #fff;
-          img{
+
+          img {
             // width: 37vw;
             height: 167px;
             object-fit: cover;
             @include copy-protect;
           }
-  
-          &.fullwidth{
-            img{
+
+          &.fullwidth {
+            img {
               width: 100%;
             }
           }
         }
       }
 
-      .info{
+      .info {
         position: absolute;
         top: 9px;
         left: 7px;
@@ -270,8 +291,10 @@
         display: inline-flex;
         height: 26px;
         justify-content: space-between;
-        .lt{
+
+        .lt {
           display: flex;
+
           .areaName {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 0 4px;
@@ -280,14 +303,16 @@
             border-radius: 3px;
             white-space: nowrap;
           }
-          .category{
+
+          .category {
             background-color: #B6C2A6;
             padding: 0 6px;
             line-height: 26px;
             margin-left: 7px;
             // border: 1px solid $color-gld04;
             border-radius: 3px;
-            color: rgba(0,0,0,.87);;
+            color: rgba(0, 0, 0, .87);
+            ;
             white-space: nowrap;
             max-width: 34vw;
             overflow: hidden;
@@ -295,10 +320,12 @@
             opacity: 0.9;
           }
         }
-        .rt{
-          img{
+
+        .rt {
+          img {
             height: 26px;
           }
+
           .add-to-favorite {
             // @include ios-reset;
             box-shadow: none;
@@ -311,8 +338,8 @@
             // margin-right: 12px;
             line-height: initial;
             vertical-align: 3px;
-            
-            &::before{
+
+            &::before {
               content: "";
               display: inline-block;
               width: 20px;
@@ -321,20 +348,22 @@
               background-repeat: no-repeat;
             }
 
-            &.on{
+            &.on {
+
               // background-color: $color-pnk04;
-              &::before{
+              &::before {
                 background: url(../../../../../assets/img/icon_fav_p_on.svg);
                 background-repeat: no-repeat;
               }
             }
 
-            ::ng-deep.mat-button-ripple{
+            ::ng-deep.mat-button-ripple {
               width: 0;
               height: 0;
             }
           }
-          .deletePlan{
+
+          .deletePlan {
             position: absolute;
             z-index: 10;
             top: -3px;
@@ -347,8 +376,8 @@
             border: none;
             width: 24px;
             height: 24px;
-      
-            > i {
+
+            >i {
               color: #fff;
               font-size: 15px;
             }
@@ -360,7 +389,7 @@
         position: absolute;
         z-index: 3;
         // bottom: 5px;
-        top:187px;
+        top: 187px;
         width: 85%;
         left: 13px;
         color: rgba(255, 255, 255, 1);
@@ -372,7 +401,7 @@
         white-space: nowrap;
       }
 
-      .views{
+      .views {
         position: absolute;
         z-index: 3;
         bottom: 5px;
@@ -384,7 +413,8 @@
         flex-direction: column;
         align-items: center;
         line-height: 1;
-        .label{
+
+        .label {
           font-size: 9px;
         }
 
@@ -396,40 +426,45 @@
 
     }
 
-    .card-bottom{
-      border-bottom: $color-gry07 solid 1px ;
-      border-left:  $color-gry07 solid 1px ;
-      border-right:  $color-gry07 solid 1px ;
+    .card-bottom {
+      border-bottom: $color-gry07 solid 1px;
+      border-left: $color-gry07 solid 1px;
+      border-right: $color-gry07 solid 1px;
       border-radius: 0 0 10px 10px;
       height: 206px;
-      .bottom-view{
+
+      .bottom-view {
         // display: flex;
         // flex-direction: row;
         font-size: 11px;
-        color:#4E4E4E;
+        color: #4E4E4E;
         // height: 26px;
         align-items: center;
         position: relative;
-        ::ng-deep .mat-list-item-content{
+
+        ::ng-deep .mat-list-item-content {
           flex-direction: column;
-          .row{
+
+          .row {
             display: flex;
             flex-direction: row;
             width: 100%;
             align-items: center;
-            .view{
+
+            .view {
               flex-basis: 48%;
             }
           }
         }
 
-        
-        
-        
-        .note{
+
+
+
+        .note {
           flex-basis: 90%;
         }
-        button.add-to-favorite{
+
+        button.add-to-favorite {
           box-shadow: none;
           min-width: auto;
           padding: 0;
@@ -441,7 +476,7 @@
           position: absolute;
           right: 6px;
 
-          &::before{
+          &::before {
             content: "";
             display: inline-block;
             width: 18px;
@@ -450,53 +485,54 @@
             background-repeat: no-repeat;
           }
 
-          &.on{
+          &.on {
+
             // background-color: $color-pnk04;
-            &::before{
+            &::before {
               background: url("../../../../../assets/img/icon_fav_b_on.svg");
               background-repeat: no-repeat;
             }
           }
 
-          ::ng-deep.mat-button-ripple{
+          ::ng-deep.mat-button-ripple {
             width: 0;
             height: 0;
           }
         }
       }
 
-      .mat-list-base{
+      .mat-list-base {
         margin-bottom: 12px;
       }
 
-      ::ng-deep .mat-list-item{
+      ::ng-deep .mat-list-item {
         height: auto;
 
-        .mat-list-item-content{
+        .mat-list-item-content {
           padding: 0 12px;
         }
 
-        &.subheading{
-          .mat-list-item-content{
+        &.subheading {
+          .mat-list-item-content {
             justify-content: center;
 
-            p{
+            p {
               font-size: 15px;
               font-weight: 400;
               margin-block-start: 4px;
               margin-block-end: 4px;
               line-height: 1.5;
               color: initial;
-              text-align:center;
+              text-align: center;
             }
           }
         }
 
-        &.row{
+        &.row {
           font-size: 12px;
           line-height: 2;
 
-          &.psname{
+          &.psname {
             font-size: 11px;
             line-height: 1.6;
             color: #272727;
@@ -504,7 +540,7 @@
             margin: 6px 12px;
             width: auto;
 
-            span{
+            span {
               display: inline-flex;
               padding: 0 4px;
               // background-color: #949494;
@@ -517,7 +553,7 @@
             }
           }
 
-          p{
+          p {
             // font-size: 11px;
             // line-height: 1.6;
             color: #272727;
@@ -530,23 +566,24 @@
             @include text-truncate(11, 1.6, 3, #fff);
           }
 
-          ::ng-deep.mat-list-item-content{
+          ::ng-deep.mat-list-item-content {
+
             // justify-content: space-around;
-            .inlist{
+            .inlist {
               display: inline-flex;
               align-items: center;
 
-              &.first{
+              &.first {
                 margin-left: -9px;
               }
             }
           }
 
-          .directions{
+          .directions {
             padding-right: 3px;
             padding-left: 2px;
             white-space: nowrap;
-        
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/directions_subway.svg");
@@ -557,7 +594,7 @@
             }
           }
 
-          .attention{
+          .attention {
             color: #adadad;
             line-height: 1.5;
           }
@@ -565,7 +602,7 @@
           .badget {
             padding-right: 3px;
             padding-left: 2px;
-        
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/budget.svg");
@@ -576,15 +613,15 @@
             }
           }
 
-          .businesshour{
+          .businesshour {
             padding-right: 3px;
             padding-left: 2px;
-        
-            .color{
+
+            .color {
               text-decoration: none;
               color: #bfa060;
             }
-        
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/business-hour.svg");
@@ -609,7 +646,7 @@
             }
           }
 
-          img.staff{
+          img.staff {
             width: 17px;
             height: 17px;
             border-radius: 50%;
@@ -619,9 +656,10 @@
             vertical-align: sub;
           }
 
-          .contributor{
+          .contributor {
             padding-right: 3px;
             padding-left: 2px;
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/icon_who.svg");
@@ -632,9 +670,10 @@
             }
           }
 
-          .timerequired{
+          .timerequired {
             padding-right: 3px;
             padding-left: 2px;
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/business-hour.svg");
@@ -645,9 +684,10 @@
             }
           }
 
-          .spots{
+          .spots {
             padding-right: 3px;
             padding-left: 2px;
+
             &::before {
               display: inline-block;
               content: url("../../../../../assets/img/icon_spot.svg");
@@ -658,8 +698,8 @@
             }
           }
 
-          &.spotname{
-            .spotnames{
+          &.spotname {
+            .spotnames {
               text-overflow: ellipsis;
               white-space: nowrap;
               width: 100%;
@@ -667,36 +707,38 @@
             }
           }
 
-          &.subtitle{
-            .mat-list-item-content{
+          &.subtitle {
+            .mat-list-item-content {
               justify-content: center;
-              span{
+
+              span {
                 text-align: center;
               }
             }
           }
 
-          &.mt1{
+          &.mt1 {
             margin-top: 1em;
           }
 
-          &.mt02{
+          &.mt02 {
             margin-top: 0.5em;
           }
 
-          .ml1{
+          .ml1 {
             margin-left: 1em;
           }
 
-          &.categories{
-            .badge{
+          &.categories {
+            .badge {
               // margin-top: 6px;
               // margin-bottom: -6px;
 
-              dl{
+              dl {
                 display: inline-flex;
                 margin: initial;
-                dd{
+
+                dd {
                   margin: auto 2px;
                   font-size: 11px;
                   color: #fff;
@@ -712,7 +754,7 @@
           }
         }
 
-        &.footer{
+        &.footer {
           display: flex;
           justify-content: flex-end;
           margin-top: 0.8em;
@@ -731,8 +773,8 @@
             // width: 150px;
             white-space: nowrap;
 
-            &.on{
-              &::after{
+            &.on {
+              &::after {
                 content: "";
                 background: url("../../../../../assets/img/icon_onplan.svg") no-repeat;
                 width: 24px;
@@ -754,8 +796,8 @@
             height: 25px;
             margin-right: 12px;
             line-height: initial;
-            
-            &::before{
+
+            &::before {
               content: "";
               display: inline-block;
               width: 24px;
@@ -764,15 +806,16 @@
               background-repeat: no-repeat;
             }
 
-            &.on{
+            &.on {
+
               // background-color: $color-pnk04;
-              &::before{
+              &::before {
                 background: url(../../../../../assets/img/icon_fav_b_on.svg);
                 background-repeat: no-repeat;
               }
             }
 
-            ::ng-deep.mat-button-ripple{
+            ::ng-deep.mat-button-ripple {
               width: 0;
               height: 0;
             }
@@ -784,13 +827,15 @@
 }
 
 //@media screen and (min-width: 415px) and (max-width: 1024px) { 
-@media screen and (min-width: 429px) and (max-width: 1024px) { 
+@media screen and (min-width: 429px) and (max-width: 1024px) {
+
   //@media screen and (min-width: 415px) { 
-  #planspot-list-item{
+  #planspot-list-item {
     width: calc(100%/2);
     float: left;
-    .header{
+
+    .header {
       min-height: 62px;
     }
-  }  
+  }
 }
