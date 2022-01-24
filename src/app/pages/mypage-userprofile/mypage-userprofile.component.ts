@@ -330,28 +330,30 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
       if (this.data.pictureFile) {
         // プロフィール画像URLを設定
         this.data.pictureUrl = environment.blobUrl + "/" + this.data.object_id + "/" + this.data.pictureFile.name;
-        // プロフィール画像アップロード
-        this.userService.fileUpload(this.data, false).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (r) {
-            // アップロードデータを削除
-            this.data.picturePreviewUrl = null;
-            this.data.pictureFile = null;
-          }
-        });
       }
       if (this.data.coverFile){
         // カバー画像URLを設定
         this.data.coverUrl = environment.blobUrl + "/" + this.data.object_id + "/" + this.data.coverFile.name;
-        // カバー画像アップロード
-        this.userService.fileUpload(this.data, true).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (r) {
-            this.data.coverPreviewUrl = null;
-            this.data.coverFile = null;
-          }
-        });
       }
-      // ユーザ情報更新
-      this.updateUser();
+
+        // ユーザ情報更新
+      this.userService.registUser(this.data).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+        if (r) {
+          // 年代計算
+          this.data.age = this.commonService.getAge(this.data.birthday);
+          const result = [];
+          if (this.data.pictureFile) {
+            // プロフィール画像アップロード
+            result.push(this.saveImagePlan(false));
+          }
+          if (this.data.coverFile){
+            // カバー画像アップロード
+            result.push(this.saveImagePlan(true));
+          }
+          await Promise.all(result);
+          this.commonService.snackBarDisp("UserProfileSaved");
+        }
+      });
     }else{
       this.commonService.scrollToTop();
     }
@@ -398,14 +400,12 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     };
   }
 
-  // ユーザ情報更新
-  updateUser(){
-    this.userService.registUser(this.data).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (r) {
-        // 年代計算
-        this.data.age = this.commonService.getAge(this.data.birthday);
-        this.commonService.snackBarDisp("UserProfileSaved");
-      }
+  saveImagePlan(isCover: boolean){
+    return new Promise((resolve) => {
+      // 画像アップロード
+      this.userService.fileUpload(this.data, isCover).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+          resolve(true);
+      });
     });
   }
 }
