@@ -182,17 +182,19 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
         this.spotService.registReview(spotReviews).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
           if (r){
             result = r.reviewResult;
+            const resultImg = [];
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
                 const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
-                await this.saveImageSpot(this.review.pictures[i].pictureFile
+                resultImg.push(this.saveImageSpot(this.review.pictures[i].pictureFile
                   , this.review.pictures[i].imageCropped
                   , registReview.pictures[i].pictureUrl
-                  , this.review.id);
+                  , this.review.id));
               }
             }
-            //this.commonService.onSetReviewAve(result.avgEvaluation);
+            //this.commonService.onSetReviewAve(result.avgEvaluation)
+            await Promise.all(resultImg);
             this.dialogRef.close(result);
           }
         });
@@ -224,16 +226,18 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
         this.planService.registPlanReview(planReviews).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
           if (r){
             result = r.reviewResult;
+            const resultImg = [];
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
                 const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
-                await this.saveImagePlan(this.review.pictures[i].pictureFile
+                resultImg.push(this.saveImagePlan(this.review.pictures[i].pictureFile
                   , this.review.pictures[i].imageCropped
                   , registReview.pictures[i].pictureUrl
-                  , this.review.id);
+                  , this.review.id));
               }
             }
+            await Promise.all(resultImg);
             this.dialogRef.close(result);
           }
         });
@@ -265,16 +269,18 @@ export class ReviewPostDialogComponent implements OnInit, OnDestroy {
         this.planService.registPlanUserReview(planUserReviews).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
           if (r){
             result = r.reviewResult;
+            const resultImg = [];
             for (let i = 0; i < this.review.pictures.length; i++) {
               if (this.review.pictures[i].pictureFile) {
                 const registReview = r.reviewResult.reviews.find(x => x.displayOrder === r.displayOrder);
                 // 画像保存処理
-                await this.saveImagePlan(this.review.pictures[i].pictureFile
+                resultImg.push(this.saveImagePlan(this.review.pictures[i].pictureFile
                   , this.review.pictures[i].imageCropped
                   , registReview.pictures[i].pictureUrl,
-                  this.review.id);
+                  this.review.id));
               }
             }
+            await Promise.all(resultImg);
             this.dialogRef.close(result);
           }
         });
