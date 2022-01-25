@@ -1008,7 +1008,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   genStartTimes(){
     for (let hour = 0; hour < 24; hour++){
-      console.log(('0' + hour).slice(-2));
       this.$startTime.push(('0' + hour).slice(-2) + ':' + '00');
       this.$startTime.push(('0' + hour).slice(-2) + ':' + '30');
     }
