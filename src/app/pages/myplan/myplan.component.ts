@@ -27,14 +27,12 @@ import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { LoadingIndicatorService } from "../../service/loading-indicator.service";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { moveItemInArray } from "@angular/cdk/drag-drop";
 import { environment } from "../../../environments/environment";
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
-import * as moment from 'moment';
 import { isPlatformBrowser } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
-import { Catch } from "src/app/class/log.class";
-import { HttpUrlEncodingCodec, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpUrlEncodingCodec } from "@angular/common/http";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -1010,8 +1008,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   genStartTimes(){
     for (let hour = 0; hour < 24; hour++){
-      this.$startTime.push(moment({hour}).format('HH:mm'));
-      this.$startTime.push(moment({hour,minute:30}).format('HH:mm'));
+      console.log(('0' + hour).slice(-2));
+      this.$startTime.push(('0' + hour).slice(-2) + ':' + '00');
+      this.$startTime.push(('0' + hour).slice(-2) + ':' + '30');
     }
   }
 
