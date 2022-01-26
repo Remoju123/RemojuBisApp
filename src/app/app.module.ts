@@ -1,6 +1,5 @@
 import { Injectable, NgModule } from '@angular/core';
-import { BrowserModule, HammerModule, HammerGestureConfig,
-  HAMMER_GESTURE_CONFIG, HAMMER_LOADER, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClient,  HttpClientModule} from "@angular/common/http";
 
@@ -70,13 +69,13 @@ import { TopComponent } from './pages/top/top.component';
 import { AuthGuard } from './auth.guard';
 
 import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.component';
-import { PullToRefreshComponent } from './parts/pull-to-refresh/pull-to-refresh.component';
+//import { PullToRefreshComponent } from './parts/pull-to-refresh/pull-to-refresh.component';
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
-import { SpotListComponent } from './pages/spot-list/spot-list.component';
+//import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
 import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
-import { PlanListComponent } from './pages/plan-list/plan-list.component';
+//import { PlanListComponent } from './pages/plan-list/plan-list.component';
 import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
 import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
@@ -101,7 +100,7 @@ import { PlanDetailPanelComponent } from './pages/plan-detail-panel/plan-detail-
 import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
 import { SpotDetailDialogComponent } from './parts/spot-detail-dialog/spot-detail-dialog.component';
 import { UserComponent } from './pages/user/user.component';
-import { UserplanPostComponent } from './pages/userplan-post/userplan-post.component';
+//import { UserplanPostComponent } from './pages/userplan-post/userplan-post.component';
 import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
 import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-favoritelist.component';
 import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
@@ -155,11 +154,11 @@ export const MATERIAL_MODULES = [
     FooterComponent,
     BlankComponent,
     TopComponent,
-    SpotListComponent,
+    //SpotListComponent,
     SpotDetailComponent,
     NavMenuComponent,
     PlanDetailComponent,
-    PlanListComponent,
+    //PlanListComponent,
     PlanPanelComponent,
     MyplanComponent,
     MypagePlanListComponent,
@@ -179,10 +178,10 @@ export const MATERIAL_MODULES = [
     MapInfowindowDialogComponent,
     MypageComponent,
     HeaderPlanPanelComponent,
-    SpinnerLoadingIndicatorComponent,
+    //SpinnerLoadingIndicatorComponent,
     UserComponent,
     ConfirmMessageDialogComponent,
-    UserplanPostComponent,
+    //UserplanPostComponent,
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
     RatingCompComponent,
@@ -191,7 +190,7 @@ export const MATERIAL_MODULES = [
     SpotListPanelComponent,
     PlanListPanelComponent,
     PlanDetailPanelComponent,
-    PullToRefreshComponent,
+    //PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
