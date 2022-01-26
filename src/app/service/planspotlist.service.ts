@@ -157,7 +157,7 @@ export class PlanSpotListService {
     if(cond.keyword !== ""){
       const keywords = cond.keyword.replace('　', ' ').split(' ');
       if (keywords.length > 0) {
-        _result = _result.filter(d => keywords.every(x => d.keyword && d.keyword.indexOf(x) !== -1));
+        _result = _result.filter(d => keywords.every(x => d.keyword && d.keyword.toLowerCase().indexOf(x) !== -1));
         //'京都'の場合'東京都'は除外す処理MM 2022.1.7
         if(keywords.indexOf('京都') !== -1){
           _result = _result.filter(d => d.keyword.indexOf('東京都') === -1);
