@@ -147,16 +147,13 @@ export class HeaderComponent implements OnInit ,OnDestroy{
         this.favcount = v["spotCount"]+v["planCount"];
       }
     });
-
-    // ユーザー情報
-    if(this.commonService.loggedIn){
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe((r: { pictureUrl: string; displayName: string; }) =>{
-        if(r){
-          if(r.pictureUrl){this.pictureUrl = r.pictureUrl};
-          this.userName = r.displayName;
-        }
-      });
-    }
+    
+    this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe((r: { pictureUrl: string; displayName: string; }) =>{
+      if(r){
+        if(r.pictureUrl){this.pictureUrl = r.pictureUrl};
+        this.userName = r.displayName;
+      }
+    });
   }
 
   linktoProfile(){
