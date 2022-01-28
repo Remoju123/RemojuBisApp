@@ -1,1 +1,3 @@
-<router-outlet></router-outlet>
+<div class="app-root" [@routeAnimations]="o.isActivated ? o.activatedRoute:''" [style.opacity]="show ? 100 : 0">
+  <router-outlet #o="outlet"></router-outlet>
+</div>

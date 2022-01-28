@@ -267,6 +267,10 @@ p{
     background-color: transparent;
     border: 0 solid black;
     transform: translateY(-50%);
+
+    &.disabled{
+      opacity: 0;
+    }
   }
 
   ::ng-deep .owl-prev {
@@ -274,11 +278,12 @@ p{
   }
 
   ::ng-deep .owl-next {
-    right: 0;
+    right: -2px;
   }
 
   ::ng-deep .owl-prev i,
   ::ng-deep .owl-next i {
+    background-color: #000;
     color: #ccc;
     transform: scale(1);
   }
