@@ -3,9 +3,8 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonService } from "../../service/common.service";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PlanSpotList } from "src/app/class/planspotlist.class";
-import { MypageFavoriteListService } from "src/app/service/mypagefavoritelist.service";
-import { PlanSpotListService } from "src/app/service/planspotlist.service";
+import { PlanSpotList } from "../../class/planspotlist.class";
+import { UserService } from "../../service/user.service";
 import { TranslateService } from "@ngx-translate/core";
 
 @Component({
@@ -17,9 +16,8 @@ export class MypageComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
   constructor(
     private activatedRoute: ActivatedRoute,
-    public common: CommonService,
-    private mypageFavoriteListService: MypageFavoriteListService,
-    private planspots: PlanSpotListService,
+    public commonService: CommonService,
+    private userService: UserService,
     private router: Router,
     private translate: TranslateService
   ) { }
@@ -35,10 +33,12 @@ export class MypageComponent implements OnInit, OnDestroy {
 
   details$:PlanSpotList[] = [];
 
+  userName: string;
+
   get lang() {
     return this.translate.currentLang;
   }
-  
+
   ngOnInit() {
 
     //this.getPlanSpotDataSet();
@@ -65,9 +65,20 @@ export class MypageComponent implements OnInit, OnDestroy {
         this.tabChange(0);
       }
     });
-    
+
     // ヘッダプランの非表示通知
-    this.common.onNotifyIsShowHeader(true);
+    this.commonService.onNotifyIsShowHeader(true);
+
+    this.userName = this.commonService.name;
+
+    this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+      // ユーザー情報
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+        if (r) {
+          this.userName = r.displayName;
+        }
+      });
+    });
   }
 
   ngOnDestroy(){

@@ -1,6 +1,6 @@
 
 <div class="title">
-  {{ common.name }}{{ "Sanno" | translate }}
+  {{ userName }}{{ "Sanno" | translate }}
   {{ "MyPage" | translate }}
 </div>
 <mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)" id="mypage">
@@ -14,6 +14,6 @@
     <app-mypage-userprofile *ngIf="profile"></app-mypage-userprofile>
   </mat-tab>
   <mat-tab label="{{ 'Review' | translate }}">
-    <app-mypage-reviewlist [name]="common.name"></app-mypage-reviewlist>
+    <app-mypage-reviewlist [name]="userName"></app-mypage-reviewlist>
   </mat-tab>
 </mat-tab-group>

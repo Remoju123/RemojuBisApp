@@ -38,6 +38,9 @@ export class CommonService implements OnDestroy{
   private isloadfin = new Subject<boolean>();
   public isloadfin$ = this.isloadfin.asObservable();
 
+  private isupdHeader = new Subject<boolean>();
+  public isupdHeader$ = this.isupdHeader.asObservable();
+
   // selected planId
   private selectedPlanId = new Subject<any>();
   public selectedPlanId$ = this.selectedPlanId.asObservable();
@@ -110,6 +113,10 @@ export class CommonService implements OnDestroy{
   // ヘッダプランパネル表示イベント
   public onNotifyIsShowHeader(update: boolean){
     this.isshowHeader.next(update);
+  }
+
+  public onUpdHeader() {
+    this.isupdHeader.next();
   }
 
   // GUID取得

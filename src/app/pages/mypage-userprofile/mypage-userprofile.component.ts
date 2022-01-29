@@ -351,6 +351,17 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
             result.push(this.saveImagePlan(true));
           }
           await Promise.all(result);
+
+          if (this.data.pictureFile) {
+            this.onDeleteUserFile();
+            // ヘッダー画像更新
+            this.commonService.onUpdHeader();
+          }
+          if (this.data.coverFile){
+            this.onDeleteCoverFile();
+          }
+          this.userService.onupdUserName();
+
           this.commonService.snackBarDisp("UserProfileSaved");
         }
       });

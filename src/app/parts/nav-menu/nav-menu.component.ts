@@ -1,15 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { MenuItems } from '../../shared/menu-items/menu-items';
-import { CommonService } from '../../service/common.service';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
+import { MenuItems } from "../../shared/menu-items/menu-items";
+import { CommonService } from "../../service/common.service";
+import { UserService } from "../../service/user.service";
+import { Router } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 @Component({
-  selector: 'app-nav-menu',
-  templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.scss'],
+  selector: "app-nav-menu",
+  templateUrl: "./nav-menu.component.html",
+  styleUrls: ["./nav-menu.component.scss"],
 })
-export class NavMenuComponent {
+export class NavMenuComponent implements OnInit, OnDestroy{
+  private onDestroy$ = new Subject();
+
   isAuthenticated = false;
   isExpanded = false;
 
@@ -29,7 +34,8 @@ export class NavMenuComponent {
 
   constructor(
     private router: Router,
-    public common: CommonService,
+    public commonService: CommonService,
+    public userService: UserService,
     public menuItems: MenuItems,
     private translate: TranslateService
   ) {}
@@ -44,6 +50,23 @@ export class NavMenuComponent {
 
   isShow(flg: any) {
     return flg === null || flg === this.isAuthenticated;
+  }
+
+  ngOnInit() {
+    this.userName = this.commonService.name;
+
+    this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+      // ユーザー情報
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+        if (r) {
+          this.userName = r.displayName;
+        }
+      });
+    });
+  }
+
+  ngOnDestroy(){
+    this.onDestroy$.next();
   }
 
   onNavgate(page: string, frag?: string) {

@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { 
+  ) {
     if(isPlatformBrowser(platformId)){
       this.show = true;
     }
@@ -123,6 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
               .subscribe(r => {
                 if (r) {
                   this.commonService.loggedIn = true;
+                  this.commonService.onUpdHeader();
                 }
               });
             return Promise.resolve();

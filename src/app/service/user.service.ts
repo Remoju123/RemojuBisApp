@@ -5,6 +5,7 @@ import { LoginParam, User } from "../class/user.class";
 import { CommonService } from "./common.service";
 import { Observable } from "rxjs";
 import { isPlatformBrowser } from "@angular/common";
+import { Subject } from "rxjs";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,6 +18,10 @@ const httpOptions = {
   providedIn: "root"
 })
 export class UserService {
+
+  private isupdUserName = new Subject<boolean>();
+  public isupdUserName$ = this.isupdUserName.asObservable();
+
   constructor(
     private commonService: CommonService,
     private http: HttpClient,
@@ -101,5 +106,9 @@ export class UserService {
     formData.append("objectId", user.object_id);
     const url = this.host + "/api/User/SaveFile";
     return this.http.post<boolean>(url, formData, { headers: {}});
+  }
+
+  public onupdUserName() {
+    this.isupdUserName.next();
   }
 }
