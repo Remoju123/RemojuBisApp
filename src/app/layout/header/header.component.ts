@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
   // );
 
   languages = environment.languages;
-  
+
   currentLang: string = environment.defaultLang;
 
   // サイドナビバインドプロパティ
@@ -52,14 +52,14 @@ export class HeaderComponent implements OnInit ,OnDestroy{
   @Input()
   cartnav_closed: boolean = false;
   cartStatus: boolean = false;
-  
+
   logopc = "remoju-logo-pc-ja";
   logosp = "remoju-logo-sp-ja";
   logo_body = "remoju-logo";
   isDesktopDevice: boolean = false;
-  
+
   favcount:any;
-  
+
   loggedIn: boolean = false;
   public userInfo: any = null;
 
@@ -88,7 +88,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     public router: Router,
     public dialog: MatDialog,
     private overlay: Overlay,
-    @Inject(PLATFORM_ID) private platformId:Object) 
+    @Inject(PLATFORM_ID) private platformId:Object)
   {
     if(isPlatformBrowser(this.platformId)){
       this.shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h =>
@@ -120,7 +120,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
 
   togglecart(){
    this.cartStatus = this.cartnav_closed;
-   this.cartevent.emit(!this.cartStatus); 
+   this.cartevent.emit(!this.cartStatus);
   }
 
   async ngOnInit() {
@@ -134,26 +134,37 @@ export class HeaderComponent implements OnInit ,OnDestroy{
       }
     });
 
+    if (this.commonService.loggedIn) {
+      // ユーザー情報
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+        if (r) {
+          this.pictureUrl = r.pictureUrl;
+        }
+      });
+    }
+
     this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
       this.ppisshow = v;
     });
 
+    this.commonService.isupdHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+      // ユーザー情報
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+        if (r) {
+          this.pictureUrl = r.pictureUrl;
+        }
+      });
+    });
+
     // お気に入り数取得
-    const guid = await this.commonService.getGuid();
+    /*const guid = await this.commonService.getGuid();
     this.mypageFavoriteListService.GetFavoriteCount(guid);
 
     this.mypageFavoriteListService.myfavCount$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
       if(v){
         this.favcount = v["spotCount"]+v["planCount"];
       }
-    });
-    
-    this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe((r: { pictureUrl: string; displayName: string; }) =>{
-      if(r){
-        if(r.pictureUrl){this.pictureUrl = r.pictureUrl};
-        this.userName = r.displayName;
-      }
-    });
+    });*/
   }
 
   linktoProfile(){

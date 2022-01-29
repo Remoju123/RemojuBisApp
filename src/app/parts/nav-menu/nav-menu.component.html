@@ -15,17 +15,17 @@
       </mat-nav-list>
 
       <mat-nav-list class="user">
-        <span *ngIf="!common.loggedIn">
-          <a mat-list-item (click)="common.login()" *ngIf="!common.loggedIn">{{ "PleaseLogin" | translate }}</a>
+        <span *ngIf="!commonService.loggedIn">
+          <a mat-list-item (click)="commonService.login()" *ngIf="!commonService.loggedIn">{{ "PleaseLogin" | translate }}</a>
         </span>
-        <div class="logout" *ngIf="common.loggedIn">
+        <div class="logout" *ngIf="commonService.loggedIn">
           <span>
             {{ "Welcome" | translate }}
-            {{common.name}}
+            {{ userName }}
             {{ "San" | translate }}
           </span>
           <span>
-            <a mat-list-item (click)="common.logout(currentlang)">{{ "Logout" | translate }}</a>
+            <a mat-list-item (click)="commonService.logout(currentlang)">{{ "Logout" | translate }}</a>
           </span>
         </div>
       </mat-nav-list>
@@ -52,7 +52,7 @@
           <a mat-list-item href="">{{ "SeeOther" | translate }}</a>
         </mat-nav-list>
       </mat-nav-list>
-      <mat-nav-list *ngIf="common.loggedIn">
+      <mat-nav-list *ngIf="commonService.loggedIn">
         <div class="header">{{ "ViewMyPage" | translate }}</div>
         <mat-nav-list class="sub">
           <a mat-list-item (click)="onNavgate('mypage','list')">{{ "ViewSavedPlans" | translate }}</a>
