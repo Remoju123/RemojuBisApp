@@ -28,7 +28,9 @@ jobs:
         npm install
         # npm run build --prod
         npm run build:ssr
-    
+        # npm run presenter
+        npm run presenter
+
     - name: 'Move web.config to root'
       run: mv dist/RemojuApp-V3U/browser/web.config dist/RemojuApp-V3U/
 
