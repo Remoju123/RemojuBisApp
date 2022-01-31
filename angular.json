@@ -159,7 +159,14 @@
             ]
           },
           "configurations": {
-            "production": {}
+            "production": {
+              "browserTarget": "RemojuApp-V3U:build:production",
+              "serverTarget": "RemojuApp-V3U:server:production"
+            },
+            "development": {
+              "browserTarget": "RemojuApp-V3U:build:development",
+              "serverTarget": "RemojuApp-V3U:server:development"
+            }
           },
           "defaultConfiguration": "production"
         },
