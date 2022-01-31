@@ -132,7 +132,7 @@
         </mat-list>
       </div>
 
-      <div class='link-area' (click)="linktoDetail(item.id)"></div>
+      <div class='link-area' (click)="linktoDetail(item)"></div>
     </div>
   </mat-card-content>
   <ng-template #isGoogle>
@@ -193,6 +193,8 @@
           </mat-list-item>
         </mat-list>
       </div>
+
+      <div class='link-area' (click)="linktoDetail(item)"></div>
     </div>
   </ng-template>
 </mat-card>

@@ -138,11 +138,13 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.mergeNextDataSet();
   }
 
-  linktoDetail(id:number){
-    if(id > 10000){
-      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
-    }else{
-      this.router.navigate(["/" + this.lang + "/plans/detail",id]);
+  linktoDetail(item:PlanSpotList){
+    if (item.isPlan){
+      this.router.navigate(["/" + this.lang + "/plans/detail",item.id]);
+    } else if (item.googleSpot) {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
+    } else {
+      this.router.navigate(["/" + this.lang + "/spots/detail",item.id]);
     }
   }
 
