@@ -7,7 +7,7 @@ import { RootComponent } from './layout/root/root.component';
 import { AuthGuard } from './auth.guard';
 
 import { TopComponent } from './pages/top/top.component';
-import { MapComponent } from './pages/map/map.component';
+//import { MapComponent } from './pages/map/map.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 
@@ -35,8 +35,8 @@ const routes: Routes = [
       path: "",
       component: BlankComponent,
       children: [
-        { path: "top", component: TopComponent },
-        { path: "map", component: MapComponent }
+        { path: "top", component: TopComponent }//,
+        //{ path: "map", component: MapComponent }
       ]
     },
     { path: "", redirectTo: "/ja/planspot", pathMatch: "full" }
