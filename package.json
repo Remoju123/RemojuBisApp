@@ -10,7 +10,7 @@
     "dev:ssr": "ng run RemojuApp-V3U:serve-ssr",
     "serve:ssr": "node dist/RemojuApp-V3U/server/main.js",
     "build:ssr": "ng build && ng run RemojuApp-V3U:server",
-    "prerender": "ng run RemojuApp-V3U:prerender",
+    "prerender": "ng run RemojuApp-V3U:prerender --configuration production",
     "bundle-stats": "webpack-bundle-analyzer dist/RemojuApp-V3U/browser/stats.json"
   },
   "private": true,
