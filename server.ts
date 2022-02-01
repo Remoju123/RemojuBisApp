@@ -8,7 +8,7 @@ import * as express from 'express';
 import { join } from 'path';
 import { existsSync, readFileSync } from 'fs';
 
-let distFolder = join(process.cwd(), 'dist/remojuapp-v3u/browser');
+let distFolder = join(process.cwd(), 'dist/RemojuApp-V3U/browser');
 if(!existsSync(distFolder)){
   distFolder = join(process.cwd(),'browser');
 }
