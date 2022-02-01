@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
-import { ComfirmDialogParam, DataSelected, ListSelectMaster } from "../../class/common.class";
+import { ComfirmDialogParam, DataSelected } from "../../class/common.class";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
@@ -39,7 +39,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   guid: string;
 
   condition: ListSearchCondition;
-  listSelectMaster: ListSelectMaster;
+  //listSelectMaster: ListSelectMaster;
   count: number = 0;
   rows: PlanSpotList[] = [];
   details$: PlanSpotList[] = [];
@@ -65,18 +65,17 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     // GUID取得
     this.guid = await this.commonService.getGuid();
 
-    this.mypageFavoriteListService.getMypageFavoriteSort().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+    /*this.mypageFavoriteListService.getMypageFavoriteSort().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
-      this.listSelectMaster.isList = true;
       this.$mSort = r.mSort;
     });
     let condition: any = await this.indexedDBService.getListSearchConditionMyfav();
       if (condition){
         this.condition = condition;
-      }
+      }*/
 
     this.getPlanSpotDataSet();
-
+/*
     this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$))
     .subscribe(result => {
       this.rows = result.list;
@@ -84,7 +83,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       this.count = result.list.length;
       console.log(result.list.length);
     })
-
+*/
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r=>{
       this.myPlanSpots = r;
@@ -103,7 +102,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   getPlanSpotDataSet() {
     this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      this.planspots.filteringData(r,this.condition,this.listSelectMaster);
+      //this.planspots.filteringData(r,this.condition,this.listSelectMaster);
       this.mergeNextDataSet();
     })
   }

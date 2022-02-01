@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import {
-  ListSelected,
   ListSelectedPlan
 } from "../class/common.class";
 import { MypagePlanAppList, MypagePlanAppListSearchResult } from "../class/mypageplanlist.class";
@@ -54,7 +53,7 @@ export class MypagePlanListService {
     isRelease: boolean,
     memo: string) {
     const url = this.host + "/api/MypagePlanList/RegistIsRelease";
-    return this.http.get<ListSelected>(url, {
+    return this.http.get<boolean>(url, {
       params: {
         planUserId: String(planUserId),
         isRelease: String(isRelease),

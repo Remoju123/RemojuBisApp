@@ -1,5 +1,5 @@
 import { DataSelected, ListSelectMaster } from "./common.class";
-import { SpotSearchCategory } from "./spotlist.class";
+import { SpotSearchCategory } from "./spot.class";
 import { PlanSearchCategory, PlanSpotName } from "./planlist.class";
 
 import { ListSearchCondition } from "./indexeddb.class";

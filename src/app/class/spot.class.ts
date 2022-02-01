@@ -1,7 +1,6 @@
 import { FormControl } from "@angular/forms";
 import { UserStaff } from "./plan.class";
 import { DataSelected, Recommended } from "./common.class"
-import { SpotBudget, SpotBusinessHours, SpotSearchCategory } from "./spotlist.class";
 import { ReviewResult } from "./review.class";
 export class Spot {
   accesses: Accesses[];
@@ -308,4 +307,47 @@ export class SpotThumb{
   latitude:number;
   longitude:number;
   start_time:string;
+}
+
+export class SpotAccesses {
+  version_no: number;
+  spot_id: number;
+  display_order: number;
+  access: number;
+  nearest: string;
+}
+
+export class SpotFavorite {
+  spot_id: number;
+  google_spot_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class SpotBudget {
+  version_no: number;
+  spot_id: number;
+  budget_frame_id: number;
+  budget_lower_limit: number;
+  budget_cap: number;
+}
+
+export class SpotBusinessHours {
+  version_no: number;
+  spot_id: number;
+  display_order: number;
+  business_day: string;
+  business_hours: string;
+  is_main: boolean;
+}
+
+export class SpotSearchCategory {
+  version_no: number;
+  spot_id: number;
+  search_category_id: number;
+  name: string;
+  parentId: number;
+  parentName: string;
 }

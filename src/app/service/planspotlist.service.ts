@@ -35,9 +35,6 @@ export class PlanSpotListService {
   public searchSubject = new Subject<searchResult>();
   public searchFilter = this.searchSubject.asObservable();
 
-  public searchSubjectNoList = new Subject<searchResult>();
-  public searchFilterNoList = this.searchSubjectNoList.asObservable();
-
   public userPlanSubject = new Subject<PlanSpotList[]>();
   public userPlanSubject$ = this.userPlanSubject.asObservable();
 
@@ -281,11 +278,7 @@ export class PlanSpotListService {
     this.result.searchParamsObj.lst = cond.select;
     this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
 
-    if (master.isList) {
-      this.searchSubject.next(this.result);
-    } else {
-      this.searchSubjectNoList.next(this.result);
-    }
+    this.searchSubject.next(this.result);
   }
 
   // プラン一覧(詳細)を整形

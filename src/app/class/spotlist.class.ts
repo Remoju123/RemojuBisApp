@@ -1,5 +1,6 @@
-import { Recommended, DataSelected } from "./common.class";
-import { Seo } from "./spot.class";
+/*import { Recommended, DataSelected } from "./common.class";
+import { Seo, SpotFavorite } from "./spot.class";
+import { GoogleSpot, SpotAccesses } from "./planspotlist.class";
 
 export class searchResult{
   list:SpotAppList[];
@@ -108,7 +109,7 @@ export class SpotAppList {
   budgetFrameHead: string;
   // メイン営業時間
   businessHourMain: string;
-  /*---add by mm ---*/
+  ---add by mm ---
   // 営業時間ヘッダ表示用
   businessHourHead: string;
   // お気に入りカウント
@@ -161,30 +162,6 @@ export class SearchCategory {
   categoryName3: string;
 }
 
-export class GoogleSpot {
-  google_spot_id: number;
-  areaId: number;
-  spot_name: string;
-  address: string;
-  picture_url: string;
-  latitude: string;
-  longitude: string;
-  place_id: string;
-  create_user_id: string;
-  create_datetime: string;
-  mArea: MArea;
-  formatAddress: string;
-  isFavorite: boolean;
-  compoundCode: string;
-}
-
-export class SpotAccesses {
-  version_no: number;
-  spot_id: number;
-  display_order: number;
-  access: number;
-  nearest: string;
-}
 
 export class SpotPicture {
   version_no: number;
@@ -205,13 +182,7 @@ export class SpotBusinessHours {
   is_main: boolean;
 }
 
-export class SpotBudget {
-  version_no: number;
-  spot_id: number;
-  budget_frame_id: number;
-  budget_lower_limit: number;
-  budget_cap: number;
-}
+
 
 export class SpotSearchCategory {
   version_no: number;
@@ -222,14 +193,7 @@ export class SpotSearchCategory {
   parentName: string;
 }
 
-export class SpotFavorite {
-  spot_id: number;
-  google_spot_id: number;
-  guid: string;
-  is_delete: boolean;
 
-  objectId: string;
-}
 
 export class HistoryParam{
   spot: number[];
@@ -249,14 +213,5 @@ export class FilterCondition {
   isOpens: [];
 }
 
-export class MArea {
-  area_id: number;
-  display_order: number;
-  parent_area_id: number;
-  is_display_search: boolean;
-  is_active: boolean;
-  level: number;
-  map_url: string;
-  area_name_1: string;
-  area_name_2: string;
-}
+
+*/
