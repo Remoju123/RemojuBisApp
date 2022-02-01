@@ -157,7 +157,8 @@
             "routes": [
               "/",
               "/ja/planspot"
-            ]
+            ],
+            "guessRoutes":false
           },
           "configurations": {
             "production": {}
