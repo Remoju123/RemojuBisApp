@@ -93,7 +93,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     /*0カウントフリーズ対応　20220119*/
     // if (this.rows.length === 0 && this.condition.select !== 'google') {
     //   setTimeout(() => {
-    //     //this.mergeNextDataSet();  
+    //     //this.mergeNextDataSet();
     //     this.getPlanSpotDataSet();
     //   }, 300);
     // }
@@ -325,7 +325,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   // プラン/スポット詳細リンク
-  linktoDetail(id: number) {
+  linktoDetail(item: PlanSpotList) {
     const c = new CacheStore();
     c.data = this.rows;
     c.p = this.p;
@@ -341,11 +341,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.googleSearchArea = this.googleSearchArea;
 
     this.transferState.set<CacheStore>(PLANSPOT_KEY, c);
-    // 5digits or more is Plan
-    if (id > 10000) {
-      this.router.navigate(["/" + this.lang + "/spots/detail", id]);
+
+    if (item.isPlan) {
+      this.router.navigate(["/" + this.lang + "/plans/detail", item.id]);
+    } else if (item.googleSpot) {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
     } else {
-      this.router.navigate(["/" + this.lang + "/plans/detail", id]);
+      this.router.navigate(["/" + this.lang + "/spots/detail", item.id]);
     }
   }
 

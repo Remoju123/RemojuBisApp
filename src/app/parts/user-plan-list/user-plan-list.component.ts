@@ -101,13 +101,13 @@ export class UserPlanListComponent implements OnInit {
     item.isFavorite = !item.isFavorite;
   }
 
-  linktoDetail(id:number){
-    if(id > 10000){
-      this.router.navigate(["/" + this.lang + "/spots/detail",id]);
-    }else{
-      this.router.navigate(["/" + this.lang + "/plans/detail",id]).then(()=>{
+  linktoDetail(item:PlanSpotList){
+    if(item.isPlan){
+      this.router.navigate(["/" + this.lang + "/plans/detail",item.id]).then(()=>{
         this.dialogRef.close();
       });
+    }else{
+      this.router.navigate(["/" + this.lang + "/spots/detail",item.id]);
     }
   }
 

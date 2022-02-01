@@ -22,14 +22,14 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() myFavorite: boolean;
   @Input() myPlanSpots:any;
 
-  @Output() linked = new EventEmitter<number>();
+  @Output() linked = new EventEmitter<PlanSpotList>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
   @Output() setFav = new EventEmitter<PlanSpotList>();
   @Output() delFav = new EventEmitter<PlanSpotList>();
   @Output() keyword = new EventEmitter<any>();
-  
+
   isProd:boolean;
-  
+
   constructor(
     private commonService: CommonService,
     private spotService: SpotService,
@@ -40,8 +40,8 @@ export class PlanspotListItemComponent implements OnInit {
     this.isProd = environment.production;
   }
 
-  linktoDetail(id:number){
-    this.linked.emit(id);
+  linktoDetail(planSpot: PlanSpotList){
+    this.linked.emit(planSpot);
   }
 
   // スポット：定休日
@@ -63,7 +63,7 @@ export class PlanspotListItemComponent implements OnInit {
         const businessHour = this.item.businessHours!==null?this.item.businessHours:"";
           return businessHour!==""?this.spotService.getBusinessHourHead(this.item.businessHours):"";
       }catch{
-        // 
+        //
       }
     }
     return ""
@@ -186,7 +186,7 @@ export class PlanspotListItemComponent implements OnInit {
     }else{
       return false;
     }
-    
+
   }
 
   toPostUser(id:any){

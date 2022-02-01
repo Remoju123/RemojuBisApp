@@ -74,9 +74,9 @@ import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
 //import { SpotListComponent } from './pages/spot-list/spot-list.component';
 import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
-import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
+//import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
 //import { PlanListComponent } from './pages/plan-list/plan-list.component';
-import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
+//import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
 import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
@@ -90,15 +90,15 @@ import { MapDialogComponent } from './parts/map-dialog/map-dialog.component';
 import { GoogleSpotDialogComponent } from './parts/google-spot-dialog/google-spot-dialog.component';
 import { MemoDialogComponent } from './parts/memo-dialog/memo-dialog.component';
 import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-infowindow-dialog.component';
-import { MapComponent } from './pages/map/map.component';
-import { PlanPanelComponent } from './parts/plan-panel/plan-panel.component';
+//import { MapComponent } from './pages/map/map.component';
+//import { PlanPanelComponent } from './parts/plan-panel/plan-panel.component';
 import { MyplanComponent } from './pages/myplan/myplan.component';
 import { MessageDialogComponent } from './parts/message-dialog/message-dialog.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
-import { PlanDetailPanelComponent } from './pages/plan-detail-panel/plan-detail-panel.component';
+//import { PlanDetailPanelComponent } from './pages/plan-detail-panel/plan-detail-panel.component';
 import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
-import { SpotDetailDialogComponent } from './parts/spot-detail-dialog/spot-detail-dialog.component';
+//import { SpotDetailDialogComponent } from './parts/spot-detail-dialog/spot-detail-dialog.component';
 import { UserComponent } from './pages/user/user.component';
 //import { UserplanPostComponent } from './pages/userplan-post/userplan-post.component';
 import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
@@ -159,11 +159,11 @@ export const MATERIAL_MODULES = [
     NavMenuComponent,
     PlanDetailComponent,
     //PlanListComponent,
-    PlanPanelComponent,
+    //PlanPanelComponent,
     MyplanComponent,
     MypagePlanListComponent,
     MypageFavoriteListComponent,
-    SearchDialogFormComponent,
+    //SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
     SystemErrorComponent,
     LanguageComponent,
@@ -171,9 +171,9 @@ export const MATERIAL_MODULES = [
     UrlcopyDialogComponent,
     MessageDialogComponent,
     MapPanelComponent,
-    SpotDetailDialogComponent,
+    //SpotDetailDialogComponent,
     MypageUserprofileComponent,
-    MapComponent,
+    //MapComponent,
     AppComponent,
     MapInfowindowDialogComponent,
     MypageComponent,
@@ -188,8 +188,8 @@ export const MATERIAL_MODULES = [
     TransferPanelComponent,
     MapDialogComponent,
     SpotListPanelComponent,
-    PlanListPanelComponent,
-    PlanDetailPanelComponent,
+    //PlanListPanelComponent,
+    //PlanDetailPanelComponent,
     //PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
@@ -279,14 +279,14 @@ export const MATERIAL_MODULES = [
   ],
   entryComponents:[
     MatSpinner,
-    SearchDialogFormComponent,
+    //SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
     MemoDialogComponent,
     UrlcopyDialogComponent,
     MessageDialogComponent,
     SpotDetailComponent,
     MapPanelComponent,
-    SpotDetailDialogComponent,
+    //SpotDetailDialogComponent,
     MapInfowindowDialogComponent,
     AppComponent,
     SpinnerLoadingIndicatorComponent,
