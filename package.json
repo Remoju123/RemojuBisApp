@@ -9,8 +9,8 @@
     "test": "ng test",
     "dev:ssr": "ng run RemojuApp-V3U:serve-ssr",
     "serve:ssr": "node dist/RemojuApp-V3U/server/main.js",
-    "build:ssr": "ng build --prod && ng run RemojuApp-V3U:server:production",
-    "prerender": "ng run RemojuApp-V3U:prerender",
+    "build:ssr": "ng build && ng run RemojuApp-V3U:server:production",
+    "prerender": "ng build && ng run RemojuApp-V3U:prerender",
     "bundle-stats": "webpack-bundle-analyzer dist/RemojuApp-V3U/browser/stats.json"
   },
   "private": true,
