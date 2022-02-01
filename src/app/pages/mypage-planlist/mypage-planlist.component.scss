@@ -309,7 +309,7 @@
 }
 
 #spot-detail {
-  font-family: "Noto Sans JP", sans-serif;
+  //font-family: "Noto Sans JP", sans-serif;
   line-height: 1.8;
   text-align: justify;
   text-justify: inter-ideograph;
@@ -354,7 +354,7 @@
 // spot detailからコピー ここまで
 
 ::ng-deep .ngx-pagination {
-  font-family: "Noto Sans JP";
+  //font-family: "Noto Sans JP";
   font-size: 70%;
   padding: 10px 0;
   margin-left: 0;
@@ -574,7 +574,7 @@
 
   .staytime {
     ::ng-deep .mat-figure {
-      font-family: "Noto Sans JP";
+      //font-family: "Noto Sans JP";
       font-size: 0.9rem;
       justify-content: left;
       margin-left: 16px;
