@@ -451,20 +451,20 @@ export class MapPanelComponent implements OnInit,OnDestroy {
           , i);
 
         let _dir = [];
-        
+
         for (let j = 0; j < dir.length; j++) {
           _dir.push(dir[j]);
         };
 
         this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
-        
+
       // 移動方法設定なしかつ最終スポットではない場合
       } else if (i < this.mapSpots.length){
         this.mapSpots[i].directions = "<dl><dd>" + this.translate.instant("DuringRouteCalculation") + "</dd></dl>";
       }
     }
 
-    
+
 
     // 全画面表示かつユーザ作成プランの場合、その他Remojuスポットを表示
     if (this.isFull && !this.isDetail) {
@@ -513,7 +513,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     // 地図の中心を設定
     this.setMapFitBounds(false);
     // プランのスポットの地図内の表示切替
-    this.setPlanMarker();    
+    this.setPlanMarker();
   }
 
   // 地図の中心を設定
@@ -566,7 +566,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   // ユーザの現在地を表示
   async getLocation() {
     // ユーザの位置を取得
-    const location = await this.spotListService.getGeoLocation();
+    const location = await this.commonService.getGeoLocation();
 
     // マーカーを表示
     if (
@@ -615,7 +615,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     this.spotSrcFrom = this.mapSpots[this.spotIndex].pictureUrl;
     if (this.mapSpots.length > 1){
       // スポット名To
-      this.spotNameTo = this.mapSpots[this.spotIndex+1].spotName;   
+      this.spotNameTo = this.mapSpots[this.spotIndex+1].spotName;
       // スポット写真To
       this.spotSrcTo = this.mapSpots[this.spotIndex+1].pictureUrl;
     }

@@ -127,7 +127,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
-      this.listSelectMaster.isList = true;
       this.$mSort = r.mSort;
     });
 

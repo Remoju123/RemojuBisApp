@@ -1,7 +1,7 @@
 import { Inject, Injectable,OnDestroy, PLATFORM_ID } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { ComfirmDialogParam, MyPlanApp, PlanSpotCommon, ImageSize } from "../class/common.class";
+import { ComfirmDialogParam, MyPlanApp, PlanSpotCommon, ImageSize, Location } from "../class/common.class";
 import { ListSearchCondition } from "../class/indexeddb.class";
 import { IndexedDBService } from "./indexeddb.service";
 import { Guid } from "guid-typescript";
@@ -371,6 +371,50 @@ export class CommonService implements OnDestroy{
       return age;
     }
     return 0;
+  }
+
+  // 現在地の取得
+  getGeoLocation() {
+    return new Promise<Location>((resolve, reject) => {
+      // 端末がGeoLocation APIに対応している場合
+      if (navigator.geolocation) {
+        // 現在地を取得
+        navigator.geolocation.getCurrentPosition(
+          // [第1引数] 成功
+          position => {
+            const data = position.coords;
+            let location: Location = new Location();
+            location = {
+              latitude: data.latitude,
+              longitude: data.longitude,
+              errorCd: 0
+            };
+            resolve(location);
+          },
+          // [第2引数] 失敗
+          error => {
+            // エラーコード(error.code)の番号
+            // 0:UNKNOWN_ERROR				原因不明のエラー
+            // 1:PERMISSION_DENIED			利用者が位置情報の取得を許可しなかった
+            // 2:POSITION_UNAVAILABLE		電波状況などで位置情報が取得できなかった
+            // 3:TIMEOUT					位置情報の取得に時間がかかり過ぎた…
+
+            const location: Location = new Location();
+            location.errorCd = error.code;
+
+            resolve(location);
+            // reject(location);
+          }
+        );
+        return location;
+      } else {
+        const location: Location = new Location();
+        location.errorCd = 9;
+
+        reject(location);
+        return location;
+      }
+    });
   }
 
   // 外部地図アプリまたはページへ連携

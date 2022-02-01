@@ -73,7 +73,7 @@ import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.co
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
 //import { SpotListComponent } from './pages/spot-list/spot-list.component';
-import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
+//import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
 //import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
 //import { PlanListComponent } from './pages/plan-list/plan-list.component';
 //import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
@@ -187,7 +187,7 @@ export const MATERIAL_MODULES = [
     RatingCompComponent,
     TransferPanelComponent,
     MapDialogComponent,
-    SpotListPanelComponent,
+    //SpotListPanelComponent,
     //PlanListPanelComponent,
     //PlanDetailPanelComponent,
     //PullToRefreshComponent,

@@ -12,7 +12,8 @@ import {
 } from "../../class/spot.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { UserStaff } from "../../class/plan.class";
-import { GoogleSpot, SpotSearchCategory } from "../../class/spotlist.class";
+import { GoogleSpot } from "../../class/planspotlist.class";
+import { SpotSearchCategory } from "../../class/spot.class";
 import { ReviewResult } from "../../class/review.class"
 import { Catch } from "../../class/log.class";
 import { Meta } from "@angular/platform-browser";

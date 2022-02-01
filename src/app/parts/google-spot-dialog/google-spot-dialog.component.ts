@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit, OnDestroy, ViewChild, ElementRef } from "@angular/core";
-import { GoogleSpot } from "../../class/spotlist.class";
 import { PlanSpotCommon } from "../../class/common.class";
-import { SpotListService } from "../../service/spotlist.service";
+import { CommonService } from "../../service/common.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AgmMap, LatLngBounds } from "@agm/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 
@@ -17,7 +15,7 @@ declare const google: any;
 export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
 
   constructor(
-    private spotListService: SpotListService,
+    private commonService: CommonService,
     private translate: TranslateService,
     public dialogRef: MatDialogRef<GoogleSpotDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: [ PlanSpotCommon, boolean ]
@@ -69,7 +67,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
       }
     } else {
       // ユーザの居場所を設定
-      const location = await this.spotListService.getGeoLocation();
+      const location = await this.commonService.getGeoLocation();
       if (location.errorCd === null &&
         location.latitude !== null &&
         location.longitude !== null){

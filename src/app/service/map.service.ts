@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Spot } from "../class/spot.class";
-import { GoogleSpot } from '../class/spotlist.class';
+import { GoogleSpot } from "../class/planspotlist.class";
 import { CommonService } from "./common.service";
 import { Subject } from "rxjs";
 
