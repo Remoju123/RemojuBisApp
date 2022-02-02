@@ -1,6 +1,8 @@
 <div class="plandtl">
   <mat-card id="plandtlheader" [ngClass]="{'onplan':match(planSpotids,myPlanSpots)}">
-    <div class='link' (click)="linktolist()">{{"BackEveryoneRecommendations" | translate}}</div>
+    <div class='link' (click)="linktolist()">
+      <span class="frame">{{"BackEveryoneRecommendations" | translate}}</span>
+    </div>
     <mat-card-header>
       <div class='header'>
         <div class="lt">

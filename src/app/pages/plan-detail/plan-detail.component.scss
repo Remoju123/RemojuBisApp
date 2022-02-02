@@ -31,9 +31,21 @@ div.plandtl {
 
     .link {
       font-size: 14px;
-      padding: 6px 12px;
+      padding: 3px 12px 9px;
       display: flex;
       justify-content: center;
+
+      .frame {
+        border: 1px solid #B7B7B7;
+        padding: 1px 16px;
+        border-radius: 12px;
+        &::before{
+          content: "keyboard_arrow_left";
+      font-family: "Material Icons";
+      font-size: 18px;
+      vertical-align: sub;
+        }
+      }
     }
 
     .header {
@@ -869,7 +881,7 @@ div.plandtl {
               border: 0 solid black;
               transform: translateY(-50%);
 
-              &.disabled{
+              &.disabled {
                 opacity: 0;
               }
             }
