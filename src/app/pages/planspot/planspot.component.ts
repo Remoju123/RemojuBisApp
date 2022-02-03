@@ -87,18 +87,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngAfterContentInit() {
-    //console.log(this.rows.length);
-    //console.log(this.isList);
-    /*0カウントフリーズ対応　20220119*/
-    // if (this.rows.length === 0 && this.condition.select !== 'google') {
-    //   setTimeout(() => {
-    //     //this.mergeNextDataSet();
-    //     this.getPlanSpotDataSet();
-    //   }, 300);
-    // }
-  }
-
   ngAfterViewChecked(): void {
     if (this.offset) {
       if (this.offset > 0) {
@@ -116,14 +104,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.recoveryQueryParams();
 
     this.planspots.searchFilter
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(result => {
-      this.rows = result.list;
-      this.temp = [...this.rows];
-      this.optionKeywords = result.searchTarm;
-      this.historyReplace(result.searchParams);
-      this.count = result.list.length;
-    })
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(result => {
+        this.rows = result.list;
+        this.temp = [...this.rows];
+        this.optionKeywords = result.searchTarm;
+        this.historyReplace(result.searchParams);
+        this.count = result.list.length;
+      })
 
     this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
       this.listSelectMaster = r;
@@ -188,13 +176,11 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.prevkeyword = null;
       this.token = null;
       this.count = 0;
-
       this.mergeNextDataSet();
     } else {
       this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        // trasferState save list
+        // trasferState save for SearchPanel
         this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, r);
-
         this.planspots.filteringData(r, this.condition, this.listSelectMaster);
         this.mergeNextDataSet();
       });
@@ -234,7 +220,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.p++;
     } else {
       this.isList = false;
-      //if(this.condition.select !== 'plan'){
       if (this.condition.select === 'google') {
         const keyword = this.condition.keyword;
         if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
@@ -253,6 +238,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   cacheRecoveryDataSet() {
     const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+    console.log(this.transferState);
     this.rows = cache.data;
     this.end = cache.end;
     this.offset = cache.offset;
@@ -277,14 +263,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         history.replaceState(
           "search_key",
           "",
-          //location.pathname.substring(1, location.pathname.lastIndexOf("/")) + "?" + searchParams
           location.pathname.substring(0) + "?" + searchParams
         );
       } else {
         history.replaceState(
           "search_key",
           "",
-          //location.pathname.substring(1, location.pathname.lastIndexOf("/")));
           location.pathname.substring(0)
         );
       }
