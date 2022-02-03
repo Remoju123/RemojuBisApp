@@ -142,20 +142,25 @@ export class PlanspotListItemComponent implements OnInit {
   }
 
   chkInMyPlanspot(item:PlanSpotList){
-    if(!this.myFavorite){
-      if(item.isPlan===1){
-        if(item.planSpotNames!==null){
-          let planSpotIds = [];
-          Array.from(item.planSpotNames).map(n => {
-            planSpotIds.push(n.spotId);
-          });
-          return this.getIsDuplicate(planSpotIds,this.myPlanSpots);
+    try {
+      if(!this.myFavorite){
+        if(item.isPlan===1){
+          if(item.planSpotNames!==null){
+            let planSpotIds = [];
+            Array.from(item.planSpotNames).map(n => {
+              planSpotIds.push(n.spotId);
+            });
+            return this.getIsDuplicate(planSpotIds,this.myPlanSpots);
+          }
+          return false;
+        }else{
+          return Array.from(this.myPlanSpots).includes(item.id)
         }
-        return false;
       }else{
-        return Array.from(this.myPlanSpots).includes(item.id)
-      }
-    }else{
+        return false;
+      }  
+    } catch (error) {
+      //
       return false;
     }
   }
