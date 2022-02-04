@@ -139,12 +139,13 @@ export const MATERIAL_MODULES = [
 
 export class MyHammerGestureConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
-    const mc = new Hammer(element, this.options);
+
+    const mc = new Hammer(element, {touchAction:"pan-y"});
 
     mc.get('pinch').set({enable: true});
     mc.get('rotate').set({enable: true});
     mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-
+    
     for (const eventName in this.overrides) {
       mc.get(eventName).set(this.overrides[eventName]);
     }
