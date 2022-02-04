@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, ViewChild } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { ImageCropperParam } from "../../class/common.class";
 import { ImageCroppedEvent, ImageCropperComponent } from "ngx-image-cropper";
-import * as Hammer from "hammerjs";
 
 @Component({
   selector: "app-image-cropper-dialog",

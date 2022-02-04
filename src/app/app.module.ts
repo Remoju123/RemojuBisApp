@@ -1,7 +1,10 @@
 import { Injectable, NgModule } from '@angular/core';
-import { BrowserModule, HammerModule, TransferState, BrowserTransferStateModule } from '@angular/platform-browser';
+import {
+  BrowserModule, TransferState, BrowserTransferStateModule, HammerModule, HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG, HAMMER_LOADER
+} from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClient,  HttpClientModule} from "@angular/common/http";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule, SwPush } from '@angular/service-worker';
@@ -24,7 +27,8 @@ import {
   MatSpinner
 } from "@angular/material/progress-spinner";
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-//import Hammer from '@egjs/hammerjs';
+
+import Hammer from '@egjs/hammerjs';
 import { NgxPageScrollCoreModule } from "ngx-page-scroll-core";
 import { NgxPageScrollModule } from "ngx-page-scroll";
 import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
@@ -33,7 +37,7 @@ import { FilterPipeModule } from "ngx-filter-pipe";
 import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 import { OverlayModule } from "@angular/cdk/overlay";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import {CrystalLightboxModule} from '@crystalui/angular-lightbox';
+import { CrystalLightboxModule } from '@crystalui/angular-lightbox';
 
 // サービス
 import { DataService } from "./service/data.service";
@@ -131,9 +135,9 @@ export const CDK_MODULES = [
 export const MATERIAL_MODULES = [
   MatProgressSpinnerModule,
 ];
-@Injectable({providedIn:'root'})
+@Injectable({ providedIn: 'root' })
 
-/*export class MyHammerGestureConfig extends HammerGestureConfig {
+export class MyHammerGestureConfig extends HammerGestureConfig {
   buildHammer(element: HTMLElement) {
     const mc = new Hammer(element, this.options);
 
@@ -146,7 +150,7 @@ export const MATERIAL_MODULES = [
     }
     return mc;
   }
-}*/
+}
 @NgModule({
   declarations: [
     RootComponent,
@@ -214,7 +218,7 @@ export const MATERIAL_MODULES = [
       loader: {
         provide: TranslateLoader,
         useFactory: translateBrowserLoaderFactory,
-        deps: [HttpClient,TransferState]
+        deps: [HttpClient, TransferState]
       }
     }),
     BrowserTransferStateModule,
@@ -272,12 +276,12 @@ export const MATERIAL_MODULES = [
     { provide: "BASE_HOST_URL", useValue: environment.host },
     { provide: "BASE_API_URL", useValue: environment.backend },
     AuthGuard,
-    {provide: MAT_DATE_LOCALE,useValue:"ja-JP"},
-    NgDialogAnimationService
-    //{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
-    //{ provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
+    { provide: MAT_DATE_LOCALE, useValue: "ja-JP" },
+    NgDialogAnimationService,
+    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
+    { provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
   ],
-  entryComponents:[
+  entryComponents: [
     MatSpinner,
     //SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
@@ -302,4 +306,4 @@ export const MATERIAL_MODULES = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

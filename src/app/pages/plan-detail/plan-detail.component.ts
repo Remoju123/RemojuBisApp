@@ -631,4 +631,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     autoPlay:false
   };
 
+
+  onSwipeRight(event,data){
+    //console.log("event right", event)
+    this.linktolist();
+  }
+
 }
