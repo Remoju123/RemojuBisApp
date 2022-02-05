@@ -633,7 +633,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
 
   onSwipeRight(event,data){
-    //console.log("event right", event,data)
+    console.log("event right", event,data)
     this.linktolist();
     //alert(event);
   }
