@@ -1,12 +1,14 @@
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { DatePipe, isPlatformBrowser } from "@angular/common";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { MyPlanApp } from "../class/common.class";
+import { MyPlanApp, NestDataSelected } from "../class/common.class";
+import { ListSearchCondition } from "../class/indexeddb.class";
 import { MyPlanAppListSelected } from "../class/mypageplanlist.class";
+import { IndexedDBService } from "./indexeddb.service";
 import { CommonService } from "./common.service";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
-import { IndexedDBService } from "./indexeddb.service";
+import { LangFilterPipe } from "../utils/lang-filter.pipe";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -36,6 +38,9 @@ export class MyplanService  {
 
   private MySpots = new Subject();
   public MySpots$ = this.MySpots.asObservable();
+
+  public searchSubject = new Subject<string[]>();
+  public searchFilter = this.searchSubject.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -87,6 +92,39 @@ export class MyplanService  {
     myPlanApp.isAuto = isAuto;
     const url = this.host + "/api/Myplan/SetTransfer";
     return this.http.post<MyPlanApp>(url, myPlanApp, httpOptions);
+  }
+
+  getSearchFilter(mArea: NestDataSelected[], mSearchCategory: NestDataSelected[], condition: ListSearchCondition){
+    const _areaNums: string[] = [];
+    const _category: string[] = [];
+    const kws: string[] = [];
+
+    const Categories = [
+      ...mSearchCategory[0].dataSelecteds,
+      ...mSearchCategory[1].dataSelecteds,
+      ...mSearchCategory[2].dataSelecteds
+    ];
+
+    const langpipe = new LangFilterPipe();
+
+    if(condition.areaId.length){
+      condition.areaId.forEach(v=>{
+        _areaNums.push(mArea.find(x=>x.parentId === v).parentName)
+      });
+    }
+
+    if(condition.searchCategories.length){
+      condition.searchCategories.forEach(v=>{
+        _category.push(Categories.find(x => x.id === v).name);
+      })
+    }
+
+    let kw = [..._areaNums, ..._category];
+    kw.map(k => {
+      kws.push(langpipe.transform(k, this.translate.currentLang));
+    });
+
+    this.searchSubject.next(kws);
   }
 
   // プラン登録

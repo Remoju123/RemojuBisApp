@@ -39,7 +39,7 @@ div.plandtl {
         border: 1px solid #B7B7B7;
         padding: 1px 16px;
         border-radius: 12px;
-        
+
 
         &::before {
           content: "keyboard_arrow_left";
@@ -323,7 +323,7 @@ div.plandtl {
           }
         }
 
-        //@media screen and (min-width: 415px) and (max-width: 1024px) { 
+        //@media screen and (min-width: 415px) and (max-width: 1024px) {
         @media screen and (min-width: 429px) {
           .thumbspots {
             height: 20.4vw;

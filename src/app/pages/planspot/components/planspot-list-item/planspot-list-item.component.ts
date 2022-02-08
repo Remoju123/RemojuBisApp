@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { PlanAppList } from 'src/app/class/planlist.class';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
@@ -144,7 +143,7 @@ export class PlanspotListItemComponent implements OnInit {
   chkInMyPlanspot(item:PlanSpotList){
     try {
       if(!this.myFavorite){
-        if(item.isPlan===1){
+        if(item.isPlan){
           if(item.planSpotNames!==null){
             let planSpotIds = [];
             Array.from(item.planSpotNames).map(n => {
@@ -158,7 +157,7 @@ export class PlanspotListItemComponent implements OnInit {
         }
       }else{
         return false;
-      }  
+      }
     } catch (error) {
       //
       return false;

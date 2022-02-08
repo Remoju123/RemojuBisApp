@@ -4,7 +4,7 @@ import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
 import { SpotService } from "../../service/spot.service";
-import { SpotListService } from "../../service/spotlist.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import { Recommended, ComfirmDialogParam } from "../../class/common.class";
 import {
   SpotApp,
@@ -39,7 +39,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     private indexedDBService: IndexedDBService,
     private myplanService: MyplanService,
     private spotService: SpotService,
-    private spotListService: SpotListService,
+    private planspotListService: PlanSpotListService,
     private meta: Meta,
     private translate: TranslateService,
     @Inject(PLATFORM_ID) private platformId:Object
@@ -198,10 +198,12 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   onClickFavorite() {
-    this.spotListService
+    this.planspotListService
       .registFavorite(
         this.$spotId,
+        false,
         !this.data.isFavorite,
+        false,
         this.guid
       )
       .pipe(takeUntil(this.onDestroy$))
@@ -415,8 +417,8 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     }
 
     // プランに追加
-    this.spotListService
-    .addSpot(this.$spotId).then(result => {
+    this.planspotListService
+    .addPlan(this.$spotId, false).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
         if (myPlanApp) {
           // プラン作成に反映

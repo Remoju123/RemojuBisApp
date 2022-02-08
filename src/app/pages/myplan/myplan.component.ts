@@ -2,7 +2,6 @@ import { Component, Inject, OnInit, OnDestroy, Injectable, ViewChild, ViewChildr
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { PlanListService } from "../../service/planlist.service";
 import { SpotService } from "../../service/spot.service";
 import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
@@ -16,7 +15,6 @@ import {
   ListSelectedPlan,
   ImageCropperParam} from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
-import { searchResult, PlanAppList } from "../../class/planlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
 import { MatAccordion, MatExpansionPanel } from "@angular/material/expansion";
@@ -63,7 +61,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private commonService: CommonService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
-    private planListService: PlanListService,
     private planService: PlanService,
     private spotService: SpotService,
     private translate: TranslateService,
@@ -148,8 +145,8 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.genStartTimes();
 
     // エリア・カテゴリの選択内容を表示
-    this.planListService.searchFilterNoList.pipe(takeUntil(this.onDestroy$)).subscribe((result: searchResult)=>{
-      this.optionKeywords = result.searchTarm!="" ? result.searchTarm.split(","):[];
+    this.myplanService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result: string[])=>{
+      this.optionKeywords = result;
     });
 
     // プラン編集変更通知
@@ -296,8 +293,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         this.row.areaId2 = null;
       }
       this.row.categories = this.listSelectedPlan.condition.searchCategories
-      // 選択値を保持
-      // this.listSelectedPlan.condition = result;
+      this.myplanService.getSearchFilter(this.listSelectedPlan.mArea, this.listSelectedPlan.mSearchCategory, this.listSelectedPlan.condition);
       // 保存
       this.onChange(false);
     });
@@ -555,7 +551,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   // スポット削除
   onClickSpotDelete(event:any,planSpot: PlanSpotCommon) {
     event.stopPropagation();
-    
+
     // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if(this.row.planSpots.length === 1){
       this.spotAllRemove();
@@ -769,8 +765,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
         this.listSelectedPlan = r.listSelectedPlan;
         this.listSelectedPlan.mArea.sort((a, b) => a.parentId > b.parentId  ? 1 : -1);
         this.listSelectedPlan.mArea.map(x => x.isHighlight = false);
-        this.listSelectedPlan.planList = new Array<PlanAppList>();
-        this.listSelectedPlan.isList = false;
         this.spotZero = r.myPlan.planSpots;
         this.initRow = JSON.parse(JSON.stringify(r.myPlan));
         this.initRow.planSpots = null;
@@ -817,15 +811,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       }
     }
   }
-
-  /* 閲覧履歴を取得
-  async getHistory(){
-    // 閲覧履歴を取得
-    const hisSpot: any = await this.indexedDBService.getHistorySpot();
-    this.historySpot = hisSpot.reverse();
-    const hisPlan: any = await this.indexedDBService.getHistoryPlan();
-    this.historyPlan = hisPlan.reverse();
-  }*/
 
   // スポット一括クリア
   spotAllRemove() {
@@ -886,7 +871,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     if (this.row.categories) {
       this.listSelectedPlan.condition.searchCategories = this.row.categories;
     }
-    this.planListService.getSearchFilter(this.listSelectedPlan, this.listSelectedPlan.condition);
+    this.myplanService.getSearchFilter(this.listSelectedPlan.mArea, this.listSelectedPlan.mSearchCategory, this.listSelectedPlan.condition);
 
     // プレビュー用の画像を設定
     this.setPreviewPicture();

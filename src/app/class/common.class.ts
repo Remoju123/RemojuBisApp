@@ -1,10 +1,9 @@
 import {
+  Accesses,
   Businesshours,
-  SpotAccesses,
   SpotFavorite
  } from "./spot.class";
 import { Line } from "./plan.class";
-import { PlanAppList } from "./planlist.class";
 import { ListSearchCondition } from "./indexeddb.class";
 import { GoogleSpot, PlanSpotList } from "./planspotlist.class";
 
@@ -43,17 +42,12 @@ export class ListSelectMaster {
 }
 
 export class ListSelectedPlan {
-  constructor() {
-    this.isList = true;
-  }
   mArea: NestDataSelected[];
   mSearchCategory: NestDataSelected[];
   mSearchCategoryPlan: NestDataSelected[];
   mSort: DataSelected[];
   tabIndex: number;
-  planList: PlanAppList[];
   planSpotList: PlanSpotList[];
-  isList: boolean;
   condition: ListSearchCondition;
 }
 
@@ -158,7 +152,7 @@ export class PlanSpotCommon {
   areaName: string;
   categoryText: string;
   categoryIcon: string;
-  spotAccess: SpotAccesses;
+  spotAccess: Accesses;
   businessHours: Businesshours[];
   regularHoliday: string;
   businessHourHead: string;

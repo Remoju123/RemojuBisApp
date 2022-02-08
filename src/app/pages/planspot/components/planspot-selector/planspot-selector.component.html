@@ -35,7 +35,7 @@
       <div class='count'>
         {{count}}<span class="sm">&nbsp;{{ "Count" | translate }}</span>
       </div>
-      <mat-form-field class='condition'>
+      <mat-form-field class='condition' *ngIf="!myFavorite">
         <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval" disableRipple="true">
           <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
             {{ item.name | langFilter:lang}}
@@ -66,13 +66,13 @@
       <button class="popupItem cnt">
         <span>{{count}}件</span>
       </button>
-      <button class='popupItem are' (click)="openDialog(0)">
+      <button *ngIf="!myFavorite" class='popupItem are' (click)="openDialog(0)">
         <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
       </button>
-      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
+      <button *ngIf="!myFavorite" class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
         <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
       </button>
-      <button class="popupItem reset" (click)="condReset()">
+      <button *ngIf="!myFavorite" class="popupItem reset" (click)="condReset()">
         <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
       </button>
     </div>

@@ -1,69 +1,34 @@
-import { DataSelected, Recommended, PlanSpotCommon } from "./common.class";
+import { DataSelected, NestDataSelected, Recommended, PlanSpotCommon } from "./common.class";
 import { ReviewResult } from "../class/review.class";
-import { PlanSpotList, UserPlanList } from "./planspotlist.class";
-import { Observable } from "rxjs";
+import { UserPlanList } from "./planspotlist.class";
 
 export class PlanApp {
-  // バージョンNo
   versionNo: number;
-  // プランID
   planId: number;
-  // プラン名
   planName: string;
-  // プラン説明
   planExplanation: string;
-  // エリアID
   areaId: number;
-  // お気に入り
   isFavorite: boolean;
-  // プラン写真リスト
   pictures: string[];
-  // sigle or multi pic
   picCnt: number;
-  // true:CT作成プラン false:ユーザ作成プラン
   isRemojuPlan: boolean;
-  // true:プラン作成 false:プラン投稿
   isCreation: boolean;
-  // エリア名
   areaName:string;
-  // 所用時間(時)
   timeRequiredHour: number;
-  // 所用時間(分)
   timeRequiredMin:number
-  // 開始時間
   startTime: string;
-  // 終了時間
   endTime: string;
-  // カテゴリ
   searchCategories: DataSelected[];
-  // プランスポット
+  mSearchCategory: NestDataSelected[];
   spots: PlanSpotCommon[];
-  // レビュー
   reviewResult: ReviewResult;
-  // プラン作成者
   userStaff: UserStaff;
-  // ユーザ
   user: OtherUser;
-  // 国リスト
   country: DataSelected[];
-  // メモ
   memo: string;
-  // 近くのおすすめスポット(同一小エリア・PVAll降順)
   spotToGoList: Recommended[];
-  // 特集
   featureList: mFeature[];
-  // SEO
   seo: Seo;
-
-  // おすすめプラン
-  // recommendedPlanList: Recommended[];
-  // 穴場スポット
-  // hiddenSpotList: Recommended[];
-}
-
-export class Langary {
-  lang: string;
-  text: string;
 }
 
 export class Trans {
@@ -112,35 +77,37 @@ export class UserStaff {
 }
 
 export class OtherUser {
-  // 自己紹介
   aboutMe: string;
-  // 国コード
   country: number;
-  // ユーザ名
   displayName: string;
-  // 年代
   age: string;
-  // プロフィール写真URL
   pictureUrl: string;
-  // カバー写真URL
   coverUrl: string;
-  // 性別
   gender: string;
-  // 
   objectId: string;
 }
 
 export class UserPlanData{
-  // ユーザ
   user: OtherUser;
-  // 国リスト
   country: DataSelected[];
-  // メモ
   memo: string;
-  // planspotlist
-  //rows: PlanSpotList[];
   rows: UserPlanList;
 
   myplanspot:any;
+}
 
+export class PlanFavorite {
+  plan_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class PlanUserFavorite {
+  plan_user_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
 }
