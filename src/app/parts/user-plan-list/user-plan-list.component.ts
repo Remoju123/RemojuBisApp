@@ -49,7 +49,7 @@ export class UserPlanListComponent implements OnInit {
 
   // プランに追加
   async addMyPlan(item:PlanSpotList){
-    const tempqty:number = item.isPlan===1 ? 1:item.spotQty;
+    const tempqty:number = item.isPlan ? 1:item.spotQty;
     if(await this.commonService.checkAddPlan(tempqty) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
@@ -65,9 +65,10 @@ export class UserPlanListComponent implements OnInit {
     }
 
     this.planspots.addPlan(
-      item.isRemojuPlan,
       item.id,
       item.isPlan,
+      item.isRemojuPlan,
+      item.googleSpot ? true : false,
       item.googleSpot
     ).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(
@@ -92,7 +93,7 @@ export class UserPlanListComponent implements OnInit {
       !item.isFavorite,
       item.isRemojuPlan,
       this.guid,
-      item.googleSpot
+      item.googleSpot ? true : false
     )
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(()=>{

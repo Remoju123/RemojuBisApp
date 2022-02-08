@@ -1,9 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import {
-  ListSelectedPlan
-} from "../class/common.class";
-import { MypagePlanAppList, MypagePlanAppListSearchResult } from "../class/mypageplanlist.class";
+import { MypagePlanAppList } from "../class/mypageplanlist.class";
 import { CommonService } from "./common.service";
 import { Review } from "../class/review.class";
 
@@ -24,16 +21,10 @@ export class MypagePlanListService {
     @Inject("BASE_API_URL") private host: string
   ) { }
 
-  // 検索条件を取得
-  getMypagePlanListSearchCondition() {
-    const url = this.host + "/api/MypagePlanList/ListSelected";
-    return this.http.get<ListSelectedPlan>(url);
-  }
-
   // マイページ・プラン一覧を取得
   getMypagePlanList() {
     const url = this.host + "/api/MypagePlanList/Search";
-    return this.http.get<MypagePlanAppListSearchResult>(url, {
+    return this.http.get<MypagePlanAppList[]>(url, {
       params: { objectId: this.commonService.objectId}
     });
   }

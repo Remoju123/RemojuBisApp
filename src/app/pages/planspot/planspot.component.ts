@@ -389,7 +389,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランに追加
   async addMyPlan(item: PlanSpotList) {
-    const tempqty: number = item.isPlan === 1 ? item.spotQty : 1;
+    const tempqty: number = item.isPlan ? item.spotQty : 1;
     if (await this.commonService.checkAddPlan(tempqty) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
@@ -405,9 +405,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     this.planspots.addPlan(
-      item.isRemojuPlan,
       item.id,
       item.isPlan,
+      item.isRemojuPlan,
+      item.googleSpot ? true : false,
       item.googleSpot
     ).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(
@@ -430,6 +431,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       !item.isFavorite,
       item.isRemojuPlan,
       this.guid,
+      item.googleSpot ? true : false,
       item.googleSpot
     )
       .pipe(takeUntil(this.onDestroy$))

@@ -64,8 +64,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
    * -----------------------------*/
   ngOnInit() {
     this.currentlang = this.lang;
-    // ソート取得
-    this.getListSelected();
     // 一覧取得
     this.getMyPagePlanList();
 
@@ -215,18 +213,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
 
   // 検索条件取得
   @Catch()
-  getListSelected() {
-    this.mypagePlanListService
-      .getMypagePlanListSearchCondition()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-          return;
-        }
-        this.$mSort = r.mSort;
-      });
-  }
 
   // マイページプラン一覧取得
   getMyPagePlanList() {
@@ -234,7 +220,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
       .getMypagePlanList()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
-        this.rows = r.mypagePlanAppList;
+        this.rows = r;
         this.pageSize = 40;
         this.p = 1;
 

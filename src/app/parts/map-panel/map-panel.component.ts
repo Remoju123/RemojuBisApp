@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { SpotListService } from "../../service/spotlist.service";
 import { CommonService } from "../../service/common.service";
 import { MapService } from "../../service/map.service";
 import { MyplanService } from "../../service/myplan.service";
@@ -38,7 +37,6 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     private commonService: CommonService,
     private mapService: MapService,
     private myplanService: MyplanService,
-    private spotListService: SpotListService,
     private planService: PlanService,
     private translate: TranslateService,
     private router: Router,

@@ -1,68 +1,5 @@
 import { DataSelected, ListSelectMaster } from "./common.class";
-import { SpotSearchCategory } from "./spot.class";
-import { PlanSearchCategory, PlanSpotName } from "./planlist.class";
-
-import { ListSearchCondition } from "./indexeddb.class";
-import { Businesshours } from "./spot.class";
-
-
-// 選択(エリア・カテゴリ用)
-export interface NestDataSelected {
-  parentId: number;
-  parentName: string;
-  isHighlight: boolean;
-  qty: number;
-  dataSelecteds: DataSelected[];
-  selected: boolean;
-}
-export class PlanSpotListSearchResult {
-    // 検索結果
-    planSpotList: PlanSpotList[];
-    // 営業曜日
-    businessDay: DataSelected[];
-  }
-
-// プラン/スポット一覧
-export class PlanSpotList_bk {
-  // 詳細取得済み:true
-  isDetail: boolean;
-  // プラン:true スポット:false
-  isPlan: boolean;
-  // true:CT作成プラン false:ユーザ作成プラン
-  isRemojuPlan: boolean;
-  // バージョンNo
-  versionNo: number;
-  // プラン/スポットID
-  id: number;
-  // キーワード
-  keyword: string;
-  // エリアID
-  areaId: number;
-  // エリアID2
-  areaId2: number;
-  // ソート項目：人気順(歴代)
-  pvQtyAll: number;
-  // ソート項目：人気順(今週)
-  pvQtyWeek: number;
-  // ソート項目：プランに採用した回数
-  planSpotQty: number;
-  // ソート項目：レビュー評価
-  reviewAvg: number;
-  // ソート項目：投稿日時
-  releaseCreateDatetime: string;
-  // 検索カテゴリ
-  spotSearchCategories: SpotSearchCategory[];
-
-  planSearchCategories: PlanSearchCategory[];
-
-  pictures: string[];
-
-  isEndOfPublication: boolean;
-
-  objectId:string;
-
-  guid:string;
-}
+import { Businesshours, Accesses, Seo } from "./spot.class";
 
 export class PlanSpotList {
   address: string;
@@ -71,7 +8,7 @@ export class PlanSpotList {
   areaName: string;
   areaName2: string;
   averageStayTime: number;
-  budgets: Budgets[];//
+  //budgets: Budgets[];//
   businessHours: Businesshours[];//
   createDate: string;
   favoriteQty: number;
@@ -81,7 +18,7 @@ export class PlanSpotList {
   isCreation: boolean;
   isEndOfPublication: boolean;
   isFavorite: boolean;
-  isPlan: number;
+  isPlan: boolean;
   isRegularHoliday: boolean;
   isRemojuPlan: boolean
   keyword: string;
@@ -99,7 +36,7 @@ export class PlanSpotList {
   searchCategories: DataSelected[];
   searchCategoryIds: number[];
   seo: Seo[];
-  spotAccess: SpotAccesses;
+  spotAccess: Accesses;
   spotName: string;
   spotQty: number;
   subheading: string;
@@ -152,55 +89,6 @@ export class SearchParamsObj{
   kwd: string;
 }
 
-
-export class ListSelected {
-  constructor() {
-    this.isList = true;
-    this.condition = new ListSearchCondition();
-  }
-  // エリア
-  mArea: NestDataSelected[];
-  // 検索カテゴリ
-  mSearchCategory: NestDataSelected[];
-  // 検索カテゴリ(プラン)
-  mSearchCategoryPlan: NestDataSelected[];
-  // ソート順
-  mSort: DataSelected[];
-  // 営業曜日
-  businessDay: DataSelected[];
-  // tabIndex
-  tabIndex: number;
-  // source(list)
-  planspotList: PlanSpotList[];
-  // 一覧の場合true(検索条件を保持する)　プラン投稿の場合false(検索条件を保持しない)
-  isList: boolean;
-  // プラン投稿の場合、選択値を保持する(indexeddbを使用しない)
-  condition: ListSearchCondition;
-}
-
-export class Budgets {
-  version_no: number;
-  spot_id: number;
-  budget_frame_id: number;
-  budget_id: number;
-}
-
-export class Seo {
-  version_no: number;
-  spot_id: number;
-  subtitle: string;
-  keyword: string;
-  description: string;
-}
-
-export class SpotAccesses {
-  version_no: number;
-  spot_id: number;
-  display_order: number;
-  access: number;
-  nearest: string;
-}
-
 export class CacheStore {
   data: PlanSpotList[];
   p:number;
@@ -247,8 +135,22 @@ export class MArea {
 }
 
 export class GoogleSearchResult {
-    // 次ページ検索token
-    tokenGoogle: string;
-    // 検索結果
-    planSpotList: PlanSpotList[];
+  // 次ページ検索token
+  tokenGoogle: string;
+  // 検索結果
+  planSpotList: PlanSpotList[];
+}
+
+export class PlanSearchCategory {
+  version_no: number;
+  plan_id: number;
+  search_category_id: number;
+  name: string;
+  icon: string;
+}
+
+export class PlanSpotName{
+  isRemojuSpot: boolean;
+  spotName: string;
+  spotId:number;
 }

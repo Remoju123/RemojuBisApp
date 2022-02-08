@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit ,OnDestroy} from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
-import { MapSpot, ComfirmDialogParam } from "../../class/common.class";
+import { MapSpot } from "../../class/common.class";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from "../../service/myplan.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { SpotListService } from "../../service/spotlist.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import { Router } from "@angular/router";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -23,7 +23,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
     private commonService: CommonService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
-    private spotListService: SpotListService,
+    private planSpotListService: PlanSpotListService,
     public dialogRef: MatDialogRef<MapInfowindowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MapSpot
   ) { }
@@ -57,12 +57,14 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
 
   // お気に入りに登録
   onClickFavorite() {
-    this.spotListService
+    this.planSpotListService
       .registFavorite(
         this.data.spotId,
+        false,
         !this.data.isFavorite,
-        this.guid
-        // this.data.googleSpot
+        false,
+        this.guid,
+        this.data.type === 2 ? true : false
       )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
@@ -83,8 +85,8 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
     }
 
     // プランに追加
-    this.spotListService
-    .addSpot(this.data.spotId, this.data.type).then(result => {
+    this.planSpotListService
+    .addPlan(this.data.spotId, false, undefined, this.data.type === 2 ? true : false).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
         if (myPlanApp) {
           // プラン作成に反映

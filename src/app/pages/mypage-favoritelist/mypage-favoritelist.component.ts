@@ -65,25 +65,13 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     // GUID取得
     this.guid = await this.commonService.getGuid();
 
-    /*this.mypageFavoriteListService.getMypageFavoriteSort().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-      this.listSelectMaster = r;
-      this.$mSort = r.mSort;
-    });
     let condition: any = await this.indexedDBService.getListSearchConditionMyfav();
-      if (condition){
-        this.condition = condition;
-      }*/
+    if (condition){
+      this.condition = condition;
+    }
 
     this.getPlanSpotDataSet();
-/*
-    this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$))
-    .subscribe(result => {
-      this.rows = result.list;
-      this.optionKeywords = result.searchTarm;
-      this.count = result.list.length;
-      console.log(result.list.length);
-    })
-*/
+
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r=>{
       this.myPlanSpots = r;
@@ -102,7 +90,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   getPlanSpotDataSet() {
     this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      //this.planspots.filteringData(r,this.condition,this.listSelectMaster);
+      this.rows = this.planspots.getFilterbyCondition(r,this.condition);
+      this.count = this.rows.length;
       this.mergeNextDataSet();
     })
   }
@@ -121,10 +110,9 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
             this.rows[idx] = d;
-            this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+            this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
 
             this.details$ = this.rows.slice(0,this.end);
-            //this.count = this.details$.length;
           })
         }
       }
@@ -149,7 +137,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
 
   // プランに追加
   async addMyPlan(item:PlanSpotList){
-    const tempqty:number = item.isPlan===1 ? item.spotQty : 1;
+    const tempqty:number = item.isPlan ? item.spotQty : 1;
     if(await this.commonService.checkAddPlan(tempqty) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
@@ -165,10 +153,9 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     }
 
     this.planspots.addPlan(
-      item.isRemojuPlan,
       item.id,
       item.isPlan,
-      item.googleSpot
+      item.isRemojuPlan
     ).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(
         async myPlanApp => {
@@ -187,36 +174,38 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
     param.title = "FavoriteRemoveConfirm";
-    // param.leftButton = "Cancel";
-    // param.rightButton = "OK";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // お気に入りを削除する
       if (d === "ok") {
-        this.setFavorite(item);
+        this.planspots.registFavorite(
+          item.id,
+          item.isPlan,
+          !item.isFavorite,
+          item.isRemojuPlan,
+          this.guid,
+          item.googleSpot ? true: false
+        )
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(async ()=>{
+          this.rows.splice(
+            this.rows.findIndex(v => v.id === item.id),1
+          )
+          this.count = this.rows.length;
+          this.commonService.snackBarDisp("FavoriteRemoved");
+
+          if(!this.rows[this.end - 1].googleSpot){
+            (await this.planspots.fetchDetails(this.rows[this.end - 1]))
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(d => {
+              this.rows[this.end - 1] = d;
+              this.rows[this.end - 1].userName = this.commonService.isValidJson(this.rows[this.end - 1].userName, this.lang);
+            })
+          }
+          this.details$ = this.rows.slice(0,this.end);
+        });
       }
     });
-  }
-
-  // お気に入り登録・除外
-  setFavorite(item:PlanSpotList){
-    this.planspots.registFavorite(
-      item.id,
-      item.isPlan,
-      !item.isFavorite,
-      item.isRemojuPlan,
-      this.guid,
-      item.googleSpot
-    )
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(()=>{
-      this.mypageFavoriteListService.GetFavoriteCount(this.guid);
-    });
-    this.details$.splice(
-      this.details$.findIndex(v=> v.id === item.id),1
-    )
-    this.count = this.details$.length;
-    this.commonService.snackBarDisp("FavoriteRemoved");
   }
 
   // 表示順

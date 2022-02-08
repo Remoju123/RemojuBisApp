@@ -13,7 +13,7 @@ import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
 import { map, takeUntil } from "rxjs/operators";
 import { IndexedDBService } from "./indexeddb.service";
-import { PlanFavorite, PlanUserFavorite } from "../class/planlist.class";
+import { PlanFavorite, PlanUserFavorite } from "../class/plan.class";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { response } from "express";
 import { ThisReceiver } from "@angular/compiler";
@@ -140,10 +140,10 @@ export class PlanSpotListService {
     // プラン・スポット選択
     switch(cond.select){
       case 'plan':
-        _result = _result.filter(d => d.isPlan === 1);
+        _result = _result.filter(d => d.isPlan);
         break;
       case 'spot':
-        _result = _result.filter(d => d.isPlan === 0);
+        _result = _result.filter(d => !d.isPlan);
         break;
       case 'google':
         _result = [];
@@ -386,16 +386,17 @@ export class PlanSpotListService {
   // お気に入り登録
   registFavorite(
     id: number,
-    isPlan: number,
+    isPlan: boolean,
     isFavorite: boolean,
     isRemojuPlan: boolean,
     guid:string,
+    isGoogle: boolean = false,
     googleSpot?: GoogleSpot,
   ) {
     // お気に入り登録データ作成
     let url: string;
     let param: any;
-    if (isPlan === 1){
+    if (isPlan){
       if(isRemojuPlan){
         param = new PlanFavorite();
         param = {
@@ -418,7 +419,7 @@ export class PlanSpotListService {
       }
     }else{
       param = new RegistFavorite();
-      if (googleSpot) {
+      if (isGoogle) {
         param.spotFavorite = {
           spot_id: 0,
           google_spot_id: id,
@@ -442,14 +443,14 @@ export class PlanSpotListService {
   }
 
   // プランに追加
-  async addPlan(isRemojuPlan: boolean, id: number, isPlan: number, googleSpot?: GoogleSpot) {
+  async addPlan(id: number, isPlan: boolean, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot) {
     let myPlan: any = await this.indexedDBService.getEditPlan(true);
     if (!myPlan){
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
 
-    if(isPlan === 1){
+    if(isPlan){
       let addPlan: AddPlan = new AddPlan();
       addPlan = {
         MyPlan: myPlan,
@@ -464,7 +465,7 @@ export class PlanSpotListService {
       addSpot = {
         MyPlan: myPlan,
         spotId: id,
-        type: googleSpot ? 2 : 1,
+        type: isGoogle ? 2 : 1,
         googleSpot: googleSpot,
         basePlanId: null,
         isTransferSearch: false // trueにするとスポットを追加して駅探検索する

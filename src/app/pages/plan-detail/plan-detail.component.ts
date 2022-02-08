@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
+import { UserPlanList } from "../../class/planspotlist.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
@@ -11,18 +12,14 @@ import { Meta } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
-import { PlanListService } from "../../service/planlist.service";
 import { PlanService } from "../../service/plan.service";
-import { SpotListService } from "../../service/spotlist.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
 import { UserPlanListComponent } from "../../parts/user-plan-list/user-plan-list.component";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { PlanSpotListService } from "src/app/service/planspotlist.service";
-import { PlanSpotList, UserPlanList } from "src/app/class/planspotlist.class";
-import { SearchCategories } from "src/app/class/spot.class";
 import { ContentObserver } from "@angular/cdk/observers";
 
 @Component({
@@ -43,9 +40,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     private indexedDBService: IndexedDBService,
     private myplanService: MyplanService,
     private planService: PlanService,
-    private planListService: PlanListService,
-    private spotListService: SpotListService,
-    private planspots: PlanSpotListService,
+    private planSpotListService: PlanSpotListService,
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
@@ -116,8 +111,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       this.myPlanSpots = v;
     })
 
-    this.getMaster();
-
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       const id = params.get("id");
       this.commonService.onNotifySelectedPlanId(id);
@@ -139,11 +132,14 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   // お気に入り登録(スポット)
   @Catch()
   onClickSpotFavorite(item: PlanSpotCommon) {
-    this.spotListService
+    this.planSpotListService
       .registFavorite(
         item.spotId,
+        false,
         !item.isFavorite,
-        this.guid
+        false,
+        this.guid,
+        item.googleSpot ? true : false
       )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
@@ -154,29 +150,18 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   // お気に入り登録
   @Catch()
   onClickFavorite() {
-    if (this.data.isRemojuPlan) {
-      this.planListService
-        .registFavorite(
-          this.data.planId,
-          this.guid,
-          !this.data.isFavorite
-        )
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(r => {
-          this.data.isFavorite = !this.data.isFavorite;
-        });
-    } else {
-      this.planListService
-        .registUserFavorite(
-          this.data.planId,
-          this.guid,
-          !this.data.isFavorite
-        )
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(r => {
-          this.data.isFavorite = !this.data.isFavorite;
-        });
-    }
+    this.planSpotListService
+      .registFavorite(
+        this.data.planId,
+        true,
+        !this.data.isFavorite,
+        this.data.isRemojuPlan,
+        this.guid
+      )
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(r => {
+        this.data.isFavorite = !this.data.isFavorite;
+    });
   }
 
   // プランに追加する
@@ -198,7 +183,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
     // プランに追加
     if (spot) {
-      this.spotListService.addSpot(spot.spotId, spot.type, null, this.$planId).then(result => {
+      this.planSpotListService.addPlan(spot.spotId, false, undefined, spot.googleSpot ? true : false).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             this.addToPlanAfter(myPlanApp);
@@ -206,7 +191,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         });
       });
     } else {
-      this.planListService.addPlan(this.$isRemojuPlan, this.$planId).then(result => {
+      this.planSpotListService.addPlan(this.$planId, true, this.$isRemojuPlan).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             this.addToPlanAfter(myPlanApp);
@@ -285,12 +270,6 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   // Map表示
   setMapCenter(latitude: any, longitude: any) {
     this.mapPanelComponent.setMapCenter(latitude, longitude);
-  }
-
-  async getMaster() {
-    this.planListService.getPlanListSearchCondition(false).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      this.mSearchCategory = r.mSearchCategory;
-    });
   }
 
   /*----------------------------
@@ -397,22 +376,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
       // カテゴリ
       this.categoryNames = r.searchCategories;
+      this.mSearchCategory = r.mSearchCategory;
 
       // map表示
       this.isMapDisp = !this.isMapDisp;
 
       this.$userStaff = r.userStaff;
-
-      // 閲覧履歴を更新
-      if (this.data.pictures && this.data.pictures.length > 0 && this.data.pictures[0].length > 0){
-        let history: Recommended = {
-          isSpot: false,
-          name: this.data.planName,
-          versionNo: this.data.versionNo,
-          spotPlanID: this.data.planId,
-          pictureUrl: this.data.pictures[0]};
-        this.indexedDBService.registHistoryPlan(history)
-      }
 
       let cids = []
       this.spots.map(x=>{
@@ -422,18 +391,18 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
       // ユーザープランリストデータを事前取得
       if (this.data.user) {
-        this.planspots.getUserPlanSpotList(this.data.user.objectId)
+        this.planSpotListService.getUserPlanSpotList(this.data.user.objectId)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((r)=>{
             //this.user_plans = this.planspots.mergeBulkDataSet(r);
-            this.userData.userPlans = this.planspots.mergeBulkDataSet(r);
+            this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r);
 
             let ids = [];
             r.map(c => {
               ids = ids.concat(c.searchCategoryIds);
             })
 
-            this.userData.searchCategories = this.planspots.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
+            this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
 
             // サーバーステートに保持
             //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
