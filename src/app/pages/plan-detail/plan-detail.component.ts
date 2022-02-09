@@ -463,8 +463,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
-  linktoSpot(id:any){
-    //
+  linktoSpot(planSpot: PlanSpotCommon){
+    if (planSpot.type === 1) {
+      this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
+    } else {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
+    }
   }
 
   onIsmore(e: { ismore: boolean; label: string; }){
