@@ -190,7 +190,7 @@
                   </button>
                 </div>
               </div>
-              <div class="spot-image" (click)="linktoSpot(item.spotId)">
+              <div class="spot-image" (click)="linktoSpot(item)">
                 <owl-carousel-o
                     *ngIf="item.pictures.length > 1; else singlePict"
                     [options]="mainOptions"
