@@ -219,19 +219,18 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.p++;
     } else {
+      // REMOJU-412 ALL、Spot、Plan選択時にキーワード検索で0件の場合、自動でGoogleタブに切り替える
+      this.details$ = [];
       this.isList = false;
-      if (this.condition.select === 'google') {
-        const keyword = this.condition.keyword;
-        if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
-          (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).subscribe(g => {
-            this.prevkeyword = keyword;
-            this.details$ = this.details$.concat(g.planSpotList);
-            this.count += g.planSpotList.length;
-            this.token = g.tokenGoogle;
-          })
-        }
-      } else {
-        this.details$ = [];
+      this.condition.select = 'google';
+      const keyword = this.condition.keyword;
+      if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
+        (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).subscribe(g => {
+          this.prevkeyword = keyword;
+          this.details$ = this.details$.concat(g.planSpotList);
+          this.count += g.planSpotList.length;
+          this.token = g.tokenGoogle;
+        })
       }
     }
   }
