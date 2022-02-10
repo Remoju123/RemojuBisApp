@@ -604,11 +604,8 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     autoPlay:false
   };
 
-
+  // スワイプで一覧に戻る
   onSwipeRight(event,data){
-    console.log("event right", event,data)
     this.linktolist();
-    //alert(event);
   }
-
 }
