@@ -541,15 +541,19 @@
             width: auto;
 
             span {
-              display: inline-flex;
+              //display: inline-flex;
+              display: inline-block;
               padding: 0 4px;
               // background-color: #949494;
               border: 1px solid #bdbdbd;
               border-radius: 4px;
               // color: #fff;
               margin-right: 2px;
-              margin-bottom: 2px;
-              // white-space: nowrap;
+              margin-bottom: -2px;
+              white-space: nowrap;
+              max-width: 46%;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
 
