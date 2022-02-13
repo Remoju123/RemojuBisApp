@@ -42,6 +42,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   //listSelectMaster: ListSelectMaster;
   count: number = 0;
   rows: PlanSpotList[] = [];
+  spots: PlanSpotList[] = [];
+  plans: PlanSpotList[] = [];
   details$: PlanSpotList[] = [];
   $mSort: DataSelected[];
   optionKeywords: tarms;
@@ -88,12 +90,25 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
    *
    * -----------------------------*/
   getPlanSpotDataSet() {
-    this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
+    this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      this.rows = this.planspots.getFilterbyCondition(r,this.condition);
-      this.count = this.rows.length;
-      this.mergeNextDataSet();
-    })
+      this.plans = r;
+      this.isDetail();
+    });
+    this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
+    .subscribe(async (r) => {
+      this.spots = r;
+      this.isDetail();
+    });
+  }
+
+  isDetail() {
+    if ((this.condition.select === 'plan' || this.spots.length > 0)
+      && (this.condition.select === 'spot' || this.plans.length > 0)) {
+        this.rows = this.planspots.getFilterbyCondition(this.spots.concat(this.plans),this.condition);
+        this.count = this.rows.length;
+        this.mergeNextDataSet();
+      }
   }
 
   async mergeNextDataSet(){
@@ -105,7 +120,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       }
       for (let i = startIndex; i < this.end; i++){
         if(!this.rows[i].googleSpot){
-          (await this.planspots.fetchDetails(this.rows[i]))
+          (await this.planspots.fetchDetails(this.rows[i], this.guid))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
@@ -195,7 +210,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
           this.commonService.snackBarDisp("FavoriteRemoved");
 
           if(!this.rows[this.end - 1].googleSpot){
-            (await this.planspots.fetchDetails(this.rows[this.end - 1]))
+            (await this.planspots.fetchDetails(this.rows[this.end - 1], this.guid))
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(d => {
               this.rows[this.end - 1] = d;

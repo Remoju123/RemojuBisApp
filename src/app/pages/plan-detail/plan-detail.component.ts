@@ -395,7 +395,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((r)=>{
             //this.user_plans = this.planspots.mergeBulkDataSet(r);
-            this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r);
+            this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
 
             let ids = [];
             r.map(c => {

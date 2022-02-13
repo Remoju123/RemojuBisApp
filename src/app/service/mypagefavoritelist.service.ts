@@ -28,8 +28,15 @@ export class MypageFavoriteListService implements OnDestroy {
     @Inject("BASE_API_URL") private host: string
   ) { }
 
-  getMypageFavoritePlanSpotList():Observable<PlanSpotList[]> {
-    const url = this.host + "/api/MypageFavoriteList/SearchPlanSpot";
+  getMypageFavoritePlanList():Observable<PlanSpotList[]> {
+    const url = this.host + "/api/MypageFavoriteList/SearchPlan";
+    return this.http.get<PlanSpotList[]>(url,  {
+      params: { objectId: this.commonService.objectId}
+    });
+  }
+
+  getMypageFavoriteSpotList():Observable<PlanSpotList[]> {
+    const url = this.host + "/api/MypageFavoriteList/SearchSpot";
     return this.http.get<PlanSpotList[]>(url,  {
       params: { objectId: this.commonService.objectId}
     });
