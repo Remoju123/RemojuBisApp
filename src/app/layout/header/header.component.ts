@@ -12,7 +12,7 @@ import { NavigationExtras, Router } from "@angular/router";
 import { Overlay } from "@angular/cdk/overlay";
 import { CommonService } from "../../service/common.service";
 import { UserService } from "../../service/user.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
+//import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 import { FormControl } from "@angular/forms";
@@ -63,10 +63,6 @@ export class HeaderComponent implements OnInit ,OnDestroy{
   loggedIn: boolean = false;
   public userInfo: any = null;
 
-  tollSpotLogo: string = "";
-  tollSpotLogo2: string = "";
-  tollSpotUrl: string = "";
-
   spinner = this.overlay.create({
     hasBackdrop: true,
     positionStrategy: this.overlay
@@ -82,7 +78,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
 
   constructor(
     private commonService: CommonService,
-    private mypageFavoriteListService: MypageFavoriteListService,
+    //private mypageFavoriteListService: MypageFavoriteListService,
     private translate: TranslateService,
     private userService: UserService,
     public router: Router,
@@ -124,16 +120,6 @@ export class HeaderComponent implements OnInit ,OnDestroy{
   }
 
   async ngOnInit() {
-    this.commonService.logoChange$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
-      // 有料スポットの場合、ロゴを表示
-      this.tollSpotUrl = this.commonService.getTollSpotUrl();
-      if (this.tollSpotUrl) {
-        this.tollSpotLogo = "../../../assets/img/" + this.tollSpotUrl + "_logo.svg";
-      } else {
-        this.tollSpotLogo = "";
-      }
-    });
-
     if (this.commonService.loggedIn) {
       // ユーザー情報
       this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{

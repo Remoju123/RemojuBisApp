@@ -15,6 +15,7 @@ export class PlanSpotList {
   googleSpot: GoogleSpot;
   guid: string;
   id: number;
+  isDetail: boolean;
   isCreation: boolean;
   isEndOfPublication: boolean;
   isFavorite: boolean;

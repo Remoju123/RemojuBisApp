@@ -8,7 +8,7 @@ import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyPlanApp, ComfirmDialogParam, DataSelected, ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { CacheStore, PlanSpotList, tarms } from 'src/app/class/planspotlist.class';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
@@ -35,6 +35,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   rows: PlanSpotList[] = [];
   temp: PlanSpotList[] = [];
+  spots: PlanSpotList[] = [];
+  plans: PlanSpotList[] = [];
   details$: PlanSpotList[] = [];
   count: number = 0;
 
@@ -111,16 +113,22 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.optionKeywords = result.searchTarm;
         this.historyReplace(result.searchParams);
         this.count = result.list.length;
+        this.mergeNextDataSet();
       })
-
-    this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-      this.listSelectMaster = r;
-      this.$mSort = r.mSort;
-    });
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
+
+      /*this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        this.details$ = r;
+      });*/
     } else {
+      this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+        this.listSelectMaster = r;
+        this.$mSort = r.mSort;
+        this.isDetail();
+      });
+
       let condition: any = await this.indexedDBService.getListSearchCondition();
       if (condition) {
         this.condition = condition;
@@ -178,12 +186,18 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.count = 0;
       this.mergeNextDataSet();
     } else {
-      this.planspots.getPlanSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        // trasferState save for SearchPanel
-        this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, r);
-        this.planspots.filteringData(r, this.condition, this.listSelectMaster);
-        this.mergeNextDataSet();
-      });
+      if (this.condition.select === 'all' || this.condition.select === 'plan') {
+        this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.plans = r;
+          this.isDetail();
+        });
+      }
+      if (this.condition.select === 'all' || this.condition.select === 'spot') {
+          this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.spots = r;
+          this.isDetail();
+        });
+      }
     }
   }
 
@@ -197,7 +211,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
       for (let i = startIndex; i < this.end; i++) {
-        (await this.planspots.fetchDetails(this.rows[i]))
+        if (this.rows[i].isDetail) {
+          continue;
+        }
+        (await this.planspots.fetchDetails(this.rows[i], this.guid))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             // 非同期で戻された結果セットの順番を維持するための処理
@@ -217,6 +234,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.details$ = this.rows.slice(0, this.end);
           })
       }
+      if (isPlatformServer(this.platformId)) {
+        this.setTransferState();
+      }
       this.p++;
     } else {
       // REMOJU-412 ALL、Spot、Plan選択時にキーワード検索で0件の場合、自動でGoogleタブに切り替える
@@ -232,6 +252,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.token = g.tokenGoogle;
         })
       }
+    }
+  }
+
+  isDetail() {
+    if (this.listSelectMaster
+      && (this.condition.select === 'plan' || this.spots.length > 0)
+      && (this.condition.select === 'spot' || this.plans.length > 0)) {
+      this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
     }
   }
 
@@ -308,6 +336,19 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プラン/スポット詳細リンク
   linktoDetail(item: PlanSpotList) {
+
+    this.setTransferState();
+
+    if (item.isPlan) {
+      this.router.navigate(["/" + this.lang + "/plans/detail", item.id]);
+    } else if (item.googleSpot) {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
+    } else {
+      this.router.navigate(["/" + this.lang + "/spots/detail", item.id]);
+    }
+  }
+
+  setTransferState() {
     const c = new CacheStore();
     c.data = this.rows;
     c.p = this.p;
@@ -323,20 +364,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.googleSearchArea = this.googleSearchArea;
 
     this.transferState.set<CacheStore>(PLANSPOT_KEY, c);
-
-    if (item.isPlan) {
-      this.router.navigate(["/" + this.lang + "/plans/detail", item.id]);
-    } else if (item.googleSpot) {
-      this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
-    } else {
-      this.router.navigate(["/" + this.lang + "/spots/detail", item.id]);
-    }
   }
 
   // 検索パネル(エリア・カテゴリー選択)
   openDialog(e: number) {
     this.listSelectMaster.tabIndex = e;
     this.listSelectMaster.isGoogle = this.condition.select === 'google';
+    this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, this.rows);
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { AddPlan, AddSpot, DataSelected, ListSelectMaster, MyPlanApp, NestDataSelected, RegistFavorite } from "../class/common.class";
+import { AddPlan, AddSpot, ListSelectMaster, MyPlanApp, NestDataSelected, RegistFavorite } from "../class/common.class";
 import { PlanSpotList,searchResult,
   SearchParamsObj,
   GoogleSearchResult,
@@ -58,14 +58,20 @@ export class PlanSpotListService {
   }
 
   // プランスポット一覧を取得
-  getPlanSpotList() {
-    const url = this.host + "/api/PlanSpotList/Search";
+  getPlanList() {
+    const url = this.host + "/api/PlanSpotList/SearchPlan  ";
+    return this.http.get<PlanSpotList[]>(url)
+  }
+
+  // プランスポット一覧を取得
+  getSpotList() {
+    const url = this.host + "/api/PlanSpotList/SearchSpot";
     return this.http.get<PlanSpotList[]>(url)
   }
 
   // ユーザープランスポット一覧を取得
   getUserPlanSpotList(oid:any) {
-    const url = this.host + "/api/PlanSpotList/SearchPlan";
+    const url = this.host + "/api/PlanSpotList/SearchMyPlan";
     return this.http.get<PlanSpotList[]>(url,{
       params: {
         objectId:oid
@@ -87,13 +93,19 @@ export class PlanSpotListService {
       }, httpOptions);
   }
 
+  // お気に入り取得
+  getFavorite(options: PlanSpotList[]) {
+    const url = this.host + "/api/PlanSpotList/GetFavorite";
+    return this.http.post<PlanSpotList[]>(url, options, httpOptions);
+  }
+
   // プランスポット一覧、詳細データ
-  async fetchDetails(options: PlanSpotList){
+  async fetchDetails(options: PlanSpotList, guid: string){
     const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
     const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
 
     options.objectId = this.commonService.objectId;
-    options.guid = await this.commonService.getGuid();
+    options.guid = guid;
 
     if(options.isPlan){
       return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
@@ -476,9 +488,9 @@ export class PlanSpotListService {
   }
 
   // プランデータセット一括マージ
-  mergeBulkDataSet(rows:PlanSpotList[]){
+  mergeBulkDataSet(rows:PlanSpotList[], guid: string){
     rows.map(async row => {
-      (await this.fetchDetails(row)).subscribe(_row => {
+      (await this.fetchDetails(row, guid)).subscribe(_row => {
         Object.assign(row,_row);
       })
     })

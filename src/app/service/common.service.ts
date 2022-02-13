@@ -49,9 +49,6 @@ export class CommonService implements OnDestroy{
   private selectedSpotId = new Subject<number>();
   public selectedSpotId$ = this.selectedSpotId.asObservable();
 
-  private logoChange = new Subject<boolean>();
-  public logoChange$ = this.logoChange.asObservable();
-
   private isMobile = new Subject<boolean>();
   public isMobile$ = this.isMobile.asObservable();
 
@@ -154,25 +151,6 @@ export class CommonService implements OnDestroy{
     } else {
       return true;
     }
-  }
-
-  // 有料スポットURL取得
-  getTollSpotUrl(){
-    if(isPlatformBrowser(this.platformId)){
-      const path = location.pathname.split("/");
-      if (path.length === 4
-      && (location.pathname.indexOf("spots") > -1
-      || location.pathname.indexOf("plans") > -1)
-      && location.pathname.indexOf("details") === -1){
-        return path[2];
-      }
-    }
-    return "";
-  }
-
-  // ロゴ変更
-  public onlogoChange() {
-    this.logoChange.next();
   }
 
   // 多言語項目を使用言語に切り替え
@@ -284,13 +262,13 @@ export class CommonService implements OnDestroy{
 
   // // ユーザーの一意識別子を取得
   public get objectId(){
-    //if(isPlatformBrowser(this.platformId)){
+    if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
       return claims['sub'];
-    //}
+    }
   }
 
   // idpを取得
