@@ -8,7 +8,8 @@
     class="cropper"
     [imageFile]="data.pictureFile"
     [aspectRatio]="aspectRatio"
-    [imageQuality]=100
+    [imageQuality]=75
+    [resizeToWidth]="800"
     [roundCropper]="data.roundCropper"
     format="webp"
     (imageCropped)="imageCropped($event)"
