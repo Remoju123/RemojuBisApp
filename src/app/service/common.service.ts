@@ -120,7 +120,7 @@ export class CommonService implements OnDestroy{
   async getGuid() {
     let guid = await this.indexedDBService.getGuid();
     if (!guid) {
-      let guid = Guid.create().toString();
+      guid = Guid.create().toString();
       this.indexedDBService.registGuid(String(guid));
     }
     return String(guid);

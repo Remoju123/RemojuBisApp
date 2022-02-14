@@ -39,6 +39,7 @@ export class ListSelectMaster {
   businessDay: DataSelected[];
   tabIndex: number;
   isGoogle: boolean;
+  planSpotList: PlanSpotList[];
 }
 
 export class ListSelectedPlan {

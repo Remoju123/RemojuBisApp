@@ -21,7 +21,7 @@ import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
-export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
+//export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -34,7 +34,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   listSelectMaster: ListSelectMaster;
 
   rows: PlanSpotList[] = [];
-  temp: PlanSpotList[] = [];
+  // temp: PlanSpotList[] = [];
   spots: PlanSpotList[] = [];
   plans: PlanSpotList[] = [];
   details$: PlanSpotList[] = [];
@@ -105,7 +105,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.guid = await this.commonService.getGuid();
     this.recoveryQueryParams();
 
-    this.planspots.searchFilter
+    /*this.planspots.searchFilter
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(result => {
         this.rows = result.list;
@@ -114,14 +114,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.historyReplace(result.searchParams);
         this.count = result.list.length;
         this.mergeNextDataSet();
-      })
+      })*/
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
-
-      /*this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         this.details$ = r;
-      });*/
+      });
     } else {
       this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
         this.listSelectMaster = r;
@@ -179,13 +178,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async getPlanSpotDataSet() {
     if (this.condition.select === 'google') {
       this.rows = [];
-      this.temp = [];
+      // this.temp = [];
       this.details$ = [];
       this.prevkeyword = null;
       this.token = null;
       this.count = 0;
       this.mergeNextDataSet();
     } else {
+      this.p = 1;
       if (this.condition.select === 'all' || this.condition.select === 'plan') {
         this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.plans = r;
@@ -198,6 +198,21 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.isDetail();
         });
       }
+    }
+  }
+
+  async isDetail() {
+    if (this.listSelectMaster
+      && (this.condition.select === 'plan' || this.spots.length > 0)
+      && (this.condition.select === 'spot' || this.plans.length > 0)) {
+      const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
+
+      this.rows = result.list;
+      // this.temp = [...this.rows];
+      this.optionKeywords = result.searchTarm;
+      this.historyReplace(result.searchParams);
+      this.count = result.list.length;
+      this.mergeNextDataSet();
     }
   }
 
@@ -222,7 +237,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
             // 掲載終了の場合は削除
             if (d.isEndOfPublication) {
-              this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+              // this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
               this.rows.splice(idx, 1);
               if (this.rows.length - startIndex < this.limit) {
                 this.end = this.rows.length;
@@ -232,10 +247,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
             }
             this.details$ = this.rows.slice(0, this.end);
+            if (i === this.end -1 && isPlatformServer(this.platformId)) {
+              this.setTransferState();
+            }
           })
-      }
-      if (isPlatformServer(this.platformId)) {
-        this.setTransferState();
       }
       this.p++;
     } else {
@@ -245,21 +260,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.condition.select = 'google';
       const keyword = this.condition.keyword;
       if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
-        (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).subscribe(g => {
+        (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
           this.count += g.planSpotList.length;
           this.token = g.tokenGoogle;
         })
       }
-    }
-  }
-
-  isDetail() {
-    if (this.listSelectMaster
-      && (this.condition.select === 'plan' || this.spots.length > 0)
-      && (this.condition.select === 'spot' || this.plans.length > 0)) {
-      this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
     }
   }
 
@@ -313,7 +320,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.condition.keyword = v;
       this.indexedDBService.registListSearchCondition(this.condition);
       this.getPlanSpotDataSet();
-      this.p = 1;
     }, 100);
   }
 
@@ -322,7 +328,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.condition.sortval = v;
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
-    this.p = 1;
   }
 
   // プランスポット切り替え
@@ -331,12 +336,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.condition.select = val;
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
-    this.p = 1;
   }
 
   // プラン/スポット詳細リンク
   linktoDetail(item: PlanSpotList) {
-
     this.setTransferState();
 
     if (item.isPlan) {
@@ -370,7 +373,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   openDialog(e: number) {
     this.listSelectMaster.tabIndex = e;
     this.listSelectMaster.isGoogle = this.condition.select === 'google';
-    this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, this.rows);
+    this.listSelectMaster.planSpotList = this.rows;
+    //this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, this.rows);
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",
@@ -397,8 +401,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
         }
         this.getPlanSpotDataSet();
-        this.p = 1;
-        this.transferState.remove(PLANSPOTLIST_KEY);
+        //this.transferState.remove(PLANSPOTLIST_KEY);
       }
     });
   }
@@ -417,7 +420,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.condition.keyword = "";
     this.indexedDBService.registListSearchCondition(this.condition);
     this.getPlanSpotDataSet();
-    this.p = 1;
   }
 
   // プランに追加
