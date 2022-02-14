@@ -290,7 +290,8 @@ export class PlanSpotListService {
     this.result.searchParamsObj.lst = cond.select;
     this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
 
-    this.searchSubject.next(this.result);
+    return this.result;
+    // this.searchSubject.next(this.result);
   }
 
   // プラン一覧(詳細)を整形

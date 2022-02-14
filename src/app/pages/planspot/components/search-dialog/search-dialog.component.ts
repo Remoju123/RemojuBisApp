@@ -76,15 +76,15 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   ngOnInit(): void {
     this.tabIndex = this.data.tabIndex;
 
-    this.list = this.transferState.get<PlanSpotList[]>(PLANSPOTLIST_KEY,null);
+    this.list = this.data.planSpotList;
 
     // Formデータ初期化
     this.initForm();
 
-    this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result=>{
+    /*this.planspots.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe(result=>{
       this.result = result.list;
       this.searchTarm = result.searchTarm;
-    })
+    })*/
 
   }
 

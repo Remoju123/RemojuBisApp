@@ -28,7 +28,7 @@ import { LoadingIndicatorService } from "../../service/loading-indicator.service
 import { moveItemInArray } from "@angular/cdk/drag-drop";
 import { environment } from "../../../environments/environment";
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 
@@ -132,6 +132,10 @@ export class MyplanComponent implements OnInit ,OnDestroy{
    * -----------------------------*/
 
   ngOnInit() {
+    if (isPlatformServer(this.platformId)) {
+      return;
+    }
+
     // 表示するプランを設定(初回表示)
     this.setEditPlan();
     // 閲覧履歴を取得
