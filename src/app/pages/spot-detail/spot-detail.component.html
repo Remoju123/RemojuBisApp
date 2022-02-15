@@ -1,6 +1,8 @@
-<div class="spotdtl">
+<div class="spotdtl" (swiperight)="onSwipeRight($event,data.spotId)">
   <mat-card id="spotdtlheader" [ngClass]="{'onplan':myPlanSpots?.includes($spotId)}">
-    <div class='link' (click)="linktolist()">{{"BackEveryoneRecommendations" | translate}}</div>
+    <div class='link' (click)="linktolist()">
+      <span class="frame">{{"BackEveryoneRecommendations" | translate}}</span>
+    </div>
     <mat-card-content>
       <div class='header'>
         <div class='lt'>

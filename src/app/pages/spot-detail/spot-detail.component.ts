@@ -502,4 +502,9 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   get lang() {
     return this.translate.currentLang;
   }
+
+  // スワイプで一覧に戻る
+  onSwipeRight(event,data){
+    this.linktolist();
+  }
 }

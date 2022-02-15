@@ -29,6 +29,20 @@ p{
     padding: 6px 12px;
     display: flex;
     justify-content: center;
+
+    .frame {
+      border: 1px solid #B7B7B7;
+      padding: 1px 16px;
+      border-radius: 12px;
+
+
+      &::before {
+        content: "keyboard_arrow_left";
+        font-family: "Material Icons";
+        font-size: 18px;
+        vertical-align: sub;
+      }
+    }
   }
 
   .header{
