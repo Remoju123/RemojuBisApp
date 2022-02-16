@@ -272,7 +272,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   cacheRecoveryDataSet() {
     const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-    console.log(this.transferState);
+    //console.log(this.transferState);
     this.rows = cache.data;
     this.end = cache.end;
     this.offset = cache.offset;
