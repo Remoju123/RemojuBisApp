@@ -106,6 +106,37 @@ p{
             height: 16px;
           }
         }
+
+        .add-to-favorite {
+          box-shadow: none;
+          min-width: auto;
+          padding: 0;
+          background-color: transparent;
+          width: 30px;
+          height: 25px;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url("../../../assets/img/icon_fav_b.svg");
+            background-repeat: no-repeat;
+          }
+
+          &.on {
+            &::before {
+              background: url("../../../assets/img/icon_fav_b_on.svg");
+              background-repeat: no-repeat;
+            }
+          }
+
+          ::ng-deep.mat-button-ripple {
+            width: 0;
+            height: 0;
+          }
+        }
+        
         .plan_add{
           all:unset;
           width: 59px;
