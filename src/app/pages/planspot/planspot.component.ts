@@ -118,9 +118,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
-      this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        this.details$ = r;
-      });
+      if (this.details$.length > 0) {
+        this.details$[0].objectId = this.commonService.objectId;
+        this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.details$ = r;
+        });
+      }
     } else {
       this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
         this.listSelectMaster = r;
