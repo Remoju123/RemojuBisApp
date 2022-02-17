@@ -10,7 +10,6 @@ import { MapFullScreenParam, MapSpot, PlanSpotCommon } from "../../class/common.
 import { Router } from "@angular/router";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
-import { AgmMap, LatLngBounds } from "@agm/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
@@ -180,6 +179,11 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     if (!this.isFull) {
       return;
     }
+
+    if (mapSpot.isStart || mapSpot.isEnd) {
+      return;
+    }
+
     const dialog = this.dialog.open(MapInfowindowDialogComponent, {
       id:"mapinfo",
       maxWidth: "100%",
@@ -517,7 +521,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   // 地図の中心を設定
   setMapFitBounds(currentLocation: boolean) {
     if (this.mapSpots && this.mapSpots.length > 0) {
-      const bounds: LatLngBounds = new google.maps.LatLngBounds();
+      const bounds = new google.maps.LatLngBounds();
       for (let i = 0; i < this.mapSpots.length; i++) {
         bounds.extend(new google.maps.LatLng(this.mapSpots[i].latitude, this.mapSpots[i].longitude));
       }
@@ -530,7 +534,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
   // 地図の中心を2点スポットの中心に設定
   setMapFitBoundsTwoSpot() {
-    const bounds: LatLngBounds = new google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds();
     bounds.extend(new google.maps.LatLng(
       this.mapSpots[this.spotIndex].latitude,
       this.mapSpots[this.spotIndex].longitude));

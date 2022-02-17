@@ -6,8 +6,10 @@
       <mat-label>{{ 'GoogleKeyword' | translate }}</mat-label>
       <input
         matInput
+        matGoogleMapsAutocomplete
         #keyword
         id="keyword"
+        (onAutocompleteSelected)="onAutocompleteSelected($event)"
         value="{{ place ? place.name : '' }}" />
     </mat-form-field>
   </div>
