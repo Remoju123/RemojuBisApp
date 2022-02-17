@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
-import { ClipboardService } from "ngx-clipboard";
+import { Clipboard } from "@angular/cdk/clipboard";
 
 @Component({
   selector: "app-urlcopy-dialog",
@@ -11,7 +11,7 @@ import { ClipboardService } from "ngx-clipboard";
 export class UrlcopyDialogComponent implements OnInit {
   constructor(
     private translate: TranslateService,
-    private clipboard: ClipboardService,
+    private clipboard: Clipboard,
     public dialogRef: MatDialogRef<UrlcopyDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: string
   ) {}
@@ -32,7 +32,7 @@ export class UrlcopyDialogComponent implements OnInit {
   }
 
   onClickCopy(): void {
-    this.clipboard.copyFromContent(this.data);
+    this.clipboard.copy(this.data);
     this.dialogRef.close();
   }
 }
