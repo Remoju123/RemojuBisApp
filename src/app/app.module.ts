@@ -14,7 +14,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { AgmCoreModule } from "@agm/core";
-import { AgmDirectionModule } from "agm-direction";
+import { MatGoogleMapsAutocompleteModule } from "@angular-material-extensions/google-maps-autocomplete";
 
 import { ImageCropperModule } from "ngx-image-cropper";
 
@@ -73,14 +73,8 @@ import { TopComponent } from './pages/top/top.component';
 import { AuthGuard } from './auth.guard';
 
 import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.component';
-//import { PullToRefreshComponent } from './parts/pull-to-refresh/pull-to-refresh.component';
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
-//import { SpotListComponent } from './pages/spot-list/spot-list.component';
-//import { SpotListPanelComponent } from './parts/spot-list-panel/spot-list-panel.component';
-//import { SearchDialogFormComponent } from './parts/search-dialog-form/search-dialog-form.component';
-//import { PlanListComponent } from './pages/plan-list/plan-list.component';
-//import { PlanListPanelComponent } from './parts/plan-list-panel/plan-list-panel.component';
 import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
@@ -94,17 +88,12 @@ import { MapDialogComponent } from './parts/map-dialog/map-dialog.component';
 import { GoogleSpotDialogComponent } from './parts/google-spot-dialog/google-spot-dialog.component';
 import { MemoDialogComponent } from './parts/memo-dialog/memo-dialog.component';
 import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-infowindow-dialog.component';
-//import { MapComponent } from './pages/map/map.component';
-//import { PlanPanelComponent } from './parts/plan-panel/plan-panel.component';
 import { MyplanComponent } from './pages/myplan/myplan.component';
 import { MessageDialogComponent } from './parts/message-dialog/message-dialog.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
-//import { PlanDetailPanelComponent } from './pages/plan-detail-panel/plan-detail-panel.component';
 import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
-//import { SpotDetailDialogComponent } from './parts/spot-detail-dialog/spot-detail-dialog.component';
 import { UserComponent } from './pages/user/user.component';
-//import { UserplanPostComponent } from './pages/userplan-post/userplan-post.component';
 import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
 import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-favoritelist.component';
 import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
@@ -145,7 +134,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     mc.get('pinch').set({enable: true});
     mc.get('rotate').set({enable: true});
     mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
-    
+
     for (const eventName in this.overrides) {
       mc.get(eventName).set(this.overrides[eventName]);
     }
@@ -159,16 +148,12 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     FooterComponent,
     BlankComponent,
     TopComponent,
-    //SpotListComponent,
     SpotDetailComponent,
     NavMenuComponent,
     PlanDetailComponent,
-    //PlanListComponent,
-    //PlanPanelComponent,
     MyplanComponent,
     MypagePlanListComponent,
     MypageFavoriteListComponent,
-    //SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
     SystemErrorComponent,
     LanguageComponent,
@@ -176,26 +161,18 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     UrlcopyDialogComponent,
     MessageDialogComponent,
     MapPanelComponent,
-    //SpotDetailDialogComponent,
     MypageUserprofileComponent,
-    //MapComponent,
     AppComponent,
     MapInfowindowDialogComponent,
     MypageComponent,
     HeaderPlanPanelComponent,
-    //SpinnerLoadingIndicatorComponent,
     UserComponent,
     ConfirmMessageDialogComponent,
-    //UserplanPostComponent,
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
     RatingCompComponent,
     TransferPanelComponent,
     MapDialogComponent,
-    //SpotListPanelComponent,
-    //PlanListPanelComponent,
-    //PlanDetailPanelComponent,
-    //PullToRefreshComponent,
     NotfoundComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
@@ -228,9 +205,10 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     AppRoutingModule,
     // Angular GoogleMapの登録
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyBLOda6eH_CRFBbZbdnpvPGDaHieIVa5RE"
+      apiKey: "AIzaSyBLOda6eH_CRFBbZbdnpvPGDaHieIVa5RE",
+      libraries: ["places", "geometry"]
     }),
-    AgmDirectionModule,
+    MatGoogleMapsAutocompleteModule,
     // Service Workerの登録
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -284,14 +262,12 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   ],
   entryComponents: [
     MatSpinner,
-    //SearchDialogFormComponent,
     SearchDialogFormPlanComponent,
     MemoDialogComponent,
     UrlcopyDialogComponent,
     MessageDialogComponent,
     SpotDetailComponent,
     MapPanelComponent,
-    //SpotDetailDialogComponent,
     MapInfowindowDialogComponent,
     AppComponent,
     SpinnerLoadingIndicatorComponent,

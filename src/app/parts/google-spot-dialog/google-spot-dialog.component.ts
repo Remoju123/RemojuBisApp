@@ -4,6 +4,7 @@ import { CommonService } from "../../service/common.service";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
+import PlaceResult = google.maps.places.PlaceResult;
 
 declare const google: any;
 
@@ -34,21 +35,22 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    google.maps.event.clearInstanceListeners(this.autocomplete);
-    const place: Object = this.autocomplete.gm_accessors_.place;
+    if (this.autocomplete) {
+      google.maps.event.clearInstanceListeners(this.autocomplete);
+      const place: Object = this.autocomplete.gm_accessors_.place;
 
-    const placeKey = Object.keys(place).find((value) => (
-       (typeof(place[value]) === 'object') && (place[value].hasOwnProperty('gm_accessors_'))
-    ));
+      const placeKey = Object.keys(place).find((value) => (
+        (typeof(place[value]) === 'object') && (place[value].hasOwnProperty('gm_accessors_'))
+      ));
 
-    const input = place[placeKey].gm_accessors_.input[placeKey];
+      const input = place[placeKey].gm_accessors_.input[placeKey];
 
-    const inputKey = Object.keys(input).find((value) => (
-      (input[value].classList && input[value].classList.contains('pac-container'))
-    ));
+      const inputKey = Object.keys(input).find((value) => (
+        (input[value].classList && input[value].classList.contains('pac-container'))
+      ));
 
-    input[inputKey].remove();
-
+      input[inputKey].remove();
+    }
     this.onDestroy$.next();
   }
 
@@ -102,7 +104,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     };
 
     // const input = document.getElementById("keyword") as HTMLInputElement;
-    const options = {
+    /*const options = {
       fields: ["geometry", "name"]
     };
     this.autocomplete = new google.maps.places.Autocomplete(this.keyrowd.nativeElement, options);
@@ -119,8 +121,29 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
       this.map.setZoom(17);
 
       this.keyrowd.nativeElement.value = this.place.name;
-    });
+    });*/
   }
+
+  onAutocompleteSelected(result: PlaceResult) {
+    const options = {
+      fields: ["geometry", "name"]
+    };
+
+    this.autocomplete = new google.maps.places.Autocomplete(this.keyrowd.nativeElement, options);
+
+    this.place = result;
+
+    if (!result.geometry || !result.geometry.location) {
+      // window.alert("No details available for input: '" + this.place.name + "'");
+      return;
+    }
+
+    this.map.setCenter(result.geometry.location);
+    this.map.setZoom(17);
+
+    this.keyrowd.nativeElement.value = result.name;
+  }
+
 
   onClickOK(): void {
     this.data[0].type = 3;
