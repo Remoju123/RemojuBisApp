@@ -118,10 +118,16 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
+      this.mergeNextDataSet(true);
       if (this.details$.length > 0) {
         this.details$[0].objectId = this.commonService.objectId;
         this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.details$ = r;
+          r.forEach(x => {
+            if (x.isDetail) {
+              this.rows.find(y => y.id === x.id && y.isPlan === x.isPlan).isFavorite = x.isFavorite;
+              this.details$.find(y => y.id === x.id && y.isPlan === x.isPlan).isFavorite = x.isFavorite;
+            }
+          });
         });
       }
     } else {
@@ -219,13 +225,16 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  async mergeNextDataSet() {
+  async mergeNextDataSet(isComplement: boolean = false) {
     if (this.rows.length > 0) {
       this.isList = true;
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
       if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
+      }
+      if (isComplement) {
+        startIndex = 0;
       }
 
       for (let i = startIndex; i < this.end; i++) {
@@ -280,7 +289,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.end = cache.end;
     this.offset = cache.offset;
     this.details$ = this.rows.slice(0, this.end);
-    this.p = cache.p;
+    this.p = cache.p - 1;
     this.condition.select = cache.select;
     this.condition.sortval = cache.sortval;
     this.condition.keyword = cache.keyword;
