@@ -2,7 +2,6 @@ import { Inject, Injectable,OnDestroy, PLATFORM_ID } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ComfirmDialogParam, MyPlanApp, PlanSpotCommon, ImageSize, Location } from "../class/common.class";
-import { ListSearchCondition } from "../class/indexeddb.class";
 import { IndexedDBService } from "./indexeddb.service";
 import { Guid } from "guid-typescript";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -10,9 +9,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { ConfirmMessageDialogComponent } from "../parts/confirm-message-dialog/confirm-message-dialog.component";
 import { MessageDialogComponent } from "../parts/message-dialog/message-dialog.component";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
-
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Router,RouterStateSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslateService } from "@ngx-translate/core";
 import { isPlatformBrowser } from "@angular/common";
 
@@ -20,32 +18,24 @@ import { isPlatformBrowser } from "@angular/common";
   providedIn: "root"
 })
 export class CommonService implements OnDestroy{
-  private sharedSpotCondition = new Subject<ListSearchCondition>();
-  public sharedSpotCondition$ = this.sharedSpotCondition.asObservable();
-
   private isshowHeader = new Subject<boolean>();
   public isshowHeader$ = this.isshowHeader.asObservable();
-
-  // mypalan(cart)開閉プロパティ
-  private isshowcart = new Subject<boolean>();
-  public isshowcart$ = this.isshowcart.asObservable();
-
-  // menu開閉プロパティ
-  private isshowmenu = new Subject<boolean>();
-  public isshowmenu$ = this.isshowmenu.asObservable();
-
-  // loadingフラグ
-  private isloadfin = new Subject<boolean>();
-  public isloadfin$ = this.isloadfin.asObservable();
 
   private isupdHeader = new Subject<boolean>();
   public isupdHeader$ = this.isupdHeader.asObservable();
 
-  // selected planId
+  private isshowcart = new Subject<boolean>();
+  public isshowcart$ = this.isshowcart.asObservable();
+
+  private isshowmenu = new Subject<boolean>();
+  public isshowmenu$ = this.isshowmenu.asObservable();
+
+  private isloadfin = new Subject<boolean>();
+  public isloadfin$ = this.isloadfin.asObservable();
+
   private selectedPlanId = new Subject<any>();
   public selectedPlanId$ = this.selectedPlanId.asObservable();
 
-  // selected spotId
   private selectedSpotId = new Subject<number>();
   public selectedSpotId$ = this.selectedSpotId.asObservable();
 
@@ -66,48 +56,11 @@ export class CommonService implements OnDestroy{
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
 
-  // Topへ戻るボタン
-  scrollToTop() {
-    (function smoothscroll() {
-      const currentScroll =
-        document.documentElement.scrollTop || document.body.scrollTop;
-      if (currentScroll > 0) {
-        window.requestAnimationFrame(smoothscroll);
-        window.scrollTo(0, currentScroll - currentScroll / 3);
-      }
-    })();
-  }
-
   /*----------------------------
    *
-   * utility
+   * 通知
    *
    *  ---------------------------*/
-  // なにかチェックされているか
-  isSome(ary: any) {
-    return ary.controls.some((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === true;
-    });
-  }
-  // 全てがチェックされているか
-  isEvery(ary: any) {
-    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === true;
-    });
-  }
-  // 全てのチェックがはずれているか
-  isNotEvery(ary: any) {
-    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === false;
-    });
-  }
-
-  // Spot検索条件更新イベント
-  public onSharedSpotConditionChange(updateed: any) {
-    this.sharedSpotCondition.next(updateed);
-  }
-
-  // ヘッダプランパネル表示イベント
   public onNotifyIsShowHeader(update: boolean){
     this.isshowHeader.next(update);
   }
@@ -116,68 +69,28 @@ export class CommonService implements OnDestroy{
     this.isupdHeader.next();
   }
 
-  // GUID取得
-  async getGuid() {
-    let guid = await this.indexedDBService.getGuid();
-    if (!guid) {
-      guid = Guid.create().toString();
-      this.indexedDBService.registGuid(String(guid));
-    }
-    return String(guid);
+  public onNotifyIsShowCart(state:boolean){
+    this.isshowcart.next(state)
   }
 
-  getGuidStatic(){
-    let guid = this.indexedDBService.getGuid();
-    if (!guid) {
-      let guid = Guid.create().toString();
-      this.indexedDBService.registGuid(String(guid));
-    }
-    return String(guid);
+  public onNotifyIsShowMenu(state:boolean){
+    this.isshowmenu.next(state)
   }
 
-  // スポットまたはプラン追加時のチェック
-  // 戻り値 true: プランを追加する false:エラーなのでプランを追加しない
-  async checkAddPlan(addSpotQty: number): Promise<boolean>{
-    // 作成中プラン取得
-    const myPlan: any = await this.indexedDBService.getEditPlan();
-    if (!myPlan){
-      return true;
-    }
-    const myPlanApp: MyPlanApp = myPlan;
-
-    // 6スポットを超える場合
-    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
-      return false;
-    } else {
-      return true;
-    }
+  public onNotifyIsLoadingFinish(state:boolean){
+    this.isloadfin.next(state);
   }
 
-  // 多言語項目を使用言語に切り替え
-  setAddPlanLang(planSpot: PlanSpotCommon, lang: string){
-    planSpot.spotName = this.isValidJson(planSpot.spotName, lang);
-    planSpot.subheading = this.isValidJson(planSpot.subheading, lang);
-    planSpot.overview = this.isValidJson(planSpot.overview, lang);
+  public onNotifySelectedPlanId(id:any){
+    this.selectedPlanId.next(id);
   }
 
-  isValidJson(value: string, lang: string) {
-    const langpipe = new LangFilterPipe();
-
-    try {
-      JSON.parse(value)
-    } catch (e) {
-      return value;
-    }
-    return langpipe.transform(value, lang);
+  public onNotifySelectedSpotId(id:number){
+    this.selectedSpotId.next(id);
   }
 
-  // 違反報告完了通知
-  reportComplete(result: boolean){
-    if (result){
-      this.snackBarDisp("ReportReviewComplete");
-    } else {
-      this.snackBarDisp("ReportedReviewComplete");
-    }
+  public onNotifyIsMobile(state:boolean){
+    this.isMobile.next(state);
   }
 
   /*----------------------------
@@ -186,34 +99,26 @@ export class CommonService implements OnDestroy{
    *
    *  ---------------------------*/
 
-  // ログイン
   public login(){
     //const state = this.router.routerState.snapshot;
     this.oauthService.initImplicitFlow(this.router.url);
   }
 
-  // ログアウト
-  public async logout(currentlang: string){
+  public async logout(){
     const myPlan: any = await this.indexedDBService.getEditPlan();
     const myPlanApp: MyPlanApp = myPlan;
-    // 編集中のプランがある場合
     if(myPlanApp && !myPlanApp.isSaved){
-      // 削除確認
       const param = new ComfirmDialogParam();
       param.title = "LogoutConfirmTitle";
       param.text = "LogoutConfirmText";
       const dialog = this.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-        // プランを破棄してログアウト
         if (result === "ok"){
           this.indexedDBService.clearMyPlan();
           localStorage.removeItem("iskeep");
           this.oauthService.logOut();
-        // 編集中のプランを表示
         } else {
-          // メニューを閉じる
           this.onNotifyIsShowMenu(false);
-          // マイプランパネルを開く
           this.onNotifyIsShowCart(true);
           return;
         }
@@ -226,7 +131,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // アクセストークンを認可サーバーから取得
   public getToken() {
     if (!this.oauthService.hasValidAccessToken()) {
       console.log("Refreshing the token")
@@ -238,7 +142,6 @@ export class CommonService implements OnDestroy{
     };
   }
 
-  // 表示名を取得
   public get name() {
     if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
@@ -249,7 +152,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // トークン中のemailを取得（ある場合）
   public get email() {
     if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
@@ -260,7 +162,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // // ユーザーの一意識別子を取得
   public get objectId(){
     if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
@@ -271,7 +172,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // idpを取得
   public get idp(){
     if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
@@ -282,7 +182,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // 画像URLを取得
   public get picture(){
     if(isPlatformBrowser(this.platformId)){
       const claims:any = this.oauthService.getIdentityClaims();
@@ -300,48 +199,120 @@ export class CommonService implements OnDestroy{
     return null;
   }
 
-  // アクセストークンpayloadを取得
   public get accessToken() {
     return this.oauthService.getAccessToken();
   }
 
-  // IDトークン取得
   public get idToken(){
     return this.oauthService.getIdToken();
   }
 
-  // トークンの有効期限を取得　ticks (numeric)
   public get tokenExpiration() {
     return new Date(this.oauthService.getAccessTokenExpiration());
   }
 
-  // トークンの有効期限を取得(in date format)
   public get tokenExpirationDate() {
     return this.oauthService.getAccessTokenExpiration();
   }
+  /*----------------------------
+   *
+   * utility
+   *
+   *  ---------------------------*/
 
-  /* ---------------------------*/
+  scrollToTop() {
+    (function smoothscroll() {
+      const currentScroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.requestAnimationFrame(smoothscroll);
+        window.scrollTo(0, currentScroll - currentScroll / 3);
+      }
+    })();
+  }
+
+  isSome(ary: any) {
+    return ary.controls.some((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
+      return x.get("selected").value === true;
+    });
+  }
+
+  isEvery(ary: any) {
+    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
+      return x.get("selected").value === true;
+    });
+  }
+
+  isNotEvery(ary: any) {
+    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
+      return x.get("selected").value === false;
+    });
+  }
+
+  async getGuid() {
+    let guid = await this.indexedDBService.getGuid();
+    if (!guid) {
+      guid = Guid.create().toString();
+      this.indexedDBService.registGuid(String(guid));
+    }
+    return String(guid);
+  }
+
+  async checkAddPlan(addSpotQty: number): Promise<boolean>{
+    const myPlan: any = await this.indexedDBService.getEditPlan();
+    if (!myPlan){
+      return true;
+    }
+    const myPlanApp: MyPlanApp = myPlan;
+
+    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  setAddPlanLang(planSpot: PlanSpotCommon, lang: string){
+    planSpot.spotName = this.isValidJson(planSpot.spotName, lang);
+    planSpot.subheading = this.isValidJson(planSpot.subheading, lang);
+    planSpot.overview = this.isValidJson(planSpot.overview, lang);
+  }
+
+  isValidJson(value: string, lang: string) {
+    const langpipe = new LangFilterPipe();
+
+    try {
+      JSON.parse(value)
+    } catch (e) {
+      return value;
+    }
+    return langpipe.transform(value, lang);
+  }
+
+  reportComplete(result: boolean){
+    if (result){
+      this.snackBarDisp("ReportReviewComplete");
+    } else {
+      this.snackBarDisp("ReportedReviewComplete");
+    }
+  }
 
   // 年代計算
   getAge(birthday: string) {
     if (birthday) {
       const birthDate = new Date(birthday);
 
-      // 生年月日を
       const y2 = birthDate.getFullYear().toString().padStart(4, '0');
       const m2 = (birthDate.getMonth() + 1).toString().padStart(2, '0');
       const d2 = birthDate.getDate().toString().padStart(2, '0');
 
-      // 今日の日付
       const today = new Date();
       const y1 = today.getFullYear().toString().padStart(4, '0');
       const m1 = (today.getMonth() + 1).toString().padStart(2, '0');
       const d1 = today.getDate().toString().padStart(2, '0');
 
-      // 年齢
       let age = Math.floor((Number(y1 + m1 + d1) - Number(y2 + m2 + d2)) / 10000);
 
-      // 年代
       if (age % 10 != 0)
       {
         age = age - age % 10;
@@ -351,14 +322,10 @@ export class CommonService implements OnDestroy{
     return 0;
   }
 
-  // 現在地の取得
   getGeoLocation() {
     return new Promise<Location>((resolve, reject) => {
-      // 端末がGeoLocation APIに対応している場合
       if (navigator.geolocation) {
-        // 現在地を取得
         navigator.geolocation.getCurrentPosition(
-          // [第1引数] 成功
           position => {
             const data = position.coords;
             let location: Location = new Location();
@@ -369,19 +336,11 @@ export class CommonService implements OnDestroy{
             };
             resolve(location);
           },
-          // [第2引数] 失敗
           error => {
-            // エラーコード(error.code)の番号
-            // 0:UNKNOWN_ERROR				原因不明のエラー
-            // 1:PERMISSION_DENIED			利用者が位置情報の取得を許可しなかった
-            // 2:POSITION_UNAVAILABLE		電波状況などで位置情報が取得できなかった
-            // 3:TIMEOUT					位置情報の取得に時間がかかり過ぎた…
-
             const location: Location = new Location();
             location.errorCd = error.code;
 
             resolve(location);
-            // reject(location);
           }
         );
         return location;
@@ -395,7 +354,6 @@ export class CommonService implements OnDestroy{
     });
   }
 
-  // 外部地図アプリまたはページへ連携
   locationGoogleMap(currentlang: any, latitude: number, longitude: number) {
     if(isPlatformBrowser(this.platformId)){
       if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
@@ -410,7 +368,6 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  // 外部地図アプリまたはページへ連携
   locationPlaceIdGoogleMap(currentlang: any, latitude: string, longitude: string, placeId: string) {
     if(isPlatformBrowser(this.platformId)){
       if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
@@ -453,7 +410,6 @@ export class CommonService implements OnDestroy{
     return <File>theBlob;
   }
 
-  // 画像サイズ変更
   async imageSize(file: File): Promise<ImageSize>{
     return new Promise((resolve, reject) => {
       let result = new ImageSize();
@@ -464,7 +420,6 @@ export class CommonService implements OnDestroy{
         const width = img.width;
         const height = img.height;
         // 縮小後のサイズを計算。ここでは横幅 (width) を指定
-        //const dstWidth = 1024;
         const dstWidth = 800;
         const scale = dstWidth / width;
         const dstHeight = height * scale;
@@ -486,7 +441,6 @@ export class CommonService implements OnDestroy{
     });
   }
 
-  // 通知
   snackBarDisp(message: string) {
     this.snackBar.open(
       this.translate.instant(message), "", {
@@ -496,7 +450,6 @@ export class CommonService implements OnDestroy{
       });
   }
 
-  // メッセージダイアログの表示
   messageDialog(message: string) {
     return this.dialog.open(MessageDialogComponent, {
       maxWidth: "100%",
@@ -508,7 +461,6 @@ export class CommonService implements OnDestroy{
     });
   }
 
-  // 確認メッセージダイアログの表示
   confirmMessageDialog(param: ComfirmDialogParam) {
     return this.dialog.open(ConfirmMessageDialogComponent, {
       maxWidth: "100%",
@@ -518,36 +470,6 @@ export class CommonService implements OnDestroy{
       autoFocus: false,
       id:"cmd"
     });
-  }
-
-  // マイプランパネル状態変更
-  public onNotifyIsShowCart(state:boolean){
-    this.isshowcart.next(state)
-  }
-
-  // menuパネル状態変更
-  public onNotifyIsShowMenu(state:boolean){
-    this.isshowmenu.next(state)
-  }
-
-  // ローディング状態（継続中 false 完了　true)
-  public onNotifyIsLoadingFinish(state:boolean){
-    this.isloadfin.next(state);
-  }
-
-  // プラン一覧　選択ID
-  public onNotifySelectedPlanId(id:any){
-    this.selectedPlanId.next(id);
-  }
-
-  // スポット一覧　選択ID
-  public onNotifySelectedSpotId(id:number){
-    this.selectedSpotId.next(id);
-  }
-
-  // モバイル判定（root検知）
-  public onNotifyIsMobile(state:boolean){
-    this.isMobile.next(state);
   }
 
   ngOnDestroy(){
