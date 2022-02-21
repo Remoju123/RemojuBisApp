@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { TranslateService } from "@ngx-translate/core";
 import { UserService } from "../../service/user.service";
@@ -8,9 +7,8 @@ import { ImageCropperParam } from "../../class/common.class";
 import { User } from "../../class/user.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { environment } from "../../../environments/environment";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import {FormBuilder,FormControl, FormGroupDirective, NgForm, Validators, FormGroup} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
+import { FormBuilder,FormControl, FormGroupDirective, NgForm, Validators, FormGroup } from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
@@ -54,21 +52,16 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     private commonService: CommonService,
     private translate: TranslateService,
     private userService: UserService,
-    private router: Router,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private dateAdapter:DateAdapter<NativeDateAdapter>,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {
   }
 
-  // 編集データ
   data: User;
-  // 国リスト
   countryAll: any[];
   $country: any[];
-  // プレビューモード
   isPreview:boolean = true;
   currentlang:string;
 
@@ -136,14 +129,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     this.myForm.controls["surname"].valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
       this.data.surname = v;
     })
-/* ご確認ください this.data.surnameになっています。
-    this.myForm.controls["email"].valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
-      this.data.surname = v;
-    })
-
-    this.myForm.controls["password"].valueChanges.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
-      this.data.surname = v;
-    })*/
   }
 
   /*------------------------------
@@ -159,7 +144,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     }
 
     this.createForm();
-    // 国選択データ取得
+
     const langpipe = new LangFilterPipe();
 
     if(this.currentlang!=="ja"){
@@ -195,7 +180,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
       this.$country = [..._ja,..._world];
     });
 
-    // ユーザ情報取得
     this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r =>{
       this.data = r;
 
@@ -218,7 +202,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  // プレビュー表示切り替え
   onClickPreviewSwitch() {
     this.isPreview = !this.isPreview;
   }
@@ -229,14 +212,15 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   }
 
   // カバー画像：ファイルを選択ボタンクリック時(見えていないボタン)
-  onChangeCoverFileInput(): void {
+  async onChangeCoverFileInput(): Promise<void> {
     if (this.coverFileInput.nativeElement.files && this.coverFileInput.nativeElement.files[0]) {
       const file = this.coverFileInput.nativeElement.files[0];
-      this.imageSize(file, true);
+      const img = await this.commonService.imageSize(file);
+      this.data.coverFile = img.file;
+      this.data.coverPreviewUrl = img.previewUrl;
     }
   }
 
-  // カバー写真を削除
   onDeleteCoverFile():void{
     if(this.data.coverImageCropped){
       this.data.coverImageCropped = null;
@@ -275,14 +259,15 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   }
 
   // プロフィール画像：ファイルを選択ボタンクリック時(見えていないボタン)
-  onChangeFileInput(): void {
+  async onChangeFileInput(): Promise<void> {
     if (this.fileInput.nativeElement.files && this.fileInput.nativeElement.files[0]) {
       const file = this.fileInput.nativeElement.files[0];
-      this.imageSize(file, false);
+      const img = await this.commonService.imageSize(file);
+      this.data.pictureFile = img.file;
+      this.data.picturePreviewUrl = img.previewUrl;
     }
   }
 
-  // プロフィール写真を削除
   onDeleteUserFile():void{
     if(this.data.imageCropped){
       this.data.imageCropped = null;
@@ -316,7 +301,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     });
   }
 
-  // パスワードを変更クリック時
   onClickChangePassword() {
     //window.location.href = environment.pwdreset;
     if(isPlatformBrowser(this.platformId)){
@@ -324,37 +308,33 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     }
   }
 
-  // 登録ボタンクリック時
   onClickUpdate() {
     if(this.myForm.valid){
       if (this.data.pictureFile) {
-        // プロフィール画像URLを設定
-        this.data.pictureUrl = environment.blobUrl + "/" + this.data.object_id + "/" + this.data.pictureFile.name;
+        this.data.pictureUrl = environment.blobUrl + "/" + this.data.object_id + "/profile" + Date.now() + ".webp";
       }
       if (this.data.coverFile){
-        // カバー画像URLを設定
-        this.data.coverUrl = environment.blobUrl + "/" + this.data.object_id + "/" + this.data.coverFile.name;
+        this.data.coverUrl = environment.blobUrl + "/" + this.data.object_id + "/cover" + Date.now() + ".webp";
       }
 
-        // ユーザ情報更新
       this.userService.registUser(this.data).pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
         if (r) {
-          // 年代計算
           this.data.age = this.commonService.getAge(this.data.birthday);
           const result = [];
           if (this.data.pictureFile) {
-            // プロフィール画像アップロード
-            result.push(this.saveImagePlan(false));
+            result.push(this.saveImagePlan(false,
+              this.data.pictureUrl.substring(
+              this.data.pictureUrl.lastIndexOf("/") + 1)));
           }
           if (this.data.coverFile){
-            // カバー画像アップロード
-            result.push(this.saveImagePlan(true));
+            result.push(this.saveImagePlan(true,
+              this.data.coverUrl.substring(
+              this.data.coverUrl.lastIndexOf("/") + 1)));
           }
           await Promise.all(result);
 
           if (this.data.pictureFile) {
             this.onDeleteUserFile();
-            // ヘッダー画像更新
             this.commonService.onUpdHeader();
           }
           if (this.data.coverFile){
@@ -375,46 +355,9 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
    * メソッド
    *
    * -----------------------------*/
-
-  // 画像サイズ変更
-  imageSize(file: File, isCover: boolean){
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      const width = img.width;
-      const height = img.height;
-      // 縮小後のサイズを計算。ここでは横幅 (width) を指定
-      const dstWidth = 1024;
-      const scale = dstWidth / width;
-      const dstHeight = height * scale;
-      // Canvas オブジェクトを使い、縮小後の画像を描画
-      const canvas = document.createElement("canvas");
-      canvas.width = dstWidth;
-      canvas.height = dstHeight;
-      const ctx = canvas.getContext("2d");
-      ctx?.drawImage(img, 0, 0, dstWidth, dstHeight);
-      // Canvas オブジェクトから Data URL を取得
-      const resized = canvas.toDataURL("image/webp",0.75);
-      if (isCover){
-        this.data.coverPreviewUrl = resized;
-      } else{
-        this.data.picturePreviewUrl = resized;
-      }
-      // blobに再変換
-      var blob = this.commonService.base64toBlob(resized);
-      // blob object array( fileに再変換 )
-      if (isCover){
-        this.data.coverFile = this.commonService.blobToFile(blob, Date.now() + file.name + ".webp");
-      } else{
-        this.data.pictureFile = this.commonService.blobToFile(blob, Date.now() + file.name + ".webp");
-      }
-    };
-  }
-
-  saveImagePlan(isCover: boolean){
+  saveImagePlan(isCover: boolean, fileName: string){
     return new Promise((resolve) => {
-      // 画像アップロード
-      this.userService.fileUpload(this.data, isCover).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
+      this.userService.fileUpload(this.data, fileName, isCover).pipe(takeUntil(this.onDestroy$)).subscribe(() => {
           resolve(true);
       });
     });

@@ -79,6 +79,7 @@ export class UserService {
   // ファイルアップロード
   fileUpload(
     user: User,
+    fileName: string,
     isCover: boolean
   ) {
     const formData = new FormData();
@@ -87,20 +88,20 @@ export class UserService {
         // blobに再変換
         var blob = this.commonService.base64toBlob(user.coverImageCropped);
         // blob object array( fileに再変換 )
-        var file = this.commonService.blobToFile(blob, user.coverFile.name);
-        formData.append("param" , file, file.name);
+        var file = this.commonService.blobToFile(blob, fileName);
+        formData.append("param" , file, fileName);
       } else {
-        formData.append("param" , user.coverFile, user.coverFile.name);
+        formData.append("param" , user.coverFile, fileName);
       }
     } else {
       if (user.imageCropped){
         // blobに再変換
         var blob = this.commonService.base64toBlob(user.imageCropped);
         // blob object array( fileに再変換 )
-        var file = this.commonService.blobToFile(blob, user.pictureFile.name);
-        formData.append("param" , file, file.name);
+        var file = this.commonService.blobToFile(blob, fileName);
+        formData.append("param" , file, fileName);
       } else {
-        formData.append("param" , user.pictureFile, user.pictureFile.name);
+        formData.append("param" , user.pictureFile, fileName);
       }
     }
     formData.append("objectId", user.object_id);
