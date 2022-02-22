@@ -106,27 +106,24 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   }
 
   ngOnInit() {
-    this.myplanService.FetchMyplanSpots();
-    this.myplanService.MySpots$.subscribe(v=>{
-      this.myPlanSpots = v;
-    })
-
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       const id = params.get("id");
-      this.commonService.onNotifySelectedPlanId(id);
-      if (id !== null) {
+      if (id) {
         this.getPlanDetail(id);
-      }else{
-        this.commonService.selectedPlanId$.subscribe(d => {
-          this.getPlanDetail(d.toFixed());
-        })
+      } else {
+        this.router.navigate(["/" + this.lang + "/404"]);
       }
     });
 
     if(isPlatformBrowser(this.platformId)){
+      this.myplanService.FetchMyplanSpots();
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
+
+    this.myplanService.MySpots$.subscribe(v=>{
+      this.myPlanSpots = v;
+    });
   }
 
   // お気に入り登録(スポット)
@@ -284,7 +281,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
     this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
-        this.router.navigate(["/" + this.lang + "/notfound"]);
+        this.router.navigate(["/" + this.lang + "/404"]);
         return;
       }
 

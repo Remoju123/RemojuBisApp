@@ -179,9 +179,8 @@ export class MyplanService  {
   // MyPlanスポットを更新
   public async FetchMyplanSpots(){
     let myPlan:any = null;
-    if(isPlatformBrowser(this.platformId)){
-      myPlan = await this.indexedDBService.getEditPlan();
-    }
+    myPlan = await this.indexedDBService.getEditPlan();
+
     const _mySpots = new Array();
     if(myPlan && myPlan.planSpots){
       myPlan.planSpots.map((x: { spotId: any; })=>{
