@@ -33,12 +33,6 @@ export class CommonService implements OnDestroy{
   private isloadfin = new Subject<boolean>();
   public isloadfin$ = this.isloadfin.asObservable();
 
-  private selectedPlanId = new Subject<any>();
-  public selectedPlanId$ = this.selectedPlanId.asObservable();
-
-  private selectedSpotId = new Subject<number>();
-  public selectedSpotId$ = this.selectedSpotId.asObservable();
-
   private isMobile = new Subject<boolean>();
   public isMobile$ = this.isMobile.asObservable();
 
@@ -79,14 +73,6 @@ export class CommonService implements OnDestroy{
 
   public onNotifyIsLoadingFinish(state:boolean){
     this.isloadfin.next(state);
-  }
-
-  public onNotifySelectedPlanId(id:any){
-    this.selectedPlanId.next(id);
-  }
-
-  public onNotifySelectedSpotId(id:number){
-    this.selectedSpotId.next(id);
   }
 
   public onNotifyIsMobile(state:boolean){

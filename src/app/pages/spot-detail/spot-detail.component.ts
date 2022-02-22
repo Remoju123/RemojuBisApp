@@ -45,8 +45,6 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
 
-  @Input() spotId: string;
-
   data: SpotApp = new SpotApp();
   $latitude: number;
   $longitude: number;
@@ -104,29 +102,24 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   myPlanSpots:any;
 
   ngOnInit() {
+    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
+      let id = params.get("id");
+      if (id) {
+        this.getSpotDetail(id);
+      } else {
+        this.router.navigate(["/" + this.lang + "/404"]);
+      }
+    });
 
     if(isPlatformBrowser(this.platformId)){
-      this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
-        let id = params.get("id");
-        if (this.spotId !== undefined && this.spotId !== null) {
-          id = this.spotId;
-        }
-        if (id !== null) {
-          this.getSpotDetail(id);
-        }
-
-        window.scrollTo(0,0);
-      });
-      // this.connectionSettings();
-      // console.log(this.lang);
       this.myplanService.FetchMyplanSpots();
-      this.myplanService.MySpots$.subscribe((v)=>{
-        this.myPlanSpots = v;
-      })
-
       let suffix = localStorage.getItem("gml")==="en"?"_en":"";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
+
+    this.myplanService.MySpots$.subscribe((v)=>{
+      this.myPlanSpots = v;
+    });
   }
 
   // SignalRの設定
@@ -268,7 +261,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
     this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
-        this.router.navigate(["/" + this.lang + "/notfound"]);
+        this.router.navigate(["/" + this.lang + "/404"]);
         return;
       }
 
