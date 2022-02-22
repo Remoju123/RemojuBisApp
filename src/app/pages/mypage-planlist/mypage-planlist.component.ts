@@ -4,7 +4,7 @@ import { CommonService } from "../../service/common.service";
 import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { DataSelected, ComfirmDialogParam, MyPlanApp } from "../../class/common.class";
+import { DataSelected, ComfirmDialogParam, MyPlanApp, PlanSpotCommon } from "../../class/common.class";
 import { MypagePlanAppList } from "../../class/mypageplanlist.class";
 import { Catch } from "../../class/log.class";
 import { MatDialog } from "@angular/material/dialog";
@@ -129,6 +129,14 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
           });
         }
       });
+    }
+  }
+
+  linktoSpot(planSpot: PlanSpotCommon){
+    if (planSpot.type === 1) {
+      this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
+    } else {
+      this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
     }
   }
 

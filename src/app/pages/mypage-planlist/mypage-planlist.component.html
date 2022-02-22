@@ -39,8 +39,7 @@
           <owl-carousel-o class="pics" [options]="customOptions">
             <ng-container *ngFor="let item of row.spots; index as i">
               <ng-template carouselSlide id="i+1">
-                  <div class="thumbspots">
-                    <a href="/{{ currentlang }}/spots/detail/{{ item.spotId }}">
+                  <div class="thumbspots" (click)="linktoSpot(item)">
                     <div class="thumbnum">
                       <span>{{ i + 1 }}</span>
                     </div>
@@ -50,9 +49,8 @@
                       [alt]="item.spotId"
                       [title]="item.spotId"
                     />
-                    </a>
                   </div>
-                  <div class="thumbname">
+                  <div class="thumbname" (click)="linktoSpot(item)">
                     <!-- 掲載OK -->
                     <span *ngIf="!item.isEndOfPublication">
                       {{ item.spotName }}
