@@ -1,6 +1,14 @@
 <!-- マイページプラン一覧 -->
-<div class="box">
-  <ng-container *ngFor="let row of rows">
+<div class="box"
+infinite-scroll
+[infiniteScrollDistance]="5"
+[infiniteScrollUpDistance]="1.5"
+[infiniteScrollThrottle]="100"
+[infiniteScrollContainer]="box"
+[scrollWindow]="isMobile?true:false"
+[fromRoot]="isMobile?false:true"
+(scrolled)="onScrollDown()">
+  <ng-container *ngFor="let row of details$">
     <mat-card>
       <mat-card-content>
         <div class="card-box">

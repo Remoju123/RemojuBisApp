@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input, Inject, PLATFORM_ID } from "@angular/core";
 import { ComfirmDialogParam, DataSelected } from "../../class/common.class";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
@@ -6,11 +6,16 @@ import { MypageFavoriteListService } from "../../service/mypagefavoritelist.serv
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PlanSpotList, tarms } from "src/app/class/planspotlist.class";
-import { PlanSpotListService } from "src/app/service/planspotlist.service";
-import { MyplanService } from "src/app/service/myplan.service";
-import { IndexedDBService } from "src/app/service/indexeddb.service";
-import { ListSearchCondition } from "src/app/class/indexeddb.class";
+import { CacheStore, PlanSpotList, tarms } from "../../class/planspotlist.class";
+import { PlanSpotListService } from "../../service/planspotlist.service";
+import { MyplanService } from "../../service/myplan.service";
+import { IndexedDBService } from "../../service/indexeddb.service";
+import { ListSearchCondition } from "../../class/indexeddb.class";
+import { makeStateKey, TransferState } from "@angular/platform-browser";
+import { isPlatformServer } from "@angular/common";
+
+export const MYFAVORITELIST_KEY = makeStateKey<CacheStore>('MYFAVORITELIST_KEY');
+
 @Component({
   selector: "app-mypage-favoritelist",
   templateUrl: "./mypage-favoritelist.component.html",
@@ -27,6 +32,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
+    private transferState: TransferState,
+    @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 6;
     this.p = 1;
@@ -54,6 +61,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   p: number;
   limit: number;
   end: number;
+  offset: number;
 
   get lang() {
     return this.translate.currentLang;
@@ -63,16 +71,33 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
    * イベント
    *
    * -----------------------------*/
+
+  ngAfterViewChecked(): void {
+    if (this.offset) {
+      if (this.offset > 0) {
+        window.scrollTo(0, this.offset);
+      }
+
+      if (this.offset === window.pageYOffset) {
+        this.offset = 0;
+      }
+    }
+  }
+
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
+    if (this.transferState.hasKey(MYFAVORITELIST_KEY)) {
+      this.cacheRecoveryDataSet();
+      this.mergeNextDataSet(true);
+    } else {
+      let condition: any = await this.indexedDBService.getListSearchConditionMyfav();
+      if (condition){
+        this.condition = condition;
+      }
 
-    let condition: any = await this.indexedDBService.getListSearchConditionMyfav();
-    if (condition){
-      this.condition = condition;
+      this.getPlanSpotDataSet();
     }
-
-    this.getPlanSpotDataSet();
 
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r=>{
@@ -82,6 +107,10 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.onDestroy$.next();
+  }
+
+  onScrollDown() {
+    this.mergeNextDataSet();
   }
 
   /*------------------------------
@@ -111,43 +140,90 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       }
   }
 
-  async mergeNextDataSet(){
+  async mergeNextDataSet(isComplement: boolean = false){
     if(this.rows.length > 0){
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
       if(this.rows.length - startIndex < this.limit){
         this.end = this.rows.length;
       }
+      if (isComplement) {
+        startIndex = 0;
+      }
+
       for (let i = startIndex; i < this.end; i++){
-        if(!this.rows[i].googleSpot){
-          (await this.planspots.fetchDetails(this.rows[i], this.guid))
+        if (this.rows[i].isDetail || this.rows[i].googleSpot) {
+          continue;
+        }
+
+        (await this.planspots.fetchDetails(this.rows[i], this.guid))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
-            this.rows[idx] = d;
-            this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
 
+            // 掲載終了の場合は削除
+            if (d.isEndOfPublication) {
+              // this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
+              this.rows.splice(idx, 1);
+              if (this.rows.length - startIndex < this.limit) {
+                this.end = this.rows.length;
+              }
+            } else {
+              this.rows[idx] = d;
+              this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
+            }
             this.details$ = this.rows.slice(0,this.end);
+            if (i === this.end -1 && isPlatformServer(this.platformId)) {
+              this.setTransferState();
+            }
           })
-        }
       }
       this.p++;
     }else{
       this.details$ = [];
     }
   }
-  onScrollDown() {
-    this.mergeNextDataSet();
+
+  cacheRecoveryDataSet() {
+    const cache = this.transferState.get<CacheStore>(MYFAVORITELIST_KEY, null);
+    //console.log(this.transferState);
+    this.rows = cache.data;
+    this.end = cache.end;
+    this.offset = cache.offset;
+    this.details$ = this.rows.slice(0, this.end);
+    this.p = cache.p - 1;
+    this.condition.select = cache.select;
+    this.condition.sortval = cache.sortval;
+    this.condition.keyword = cache.keyword;
+    this.$mSort = cache.mSort;
+    this.count = cache.data.length;
+
+    this.transferState.remove(MYFAVORITELIST_KEY);
   }
 
   linktoDetail(item:PlanSpotList){
     if (item.isPlan){
+      this.setTransferState();
       this.router.navigate(["/" + this.lang + "/plans/detail",item.id]);
     } else if (item.googleSpot) {
       this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
     } else {
+      this.setTransferState();
       this.router.navigate(["/" + this.lang + "/spots/detail",item.id]);
     }
+  }
+
+  setTransferState() {
+    const c = new CacheStore();
+    c.data = this.rows;
+    c.p = this.p;
+    c.end = this.end;
+    c.offset = window.pageYOffset;
+    c.select = this.condition.select;
+    c.sortval = this.condition.sortval;
+    c.mSort = this.$mSort;
+
+    this.transferState.set<CacheStore>(MYFAVORITELIST_KEY, c);
   }
 
   // プランに追加
@@ -228,7 +304,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.condition.sortval = v;
     this.indexedDBService.registListSearchConditionMyfav(this.condition);
     this.getPlanSpotDataSet();
-    this.p = 1;
   }
 
   // プランスポット切り替え
@@ -237,10 +312,5 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.condition.select = val;
     this.indexedDBService.registListSearchConditionMyfav(this.condition);
     this.getPlanSpotDataSet();
-    this.p = 1;
-  }
-
-  // 検索条件リセット
-  conditionReset(){
   }
 }

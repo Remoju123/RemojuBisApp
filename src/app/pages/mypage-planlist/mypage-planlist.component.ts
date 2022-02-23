@@ -1,27 +1,29 @@
-import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID } from "@angular/core";
+import { Component, OnInit, OnDestroy, Inject, PLATFORM_ID, AfterViewChecked, ViewChild, ElementRef } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { CommonService } from "../../service/common.service";
 import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { DataSelected, ComfirmDialogParam, MyPlanApp, PlanSpotCommon } from "../../class/common.class";
-import { MypagePlanAppList } from "../../class/mypageplanlist.class";
+import { MypagePlanAppList, MyplanListCacheStore } from "../../class/mypageplanlist.class";
 import { Catch } from "../../class/log.class";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
 import { MemoDialogComponent } from "../../parts/memo-dialog/memo-dialog.component";
-import { isPlatformBrowser } from "@angular/common";
+import { isPlatformBrowser, isPlatformServer } from "@angular/common";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-mypage-planlist",
   templateUrl: "./mypage-planlist.component.html",
   styleUrls: ["./mypage-planlist.component.scss"]
 })
-export class MypagePlanListComponent implements OnInit, OnDestroy {
+export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
   private baseUrl:string;
 
@@ -30,26 +32,36 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
+    private transferState: TransferState,
     private translate: TranslateService,
     private router: Router,
     public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    this.limit = 6;
+    this.p = 1;
+
     if(isPlatformBrowser(this.platformId)){
       this.baseUrl = document.getElementsByTagName("base")[0].href;
       this.currentlang = localStorage.getItem("gml");
     }
   }
 
-  // マイページプラン一覧
+  @ViewChild('box') box:ElementRef;
+
+  isMobile:boolean;
+
   rows: MypagePlanAppList[];
-  sortval = 12;
+  details$: MypagePlanAppList[] = [];
+  count: number = 0;
 
   $mSort: DataSelected[];
+  sortval = 12;
 
-  // ページング
   p: number;
-  pageSize: number;
+  limit: number;
+  end: number;
+  offset: number;
 
   currentlang: string;
 
@@ -62,10 +74,41 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
    * イベント
    *
    * -----------------------------*/
+
+  ngAfterViewChecked(): void {
+    if (this.offset) {
+      if (this.offset > 0) {
+        window.scrollTo(0, this.offset);
+      }
+
+      if (this.offset === window.pageYOffset) {
+        this.offset = 0;
+      }
+    }
+  }
+
   ngOnInit() {
-    this.currentlang = this.lang;
-    // 一覧取得
-    this.getMyPagePlanList();
+    this.isMobile = this.detectIsMobile(window.innerWidth);
+
+    if (this.transferState.hasKey(MYPLANLIST_KEY)) {
+      this.cacheRecoveryDataSet();
+      this.getPlanListDetail(0, true);
+    } else {
+      // 一覧取得
+      this.mypagePlanListService
+        .getMypagePlanList()
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(r => {
+          this.rows = r;
+          this.limit = 6;
+          this.p = 1;
+
+          // ソート
+          this.listsort(this.rows, this.sortval);
+          // 検索結果補完
+          this.getPlanListDetail();
+        });
+    }
 
     // 保存通知
     this.myplanService.PlanUserSaved$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
@@ -78,11 +121,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
   }
 
-  // ページ送り
-  pageChange() {
-    // スクロール位置を設定
-    this.commonService.scrollToTop();
-    // 検索結果補完
+  onScrollDown() {
     this.getPlanListDetail();
   }
 
@@ -134,6 +173,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
 
   linktoSpot(planSpot: PlanSpotCommon){
     if (planSpot.type === 1) {
+      this.setTransferState();
       this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
     } else {
       this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
@@ -188,13 +228,30 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
 
   }
 
-  onClickEditPlan(row: MypagePlanAppList){
-    // プラン作成
-    if (row.isCreation){
-      this.checkEditPlan(row.planUserId);
-    // プラン投稿
-  } else {
-      this.router.navigate(["/" + this.currentlang + "/post/" + row.planUserId]);
+  async onClickEditPlan(row: MypagePlanAppList){
+    // 編集中のプランを取得
+    let myPlan: any = await this.indexedDBService.getEditPlan();
+    const myPlanApp: MyPlanApp = myPlan;
+
+    // 編集中のプランIDが異なる場合
+    if(myPlanApp && myPlanApp.planUserId !== row.planUserId && !myPlanApp.isSaved){
+      // 確認ダイアログの表示
+      const param = new ComfirmDialogParam();
+      param.title = "EditPlanConfirmTitle";
+      param.text = "EditPlanConfirmText";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+        if (r === "ok") {
+          // プランを取得してプラン作成に反映
+          this.getPlan(row.planUserId);
+        } else {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
+        }
+      });
+    } else {
+      // プランを取得してプラン作成に反映
+      this.getPlan(row.planUserId);
     }
   }
 
@@ -219,46 +276,37 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
    *
    * -----------------------------*/
 
-  // 検索条件取得
   @Catch()
 
-  // マイページプラン一覧取得
-  getMyPagePlanList() {
-    this.mypagePlanListService
-      .getMypagePlanList()
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(r => {
-        this.rows = r;
-        this.pageSize = 40;
-        this.p = 1;
-
-        // ソート
-        this.listsort(this.rows, this.sortval);
-        // 検索結果補完
-        this.getPlanListDetail();
-      });
+  detectIsMobile(w:any){
+    if(w<1024){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   // マイページプラン一覧詳細取得
-  getPlanListDetail(planUserId: number = 0) {
-    const langpipe = new LangFilterPipe();
-    const startidx = (this.p - 1) * this.pageSize;
-    let end = startidx + this.pageSize;
-    if (end > this.rows.length) {
-      end = this.rows.length;
+  getPlanListDetail(planUserId: number = 0, isComplement: boolean = false) {
+    let startIndex = (this.p - 1) * this.limit;
+    this.end = startIndex + this.limit;
+    if (this.rows.length - startIndex < this.limit) {
+      this.end = this.rows.length;
     }
-    for (let i = startidx; i < end; i++) {
+    if (isComplement) {
+      startIndex = 0;
+    }
+    for (let i = startIndex; i < this.end; i++) {
       if (planUserId && planUserId !== this.rows[i].planUserId){
+        continue;
+      }
+      if (this.rows[i].isDetail) {
         continue;
       }
       this.mypagePlanListService
         .getMypagePlanListDetail(this.rows[i])
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(d => {
-          if (!d) {
-            this.router.navigate(["/" + this.currentlang + "/systemerror"]);
-            return;
-          } else {
             const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
             this.rows[idx] = d;
             if (d.spots && d.spots.length > 0){
@@ -269,19 +317,48 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
                 return x;
               }, []);
             }
-
-          }
+            this.details$ = this.rows.slice(0, this.end);
+            if (i === this.end -1 && isPlatformServer(this.platformId)) {
+              this.setTransferState();
+            }
         });
+    }
+    if (planUserId === 0) {
+      this.p++;
     }
   }
 
+  cacheRecoveryDataSet() {
+    const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
+    //console.log(this.transferState);
+    this.rows = cache.data;
+    this.end = cache.end;
+    this.offset = cache.offset;
+    this.details$ = this.rows.slice(0, this.end);
+    this.p = cache.p - 1;
+    this.count = cache.data.length;
+
+    this.transferState.remove(MYPLANLIST_KEY);
+  }
+
+  setTransferState() {
+    const c = new MyplanListCacheStore();
+    c.data = this.rows;
+    c.p = this.p;
+    c.end = this.end;
+    c.offset = window.pageYOffset;
+
+    this.transferState.set<MyplanListCacheStore>(MYPLANLIST_KEY, c);
+  }
+
+/*
   sortChange(e: { value: number }) {
     this.sortval = e.value;
 
     this.listsort(this.rows, e.value);
     this.getPlanListDetail();
   }
-
+*/
   listsort(rows: MypagePlanAppList[], v: number) {
     let temp: MypagePlanAppList[];
     switch (v) {
@@ -296,35 +373,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy {
         });
         break;
     }
-  }
-
-  //
-  async checkEditPlan(planUserId: number){
-    // 編集中のプランを取得
-    let myPlan: any = await this.indexedDBService.getEditPlan();
-    const myPlanApp: MyPlanApp = myPlan;
-
-    // 編集中のプランIDが異なる場合
-    if(myPlanApp && myPlanApp.planUserId !== planUserId && !myPlanApp.isSaved){
-      // 確認ダイアログの表示
-      const param = new ComfirmDialogParam();
-      param.title = "EditPlanConfirmTitle";
-      param.text = "EditPlanConfirmText";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
-        if (r === "ok") {
-          // プランを取得してプラン作成に反映
-          this.getPlan(planUserId);
-        } else {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        }
-      });
-    } else {
-      // プランを取得してプラン作成に反映
-      this.getPlan(planUserId);
-    }
-
   }
 
   // プラン取得

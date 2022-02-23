@@ -1,6 +1,7 @@
 import { DataSelected, MyPlanApp, PlanSpotCommon, ListSelectedPlan } from "./common.class";
 
 export class MypagePlanAppList {
+  isDetail: boolean;
   planUserId: number;
   areaId: number;
   areaId2: number;
@@ -28,4 +29,11 @@ export class MyPlanAppListSelected{
   businessDay: DataSelected[];
   listSelectedPlan: ListSelectedPlan;
   myPlan: MyPlanApp;
+}
+
+export class MyplanListCacheStore {
+  data: MypagePlanAppList[];
+  p:number;
+  end:number;
+  offset:number;
 }
