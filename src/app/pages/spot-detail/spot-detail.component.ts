@@ -16,7 +16,7 @@ import { GoogleSpot } from "../../class/planspotlist.class";
 import { SpotSearchCategory } from "../../class/spot.class";
 import { ReviewResult } from "../../class/review.class"
 import { Catch } from "../../class/log.class";
-import { Meta } from "@angular/platform-browser";
+import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 // import { DeviceDetectorService } from "ngx-device-detector";
@@ -24,6 +24,8 @@ import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from "@angular/common";
+
+export const SPOTDETAIL_KEY = makeStateKey<SpotApp>('SPOTDETAIL_KEY');
 
 @Component({
   selector: "app-spot-detail",
@@ -42,6 +44,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     private planspotListService: PlanSpotListService,
     private meta: Meta,
     private translate: TranslateService,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
 
@@ -101,11 +104,14 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
   myPlanSpots:any;
 
-  ngOnInit() {
+  async ngOnInit() {
+    // GUID取得
+    this.guid = await this.commonService.getGuid();
+
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       let id = params.get("id");
       if (id) {
-        this.getSpotDetail(id);
+        this.setSpotDetail(id);
       } else {
         this.router.navigate(["/" + this.lang + "/404"]);
       }
@@ -255,140 +261,157 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
    *
    * -----------------------------*/
   @Catch()
-  async getSpotDetail(id: string) {
-    // GUID取得
-    this.guid = await this.commonService.getGuid();
+  async setSpotDetail(id: string) {
+    if (this.transferState.hasKey(SPOTDETAIL_KEY)) {
+      const cache = this.transferState.get<SpotApp>(SPOTDETAIL_KEY, null);
+      this.data = cache;
+      this.transferState.remove(SPOTDETAIL_KEY);
 
-    this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (!r) {
-        this.router.navigate(["/" + this.lang + "/404"]);
-        return;
-      }
-
-      const langpipe = new LangFilterPipe();
-
-      this.$spotId = r.spotId;
-      this.$versionNo = r.versionNo;
-      this.$googleSpot = new GoogleSpot();
-
-      this.data = r;
-
-      this.meta.addTags([
-        {
-          name: "description",
-          content: langpipe.transform(r.seo.description, this.lang) ? langpipe.transform(r.seo.description, this.lang)
-           : langpipe.transform(this.data.spotOverview, this.lang)
-        },
-        {
-          name: "keyword",
-          content: langpipe.transform(r.seo.keyword, this.lang)
-        },
-        {
-          name: "subtitle",
-          content: langpipe.transform(r.seo.subtitle, this.lang) ? langpipe.transform(r.seo.subtitle, this.lang)
-           : langpipe.transform(this.data.spotName, this.lang) + "," + langpipe.transform(this.data.subheading, this.lang)
+      this.spotService.getSpotFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (!r) {
+          this.router.navigate(["/" + this.lang + "/404"]);
+          return;
         }
-      ]);
-
-      this.reviewResult = r.reviewResult;
-
-      this.nearbySpots = r.nearbySpotList.filter((e: any) => {
-        return e.pictureUrl !== null;
       });
+    } else {
+      await this.getSpotDetail(id);
+    }
 
-      this.popularSpots = r.popularSpotList.filter((e: any) => {
-        return e.pictureUrl !== null;
-      });
+    const langpipe = new LangFilterPipe();
 
-      this.modelPlans = r.modelPlanList.map(x => {
-        x.name = this.commonService.isValidJson(x.name, this.lang);
-        return x;
-      });
-      this.modePlanshow = r.modelPlanList.length > 0;
+    this.$spotId = this.data.spotId;
+    this.$versionNo = this.data.versionNo;
+    this.$googleSpot = new GoogleSpot();
 
-      this.$latitude = Number(r.latitude);
-      this.$longitude = Number(r.longitude);
-
-      this.spotService.getThanks(r.spotId).pipe(takeUntil(this.onDestroy$)).subscribe(t => {
-        this.$thanksQty = t;
-      });
-      // this.spotService.registThanks().subscribe(t => {
-      //   this.$thanksQty = t;
-      // });
-
-      this.mainPictures = r.pictures;
-      this.isMulti = r.pictures.length > 1;
-      //if(r.pictures.length <= 1){
-        this.mainPicturesSingle = r.pictures[0];
-      //}
-
-      this.spotPictures = r.pictures.filter(
-        (p: { is_main: any }) => !p.is_main
-      );
-      // メイン営業時間
-      this.spotService.businessday = r.businessDay;
-      this.$businessHourMain = this.spotService.getBusinessHourMain(
-        r.businessHours
-      );
-      // 定休日
-      this.$regularHoliday = this.spotService.getRegularholidays(
-        r.regularHoliday
-      );
-      // URL
-      const _url = langpipe.transform(r.hp,this.lang);
-      if(_url!==""){
-        this.$hpUrl = "<a href='" + _url + "' target='_brank'>" + _url + "</a>";
-      }else{
-        this.$hpUrl = "<span>------</span>"
+    this.meta.addTags([
+      {
+        name: "description",
+        content: langpipe.transform(this.data.seo.description, this.lang) ? langpipe.transform(this.data.seo.description, this.lang)
+          : langpipe.transform(this.data.spotOverview, this.lang)
+      },
+      {
+        name: "keyword",
+        content: langpipe.transform(this.data.seo.keyword, this.lang)
+      },
+      {
+        name: "subtitle",
+        content: langpipe.transform(this.data.seo.subtitle, this.lang) ? langpipe.transform(this.data.seo.subtitle, this.lang)
+          : langpipe.transform(this.data.spotName, this.lang) + "," + langpipe.transform(this.data.subheading, this.lang)
       }
-      // 営業時間
-      this.$businessDay = this.spotService.getBusinessHours(
-        r.businessHours,
-        langpipe.transform(r.businessHoursRemarks, this.lang)
-      );
-      // 予算枠
-      this.spotService.budgetFrame = r.budgetFrame;
-      this.$budgetFrame = this.spotService.getBudgetFrame(
-        r.budgets,
-        langpipe.transform(r.budgetRemarks, this.lang)
-      );
-      // 推奨時間
-      this.$averageStayTime =
-        r.averageStayTime > 0 ? r.averageStayTime + " " + this.translate.instant("Minute") : "-";
-      // エリア
-      this.$areaName1 = r.areaName1
-      this.$areaName2 = r.areaName2
-      // こだわり
-      this.$searchCategories = r.searchCategories.filter((x)=>{
-        if(x.name!==null){
-          return x
+    ]);
+
+    this.reviewResult = this.data.reviewResult;
+
+    this.nearbySpots = this.data.nearbySpotList.filter((e: any) => {
+      return e.pictureUrl !== null;
+    });
+
+    this.popularSpots = this.data.popularSpotList.filter((e: any) => {
+      return e.pictureUrl !== null;
+    });
+
+    this.modelPlans = this.data.modelPlanList.map(x => {
+      x.name = this.commonService.isValidJson(x.name, this.lang);
+      return x;
+    });
+    this.modePlanshow = this.data.modelPlanList.length > 0;
+
+    this.$latitude = Number(this.data.latitude);
+    this.$longitude = Number(this.data.longitude);
+
+    this.spotService.getThanks(this.data.spotId).pipe(takeUntil(this.onDestroy$)).subscribe(t => {
+      this.$thanksQty = t;
+    });
+    // this.spotService.registThanks().subscribe(t => {
+    //   this.$thanksQty = t;
+    // });
+
+    this.mainPictures = this.data.pictures;
+    this.isMulti = this.data.pictures.length > 1;
+    //if(r.pictures.length <= 1){
+      this.mainPicturesSingle = this.data.pictures[0];
+    //}
+
+    this.spotPictures = this.data.pictures.filter(
+      (p: { is_main: any }) => !p.is_main
+    );
+    // メイン営業時間
+    this.spotService.businessday = this.data.businessDay;
+    this.$businessHourMain = this.spotService.getBusinessHourMain(
+      this.data.businessHours
+    );
+    // 定休日
+    this.$regularHoliday = this.spotService.getRegularholidays(
+      this.data.regularHoliday
+    );
+    // URL
+    const _url = langpipe.transform(this.data.hp,this.lang);
+    if(_url!==""){
+      this.$hpUrl = "<a href='" + _url + "' target='_brank'>" + _url + "</a>";
+    }else{
+      this.$hpUrl = "<span>------</span>"
+    }
+    // 営業時間
+    this.$businessDay = this.spotService.getBusinessHours(
+      this.data.businessHours,
+      langpipe.transform(this.data.businessHoursRemarks, this.lang)
+    );
+    // 予算枠
+    this.spotService.budgetFrame = this.data.budgetFrame;
+    this.$budgetFrame = this.spotService.getBudgetFrame(
+      this.data.budgets,
+      langpipe.transform(this.data.budgetRemarks, this.lang)
+    );
+    // 推奨時間
+    this.$averageStayTime =
+    this.data.averageStayTime > 0 ? this.data.averageStayTime + " " + this.translate.instant("Minute") : "-";
+    // エリア
+    this.$areaName1 = this.data.areaName1
+    this.$areaName2 = this.data.areaName2
+    // こだわり
+    this.$searchCategories = this.data.searchCategories.filter((x)=>{
+      if(x.name!==null){
+        return x
+      }
+      return "";
+    });
+    // Googlemap url
+    this.$mapUrl = "https://www.google.com/maps/search/?api=1&query=" + this.data.latitude+","+ this.data.longitude;
+
+    this.$budgetFrameHead = this.spotService.getBudgetFrameLine(this.data.budgets);
+    this.$businessHourHead = this.spotService.getBusinessHourHead(
+      this.data.businessHours
+    );
+
+    this.$userStaff = this.data.userStaff;
+
+    this.$nearest = this.data.accesses[0].nearest;
+    this.$access = this.spotService.getAccessIcon(this.data.accesses[0].access);
+
+    // 閲覧履歴を更新
+    /*const mainPicture = this.data.pictures.find(x => x.is_main === true);
+    if (mainPicture && mainPicture.picture_url.length > 0){
+      let history: Recommended = {
+        isSpot : true,
+        name: this.data.spotName,
+        versionNo: this.data.versionNo,
+        spotPlanID: this.data.spotId,
+        pictureUrl: mainPicture.picture_url};
+      this.indexedDBService.registHistorySpot(history)
+    }*/
+  }
+
+  // 選択リスト取得
+  getSpotDetail(id: string): Promise<boolean>{
+    return new Promise(async (resolve) => {
+      this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (!r) {
+          this.router.navigate(["/" + this.lang + "/404"]);
+          return;
         }
-        return "";
+        this.data = r;
+        resolve(true);
       });
-      // Googlemap url
-      this.$mapUrl = "https://www.google.com/maps/search/?api=1&query="+r.latitude+","+r.longitude;
-
-      this.$budgetFrameHead = this.spotService.getBudgetFrameLine(r.budgets);
-      this.$businessHourHead = this.spotService.getBusinessHourHead(
-        r.businessHours
-      );
-
-      this.$userStaff = r.userStaff;
-
-      this.$nearest = r.accesses[0].nearest;
-      this.$access = this.spotService.getAccessIcon(r.accesses[0].access);
-
-      // 閲覧履歴を更新
-      const mainPicture = this.data.pictures.find(x => x.is_main === true);
-      if (mainPicture && mainPicture.picture_url.length > 0){
-        let history: Recommended = {
-          isSpot : true,
-          name: this.data.spotName,
-          versionNo: this.data.versionNo,
-          spotPlanID: this.data.spotId,
-          pictureUrl: mainPicture.picture_url};
-        this.indexedDBService.registHistorySpot(history)
-      }
     });
   }
 
