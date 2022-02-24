@@ -127,12 +127,14 @@ export class ReviewListPanelComponent implements OnInit, OnDestroy {
       }
     }
     for (let i = startidx; i < this.dispQty; i++){
-      this.userService.getOtherUser(this.reviewResult.reviews[i].objectId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (r){
-          this.reviewResult.reviews[i].age = r.age;
-          this.reviewResult.reviews[i].gender = r.gender;
-        }
-      });
+      if (this.reviewResult.reviews[i].objectId) {
+        this.userService.getOtherUser(this.reviewResult.reviews[i].objectId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          if (r){
+            this.reviewResult.reviews[i].age = r.age;
+            this.reviewResult.reviews[i].gender = r.gender;
+          }
+        });
+      }
     }
   }
 

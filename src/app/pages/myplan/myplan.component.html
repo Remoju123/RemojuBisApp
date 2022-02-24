@@ -178,9 +178,9 @@
       </div>
 
       <!-- スポットを表示 -->
-      <div class="spots"  *ngIf="row || spotZero"
+      <div class="spots"  *ngIf="row?.planSpots || spotZero"
         cdkDropList
-        [cdkDropListData]="row.planSpots ?? spotZero"
+        [cdkDropListData]="row?.planSpots ?? spotZero"
         (cdkDropListDropped)="cdkDropListDroppedSpot($event)"
         >
         <div class='title'>
@@ -192,10 +192,10 @@
           <dt>{{ "Movement" | translate }}</dt>
         </dl>
 
-        <div *ngFor="let item of row.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
+        <div *ngFor="let item of row?.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
           (cdkDragMoved)="setStep(999)">
           <mat-accordion #mepSpot="matAccordion" multi>
-            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpotPanel="matExpansionPanel" class="transfer" hideToggle [ngClass]="{'zero':!row.planSpots}">
+            <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpotPanel="matExpansionPanel" class="transfer" hideToggle [ngClass]="{'zero':!row?.planSpots}">
               <mat-expansion-panel-header
                 [@.disabled]="true"
               >
@@ -308,7 +308,7 @@
           </mat-accordion>
         </div>
         <!-- _blank view -->
-        <div id="overlay" *ngIf="!row.planSpots">
+        <div id="overlay" *ngIf="!row?.planSpots">
           <div class="guide">
             <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
             <p class="bold">{{ "MyPlan#Sec2" | translate }}</p>
@@ -332,10 +332,10 @@
       </div>
       <!-- スポットを追加する -->
       <div *ngIf="row" class="myplan-box">
-        <button class="clear" [disabled]="!row.planSpots" (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
+        <button class="clear" [disabled]="!row?.planSpots" (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
           <span class='label'>{{ "AddSpot" | translate }}</span>
-          <span class='count'>{{"NumberOfSpots"|translate}}{{ row.planSpots ? row.planSpots.length : 0 }} / {{"Max6spots"|translate}}</span>
+          <span class='count'>{{"NumberOfSpots"|translate}}{{ row?.planSpots ? row.planSpots.length : 0 }} / {{"Max6spots"|translate}}</span>
         </button>
       </div>
 

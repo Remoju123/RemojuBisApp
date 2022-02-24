@@ -60,6 +60,18 @@ export class SpotService {
     });
   }
 
+  // スポットお気に入りを取得
+  getSpotFavorite(id: string, guid: string) {
+    const url = this.host + "/api/GetFavorite/";
+    return this.http.get<boolean>(url, {
+      params: {
+        id: id,
+        guid: guid,
+        objectId: this.commonService.objectId
+      }
+    });
+  }
+
   // Thanks初期値取得
   getThanks(_spot_id: number) {
     const url = this.host + "/api/spotthanks/" + _spot_id;
@@ -275,7 +287,7 @@ export class SpotService {
     const r = [];
     data.map((x: { name: any; })=>{
       if(x.name !== null){
-        
+
       }
     })
     return;

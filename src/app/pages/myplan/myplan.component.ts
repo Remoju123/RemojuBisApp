@@ -31,6 +31,10 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
+import { makeStateKey, TransferState } from "@angular/platform-browser";
+import { MyPlanAppListSelected } from "src/app/class/mypageplanlist.class";
+
+export const MYPLAN_KEY = makeStateKey<MyPlanAppListSelected>('MYPLAN_KEY');
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -68,7 +72,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private router: Router,
     private loading:LoadingIndicatorService,
     private dateAdapter:DateAdapter<NativeDateAdapter>,
-    //@Inject("BASE_URL") private baseUrl: string
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if(isPlatformBrowser(this.platformId)){
@@ -131,22 +135,62 @@ export class MyplanComponent implements OnInit ,OnDestroy{
    *
    * -----------------------------*/
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (this.transferState.hasKey(MYPLAN_KEY)) {
+      const cache = this.transferState.get<MyPlanAppListSelected>(MYPLAN_KEY, null);
+
+      this.$stayTime = cache.stayTime;
+      this.spotService.businessday = cache.businessDay;
+      this.listSelectedPlan = cache.listSelectedPlan;
+      this.spotZero = cache.myPlan.planSpots;
+      this.initRow = cache.myPlan;
+
+      this.transferState.remove(MYPLAN_KEY);
+    } else {
+      await this.getListSelected();
+    }
+
+    //出発時間リストを生成
+    for (let hour = 0; hour < 24; hour++){
+      this.$startTime.push(('0' + hour).slice(-2) + ':' + '00');
+      this.$startTime.push(('0' + hour).slice(-2) + ':' + '30');
+    }
+
     if (isPlatformServer(this.platformId)) {
+      this.row = JSON.parse(JSON.stringify(this.initRow));
       return;
     }
 
-    // 表示するプランを設定(初回表示)
-    this.setEditPlan();
-    // 閲覧履歴を取得
-    // this.getHistory();
+    // 編集中のプランを取得
+    let myPlan: any = await this.indexedDBService.getEditPlan();
+    const myPlanApp: MyPlanApp = myPlan;
+
+    if (myPlanApp) {
+      // スポット・写真補完
+      this.myplanService.getPlanComplement().then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          if (!r) {
+            this.router.navigate(["/" + this.lang + "/systemerror"]);
+            return;
+          }
+          // 写真を戻すために先にバインドしておく
+          this.row = myPlanApp;
+          this.setUserPicture(r);
+          if (this.row.planSpots && this.row.planSpots.length > 0) {
+            this.isEdit = this.isMobile?false:true;
+          }
+          this.indexedDBService.registPlan(this.row);
+        });
+      });
+    } else {
+      this.row = JSON.parse(JSON.stringify(this.initRow));
+      this.indexedDBService.registPlan(this.row);
+    }
+
     // カレンダーの言語切り替え
     if(this.currentlang!=="ja"){
       this.dateAdapter.setLocale('en-EN'); //暫定、日本語以外は英語表記に
     }
-
-    //出発時間リストを生成
-    this.genStartTimes();
 
     // エリア・カテゴリの選択内容を表示
     this.myplanService.searchFilter.pipe(takeUntil(this.onDestroy$)).subscribe((result: string[])=>{
@@ -759,7 +803,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
    * メソッド
    *
    * -----------------------------*/
-
   // 選択リスト取得
   getListSelected(): Promise<boolean>{
     return new Promise(async (resolve) => {
@@ -780,43 +823,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       });
     });
   }
-
-  // 表示するプランを設定
-  async setEditPlan(){
-    // 編集中のプランを取得
-    let myPlan: any = await this.indexedDBService.getEditPlan();
-    const myPlanApp: MyPlanApp = myPlan;
-
-    if (myPlanApp) {
-      // スポット・写真補完
-      this.myplanService.getPlanComplement().then(result => {
-        result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          if (!r) {
-            this.router.navigate(["/" + this.lang + "/systemerror"]);
-            return;
-          }
-          // 写真を戻すために先にバインドしておく
-          this.row = myPlanApp;
-          this.setUserPicture(r);
-          if (this.row.planSpots && this.row.planSpots.length > 0) {
-            this.isEdit = this.isMobile?false:true;
-          }
-          // 保存
-          this.indexedDBService.registPlan(this.row);
-        });
-      });
-    } else {
-      if (!this.$stayTime) {
-        // 選択リストを取得
-        await this.getListSelected();
-        this.row =  JSON.parse(JSON.stringify(this.initRow));
-        // 保存
-        this.indexedDBService.registPlan(this.row);
-      }
-    }
-  }
-
-  // スポット一括クリア
+    // スポット一括クリア
   spotAllRemove() {
     this.row.isTransferSearch = false;
     this.row.timeRequired = null;
@@ -858,10 +865,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   async dataFormat() {
     const langpipe = new LangFilterPipe();
-
-    if (!this.$stayTime){
-      await this.getListSelected();
-    }
 
     if (!this.listSelectedPlan.condition){
       this.listSelectedPlan.condition = new ListSearchCondition();
@@ -992,13 +995,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
     } else {
       this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
-    }
-  }
-
-  genStartTimes(){
-    for (let hour = 0; hour < 24; hour++){
-      this.$startTime.push(('0' + hour).slice(-2) + ':' + '00');
-      this.$startTime.push(('0' + hour).slice(-2) + ':' + '30');
     }
   }
 
