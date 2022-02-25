@@ -127,7 +127,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   pictureUrl:string = "../../../assets/img/icon_who.svg";
 
-  @Input() isMobile:boolean = true;
+  @Input() isMobile:boolean;
 
   /*------------------------------
    *
@@ -136,6 +136,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
    * -----------------------------*/
 
   async ngOnInit() {
+
     if (this.transferState.hasKey(MYPLAN_KEY)) {
       const cache = this.transferState.get<MyPlanAppListSelected>(MYPLAN_KEY, null);
 
@@ -176,9 +177,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 写真を戻すために先にバインドしておく
           this.row = myPlanApp;
           this.setUserPicture(r);
-          if (this.row.planSpots && this.row.planSpots.length > 0) {
-            this.isEdit = this.isMobile?false:true;
-          }
+          // if (this.row.planSpots && this.row.planSpots.length > 0) {
+          //   this.isEdit = this.isMobile?false:true;
+          // }
           this.indexedDBService.registPlan(this.row);
         });
       });

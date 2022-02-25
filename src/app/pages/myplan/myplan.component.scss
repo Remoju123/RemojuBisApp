@@ -1581,9 +1581,6 @@
 
             &.subheading{
               overflow: hidden;
-              ::ng-deep .mat-list-item-content{
-                //flex-direction: column;
-              }
               p{
                 font-size: 15px;
                 font-weight: 400;
@@ -1836,11 +1833,10 @@
   }
 
   .clear{
-    margin-top: $mtop;
+    margin: $mtop;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: $width;
     button{
       background: url('../../../assets/img/btn_alldelete.svg') no-repeat;
       border: 0;
@@ -1854,11 +1850,10 @@
   }
 
   .save{
-    margin-top: $mtop;
+    margin: $mtop;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: $width;
     button{
       background: url("../../../assets/img/btn_save.svg") no-repeat;
       border: 0;
@@ -1872,11 +1867,10 @@
   }
 
   .newplan{
-    margin-top: $mtop;
+    margin: $mtop;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: $width;
     button{
       background: url("../../../assets/img/btn_new.svg") no-repeat;
       border: 0;
@@ -2038,18 +2032,6 @@
     }
   }
 }
-
-// @media screen and (min-width: 1025px) { 
-//   form#myplan{
-//     width: 640px;
-//     margin: auto;
-//   }
-//   .inputWrapper{
-//     input.keyword{
-//       width: 540px!important;
-//     }
-//   }
-// }
 
 @media screen and (min-width: 1025px) {
   .inputWrapper{

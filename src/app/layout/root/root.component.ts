@@ -54,7 +54,8 @@ export class RootComponent implements OnInit, OnDestroy {
   viewbtn_src: string | undefined;
   backbtn_src: string | undefined;
 
-  isMobile: boolean = true;
+  //isMobile: boolean = true;
+  isMobile:boolean;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
