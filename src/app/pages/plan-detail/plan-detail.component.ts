@@ -8,7 +8,7 @@ import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { Meta } from "@angular/platform-browser";
+import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
@@ -20,7 +20,9 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { ContentObserver } from "@angular/cdk/observers";
+
+export const PLANDETAIL_KEY = makeStateKey<PlanApp>('PLANDETAIL_KEY');
+export const USERPLANLIST_KEY = makeStateKey<UserPlanList>('USERPLANLIST_KEY');
 
 @Component({
   selector: "app-plan-detail",
@@ -45,6 +47,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     private meta: Meta,
     private translate: TranslateService,
     public dialog: NgDialogAnimationService,
+    private transferState: TransferState,
     //public dialog:MatDialog,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {}
@@ -105,11 +108,14 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    // GUID取得
+    this.guid = await this.commonService.getGuid();
+
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       const id = params.get("id");
       if (id) {
-        this.getPlanDetail(id);
+        this.setPlanDetail(id);
       } else {
         this.router.navigate(["/" + this.lang + "/404"]);
       }
@@ -275,138 +281,156 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
    *
    * ---------------------------*/
   @Catch()
-  async getPlanDetail(id: string) {
-    // GUID取得
-    this.guid = await this.commonService.getGuid();
+  async setPlanDetail(id: string) {
+    if (this.transferState.hasKey(PLANDETAIL_KEY)) {
+      const cache = this.transferState.get<PlanApp>(PLANDETAIL_KEY, null);
+      this.data = cache;
+      this.transferState.remove(PLANDETAIL_KEY);
 
-    this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (!r) {
-        this.router.navigate(["/" + this.lang + "/404"]);
-        return;
-      }
-
-      const langpipe = new LangFilterPipe();
-
-      this.$isRemojuPlan = r.isRemojuPlan;
-      this.$versionNo = r.versionNo;
-      this.$planId = r.planId;
-
-      this.data = r;
-      this.data.picCnt = r.pictures===null?0:r.pictures.length;
-
-      if (this.$isRemojuPlan){
-        this.meta.addTags([
-          {
-            name: "description",
-            content: langpipe.transform(r.seo.description, this.lang) ? langpipe.transform(r.seo.description, this.lang)
-             : langpipe.transform(this.data.planExplanation, this.lang)
-          },
-          {
-            name: "keyword",
-            content: langpipe.transform(r.seo.keyword, this.lang)
-          },
-          {
-            name: "subtitle",
-            content: langpipe.transform(r.seo.subtitle, this.lang) ? langpipe.transform(r.seo.subtitle, this.lang)
-             : langpipe.transform(this.data.planName, this.lang)
-          }
-        ]);
-
-        this.data.planName = langpipe.transform(this.data.planName, this.lang);
-        this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
-      } else {
-        this.meta.addTags([
-          {
-            name: "description",
-            content: this.data.planExplanation
-          },
-          {
-            name: "keyword",
-            content: this.data.planName
-          },
-          {
-            name: "subtitle",
-            content: this.data.planName
-          }
-        ]);
-      }
-
-      // console.log(r);
-      let ids = [];
-      this.spots = r.spots.map((x, i) => {
-        if (x.type === 1){
-          this.commonService.setAddPlanLang(x, this.lang);
+      this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (!r) {
+          this.router.navigate(["/" + this.lang + "/404"]);
+          return;
         }
-        // 次のスポットがある場合
-        if (i + 1 < r.spots.length) {
-          x.destination = this.commonService.isValidJson(r.spots[i + 1].spotName, this.lang);
-        }
-
-        // 移動方法
-        if (x.transfer) {
-          let transfer: any;
-          try {
-            transfer = this.commonService.isValidJson(x.transfer, this.lang);
-          }
-          catch{
-            transfer = JSON.parse(x.transfer)[0].text;
-          }
-
-          x.line = this.planService.transline(transfer);
-          x.transtime = this.planService.transtimes(transfer);
-          x.transflow = this.planService.transflows(transfer);
-        }
-        x.ismore =false;
-        x.label = "more"
-
-        return x;
-      }, []);
-
-      this.reviewResult = r.reviewResult;
-
-      this.recommendedPlan = r.spotToGoList.filter((e: any) => {
-        return e.pictureUrl !== null;
       });
-      this.features = r.featureList.filter((e:any) => {
-        return e.languageCd === this.lang;
-      });
+    } else {
+      await this.getPlanDetail(id);
+      this.transferState.set(PLANDETAIL_KEY, this.data);
+    }
 
-      // カテゴリ
-      this.categoryNames = r.searchCategories;
-      this.mSearchCategory = r.mSearchCategory;
-
-      // map表示
-      this.isMapDisp = !this.isMapDisp;
-
-      this.$userStaff = r.userStaff;
-
-      let cids = []
-      this.spots.map(x=>{
-        this.planSpotids.push(x.spotId)
-
-      });
-
+    if (this.transferState.hasKey(USERPLANLIST_KEY)) {
+      const cache = this.transferState.get<UserPlanList>(USERPLANLIST_KEY, null);
+      this.userData = cache;
+      this.transferState.remove(USERPLANLIST_KEY);
+    } else {
       // ユーザープランリストデータを事前取得
-      if (this.data.user) {
-        this.planSpotListService.getUserPlanSpotList(this.data.user.objectId)
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe((r)=>{
-            //this.user_plans = this.planspots.mergeBulkDataSet(r);
-            this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
+      this.planSpotListService.getUserPlanSpotList(id)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((r)=>{
+        this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
 
-            let ids = [];
-            r.map(c => {
-              ids = ids.concat(c.searchCategoryIds);
-            })
+        let ids = [];
+        r.map(c => {
+          ids = ids.concat(c.searchCategoryIds);
+        })
 
-            this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
+        this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
 
-            // サーバーステートに保持
-            //this.transferState.set<PlanSpotList[]>(USERPLANSPOT_KEY,this.user_plans);
-        });
+        this.transferState.set(USERPLANLIST_KEY, this.userData);
+      });
+    }
+
+    const langpipe = new LangFilterPipe();
+
+    this.$isRemojuPlan = this.data.isRemojuPlan;
+    this.$versionNo = this.data.versionNo;
+    this.$planId = this.data.planId;
+
+    this.data.picCnt = this.data.pictures===null?0:this.data.pictures.length;
+
+    if (this.$isRemojuPlan){
+      this.meta.addTags([
+        {
+          name: "description",
+          content: langpipe.transform(this.data.seo.description, this.lang) ? langpipe.transform(this.data.seo.description, this.lang)
+            : langpipe.transform(this.data.planExplanation, this.lang)
+        },
+        {
+          name: "keyword",
+          content: langpipe.transform(this.data.seo.keyword, this.lang)
+        },
+        {
+          name: "subtitle",
+          content: langpipe.transform(this.data.seo.subtitle, this.lang) ? langpipe.transform(this.data.seo.subtitle, this.lang)
+            : langpipe.transform(this.data.planName, this.lang)
+        }
+      ]);
+
+      this.data.planName = langpipe.transform(this.data.planName, this.lang);
+      this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
+    } else {
+      this.meta.addTags([
+        {
+          name: "description",
+          content: this.data.planExplanation
+        },
+        {
+          name: "keyword",
+          content: this.data.planName
+        },
+        {
+          name: "subtitle",
+          content: this.data.planName
+        }
+      ]);
+    }
+
+    // console.log(r);
+    let ids = [];
+    this.spots = this.data.spots.map((x, i) => {
+      if (x.type === 1){
+        this.commonService.setAddPlanLang(x, this.lang);
       }
+      // 次のスポットがある場合
+      if (i + 1 < this.data.spots.length) {
+        x.destination = this.commonService.isValidJson(this.data.spots[i + 1].spotName, this.lang);
+      }
+
+      // 移動方法
+      if (x.transfer) {
+        let transfer: any;
+        try {
+          transfer = this.commonService.isValidJson(x.transfer, this.lang);
+        }
+        catch{
+          transfer = JSON.parse(x.transfer)[0].text;
+        }
+
+        x.line = this.planService.transline(transfer);
+        x.transtime = this.planService.transtimes(transfer);
+        x.transflow = this.planService.transflows(transfer);
+      }
+      x.ismore =false;
+      x.label = "more"
+
+      return x;
+    }, []);
+
+    this.reviewResult = this.data.reviewResult;
+
+    this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
+      return e.pictureUrl !== null;
+    });
+    this.features = this.data.featureList.filter((e:any) => {
+      return e.languageCd === this.lang;
     });
 
+    // カテゴリ
+    this.categoryNames = this.data.searchCategories;
+    this.mSearchCategory = this.data.mSearchCategory;
+
+    // map表示
+    this.isMapDisp = !this.isMapDisp;
+
+    this.$userStaff = this.data.userStaff;
+
+    let cids = []
+    this.spots.map(x=>{
+      this.planSpotids.push(x.spotId)
+
+    });
+  }
+  async getPlanDetail(id: string): Promise<boolean>{
+    return new Promise(async (resolve) => {
+      this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (!r) {
+          this.router.navigate(["/" + this.lang + "/404"]);
+          return;
+        }
+        this.data = r;
+        resolve(true);
+      });
+    });
   }
 
   match(spots:any,plans:any){

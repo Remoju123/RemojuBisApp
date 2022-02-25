@@ -275,6 +275,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       });
     } else {
       await this.getSpotDetail(id);
+      this.transferState.set(SPOTDETAIL_KEY, this.data);
     }
 
     const langpipe = new LangFilterPipe();

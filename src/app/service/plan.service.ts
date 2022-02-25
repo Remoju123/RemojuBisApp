@@ -37,6 +37,18 @@ export class PlanService {
     });
   }
 
+  // プランお気に入りを取得
+  getPlanFavorite(id: string, guid: string) {
+    const url = this.host + "/api/plan/GetFavorite/";
+    return this.http.get<boolean>(url, {
+      params: {
+        id: id,
+        guid: guid,
+        objectId: this.commonService.objectId
+      }
+    });
+  }
+
   transline(data: any) {
     if (data) {
       const len = data.length - 1;
@@ -46,7 +58,7 @@ export class PlanService {
         p.push({
           LineName: c.Type === "徒歩" || c.Type === "Walk" ? c.Type : c.LineName,
           Minute: c.Minute,
-          StationNameFrom: c.Type !== "徒歩" && c.Type !== "Walk" ? 
+          StationNameFrom: c.Type !== "徒歩" && c.Type !== "Walk" ?
             c.StationNameFrom + (c.Type === "私鉄" || c.Type === "PrivateRailway" || c.Type === "JR" ? sta : "") : prevStationNameTo,
           StationNameTo:i === len ? "" : c.StationNameTo,
           Type: c.Type,
@@ -82,7 +94,7 @@ export class PlanService {
       const min = (timeTo.getTime() - timeFrom.getTime()) / 1000 / 60;
       const hour = Math.floor(min / 60);
       const minute = Number(("00" + (min - hour * 60)).slice(-2));
-      return (hour > 0 ? hour + " " + this.translate.instant("Hour") + " " : "") 
+      return (hour > 0 ? hour + " " + this.translate.instant("Hour") + " " : "")
       + minute + " " + this.translate.instant("Minute");
     } else {
       return null;

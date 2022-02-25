@@ -62,7 +62,7 @@ export class SpotService {
 
   // スポットお気に入りを取得
   getSpotFavorite(id: string, guid: string) {
-    const url = this.host + "/api/GetFavorite/";
+    const url = this.host + "/api/spot/GetFavorite/";
     return this.http.get<boolean>(url, {
       params: {
         id: id,

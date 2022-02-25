@@ -70,11 +70,11 @@ export class PlanSpotListService {
   }
 
   // ユーザープランスポット一覧を取得
-  getUserPlanSpotList(oid:any) {
+  getUserPlanSpotList(planUserId:any) {
     const url = this.host + "/api/PlanSpotList/SearchMyPlan";
     return this.http.get<PlanSpotList[]>(url,{
       params: {
-        objectId:oid
+        planUserId:planUserId
       }
     });
   }
