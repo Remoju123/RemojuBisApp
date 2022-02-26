@@ -16,7 +16,7 @@ import { GoogleSpot } from "../../class/planspotlist.class";
 import { SpotSearchCategory } from "../../class/spot.class";
 import { ReviewResult } from "../../class/review.class"
 import { Catch } from "../../class/log.class";
-import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
+import { Meta } from "@angular/platform-browser";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 // import { DeviceDetectorService } from "ngx-device-detector";
@@ -24,8 +24,6 @@ import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from "@angular/common";
-
-export const SPOTDETAIL_KEY = makeStateKey<SpotApp>('SPOTDETAIL_KEY');
 
 @Component({
   selector: "app-spot-detail",
@@ -46,7 +44,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private planspotListService: PlanSpotListService,
     private meta: Meta,
     private translate: TranslateService,
-    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -265,22 +262,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
    * -----------------------------*/
   @Catch()
   async setSpotDetail(id: string) {
-    // if (this.transferState.hasKey(SPOTDETAIL_KEY)) {
-    //   const cache = this.transferState.get<SpotApp>(SPOTDETAIL_KEY, null);
-    //   this.data = cache;
-    //   this.transferState.remove(SPOTDETAIL_KEY);
-
-    //   this.spotService.getSpotFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-    //     if (!r) {
-    //       this.router.navigate(["/" + this.lang + "/404"]);
-    //       return;
-    //     }
-    //   });
-    // } else {
-    //   await this.getSpotDetail(id);
-    //   this.transferState.set(SPOTDETAIL_KEY, this.data);
-    // }
-
     this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
         this.router.navigate(["/" + this.lang + "/notfound"]);
@@ -411,20 +392,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
           pictureUrl: mainPicture.picture_url};
         this.indexedDBService.registHistorySpot(history)
       }*/
-    });
-  }
-
-  // 選択リスト取得
-  getSpotDetail(id: string): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.lang + "/404"]);
-          return;
-        }
-        this.data = r;
-        resolve(true);
-      });
     });
   }
 

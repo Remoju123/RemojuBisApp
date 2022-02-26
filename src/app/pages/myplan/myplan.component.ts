@@ -31,10 +31,6 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
-import { makeStateKey, TransferState } from "@angular/platform-browser";
-import { MyPlanAppListSelected } from "src/app/class/mypageplanlist.class";
-
-export const MYPLAN_KEY = makeStateKey<MyPlanAppListSelected>('MYPLAN_KEY');
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -72,7 +68,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private router: Router,
     private loading:LoadingIndicatorService,
     private dateAdapter:DateAdapter<NativeDateAdapter>,
-    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if(isPlatformBrowser(this.platformId)){
@@ -136,20 +131,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
    * -----------------------------*/
 
   async ngOnInit() {
-
-    if (this.transferState.hasKey(MYPLAN_KEY)) {
-      const cache = this.transferState.get<MyPlanAppListSelected>(MYPLAN_KEY, null);
-
-      this.$stayTime = cache.stayTime;
-      this.spotService.businessday = cache.businessDay;
-      this.listSelectedPlan = cache.listSelectedPlan;
-      this.spotZero = cache.myPlan.planSpots;
-      this.initRow = cache.myPlan;
-
-      this.transferState.remove(MYPLAN_KEY);
-    } else {
-      await this.getListSelected();
-    }
+    await this.getListSelected();
 
     //出発時間リストを生成
     for (let hour = 0; hour < 24; hour++){

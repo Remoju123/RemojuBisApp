@@ -8,7 +8,7 @@ import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
+import { Meta } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
@@ -20,9 +20,6 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-
-export const PLANDETAIL_KEY = makeStateKey<PlanApp>('PLANDETAIL_KEY');
-export const USERPLANLIST_KEY = makeStateKey<UserPlanList>('USERPLANLIST_KEY');
 
 @Component({
   selector: "app-plan-detail",
@@ -48,7 +45,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private translate: TranslateService,
     public dialog: NgDialogAnimationService,
-    private transferState: TransferState,
     //public dialog:MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -283,44 +279,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
    * ---------------------------*/
   @Catch()
   async setPlanDetail(id: string) {
-    // if (this.transferState.hasKey(PLANDETAIL_KEY)) {
-    //   const cache = this.transferState.get<PlanApp>(PLANDETAIL_KEY, null);
-    //   this.data = cache;
-    //   this.transferState.remove(PLANDETAIL_KEY);
-
-    //   // this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-    //   //   if (!r) {
-    //   //     this.router.navigate(["/" + this.lang + "/404"]);
-    //   //     return;
-    //   //   }
-    //   // });
-    // } else {
-    //   await this.getPlanDetail(id);
-    //   this.transferState.set(PLANDETAIL_KEY, this.data);
-    // }
-
-    // if (this.transferState.hasKey(USERPLANLIST_KEY)) {
-    //   const cache = this.transferState.get<UserPlanList>(USERPLANLIST_KEY, null);
-    //   this.userData = cache;
-    //   this.transferState.remove(USERPLANLIST_KEY);
-    // } else {
-    //   // ユーザープランリストデータを事前取得
-    //   this.planSpotListService.getUserPlanSpotList(id)
-    //     .pipe(takeUntil(this.onDestroy$))
-    //     .subscribe((r) => {
-    //       this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
-
-    //       let ids = [];
-    //       r.map(c => {
-    //         ids = ids.concat(c.searchCategoryIds);
-    //       })
-
-    //       this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.mSearchCategory);
-
-    //       this.transferState.set(USERPLANLIST_KEY, this.userData);
-    //     });
-    // }
-
     this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
         this.router.navigate(["/" + this.lang + "/404"]);
@@ -444,18 +402,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
           //this.transferState.set(USERPLANLIST_KEY, this.userData);
         });
       }
-    });
-  }
-  async getPlanDetail(id: string): Promise<boolean> {
-    return new Promise(async (resolve) => {
-      this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.lang + "/404"]);
-          return;
-        }
-        this.data = r;
-        resolve(true);
-      });
     });
   }
 
