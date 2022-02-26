@@ -9,15 +9,16 @@ import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 })
 export class PlanspotListComponent implements OnInit {
 
-  @Input() isList:boolean;
-  @Input() condition:ListSearchCondition;
+  @Input() isList: boolean;
+  @Input() condition: ListSearchCondition;
   @Output() scrolled = new EventEmitter();
   @Output() glink = new EventEmitter<any>();
 
-  @ViewChild('box') box:ElementRef;
+  @ViewChild('box') box: ElementRef;
+  scrollPos: number;
 
-  isMobile:boolean;
-  
+  isMobile: boolean;
+
   constructor() {
   }
 
@@ -25,20 +26,28 @@ export class PlanspotListComponent implements OnInit {
     this.isMobile = this.detectIsMobile(window.innerWidth);
   }
 
-  scrolledEmit(){
+  scrolledEmit() {
     this.scrolled.emit();
   }
 
-  googleLink(e:any){
+  googleLink(e: any) {
     this.glink.emit(e);
   }
 
-  detectIsMobile(w:any){
-    if(w<1024){
+  detectIsMobile(w: any) {
+    if (w < 1024) {
       return true;
-    }else{
+    } else {
       return false;
     }
+  }
+
+  onScroll(e: any) {
+    this.scrollPos = e.target.scrollTop;
+  }
+
+  scrollToTop(){
+    this.box.nativeElement.scrollTo(0,-156);
   }
 
 }

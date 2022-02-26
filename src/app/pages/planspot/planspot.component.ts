@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute, Params, ParamMap, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, PLATFORM_ID, Inject, AfterViewChecked, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { MyPlanApp, ComfirmDialogParam, DataSelected, ListSelectMaster } from 'src/app/class/common.class';
+import { ComfirmDialogParam, DataSelected, ListSelectMaster } from 'src/app/class/common.class';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 import { CacheStore, PlanSpotList, tarms } from 'src/app/class/planspotlist.class';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
@@ -19,9 +19,9 @@ import { MyplanService } from 'src/app/service/myplan.service';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 
+import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
-//export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -29,12 +29,12 @@ export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 })
 export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   private onDestroy$ = new Subject();
+  @ViewChild(PlanspotListComponent) private list: PlanspotListComponent;
 
   condition: ListSearchCondition;
   listSelectMaster: ListSelectMaster;
 
   rows: PlanSpotList[] = [];
-  // temp: PlanSpotList[] = [];
   spots: PlanSpotList[] = [];
   plans: PlanSpotList[] = [];
   details$: PlanSpotList[] = [];
@@ -90,13 +90,19 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.offset) {
-      if (this.offset > 0) {
-        window.scrollTo(0, this.offset);
-      }
-
-      if (this.offset === window.pageYOffset) {
-        this.offset = 0;
+    if (typeof this.offset !== "undefined") {
+      if (this.list.isMobile) {
+        if (this.offset > 0) {
+          window.scrollTo(0, this.offset);
+        }
+        if (this.offset === window.pageYOffset) {
+          this.offset = 0;
+        }
+      } else {
+        if (this.offset > 0) {
+          this.list.box.nativeElement.scrollTo(0, this.offset)
+          this.offset = 0;
+        }
       }
     }
   }
@@ -104,17 +110,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
     this.recoveryQueryParams();
-
-    /*this.planspots.searchFilter
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(result => {
-        this.rows = result.list;
-        this.temp = [...this.rows];
-        this.optionKeywords = result.searchTarm;
-        this.historyReplace(result.searchParams);
-        this.count = result.list.length;
-        this.mergeNextDataSet();
-      })*/
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
@@ -187,7 +182,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async getPlanSpotDataSet() {
     if (this.condition.select === 'google') {
       this.rows = [];
-      // this.temp = [];
       this.details$ = [];
       this.prevkeyword = null;
       this.token = null;
@@ -202,7 +196,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         });
       }
       if (this.condition.select === 'all' || this.condition.select === 'spot') {
-          this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.spots = r;
           this.isDetail();
         });
@@ -217,7 +211,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
 
       this.rows = result.list;
-      // this.temp = [...this.rows];
       this.optionKeywords = result.searchTarm;
       this.historyReplace(result.searchParams);
       this.count = result.list.length;
@@ -244,12 +237,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         (await this.planspots.fetchDetails(this.rows[i], this.guid))
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
-            // 非同期で戻された結果セットの順番を維持するための処理
             const idx = this.rows.findIndex(v => v.id === d.id);
 
-            // 掲載終了の場合は削除
             if (d.isEndOfPublication) {
-              // this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
               this.rows.splice(idx, 1);
               if (this.rows.length - startIndex < this.limit) {
                 this.end = this.rows.length;
@@ -259,14 +249,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
             }
             this.details$ = this.rows.slice(0, this.end);
-            if (i === this.end -1 && isPlatformServer(this.platformId)) {
+            if (i === this.end - 1 && isPlatformServer(this.platformId)) {
               this.setTransferState();
             }
           })
       }
       this.p++;
     } else {
-      // REMOJU-412 ALL、Spot、Plan選択時にキーワード検索で0件の場合、自動でGoogleタブに切り替える
       this.details$ = [];
       this.isList = false;
       this.condition.select = 'google';
@@ -284,7 +273,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   cacheRecoveryDataSet() {
     const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-    //console.log(this.transferState);
     this.rows = cache.data;
     this.end = cache.end;
     this.offset = cache.offset;
@@ -364,11 +352,17 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setTransferState() {
+    let _offset: number;
+    if (this.list.isMobile) {
+      _offset = window.pageYOffset;
+    } else {
+      _offset = this.list.scrollPos
+    }
     const c = new CacheStore();
     c.data = this.rows;
     c.p = this.p;
     c.end = this.end;
-    c.offset = window.pageYOffset;
+    c.offset = _offset;
     c.select = this.condition.select;
     c.sortval = this.condition.sortval;
     c.mSort = this.$mSort;
@@ -386,7 +380,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.listSelectMaster.tabIndex = e;
     this.listSelectMaster.isGoogle = this.condition.select === 'google';
     this.listSelectMaster.planSpotList = this.rows;
-    //this.transferState.set<PlanSpotList[]>(PLANSPOTLIST_KEY, this.rows);
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",
@@ -413,7 +406,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
         }
         this.getPlanSpotDataSet();
-        //this.transferState.remove(PLANSPOTLIST_KEY);
       }
     });
   }
