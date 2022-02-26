@@ -37,18 +37,6 @@ export class PlanService {
     });
   }
 
-  // プランお気に入りを取得
-  getPlanFavorite(id: string, guid: string) {
-    const url = this.host + "/api/plan/GetFavorite/";
-    return this.http.get<boolean>(url, {
-      params: {
-        id: id,
-        guid: guid,
-        objectId: this.commonService.objectId
-      }
-    });
-  }
-
   transline(data: any) {
     if (data) {
       const len = data.length - 1;
