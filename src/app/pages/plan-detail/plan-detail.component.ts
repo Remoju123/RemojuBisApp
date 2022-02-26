@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID } from "@angular/core";
+import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
@@ -29,11 +29,12 @@ export const USERPLANLIST_KEY = makeStateKey<UserPlanList>('USERPLANLIST_KEY');
   templateUrl: "./plan-detail.component.html",
   styleUrls: ["./plan-detail.component.scss"]
 })
-export class PlanDetailComponent implements OnInit,OnDestroy {
+export class PlanDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MapPanelComponent)
-
-
   private mapPanelComponent: MapPanelComponent;
+
+  @ViewChild("cont") cont:ElementRef;
+
   private onDestroy$ = new Subject();
   constructor(
     public router: Router,
@@ -49,8 +50,8 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     public dialog: NgDialogAnimationService,
     private transferState: TransferState,
     //public dialog:MatDialog,
-    @Inject(PLATFORM_ID) private platformId:Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   data: PlanApp = new PlanApp();
   $thanksQty = 0;
@@ -86,10 +87,10 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
 
   userData: UserPlanList = new UserPlanList();
 
-  addplanbtn_src:string;
+  addplanbtn_src: string;
 
-  blankUserSrc:string = "../../../../../assets/img/icon_who.svg";
-  blankuserName:string = "---";
+  blankUserSrc: string = "../../../../../assets/img/icon_who.svg";
+  blankuserName: string = "---";
 
   ct_department: any[] = [
     { id: 1, text: "Remoju コンテンツチーム" },
@@ -97,14 +98,14 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     { id: 3, text: "-----" }
   ];
 
-  myPlanSpots:any;
+  myPlanSpots: any;
   planSpotids: number[] = new Array();
 
   get lang() {
     return this.translate.currentLang;
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
@@ -121,13 +122,13 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       }
     });
 
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       this.myplanService.FetchMyplanSpots();
-      let suffix = localStorage.getItem("gml")==="en"?"_en":"";
+      let suffix = localStorage.getItem("gml") === "en" ? "_en" : "";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
 
-    this.myplanService.MySpots$.subscribe(v=>{
+    this.myplanService.MySpots$.subscribe(v => {
       this.myPlanSpots = v;
     });
   }
@@ -164,19 +165,19 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
         this.data.isFavorite = !this.data.isFavorite;
-    });
+      });
   }
 
   // プランに追加する
   async onClickAddToPlan(spot?: PlanSpotCommon) {
     // スポット数チェック
-    if(await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
+    if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
       param.leftButton = "EditPlanProgress";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if(d === "ok"){
+        if (d === "ok") {
           // 編集中のプランを表示
           this.commonService.onNotifyIsShowCart(true);
         }
@@ -205,9 +206,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   }
 
   // エリア
-  onClickArea(){
+  onClickArea() {
     let condition = new ListSearchCondition();
-    condition.areaId = [ Number(this.data.areaId) ];
+    condition.areaId = [Number(this.data.areaId)];
     // 検索条件更新
     this.indexedDBService.registListSearchConditionPlan(condition);
     // スポット一覧へ遷移
@@ -215,12 +216,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
   }
 
   // カテゴリ
-  onClickCategory(id: number){
+  onClickCategory(id: number) {
     let condition = new ListSearchCondition();
-    if (this.data.areaId){
-      condition.areaId = [ Number(this.data.areaId) ];
+    if (this.data.areaId) {
+      condition.areaId = [Number(this.data.areaId)];
     }
-    condition.searchCategories = [ id ];
+    condition.searchCategories = [id];
     // 検索条件更新
     this.indexedDBService.registListSearchConditionPlan(condition);
     // 表示位置をクリア
@@ -239,9 +240,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
-          this.planService.reportPlanUser(this.data.planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-            this.commonService.reportComplete(r);
-          });
+        this.planService.reportPlanUser(this.data.planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.commonService.reportComplete(r);
+        });
       }
     });
   }
@@ -287,12 +288,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       this.data = cache;
       this.transferState.remove(PLANDETAIL_KEY);
 
-      this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (!r) {
-          this.router.navigate(["/" + this.lang + "/404"]);
-          return;
-        }
-      });
+      // this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      //   if (!r) {
+      //     this.router.navigate(["/" + this.lang + "/404"]);
+      //     return;
+      //   }
+      // });
     } else {
       await this.getPlanDetail(id);
       this.transferState.set(PLANDETAIL_KEY, this.data);
@@ -305,19 +306,19 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     } else {
       // ユーザープランリストデータを事前取得
       this.planSpotListService.getUserPlanSpotList(id)
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((r)=>{
-        this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((r) => {
+          this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
 
-        let ids = [];
-        r.map(c => {
-          ids = ids.concat(c.searchCategoryIds);
-        })
+          let ids = [];
+          r.map(c => {
+            ids = ids.concat(c.searchCategoryIds);
+          })
 
-        this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids),this.mSearchCategory);
+          this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.mSearchCategory);
 
-        this.transferState.set(USERPLANLIST_KEY, this.userData);
-      });
+          this.transferState.set(USERPLANLIST_KEY, this.userData);
+        });
     }
 
     const langpipe = new LangFilterPipe();
@@ -326,9 +327,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.$versionNo = this.data.versionNo;
     this.$planId = this.data.planId;
 
-    this.data.picCnt = this.data.pictures===null?0:this.data.pictures.length;
+    this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
 
-    if (this.$isRemojuPlan){
+    if (this.$isRemojuPlan) {
       this.meta.addTags([
         {
           name: "description",
@@ -368,7 +369,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     // console.log(r);
     let ids = [];
     this.spots = this.data.spots.map((x, i) => {
-      if (x.type === 1){
+      if (x.type === 1) {
         this.commonService.setAddPlanLang(x, this.lang);
       }
       // 次のスポットがある場合
@@ -382,7 +383,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         try {
           transfer = this.commonService.isValidJson(x.transfer, this.lang);
         }
-        catch{
+        catch {
           transfer = JSON.parse(x.transfer)[0].text;
         }
 
@@ -390,7 +391,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
         x.transtime = this.planService.transtimes(transfer);
         x.transflow = this.planService.transflows(transfer);
       }
-      x.ismore =false;
+      x.ismore = false;
       x.label = "more"
 
       return x;
@@ -401,7 +402,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
       return e.pictureUrl !== null;
     });
-    this.features = this.data.featureList.filter((e:any) => {
+    this.features = this.data.featureList.filter((e: any) => {
       return e.languageCd === this.lang;
     });
 
@@ -415,12 +416,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     this.$userStaff = this.data.userStaff;
 
     let cids = []
-    this.spots.map(x=>{
+    this.spots.map(x => {
       this.planSpotids.push(x.spotId)
 
     });
   }
-  async getPlanDetail(id: string): Promise<boolean>{
+  async getPlanDetail(id: string): Promise<boolean> {
     return new Promise(async (resolve) => {
       this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         if (!r) {
@@ -433,22 +434,22 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     });
   }
 
-  match(spots:any,plans:any){
-    try{
-      if(spots){
+  match(spots: any, plans: any) {
+    try {
+      if (spots) {
         const res = Array.from(spots).every(v =>
           Array.from(plans).includes(v)
         );
         return res;
       }
       return false;
-    }catch(err){
+    } catch (err) {
       //console.error(err);
       return false;
     }
   }
 
-  onViewUserPost(){
+  onViewUserPost() {
     const param = new UserPlanData();
     param.user = this.data.user;
     param.country = this.data.country;
@@ -457,12 +458,12 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     param.myplanspot = this.myPlanSpots;
 
     const dialogRef = this.dialog.open(UserPlanListComponent, {
-      id:"userplanlist",
+      id: "userplanlist",
       maxWidth: "100%",
       width: "100%",
-      height:"100%",
+      height: "100%",
       position: { top: "0" },
-      data:param,
+      data: param,
       autoFocus: false,
       animation: {
         to: "left",
@@ -472,19 +473,19 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       }
     });
 
-    dialogRef.afterClosed().subscribe(()=>{
+    dialogRef.afterClosed().subscribe(() => {
       setTimeout(() => {
-        window.scroll({top: 0, behavior: 'smooth'});
+        window.scroll({ top: 0, behavior: 'smooth' });
       }, 800);
     })
 
   }
 
-  linktolist(){
+  linktolist() {
     this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
-  linktoSpot(planSpot: PlanSpotCommon){
+  linktoSpot(planSpot: PlanSpotCommon) {
     if (planSpot.type === 1) {
       this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
     } else {
@@ -492,9 +493,9 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     }
   }
 
-  onIsmore(e: { ismore: boolean; label: string; }){
+  onIsmore(e: { ismore: boolean; label: string; }) {
     e.ismore = !e.ismore;
-    e.label = e.ismore?"close":"more";
+    e.label = e.ismore ? "close" : "more";
   }
 
   addToPlanAfter(myPlanApp) {
@@ -511,7 +512,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
    * owl carousel option specialPage
    *
    * -----------------------------*/
-  specialPageOptions:any ={
+  specialPageOptions: any = {
     loop: false,
     mouseDrag: true,
     touchDrag: true,
@@ -588,7 +589,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
-    items:1,
+    items: 1,
     nav: true
   };
 
@@ -603,7 +604,7 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
     ],
-    stagePadding:25,
+    stagePadding: 25,
     margin: 10,
     //items: 3,
     responsive: {
@@ -622,11 +623,15 @@ export class PlanDetailComponent implements OnInit,OnDestroy {
     },
     nav: false,
     autoHeight: false,
-    autoPlay:false
+    autoPlay: false
   };
 
   // スワイプで一覧に戻る
-  onSwipeRight(event,data){
+  onSwipeRight(event, data) {
     this.linktolist();
+  }
+
+  scrollToTop(){
+    this.cont.nativeElement.scrollTo(0,0);
   }
 }

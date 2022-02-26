@@ -204,8 +204,30 @@ mat-sidenav-content {
     overflow-y: scroll;
     scrollbar-width: none;
     background-color: #fff;
+    position: relative;
     &::-webkit-scrollbar {
       display: none;
+    }
+
+    .scroll-to-top-pc {
+      position: absolute;
+      margin: auto;
+      right: 0;
+      bottom: 0;
+      z-index: 100;
+      padding: 0;
+      //opacity: 0;
+      transition: all 0.2s ease-in-out;
+    
+      @include ios-reset();
+    
+      img {
+        width: 49px;
+      }
+    
+      &.up{
+        bottom: 198px;
+      }
     }
   }
 }

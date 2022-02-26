@@ -1,6 +1,8 @@
-#psheader{
-  // position: sticky;
-  // top: -38px;
-  // display: block;
-  // z-index: 11;
+@media screen and (min-width: 1025px) {
+  #psheader{
+    position: sticky;
+    top: 0;
+    display: block;
+    z-index: 11;
+  }  
 }

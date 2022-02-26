@@ -4,10 +4,12 @@ infinite-scroll
 [infiniteScrollDistance]="isList ? 5 : 2"
 [infiniteScrollUpDistance]="1.5"
 [infiniteScrollThrottle]="100"
-[infiniteScrollContainer]="box"
+[infiniteScrollContainer]="isMobile?null:box"
 [scrollWindow]="isMobile?true:false"
 [fromRoot]="isMobile?false:true"
-(scrolled)="scrolledEmit()">
+(scrolled)="scrolledEmit()"
+(scroll)="onScroll($event)"
+#box>
   <mat-card id="nolist" *ngIf="!isList && condition.select!=='google'">
     <mat-card-content>
       みんなのおすすめは、見つかりませんでした。<br>
@@ -28,4 +30,7 @@ infinite-scroll
   </mat-card>
   <ng-content>
   </ng-content>
+  <button *ngIf="!isMobile" class="scroll-to-top" (click)="scrollToTop()">
+    <img src="../../../../../assets/img/toTop3.svg" alt="toTop" />
+  </button>
 </div>

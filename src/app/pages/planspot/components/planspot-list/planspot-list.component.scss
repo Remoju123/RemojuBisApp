@@ -1,3 +1,4 @@
+@import "vars";
 .box {
   margin-top: 16px;
 
@@ -31,9 +32,30 @@
   .box {
     height: 100%;
     overflow-y: scroll;
+    position: relative;
 
     &::-webkit-scrollbar {
-      display: none;
+      //display: none;
+    }
+
+    .scroll-to-top {
+      position: fixed;
+      margin: auto;
+      right: 12px;
+      bottom: 123px;
+      z-index: 100;
+      padding: 0;
+      transition: all 0.2s ease-in-out;
+    
+      @include ios-reset();
+    
+      img {
+        width: 49px;
+      }
+    
+      &.up{
+        bottom: 198px;
+      }
     }
   }
 }

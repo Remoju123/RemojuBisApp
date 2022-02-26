@@ -498,6 +498,7 @@ export class PlanSpotListService {
     return rows;
   }
 
+
   getMasterCategoryNames(ids:any,$master:NestDataSelected[]){
 
     const Categories = [

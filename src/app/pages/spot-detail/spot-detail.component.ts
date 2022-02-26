@@ -1,4 +1,4 @@
-import { Component, HostListener, Input, OnInit ,OnDestroy, Inject, PLATFORM_ID} from "@angular/core";
+import { Component, HostListener, Input, OnInit, OnDestroy, Inject, PLATFORM_ID, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -32,7 +32,9 @@ export const SPOTDETAIL_KEY = makeStateKey<SpotApp>('SPOTDETAIL_KEY');
   templateUrl: "./spot-detail.component.html",
   styleUrls: ["./spot-detail.component.scss"]
 })
-export class SpotDetailComponent implements OnInit ,OnDestroy{
+export class SpotDetailComponent implements OnInit, OnDestroy {
+@ViewChild("cont") cont:ElementRef;
+
   private onDestroy$ = new Subject();
   constructor(
     public router: Router,
@@ -45,8 +47,8 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     private meta: Meta,
     private translate: TranslateService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId:Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   data: SpotApp = new SpotApp();
   $latitude: number;
@@ -76,9 +78,9 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   $access: string;
 
   $averageStayTime: string;
-  $hpUrl:string;
+  $hpUrl: string;
 
-  $mapUrl:string;
+  $mapUrl: string;
 
   mainPictures: Pictures[];
   mainPicturesSingle: Pictures;
@@ -98,11 +100,12 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   showScrollHeight = 300;
   hideScrollHeight = 10;
 
+  isMobile: boolean;
   guid: string;
 
-  addplanbtn_src:string;
+  addplanbtn_src: string;
 
-  myPlanSpots:any;
+  myPlanSpots: any;
 
   async ngOnInit() {
     // GUID取得
@@ -117,13 +120,13 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       }
     });
 
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       this.myplanService.FetchMyplanSpots();
-      let suffix = localStorage.getItem("gml")==="en"?"_en":"";
+      let suffix = localStorage.getItem("gml") === "en" ? "_en" : "";
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
 
-    this.myplanService.MySpots$.subscribe((v)=>{
+    this.myplanService.MySpots$.subscribe((v) => {
       this.myPlanSpots = v;
     });
   }
@@ -177,7 +180,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       this.showDetailScroll = false;
     }
 
-    if(rect){
+    if (rect) {
       if (rect.top - rect.height - 250 < 0) {
         this.showDetailScroll = false;
       }
@@ -221,12 +224,12 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   // エリア
-  onClickArea(isArea1: boolean){
+  onClickArea(isArea1: boolean) {
     let condition = new ListSearchCondition();
-    if (isArea1 && this.data.area1){
-      condition.areaId = [ Number(this.data.area1) ];
+    if (isArea1 && this.data.area1) {
+      condition.areaId = [Number(this.data.area1)];
     } else if (!isArea1 && this.data.area2) {
-      condition.areaId2 = [ Number(this.data.area2) ];
+      condition.areaId2 = [Number(this.data.area2)];
     }
     // 検索条件更新
     this.indexedDBService.registListSearchConditionSpot(condition);
@@ -237,15 +240,15 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   // カテゴリ
-  onClickCategory(category: SpotSearchCategory){
+  onClickCategory(category: SpotSearchCategory) {
     let condition = new ListSearchCondition();
-    if (this.data.area1){
-      condition.areaId = [ Number(this.data.area1) ];
+    if (this.data.area1) {
+      condition.areaId = [Number(this.data.area1)];
     }
     if (category.parentId >= 300) {
-      condition.searchOptions = [ category.search_category_id ];
+      condition.searchOptions = [category.search_category_id];
     } else {
-      condition.searchCategories = [ category.search_category_id ];
+      condition.searchCategories = [category.search_category_id];
     }
     // 検索条件更新
     this.indexedDBService.registListSearchConditionSpot(condition);
@@ -330,7 +333,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     this.mainPictures = this.data.pictures;
     this.isMulti = this.data.pictures.length > 1;
     //if(r.pictures.length <= 1){
-      this.mainPicturesSingle = this.data.pictures[0];
+    this.mainPicturesSingle = this.data.pictures[0];
     //}
 
     this.spotPictures = this.data.pictures.filter(
@@ -346,10 +349,10 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
       this.data.regularHoliday
     );
     // URL
-    const _url = langpipe.transform(this.data.hp,this.lang);
-    if(_url!==""){
+    const _url = langpipe.transform(this.data.hp, this.lang);
+    if (_url !== "") {
       this.$hpUrl = "<a href='" + _url + "' target='_brank'>" + _url + "</a>";
-    }else{
+    } else {
       this.$hpUrl = "<span>------</span>"
     }
     // 営業時間
@@ -365,19 +368,19 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
     );
     // 推奨時間
     this.$averageStayTime =
-    this.data.averageStayTime > 0 ? this.data.averageStayTime + " " + this.translate.instant("Minute") : "-";
+      this.data.averageStayTime > 0 ? this.data.averageStayTime + " " + this.translate.instant("Minute") : "-";
     // エリア
     this.$areaName1 = this.data.areaName1
     this.$areaName2 = this.data.areaName2
     // こだわり
-    this.$searchCategories = this.data.searchCategories.filter((x)=>{
-      if(x.name!==null){
+    this.$searchCategories = this.data.searchCategories.filter((x) => {
+      if (x.name !== null) {
         return x
       }
       return "";
     });
     // Googlemap url
-    this.$mapUrl = "https://www.google.com/maps/search/?api=1&query=" + this.data.latitude+","+ this.data.longitude;
+    this.$mapUrl = "https://www.google.com/maps/search/?api=1&query=" + this.data.latitude + "," + this.data.longitude;
 
     this.$budgetFrameHead = this.spotService.getBudgetFrameLine(this.data.budgets);
     this.$businessHourHead = this.spotService.getBusinessHourHead(
@@ -403,7 +406,7 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   // 選択リスト取得
-  getSpotDetail(id: string): Promise<boolean>{
+  getSpotDetail(id: string): Promise<boolean> {
     return new Promise(async (resolve) => {
       this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         if (!r) {
@@ -417,15 +420,15 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   // プランに追加
-  async addToPlan(){
+  async addToPlan() {
     // スポット数チェック
-    if(await this.commonService.checkAddPlan(1) === false) {
+    if (await this.commonService.checkAddPlan(1) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
       param.leftButton = "EditPlanProgress";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if(d === "ok"){
+        if (d === "ok") {
           // 編集中のプランを表示
           this.commonService.onNotifyIsShowCart(true);
         }
@@ -435,25 +438,25 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
 
     // プランに追加
     this.planspotListService
-    .addPlan(this.$spotId, false).then(result => {
-      result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-        if (myPlanApp) {
-          // プラン作成に反映
-          this.myplanService.onPlanUserChanged(myPlanApp);
-          // プランを保存
-          this.indexedDBService.registPlan(myPlanApp);
-          // subject更新
-          this.myplanService.FetchMyplanSpots();
-        }
+      .addPlan(this.$spotId, false).then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+          if (myPlanApp) {
+            // プラン作成に反映
+            this.myplanService.onPlanUserChanged(myPlanApp);
+            // プランを保存
+            this.indexedDBService.registPlan(myPlanApp);
+            // subject更新
+            this.myplanService.FetchMyplanSpots();
+          }
+        });
       });
-    });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
-  linktolist(){
+  linktolist() {
     this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
@@ -521,7 +524,11 @@ export class SpotDetailComponent implements OnInit ,OnDestroy{
   }
 
   // スワイプで一覧に戻る
-  onSwipeRight(event,data){
+  onSwipeRight(event, data) {
     this.linktolist();
+  }
+
+  scrollToTop(){
+    this.cont.nativeElement.scrollTo(0,0);
   }
 }
