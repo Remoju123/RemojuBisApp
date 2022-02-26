@@ -33,7 +33,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MapPanelComponent)
   private mapPanelComponent: MapPanelComponent;
 
-  @ViewChild("cont") cont:ElementRef;
+  @ViewChild("cont") cont: ElementRef;
 
   private onDestroy$ = new Subject();
   constructor(
@@ -283,29 +283,153 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
    * ---------------------------*/
   @Catch()
   async setPlanDetail(id: string) {
-    if (this.transferState.hasKey(PLANDETAIL_KEY)) {
-      const cache = this.transferState.get<PlanApp>(PLANDETAIL_KEY, null);
-      this.data = cache;
-      this.transferState.remove(PLANDETAIL_KEY);
+    // if (this.transferState.hasKey(PLANDETAIL_KEY)) {
+    //   const cache = this.transferState.get<PlanApp>(PLANDETAIL_KEY, null);
+    //   this.data = cache;
+    //   this.transferState.remove(PLANDETAIL_KEY);
 
-      // this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      //   if (!r) {
-      //     this.router.navigate(["/" + this.lang + "/404"]);
-      //     return;
-      //   }
-      // });
-    } else {
-      await this.getPlanDetail(id);
-      this.transferState.set(PLANDETAIL_KEY, this.data);
-    }
+    //   // this.planService.getPlanFavorite(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+    //   //   if (!r) {
+    //   //     this.router.navigate(["/" + this.lang + "/404"]);
+    //   //     return;
+    //   //   }
+    //   // });
+    // } else {
+    //   await this.getPlanDetail(id);
+    //   this.transferState.set(PLANDETAIL_KEY, this.data);
+    // }
 
-    if (this.transferState.hasKey(USERPLANLIST_KEY)) {
-      const cache = this.transferState.get<UserPlanList>(USERPLANLIST_KEY, null);
-      this.userData = cache;
-      this.transferState.remove(USERPLANLIST_KEY);
-    } else {
+    // if (this.transferState.hasKey(USERPLANLIST_KEY)) {
+    //   const cache = this.transferState.get<UserPlanList>(USERPLANLIST_KEY, null);
+    //   this.userData = cache;
+    //   this.transferState.remove(USERPLANLIST_KEY);
+    // } else {
+    //   // ユーザープランリストデータを事前取得
+    //   this.planSpotListService.getUserPlanSpotList(id)
+    //     .pipe(takeUntil(this.onDestroy$))
+    //     .subscribe((r) => {
+    //       this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
+
+    //       let ids = [];
+    //       r.map(c => {
+    //         ids = ids.concat(c.searchCategoryIds);
+    //       })
+
+    //       this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.mSearchCategory);
+
+    //       this.transferState.set(USERPLANLIST_KEY, this.userData);
+    //     });
+    // }
+
+    this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      if (!r) {
+        this.router.navigate(["/" + this.lang + "/404"]);
+        return;
+      }
+
+      const langpipe = new LangFilterPipe();
+
+      this.$isRemojuPlan = this.data.isRemojuPlan;
+      this.$versionNo = this.data.versionNo;
+      this.$planId = this.data.planId;
+
+      this.data = r;
+      this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
+
+      if (this.$isRemojuPlan) {
+        this.meta.addTags([
+          {
+            name: "description",
+            content: langpipe.transform(this.data.seo.description, this.lang) ? langpipe.transform(this.data.seo.description, this.lang)
+              : langpipe.transform(this.data.planExplanation, this.lang)
+          },
+          {
+            name: "keyword",
+            content: langpipe.transform(this.data.seo.keyword, this.lang)
+          },
+          {
+            name: "subtitle",
+            content: langpipe.transform(this.data.seo.subtitle, this.lang) ? langpipe.transform(this.data.seo.subtitle, this.lang)
+              : langpipe.transform(this.data.planName, this.lang)
+          }
+        ]);
+
+        this.data.planName = langpipe.transform(this.data.planName, this.lang);
+        this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
+      } else {
+        this.meta.addTags([
+          {
+            name: "description",
+            content: this.data.planExplanation
+          },
+          {
+            name: "keyword",
+            content: this.data.planName
+          },
+          {
+            name: "subtitle",
+            content: this.data.planName
+          }
+        ]);
+      }
+
+      // console.log(r);
+      let ids = [];
+      this.spots = this.data.spots.map((x, i) => {
+        if (x.type === 1) {
+          this.commonService.setAddPlanLang(x, this.lang);
+        }
+        // 次のスポットがある場合
+        if (i + 1 < this.data.spots.length) {
+          x.destination = this.commonService.isValidJson(this.data.spots[i + 1].spotName, this.lang);
+        }
+
+        // 移動方法
+        if (x.transfer) {
+          let transfer: any;
+          try {
+            transfer = this.commonService.isValidJson(x.transfer, this.lang);
+          }
+          catch {
+            transfer = JSON.parse(x.transfer)[0].text;
+          }
+
+          x.line = this.planService.transline(transfer);
+          x.transtime = this.planService.transtimes(transfer);
+          x.transflow = this.planService.transflows(transfer);
+        }
+        x.ismore = false;
+        x.label = "more"
+
+        return x;
+      }, []);
+
+      this.reviewResult = this.data.reviewResult;
+
+      this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
+        return e.pictureUrl !== null;
+      });
+      this.features = this.data.featureList.filter((e: any) => {
+        return e.languageCd === this.lang;
+      });
+
+      // カテゴリ
+      this.categoryNames = this.data.searchCategories;
+      this.mSearchCategory = this.data.mSearchCategory;
+
+      // map表示
+      this.isMapDisp = !this.isMapDisp;
+
+      this.$userStaff = this.data.userStaff;
+
+      let cids = []
+      this.spots.map(x => {
+        this.planSpotids.push(x.spotId)
+      });
+
       // ユーザープランリストデータを事前取得
-      this.planSpotListService.getUserPlanSpotList(id)
+      if (this.data.user) {
+        this.planSpotListService.getUserPlanSpotList(id)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((r) => {
           this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
@@ -319,106 +443,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
           this.transferState.set(USERPLANLIST_KEY, this.userData);
         });
-    }
-
-    const langpipe = new LangFilterPipe();
-
-    this.$isRemojuPlan = this.data.isRemojuPlan;
-    this.$versionNo = this.data.versionNo;
-    this.$planId = this.data.planId;
-
-    this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
-
-    if (this.$isRemojuPlan) {
-      this.meta.addTags([
-        {
-          name: "description",
-          content: langpipe.transform(this.data.seo.description, this.lang) ? langpipe.transform(this.data.seo.description, this.lang)
-            : langpipe.transform(this.data.planExplanation, this.lang)
-        },
-        {
-          name: "keyword",
-          content: langpipe.transform(this.data.seo.keyword, this.lang)
-        },
-        {
-          name: "subtitle",
-          content: langpipe.transform(this.data.seo.subtitle, this.lang) ? langpipe.transform(this.data.seo.subtitle, this.lang)
-            : langpipe.transform(this.data.planName, this.lang)
-        }
-      ]);
-
-      this.data.planName = langpipe.transform(this.data.planName, this.lang);
-      this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
-    } else {
-      this.meta.addTags([
-        {
-          name: "description",
-          content: this.data.planExplanation
-        },
-        {
-          name: "keyword",
-          content: this.data.planName
-        },
-        {
-          name: "subtitle",
-          content: this.data.planName
-        }
-      ]);
-    }
-
-    // console.log(r);
-    let ids = [];
-    this.spots = this.data.spots.map((x, i) => {
-      if (x.type === 1) {
-        this.commonService.setAddPlanLang(x, this.lang);
       }
-      // 次のスポットがある場合
-      if (i + 1 < this.data.spots.length) {
-        x.destination = this.commonService.isValidJson(this.data.spots[i + 1].spotName, this.lang);
-      }
-
-      // 移動方法
-      if (x.transfer) {
-        let transfer: any;
-        try {
-          transfer = this.commonService.isValidJson(x.transfer, this.lang);
-        }
-        catch {
-          transfer = JSON.parse(x.transfer)[0].text;
-        }
-
-        x.line = this.planService.transline(transfer);
-        x.transtime = this.planService.transtimes(transfer);
-        x.transflow = this.planService.transflows(transfer);
-      }
-      x.ismore = false;
-      x.label = "more"
-
-      return x;
-    }, []);
-
-    this.reviewResult = this.data.reviewResult;
-
-    this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
-      return e.pictureUrl !== null;
-    });
-    this.features = this.data.featureList.filter((e: any) => {
-      return e.languageCd === this.lang;
-    });
-
-    // カテゴリ
-    this.categoryNames = this.data.searchCategories;
-    this.mSearchCategory = this.data.mSearchCategory;
-
-    // map表示
-    this.isMapDisp = !this.isMapDisp;
-
-    this.$userStaff = this.data.userStaff;
-
-    let cids = []
-    this.spots.map(x => {
-      this.planSpotids.push(x.spotId)
-
     });
   }
   async getPlanDetail(id: string): Promise<boolean> {
@@ -631,7 +656,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.linktolist();
   }
 
-  scrollToTop(){
-    this.cont.nativeElement.scrollTo(0,0);
+  scrollToTop() {
+    this.cont.nativeElement.scrollTo(0, 0);
   }
 }
