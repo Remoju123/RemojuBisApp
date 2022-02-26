@@ -441,7 +441,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
           this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.mSearchCategory);
 
-          this.transferState.set(USERPLANLIST_KEY, this.userData);
+          //this.transferState.set(USERPLANLIST_KEY, this.userData);
         });
       }
     });
