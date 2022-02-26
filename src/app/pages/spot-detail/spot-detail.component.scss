@@ -304,28 +304,30 @@ div.spotdtl {
     }
   }
 
-  div.container{
-    height: calc(100vh - 278px);
-    overflow-y: scroll;
-    position: relative;
-    .scroll-to-top {
-      position: fixed;
-      margin: auto;
-      right: 12px;
-      bottom: 123px;
-      z-index: 100;
-      padding: 0;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    
-      @include ios-reset();
-    
-      img {
-        width: 49px;
-      }
-    
-      &.up{
-        bottom: 198px;
+  @media screen and (min-width: 1025px) {
+    div.container{
+      height: calc(100vh - 278px);
+      overflow-y: scroll;
+      position: relative;
+      .scroll-to-top {
+        position: fixed;
+        margin: auto;
+        right: 12px;
+        bottom: 123px;
+        z-index: 100;
+        padding: 0;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      
+        @include ios-reset();
+      
+        img {
+          width: 49px;
+        }
+      
+        &.up{
+          bottom: 198px;
+        }
       }
     }
   }
