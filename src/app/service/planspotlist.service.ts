@@ -32,7 +32,7 @@ export class PlanSpotListService {
 
   public result: searchResult;
 
-  public searchSubject = new Subject<searchResult>();
+  public searchSubject = new Subject<ListSearchCondition>();
   public searchFilter = this.searchSubject.asObservable();
 
   public userPlanSubject = new Subject<PlanSpotList[]>();
@@ -49,6 +49,10 @@ export class PlanSpotListService {
     @Inject("BASE_API_URL") private host: string
   ) {
     this.result = new searchResult();
+  }
+
+  public updSearchCondition(condition: ListSearchCondition){
+    this.searchSubject.next(condition);
   }
 
   // 検索条件を取得
@@ -291,7 +295,6 @@ export class PlanSpotListService {
     this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
 
     return this.result;
-    // this.searchSubject.next(this.result);
   }
 
   // プラン一覧(詳細)を整形
