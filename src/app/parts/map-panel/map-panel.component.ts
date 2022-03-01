@@ -105,6 +105,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   mapReady(event: any) {
     // Mapにボタンを追加
     this.map = event;
+    // 地図の中心を設定
+    this.setMapFitBounds(false);
     // 地図にコントロールを追加(移動方法の表示等)
     if (this.isFull) {
       // this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById("routeDiv"));
@@ -520,7 +522,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
   // 地図の中心を設定
   setMapFitBounds(currentLocation: boolean) {
-    if (this.mapSpots && this.mapSpots.length > 0) {
+    if (google && this.mapSpots && this.mapSpots.length > 0) {
       const bounds = new google.maps.LatLngBounds();
       for (let i = 0; i < this.mapSpots.length; i++) {
         bounds.extend(new google.maps.LatLng(this.mapSpots[i].latitude, this.mapSpots[i].longitude));

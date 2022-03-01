@@ -143,6 +143,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.myplanService.MySpots$.subscribe(r => {
       this.myPlanSpots = r;
     })
+
+    this.planspots.searchSubject.subscribe(r => {
+      this.condition = r;
+      this.indexedDBService.registListSearchCondition(this.condition);
+
+      this.getPlanSpotDataSet();
+    })
   }
 
   ngOnDestroy() {
@@ -189,6 +196,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.mergeNextDataSet();
     } else {
       this.p = 1;
+      this.spots = [];
+      this.plans = [];
+      this.rows = [];
       if (this.condition.select === 'all' || this.condition.select === 'plan') {
         this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.plans = r;
