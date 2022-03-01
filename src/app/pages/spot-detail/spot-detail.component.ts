@@ -107,7 +107,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
-
+    
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       let id = params.get("id");
       if (id) {
@@ -126,6 +126,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     this.myplanService.MySpots$.subscribe((v) => {
       this.myPlanSpots = v;
     });
+
+    this.isMobile = this.detectIsMobile(window.innerWidth);
+    
   }
 
   // SignalRの設定
@@ -506,5 +509,13 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
   scrollToTop() {
     this.cont.nativeElement.scrollTo(0, 0);
+  }
+
+  detectIsMobile(w: any) {
+    if (w < 1024) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

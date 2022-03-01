@@ -24,6 +24,7 @@ export class PlanspotListComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.detectIsMobile(window.innerWidth);
+    
   }
 
   scrolledEmit() {

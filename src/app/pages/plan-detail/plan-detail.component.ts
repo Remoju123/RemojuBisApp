@@ -127,6 +127,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.myplanService.MySpots$.subscribe(v => {
       this.myPlanSpots = v;
     });
+
+    this.isMobile = this.detectIsMobile(window.innerWidth);
   }
 
   // お気に入り登録(スポット)
@@ -604,5 +606,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   scrollToTop() {
     this.cont.nativeElement.scrollTo(0, 0);
+  }
+
+  detectIsMobile(w: any) {
+    if (w < 1024) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
