@@ -13,7 +13,7 @@ export class User {
   object_id: string;
   gender: string;
   user_staff_id: number;
-  user_name:string;
+  user_name: string;
   last_login_datetime: string;
   aboutMe: string;
   age: number;
@@ -33,4 +33,5 @@ export class User {
   coverFile: File;
   coverImageCropped: any;
   coverCropperPosition: any;
+  guid: any;
 }

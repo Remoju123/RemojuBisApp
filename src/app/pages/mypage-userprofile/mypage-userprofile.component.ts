@@ -47,6 +47,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   @ViewChild("coverFileInput") coverFileInput: { nativeElement: { click: () => void; files: any[]; }; };
 
   private onDestroy$ = new Subject();
+  _pictureUrl:string = "../../../assets/img/icon_who.svg";
 
   constructor(
     private commonService: CommonService,
@@ -182,7 +183,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
 
     this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r =>{
       this.data = r;
-
       if(r){
         this.myForm.patchValue({
           displayName:r.displayName,
@@ -194,6 +194,9 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
           surname:r.surname,
           email:this.commonService.email
         })
+      }else{
+        this.data = new User();
+        this.data.pictureUrl = "";
       }
     });
   }

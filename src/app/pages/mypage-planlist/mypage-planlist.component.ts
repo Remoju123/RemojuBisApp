@@ -288,43 +288,45 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
   // マイページプラン一覧詳細取得
   getPlanListDetail(planUserId: number = 0, isComplement: boolean = false) {
-    let startIndex = (this.p - 1) * this.limit;
-    this.end = startIndex + this.limit;
-    if (this.rows.length - startIndex < this.limit) {
-      this.end = this.rows.length;
-    }
-    if (isComplement) {
-      startIndex = 0;
-    }
-    for (let i = startIndex; i < this.end; i++) {
-      if (planUserId && planUserId !== this.rows[i].planUserId){
-        continue;
+    if(this.rows){
+      let startIndex = (this.p - 1) * this.limit;
+      this.end = startIndex + this.limit;
+      if (this.rows.length - startIndex < this.limit) {
+        this.end = this.rows.length;
       }
-      if (this.rows[i].isDetail) {
-        continue;
+      if (isComplement) {
+        startIndex = 0;
       }
-      this.mypagePlanListService
-        .getMypagePlanListDetail(this.rows[i])
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(d => {
-            const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
-            this.rows[idx] = d;
-            if (d.spots && d.spots.length > 0){
-              this.rows[idx].spots = d.spots.map((x, i) => {
-                if (x.type === 1){
-                  x.spotName = this.commonService.isValidJson(x.spotName, this.lang);
-                }
-                return x;
-              }, []);
-            }
-            this.details$ = this.rows.slice(0, this.end);
-            if (i === this.end -1 && isPlatformServer(this.platformId)) {
-              this.setTransferState();
-            }
-        });
-    }
-    if (planUserId === 0) {
-      this.p++;
+      for (let i = startIndex; i < this.end; i++) {
+        if (planUserId && planUserId !== this.rows[i].planUserId){
+          continue;
+        }
+        if (this.rows[i].isDetail) {
+          continue;
+        }
+        this.mypagePlanListService
+          .getMypagePlanListDetail(this.rows[i])
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+              const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
+              this.rows[idx] = d;
+              if (d.spots && d.spots.length > 0){
+                this.rows[idx].spots = d.spots.map((x, i) => {
+                  if (x.type === 1){
+                    x.spotName = this.commonService.isValidJson(x.spotName, this.lang);
+                  }
+                  return x;
+                }, []);
+              }
+              this.details$ = this.rows.slice(0, this.end);
+              if (i === this.end -1 && isPlatformServer(this.platformId)) {
+                this.setTransferState();
+              }
+          });
+      }
+      if (planUserId === 0) {
+        this.p++;
+      }
     }
   }
 
@@ -360,18 +362,20 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 */
   listsort(rows: MypagePlanAppList[], v: number) {
-    let temp: MypagePlanAppList[];
-    switch (v) {
-      case 12:
-        temp = rows.sort((a, b) => {
-          return a.updateDatetime < b.updateDatetime ? 1 : -1;
-        });
-        break;
-      case 13:
-        temp = rows.sort((a, b) => {
-          return a.travelDate < b.travelDate ? 1 : -1;
-        });
-        break;
+    if(rows){
+      let temp: MypagePlanAppList[];
+      switch (v) {
+        case 12:
+          temp = rows.sort((a, b) => {
+            return a.updateDatetime < b.updateDatetime ? 1 : -1;
+          });
+          break;
+        case 13:
+          temp = rows.sort((a, b) => {
+            return a.travelDate < b.travelDate ? 1 : -1;
+          });
+          break;
+      }
     }
   }
 
