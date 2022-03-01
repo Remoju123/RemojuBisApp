@@ -5,6 +5,7 @@ import { IndexedDBService } from "../../service/indexeddb.service";
 import { SpotService } from "../../service/spot.service";
 import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import {
   DataSelected,
   ComfirmDialogParam,
@@ -63,6 +64,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     private indexedDBService: IndexedDBService,
     private planService: PlanService,
     private spotService: SpotService,
+    private planSpotListService: PlanSpotListService,
     private translate: TranslateService,
     public dialog: MatDialog,
     private router: Router,
@@ -74,7 +76,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       this.baseUrl = document.getElementsByTagName("base")[0].href;
       this.currentlang = localStorage.getItem("gml");
     }
-    this.condition = new ListSearchCondition();
   }
 
   @ViewChild("mepPlan") accordionPlan: MatAccordion;
@@ -107,10 +108,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   isOpen = true;
 
   step = 999;
-
-  condition: ListSearchCondition;
-
-  isVal:boolean = false;
 
   isSaving = false;
 
@@ -1053,20 +1050,22 @@ export class MyplanComponent implements OnInit ,OnDestroy{
 
   onKeywordSearch(e){
     const val = e.target.value.toLowerCase();
-    val!==""?this.isVal=true:false;
     if(val!==""){
-      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:val}});
+      let condition = new ListSearchCondition();
+      condition.sortval = "11";
+      condition.select = "all";
+      condition.keyword = val;
+
+      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:condition.sortval,lst:condition.select,kwd:condition.keyword}});
 
       if(~this.router.url.indexOf('planspot')){
-        this.condition.keyword = val;
-        this.indexedDBService.registListSearchCondition(this.condition);
-        window.location.reload();
+        this.planSpotListService.updSearchCondition(condition);
       }
+      this.commonService.onNotifyIsShowCart(false);
     }
   }
 
   inputClear(){
-    this.isVal=false;
     this.keywordInput.nativeElement.value="";
     return;
   }
