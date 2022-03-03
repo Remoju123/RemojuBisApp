@@ -1,6 +1,6 @@
 import { DataSelected, NestDataSelected, Recommended, PlanSpotCommon } from "./common.class";
-import { ReviewResult } from "../class/review.class";
-import { UserPlanList } from "./planspotlist.class";
+import { ReviewResult } from "./review.class";
+import { PlanSpotList } from "./planspotlist.class";
 
 export class PlanApp {
   versionNo: number;
@@ -78,7 +78,7 @@ export class UserStaff {
 
 export class OtherUser {
   aboutMe: string;
-  country: number;
+  countryName: string;
   displayName: string;
   age: string;
   pictureUrl: string;
@@ -89,11 +89,10 @@ export class OtherUser {
 
 export class UserPlanData{
   user: OtherUser;
-  country: DataSelected[];
-  memo: string;
-  rows: UserPlanList;
+  userPlanList: PlanSpotList[];
+  mSearchCategory: NestDataSelected[];
 
-  myplanspot:any;
+  myplanspot: any;
 }
 
 export class PlanFavorite {

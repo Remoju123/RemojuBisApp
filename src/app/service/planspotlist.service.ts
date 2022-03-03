@@ -104,7 +104,7 @@ export class PlanSpotListService {
   }
 
   // プランスポット一覧、詳細データ
-  async fetchDetails(options: PlanSpotList, guid: string){
+  fetchDetails(options: PlanSpotList, guid: string){
     const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
     const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
 
@@ -492,15 +492,23 @@ export class PlanSpotListService {
   }
 
   // プランデータセット一括マージ
-  mergeBulkDataSet(rows:PlanSpotList[], guid: string){
+  async mergeBulkDataSet(rows:PlanSpotList[], guid: string){
+    const result = [];
     rows.map(async row => {
-      (await this.fetchDetails(row, guid)).subscribe(_row => {
-        Object.assign(row,_row);
-      })
-    })
+      if (!row.isDetail) {
+        result.push(this.promiseGetDetail(row, guid));
+      }
+    });
+    await Promise.all(result);
     return rows;
   }
-
+  promiseGetDetail(row:PlanSpotList, guid: string){
+    return new Promise(async (resolve) => {
+      (await this.fetchDetails(row, guid)).subscribe(_row => {
+        resolve(_row);
+      });
+    });
+  }
 
   getMasterCategoryNames(ids:any,$master:NestDataSelected[]){
 

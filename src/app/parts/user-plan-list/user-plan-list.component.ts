@@ -4,20 +4,20 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UserPlanData } from 'src/app/class/plan.class';
-import { PlanSpotList } from 'src/app/class/planspotlist.class';
-import { ComfirmDialogParam } from 'src/app/class/common.class';
-import { CommonService } from 'src/app/service/common.service';
-import { IndexedDBService } from 'src/app/service/indexeddb.service';
-import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
-import { MyplanService } from 'src/app/service/myplan.service';
-import { PlanSpotListService } from 'src/app/service/planspotlist.service';
+import { ComfirmDialogParam } from '../../class/common.class';
+import { ListSearchCondition } from 'src/app/class/indexeddb.class';
+import { UserPlanData } from '../../class/plan.class';
+import { PlanSpotList } from '../../class/planspotlist.class';
+import { CommonService } from '../../service/common.service';
+import { IndexedDBService } from '../../service/indexeddb.service';
+import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
+import { MyplanService } from '../../service/myplan.service';
+import { PlanSpotListService } from '../../service/planspotlist.service';
 import { threadId } from 'worker_threads';
 @Component({
   selector: 'app-user-plan-list',
   templateUrl: './user-plan-list.component.html',
-  styleUrls: ['./user-plan-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./user-plan-list.component.scss']
 })
 export class UserPlanListComponent implements OnInit {
   private onDestroy$ = new Subject();
@@ -28,23 +28,75 @@ export class UserPlanListComponent implements OnInit {
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
+    private planSpotListService: PlanSpotListService,
     private mypageFavoriteListService: MypageFavoriteListService,
     private router: Router,
     public dialogRef:MatDialogRef<UserPlanListComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UserPlanData
   ) {
     this.myPlanSpots = this.data.myplanspot;
+    this.limit = 6;
+    this.p = 1;
+    this.condition = new ListSearchCondition();
   }
 
+  condition: ListSearchCondition;
+
   myPlanSpots:any;
+
+  p: number;
+  limit: number;
+  end: number;
+  offset: number;
+
   get lang() {
     return this.translate.currentLang;
   }
 
   guid:string;
+  details$: PlanSpotList[] = [];
+  searchCategories: string[] = [];
 
   async ngOnInit() {
     this.guid= await this.commonService.getGuid();
+
+    this.mergeNextDataSet();
+
+    let ids = [];
+    this.data.userPlanList.map(c => {
+      ids = ids.concat(c.searchCategoryIds);
+    })
+
+    this.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.data.mSearchCategory);
+  }
+
+  onScrollDown() {
+    this.mergeNextDataSet();
+  }
+
+  mergeNextDataSet() {
+    let startIndex = (this.p - 1) * this.limit;
+    this.end = startIndex + this.limit;
+    if (this.data.userPlanList.length - startIndex < this.limit) {
+      this.end = this.data.userPlanList.length;
+    }
+
+    for (let i = startIndex; i < this.end; i++) {
+      if (this.data.userPlanList[i].isDetail) {
+        continue;
+      }
+      this.planspots.fetchDetails(this.data.userPlanList[i], this.guid)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(d => {
+          const idx = this.data.userPlanList.findIndex(v => v.id === d.id);
+
+          this.data.userPlanList[idx] = d;
+          this.data.userPlanList.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+
+          this.details$ = this.data.userPlanList.slice(0, this.end);
+        })
+    }
+    this.p++;
   }
 
   // プランに追加
@@ -113,7 +165,6 @@ export class UserPlanListComponent implements OnInit {
   }
 
   onClose(){
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
-
 }

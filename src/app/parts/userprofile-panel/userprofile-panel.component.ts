@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import { DataSelected } from "../../class/common.class";
 import { User } from "../../class/user.class";
 import { OtherUser } from "../../class/plan.class";
 import { CommonService } from "../../service/common.service";
@@ -14,13 +13,10 @@ import { Subject } from "rxjs";
 })
 export class UserprofilePanelComponent implements OnInit, OnDestroy {
 
-  // 国リスト
-  @Input() country: DataSelected[];
   @Input() user: User;
   @Input() otherUser: OtherUser;
   @Input() edit: boolean;
   @Input() detail: boolean;
-  @Input() memo:string;
   @Output() event = new EventEmitter<boolean>();
 
   private onDestroy$ = new Subject();
@@ -43,10 +39,12 @@ export class UserprofilePanelComponent implements OnInit, OnDestroy {
    * -----------------------------*/
   ngOnInit() {
     if (this.otherUser) {
+      const langpipe = new LangFilterPipe();
+
       this.user = new User();
       this.user.aboutMe = this.otherUser.aboutMe;
       this.user.age = Number(this.otherUser.age);
-      this.user.country = this.otherUser.country;
+      this.user.countryName = langpipe.transform(this.otherUser.countryName, this.lang);
       this.user.coverUrl = this.otherUser.coverUrl;
       this.user.displayName = this.otherUser.displayName;
       this.user.pictureUrl = this.otherUser.pictureUrl;
@@ -54,12 +52,6 @@ export class UserprofilePanelComponent implements OnInit, OnDestroy {
     } else {
       // 年代計算
       this.user.age = this.commonService.getAge(this.user.birthday);
-    }
-
-    // 国名を取得
-    if (this.user.country && this.user.country > 0){
-      const langpipe = new LangFilterPipe();
-      this.user.countryName = langpipe.transform(this.country.find(x => x.id === this.user.country).name, this.lang);
     }
   }
 
