@@ -280,13 +280,16 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(async ()=>{
           this.rows.splice(
-            this.rows.findIndex(v => v.id === item.id),1
+            this.rows.findIndex(v => v.id === item.id && v.isPlan === item.isPlan),1
           )
           this.count = this.rows.length;
+          if(this.rows.length < this.end){
+            this.end = this.rows.length;
+          }
           this.commonService.snackBarDisp("FavoriteRemoved");
 
-          if(!this.rows[this.end - 1].googleSpot){
-            (await this.planspots.fetchDetails(this.rows[this.end - 1], this.guid))
+          if(!this.rows[this.end - 1].isDetail && !this.rows[this.end - 1].googleSpot){
+            this.planspots.fetchDetails(this.rows[this.end - 1], this.guid)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(d => {
               this.rows[this.end - 1] = d;
