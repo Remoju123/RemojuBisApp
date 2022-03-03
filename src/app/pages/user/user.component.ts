@@ -25,9 +25,6 @@ export class UserComponent implements OnInit, OnDestroy {
 
   data: User;
 
-  // 国リスト
-  $country: DataSelected[];
-
   currentlang = this.lang;
 
   get lang() {
@@ -40,11 +37,6 @@ export class UserComponent implements OnInit, OnDestroy {
    *
    * -----------------------------*/
   ngOnInit() {
-    // 国選択データ取得
-    this.userService.getDataSelected().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      this.$country = r;
-    });
-
     // URLパラメータ判定
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       let id = params.get("id");

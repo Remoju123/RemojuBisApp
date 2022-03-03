@@ -1,4 +1,5 @@
 import { DataSelected, ListSelectMaster } from "./common.class";
+import { OtherUser } from "./plan.class";
 import { Businesshours, Accesses, Seo } from "./spot.class";
 
 export class PlanSpotList {
@@ -47,20 +48,8 @@ export class PlanSpotList {
   userName: string;
   userPictureUrl: string;
   versionNo: number;
-}
-export class UserPlanList {
-  userPlans:PlanSpotList[];
-  searchCategories:string[];
-
-  constructor(){
-    this.userPlans = [];
-    this.searchCategories = [];
-  }
-
-  reset():void{
-    this.userPlans = [];
-    this.searchCategories = [];
-  }
+  user: OtherUser;
+  userPlanList: PlanSpotList[];
 }
 
 export class searchResult{

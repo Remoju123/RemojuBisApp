@@ -26,6 +26,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Output() setFav = new EventEmitter<PlanSpotList>();
   @Output() delFav = new EventEmitter<PlanSpotList>();
   @Output() keyword = new EventEmitter<any>();
+  @Output() userPosts = new EventEmitter<PlanSpotList>();
 
   isProd:boolean;
 
@@ -193,8 +194,12 @@ export class PlanspotListItemComponent implements OnInit {
 
   }
 
-  toPostUser(id:any){
-    this.keyword.emit(id);
+  toPostUser(item:PlanSpotList){
+    if (item.isPlan && !item.isRemojuPlan) {
+      this.userPosts.emit(item);
+    } else {
+      this.keyword.emit(item.postObjectId);
+    }
   }
 
 }

@@ -3,23 +3,25 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ListSearchCondition } from 'src/app/class/indexeddb.class';
+import { CommonService } from '../../service/common.service';
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { ComfirmDialogParam, DataSelected, ListSelectMaster } from 'src/app/class/common.class';
-import { PlanSpotListService } from 'src/app/service/planspotlist.service';
-import { CacheStore, PlanSpotList, tarms } from 'src/app/class/planspotlist.class';
+import { PlanSpotListService } from '../../service/planspotlist.service';
+import { MyplanService } from '../../service/myplan.service';
+import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
+import { ComfirmDialogParam, DataSelected, ListSelectMaster } from '../../class/common.class';
+import { ListSearchCondition } from '../../class/indexeddb.class';
+import { CacheStore, PlanSpotList, tarms } from '../../class/planspotlist.class';
+import { UserPlanData } from '../../class/plan.class';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { CommonService } from 'src/app/service/common.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
+import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
+import { UserPlanListComponent } from '../../parts/user-plan-list/user-plan-list.component';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
-import { MypageFavoriteListService } from 'src/app/service/mypagefavoritelist.service';
-import { MyplanService } from 'src/app/service/myplan.service';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-
-import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
+import { NgDialogAnimationService } from 'ng-dialog-animation';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 @Component({
@@ -81,6 +83,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private transferState: TransferState,
     private router: Router,
     public dialog: MatDialog,
+    public animationDialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 6;
@@ -488,5 +491,29 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.mypageFavoriteListService.GetFavoriteCount(this.guid);
       });
     item.isFavorite = !item.isFavorite;
+  }
+
+  onViewUserPost(item: PlanSpotList) {
+    const param = new UserPlanData();
+    param.user = item.user;
+    param.userPlanList = item.userPlanList;
+    param.mSearchCategory = this.listSelectMaster.mSearchCategoryPlan;
+    param.myplanspot = this.myPlanSpots;
+
+    this.animationDialog.open(UserPlanListComponent, {
+      id: "userplanlist",
+      maxWidth: "100%",
+      width: "100%",
+      height: "100%",
+      position: { top: "0" },
+      data: param,
+      autoFocus: false,
+      animation: {
+        to: "left",
+        incomingOptions: {
+          keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
+        }
+      }
+    });
   }
 }

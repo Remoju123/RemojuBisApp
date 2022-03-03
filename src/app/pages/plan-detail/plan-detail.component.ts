@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
-import { UserPlanList } from "../../class/planspotlist.class";
+import { PlanSpotList } from "../../class/planspotlist.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
@@ -45,7 +45,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private translate: TranslateService,
     public dialog: NgDialogAnimationService,
-    //public dialog:MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -79,9 +78,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   guid: string;
 
-  // user_plans: PlanSpotList[] = [];
-
-  userData: UserPlanList = new UserPlanList();
+  userPlanList: PlanSpotList[] = [];
 
   addplanbtn_src: string;
 
@@ -389,17 +386,18 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       if (this.data.user) {
         this.planSpotListService.getUserPlanSpotList(id)
         .pipe(takeUntil(this.onDestroy$))
-        .subscribe((r) => {
-          this.userData.userPlans = this.planSpotListService.mergeBulkDataSet(r, this.guid);
-
-          let ids = [];
-          r.map(c => {
-            ids = ids.concat(c.searchCategoryIds);
-          })
-
-          this.userData.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.mSearchCategory);
-
-          //this.transferState.set(USERPLANLIST_KEY, this.userData);
+        .subscribe(rows => {
+          this.userPlanList = rows;
+          for(let i = 0; i < this.userPlanList.length; i++) {
+            if (this.userPlanList[i].isDetail) {
+              continue;
+            }
+            this.planSpotListService.fetchDetails(this.userPlanList[i], this.guid)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(_row => {
+              this.userPlanList[i] = _row;
+            });
+          }
         });
       }
     });
@@ -423,9 +421,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   onViewUserPost() {
     const param = new UserPlanData();
     param.user = this.data.user;
-    param.country = this.data.country;
-    param.memo = this.data.memo;
-    param.rows = this.userData;
+    param.userPlanList = this.userPlanList;
+    param.mSearchCategory = this.mSearchCategory;
     param.myplanspot = this.myPlanSpots;
 
     const dialogRef = this.dialog.open(UserPlanListComponent, {
