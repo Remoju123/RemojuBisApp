@@ -522,7 +522,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
   // 地図の中心を設定
   setMapFitBounds(currentLocation: boolean) {
-    if (google && this.mapSpots && this.mapSpots.length > 0) {
+    if (this.map && this.mapSpots && this.mapSpots.length > 0) {
       const bounds = new google.maps.LatLngBounds();
       for (let i = 0; i < this.mapSpots.length; i++) {
         bounds.extend(new google.maps.LatLng(this.mapSpots[i].latitude, this.mapSpots[i].longitude));

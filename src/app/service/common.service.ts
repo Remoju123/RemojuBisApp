@@ -342,29 +342,29 @@ export class CommonService implements OnDestroy{
 
   locationGoogleMap(currentlang: any, latitude: number, longitude: number) {
     if(isPlatformBrowser(this.platformId)){
-      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
+      /*if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         if (navigator.userAgent === "Android") {
           location.href = `https://maps.google.com/maps?saddr=&daddr=${latitude},${longitude}&z=16`;
         } else {
           location.href = `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&z=16`;
         }
-      } else {
+      } else {*/
         window.open(`https://www.google.co.jp/maps/dir/?api=1&hl=${currentlang}&destination=${latitude},${longitude}&z=16`, "_blank");
-      }
+      //}
     }
   }
 
   locationPlaceIdGoogleMap(currentlang: any, latitude: string, longitude: string, placeId: string) {
     if(isPlatformBrowser(this.platformId)){
-      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
+      /*if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         if (navigator.userAgent === "Android") {
           location.href = `https://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
         } else {
           location.href = `comgooglemapsurl://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
         }
-      } else {
+      } else {*/
         window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`, "_blank");
-      }
+      //}
     }
   }
 
