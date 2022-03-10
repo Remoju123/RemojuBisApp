@@ -2,6 +2,7 @@ import { Component, Inject, OnInit ,OnDestroy} from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { TranslateService } from "@ngx-translate/core";
 import { MapSpot } from "../../class/common.class";
+import { UpdFavorite } from "../../class/mypageplanlist.class";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from "../../service/myplan.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
@@ -57,11 +58,17 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
 
   // お気に入りに登録
   onClickFavorite() {
+    this.data.isFavorite = !this.data.isFavorite;
+    const param = new UpdFavorite();
+    param.spotId =  this.data.spotId;
+    param.type = this.data.type;
+    param.isFavorite = this.data.isFavorite;
+    this.myplanService.updateFavorite(param);
     this.planSpotListService
       .registFavorite(
         this.data.spotId,
         false,
-        !this.data.isFavorite,
+        this.data.isFavorite,
         false,
         this.guid,
         this.data.type === 2 ? true : false
@@ -72,7 +79,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
           this.router.navigate(["/" + this.lang + "/systemerror"]);
           return;
         }
-        this.data.isFavorite = !this.data.isFavorite;
+
       });
   }
 
@@ -86,7 +93,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
 
     // プランに追加
     this.planSpotListService
-    .addPlan(this.data.spotId, false, undefined, this.data.type === 2 ? true : false).then(result => {
+    .addPlan(this.data.spotId, false, this.guid, undefined, this.data.type === 2 ? true : false).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
         if (myPlanApp) {
           // プラン作成に反映

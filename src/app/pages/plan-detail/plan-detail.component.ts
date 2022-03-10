@@ -3,12 +3,13 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
-import { PlanSpotList } from "../../class/planspotlist.class";
+import { UpdFavorite } from "../../class/mypageplanlist.class";
+import { CacheStore, GoogleSpot, PlanSpotList } from "../../class/planspotlist.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { Meta } from "@angular/platform-browser";
+import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';
@@ -20,6 +21,8 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
 @Component({
   selector: "app-plan-detail",
@@ -44,6 +47,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
+    private transferState: TransferState,
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -121,45 +125,62 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
 
+    this.isMobile = this.detectIsMobile(window.innerWidth);
+
     this.myplanService.MySpots$.subscribe(v => {
       this.myPlanSpots = v;
     });
 
-    this.isMobile = this.detectIsMobile(window.innerWidth);
+    // お気に入り更新通知
+    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      let spot = this.data.spots.find(planSpot => planSpot.spotId === x.spotId && planSpot.type === x.type)
+      if (spot) {
+        spot.isFavorite = x.isFavorite;
+      }
+    });
   }
 
   // お気に入り登録(スポット)
   @Catch()
   onClickSpotFavorite(item: PlanSpotCommon) {
+    item.isFavorite = !item.isFavorite;
+    const param = new UpdFavorite();
+    param.spotId =  item.spotId;
+    param.type = item.type
+    param.isFavorite = item.isFavorite;
+    this.myplanService.updateFavorite(param);
+    this.setTransferState(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
     this.planSpotListService
       .registFavorite(
         item.spotId,
         false,
-        !item.isFavorite,
+        item.isFavorite,
         false,
         this.guid,
         item.googleSpot ? true : false
       )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        item.isFavorite = !item.isFavorite;
+
       });
   }
 
   // お気に入り登録
   @Catch()
   onClickFavorite() {
+    this.data.isFavorite = !this.data.isFavorite;
+    this.setTransferState(true, this.data.planId, this.data.isFavorite);
     this.planSpotListService
       .registFavorite(
         this.data.planId,
         true,
-        !this.data.isFavorite,
+        this.data.isFavorite,
         this.data.isRemojuPlan,
         this.guid
       )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(r => {
-        this.data.isFavorite = !this.data.isFavorite;
+
       });
   }
 
@@ -182,7 +203,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
     // プランに追加
     if (spot) {
-      this.planSpotListService.addPlan(spot.spotId, false, undefined, spot.googleSpot ? true : false).then(result => {
+      this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             this.addToPlanAfter(myPlanApp);
@@ -190,7 +211,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         });
       });
     } else {
-      this.planSpotListService.addPlan(this.$planId, true, this.$isRemojuPlan).then(result => {
+      this.planSpotListService.addPlan(this.$planId, true, this.guid, this.$isRemojuPlan).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             this.addToPlanAfter(myPlanApp);
@@ -270,6 +291,18 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   setMapCenter(latitude: any, longitude: any) {
     this.mapPanelComponent.setMapCenter(latitude, longitude);
   }
+
+  setTransferState(isPlan: boolean, id: number, isFavorite: boolean, isGoogle = false) {
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      let cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+      let row = cache.data.find(x => x.isPlan === isPlan && x.id === id
+        && ((x.googleSpot && isGoogle) || (!x.googleSpot && !isGoogle)))
+      if (row) {
+        row.isFavorite = isFavorite;
+        this.transferState.set<CacheStore>(PLANSPOT_KEY, cache);
+      }
+    }
+}
 
   /*----------------------------
    *
