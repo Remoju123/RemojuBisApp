@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ComfirmDialogParam } from '../../class/common.class';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
+import { UpdFavorite } from '../../class/mypageplanlist.class';
 import { UserPlanData } from '../../class/plan.class';
 import { PlanSpotList } from '../../class/planspotlist.class';
 import { CommonService } from '../../service/common.service';
@@ -83,6 +84,7 @@ export class UserPlanListComponent implements OnInit {
 
     for (let i = startIndex; i < this.end; i++) {
       if (this.data.userPlanList[i].isDetail) {
+        this.details$ = this.data.userPlanList.slice(0, this.end);
         continue;
       }
       this.planspots.fetchDetails(this.data.userPlanList[i], this.guid)
@@ -101,7 +103,7 @@ export class UserPlanListComponent implements OnInit {
 
   // プランに追加
   async addMyPlan(item:PlanSpotList){
-    const tempqty:number = item.isPlan ? 1:item.spotQty;
+    const tempqty:number = item.isPlan ? item.spotQty : 1;
     if(await this.commonService.checkAddPlan(tempqty) === false) {
       const param = new ComfirmDialogParam();
       param.text = "ErrorMsgAddSpot";
@@ -109,6 +111,7 @@ export class UserPlanListComponent implements OnInit {
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if(d === "ok"){
+          this.dialogRef.close();
           // 編集中のプランを表示
           this.commonService.onNotifyIsShowCart(true);
         }
@@ -119,6 +122,7 @@ export class UserPlanListComponent implements OnInit {
     this.planspots.addPlan(
       item.id,
       item.isPlan,
+      this.guid,
       item.isRemojuPlan,
       item.googleSpot ? true : false,
       item.googleSpot
@@ -139,19 +143,24 @@ export class UserPlanListComponent implements OnInit {
 
   // お気に入り登録・除外
   setFavorite(item:PlanSpotList){
+    item.isFavorite = !item.isFavorite;
+    const param = new UpdFavorite();
+    param.spotId =  item.id;
+    param.type = item.googleSpot ? 2 : 1;
+    param.isFavorite = item.isFavorite;
+    this.myplanService.updateFavorite(param);
     this.planspots.registFavorite(
       item.id,
       item.isPlan,
-      !item.isFavorite,
+      item.isFavorite,
       item.isRemojuPlan,
       this.guid,
       item.googleSpot ? true : false
     )
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(()=>{
-      this.mypageFavoriteListService.GetFavoriteCount(this.guid);
+      //this.mypageFavoriteListService.GetFavoriteCount(this.guid);
     });
-    item.isFavorite = !item.isFavorite;
   }
 
   linktoDetail(item:PlanSpotList){

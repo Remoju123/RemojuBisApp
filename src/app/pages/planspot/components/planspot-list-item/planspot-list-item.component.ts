@@ -12,8 +12,7 @@ import { runInThisContext } from 'vm';
 @Component({
   selector: 'app-planspot-list-item',
   templateUrl: './planspot-list-item.component.html',
-  styleUrls: ['./planspot-list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./planspot-list-item.component.scss']
 })
 export class PlanspotListItemComponent implements OnInit {
   @Input() item: PlanSpotList;

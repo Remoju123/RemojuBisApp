@@ -37,3 +37,9 @@ export class MyplanListCacheStore {
   end:number;
   offset:number;
 }
+
+export class UpdFavorite {
+  spotId: number;
+  type: number;
+  isFavorite: boolean;
+}

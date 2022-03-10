@@ -106,6 +106,7 @@ export class MyPlanApp {
   timeRequiredDisp: string;
   startTime: string;
   objectId: string;
+  guid: string;
   planSpots: PlanSpotCommon[];
   startPlanSpot: PlanSpotCommon;
   endPlanSpot: PlanSpotCommon;

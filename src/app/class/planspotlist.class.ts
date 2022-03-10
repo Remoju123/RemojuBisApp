@@ -93,6 +93,7 @@ export class CacheStore {
   ListSelectMaster:ListSelectMaster;
   optionKeywords: tarms;
   googleSearchArea: string;
+  isDetail: boolean;
 }
 
 export class GoogleSpot {

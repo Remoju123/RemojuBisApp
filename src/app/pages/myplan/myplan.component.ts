@@ -209,6 +209,16 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     this.myplanService.RemovePlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
       this.planRemove();
     });
+
+    // お気に入り更新通知
+    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      if (this.row.planSpots && this.row.planSpots.length > 0) {
+        let spot = this.row.planSpots.find(planSpot => planSpot.spotId === x.spotId && planSpot.type === x.type)
+        if (spot) {
+          spot.isFavorite = x.isFavorite;
+        }
+      }
+    });
   }
 
   ngOnDestroy(){
