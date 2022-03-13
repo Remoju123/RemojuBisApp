@@ -60,7 +60,7 @@ export const blockInitialRenderAnimation =
 })
 export class AppComponent implements OnInit, OnDestroy {
   //title = 'RemojuApp-V3U';
-  show=false;
+  show = false;
   private onDestroy$ = new Subject();
 
   constructor(
@@ -70,13 +70,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    if(isPlatformBrowser(platformId)){
+    if (isPlatformBrowser(platformId)) {
       this.show = true;
     }
   }
 
   ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
+    //if (isPlatformBrowser(this.platformId)) {
       this.oauthService.events.subscribe(e => {
         if (e instanceof OAuthErrorEvent) {
           const parm = e.params as OAuthErrorEventParams;
@@ -94,7 +94,6 @@ export class AppComponent implements OnInit, OnDestroy {
             //   //this.oauthService.initLoginFlow();
             //   //this.oauthService.initImplicitFlow(state.url);
             // }else{
-
             // }
           }
         }
@@ -134,7 +133,7 @@ export class AppComponent implements OnInit, OnDestroy {
             }
           }
         });
-    }
+    //}
   }
 
   ngOnDestroy() {
