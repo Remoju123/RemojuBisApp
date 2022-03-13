@@ -139,8 +139,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.planspots.getFavorite(details).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             r.forEach(x => {
               if (x.isDetail) {
-                this.rows.find(y => y.isPlan === x.isPlan && y.id === x.id && y.googleSpot && x.googleSpot).isFavorite = x.isFavorite;
-                this.details$.find(y => y.isPlan === x.isPlan && y.id === x.id && y.googleSpot && x.googleSpot).isFavorite = x.isFavorite;
+                this.rows.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
+                this.details$.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
               }
             });
           });
