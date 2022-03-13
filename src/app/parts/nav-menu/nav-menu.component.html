@@ -15,10 +15,10 @@
       </mat-nav-list>
 
       <mat-nav-list class="user">
-        <span *ngIf="!commonService.name">
+        <span *ngIf="!commonService.loggedIn">
           <a mat-list-item (click)="commonService.login()">{{ "PleaseLogin" | translate }}</a>
         </span>
-        <div class="logout" *ngIf="commonService.name">
+        <div class="logout" *ngIf="commonService.loggedIn">
           <span>
             {{ "Welcome" | translate }}
             {{ userName }}

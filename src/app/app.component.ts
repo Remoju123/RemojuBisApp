@@ -77,62 +77,56 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //if (isPlatformBrowser(this.platformId)) {
-      this.oauthService.events.subscribe(e => {
-        if (e instanceof OAuthErrorEvent) {
-          const parm = e.params as OAuthErrorEventParams;
-          // console.log(e.params);
-          if (e.params !== null) {
-            if (parm.error === 'access_denied' && parm.error_description.includes('AADB2C90118')) {
-              // redirect to forgot password flow
-              // console.log(parm.error_description);
-              // console.log("redirect to forgot password flow");
-              window.location.href = "https://remojuauth.b2clogin.com/remojuauth.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_PasswordReset&client_id=3e5bffaf-86d7-4a4c-bcde-6ba4d1cb52d3&nonce=defaultNonce&redirect_uri=" + window.location.origin + "&scope=openid&response_type=id_token&prompt=login";
-            }
-            //AADB2C90006
-            // else if (parm.error === 'access_denied' && parm.error_description.includes('AADB2C90091')) {
-            //   // user has cancelled out of password reset
-            //   //this.oauthService.initLoginFlow();
-            //   //this.oauthService.initImplicitFlow(state.url);
-            // }else{
-            // }
+    this.oauthService.events.subscribe(e => {
+      if (e instanceof OAuthErrorEvent) {
+        const parm = e.params as OAuthErrorEventParams;
+        // console.log(e.params);
+        if (e.params !== null) {
+          if (parm.error === 'access_denied' && parm.error_description.includes('AADB2C90118')) {
+            // redirect to forgot password flow
+            // console.log(parm.error_description);
+            // console.log("redirect to forgot password flow");
+            window.location.href = "https://remojuauth.b2clogin.com/remojuauth.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_PasswordReset&client_id=3e5bffaf-86d7-4a4c-bcde-6ba4d1cb52d3&nonce=defaultNonce&redirect_uri=" + window.location.origin + "&scope=openid&response_type=id_token&prompt=login";
+          }
+          //AADB2C90006
+          // else if (parm.error === 'access_denied' && parm.error_description.includes('AADB2C90091')) {
+          //   // user has cancelled out of password reset
+          //   //this.oauthService.initLoginFlow();
+          //   //this.oauthService.initImplicitFlow(state.url);
+          // }else{
+          // }
+        }
+      }
+    })
+
+    this.oauthService.configure(authConfig);
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.loadDiscoveryDocument(environment.openidConf)
+    this.oauthService.tryLogin()
+      .catch(() => {
+        console.log('oauth trylogin error');
+      })
+      .then(async () => {
+        if (this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken()) {
+          this.commonService.loggedIn = true;
+          this.commonService.onUpdHeader();
+
+          if (this.oauthService.state.length > 0) {
+            this.router.navigate([this.oauthService.state]);
+          }
+          if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
+            this.commonService.loggedIn = true;
+            return Promise.resolve();
+          }
+          localStorage.setItem('iskeep', 'true');
+          return Promise.resolve();
+        } else {
+          this.commonService.loggedIn = false;
+          if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
+            this.oauthService.initLoginFlow();
           }
         }
-      })
-
-      this.oauthService.configure(authConfig);
-      this.oauthService.setupAutomaticSilentRefresh();
-      this.oauthService.loadDiscoveryDocument(environment.openidConf)
-      this.oauthService.tryLogin()
-        .catch(() => {
-          console.log('oauth trylogin error');
-        })
-        .then(async () => {
-          if (this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken()) {
-            if (this.oauthService.state.length > 0) {
-              this.router.navigate([this.oauthService.state]);
-            }
-            if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
-              this.commonService.loggedIn = true;
-              return Promise.resolve();
-            }
-            localStorage.setItem('iskeep', 'true');
-            const guid = await this.commonService.getGuid();
-            this.userService.userCompletion(guid)
-              .pipe(takeUntil(this.onDestroy$))
-              .subscribe(r => {
-                if (r) {
-                  this.commonService.loggedIn = true;
-                  this.commonService.onUpdHeader();
-                }
-              });
-            return Promise.resolve();
-          } else {
-            this.commonService.loggedIn = false;
-            if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
-              this.oauthService.initLoginFlow();
-            }
-          }
-        });
+      });
     //}
   }
 
