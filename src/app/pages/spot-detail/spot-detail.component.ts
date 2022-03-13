@@ -11,6 +11,7 @@ import {
   Pictures
 } from "../../class/spot.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
+import { UpdFavorite } from "../../class/mypageplanlist.class";
 import { UserStaff } from "../../class/plan.class";
 import { GoogleSpot } from "../../class/planspotlist.class";
 import { SpotSearchCategory } from "../../class/spot.class";
@@ -107,7 +108,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
-    
+
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       let id = params.get("id");
       if (id) {
@@ -123,12 +124,11 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
     }
 
+    this.isMobile = this.detectIsMobile(window.innerWidth);
+
     this.myplanService.MySpots$.subscribe((v) => {
       this.myPlanSpots = v;
     });
-
-    this.isMobile = this.detectIsMobile(window.innerWidth);
-    
   }
 
   // SignalRの設定
@@ -200,11 +200,17 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   }
 
   onClickFavorite() {
+    this.data.isFavorite = !this.data.isFavorite;
+    const param = new UpdFavorite();
+    param.spotId =  this.$spotId;
+    param.type = 1
+    param.isFavorite = this.data.isFavorite;
+    this.myplanService.updateFavorite(param);
     this.planspotListService
       .registFavorite(
         this.$spotId,
         false,
-        !this.data.isFavorite,
+        this.data.isFavorite,
         false,
         this.guid
       )
@@ -214,7 +220,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         //   this.router.navigate(["/SystemError"]);
         //   return;
         // }
-        this.data.isFavorite = !this.data.isFavorite;
+
       });
   }
 
@@ -417,7 +423,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
     // プランに追加
     this.planspotListService
-      .addPlan(this.$spotId, false).then(result => {
+      .addPlan(this.$spotId, false, this.guid).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             // プラン作成に反映

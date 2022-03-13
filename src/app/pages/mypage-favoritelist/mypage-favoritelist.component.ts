@@ -1,16 +1,17 @@
 import { Component, OnInit, OnDestroy, Input, Inject, PLATFORM_ID } from "@angular/core";
 import { ComfirmDialogParam, DataSelected } from "../../class/common.class";
 import { TranslateService } from "@ngx-translate/core";
-import { CommonService } from "../../service/common.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CacheStore, PlanSpotList, tarms } from "../../class/planspotlist.class";
+import { ListSearchCondition } from "../../class/indexeddb.class";
+import { UpdFavorite } from "../../class/mypageplanlist.class";
+import { CommonService } from "../../service/common.service";
+import { IndexedDBService } from "../../service/indexeddb.service";
+import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
 import { MyplanService } from "../../service/myplan.service";
-import { IndexedDBService } from "../../service/indexeddb.service";
-import { ListSearchCondition } from "../../class/indexeddb.class";
 import { makeStateKey, TransferState } from "@angular/platform-browser";
 import { isPlatformServer } from "@angular/common";
 
@@ -102,7 +103,21 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r=>{
       this.myPlanSpots = r;
-    })
+    });
+
+    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      if (x.isFavorite) {
+        this.getPlanSpotDataSet();
+      } else {
+        let spot: PlanSpotList;
+        if (x.type === 1) {
+          spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
+        } else {
+          spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+        }
+        this.delFavorite(spot, false);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -156,10 +171,11 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
 
       for (let i = startIndex; i < this.end; i++){
         if (this.rows[i].isDetail || this.rows[i].googleSpot) {
+          this.details$ = this.rows.slice(0,this.end);
           continue;
         }
 
-        (await this.planspots.fetchDetails(this.rows[i], this.guid))
+        this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
@@ -249,7 +265,9 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.planspots.addPlan(
       item.id,
       item.isPlan,
-      item.isRemojuPlan
+      this.guid,
+      item.isRemojuPlan,
+      item.googleSpot ? true : false
     ).then(result => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(
         async myPlanApp => {
@@ -272,35 +290,14 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // お気に入りを削除する
       if (d === "ok") {
-        this.planspots.registFavorite(
-          item.id,
-          item.isPlan,
-          !item.isFavorite,
-          item.isRemojuPlan,
-          this.guid,
-          item.googleSpot ? true: false
-        )
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(async ()=>{
-          this.rows.splice(
-            this.rows.findIndex(v => v.id === item.id && v.isPlan === item.isPlan),1
-          )
-          this.count = this.rows.length;
-          if(this.rows.length < this.end){
-            this.end = this.rows.length;
-          }
-          this.commonService.snackBarDisp("FavoriteRemoved");
-
-          if(!this.rows[this.end - 1].isDetail && !this.rows[this.end - 1].googleSpot){
-            this.planspots.fetchDetails(this.rows[this.end - 1], this.guid)
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe(d => {
-              this.rows[this.end - 1] = d;
-              this.rows[this.end - 1].userName = this.commonService.isValidJson(this.rows[this.end - 1].userName, this.lang);
-            })
-          }
-          this.details$ = this.rows.slice(0,this.end);
-        });
+        if (!item.isPlan) {
+          const param = new UpdFavorite();
+          param.spotId =  item.id;
+          param.type = item.googleSpot ? 2: 1
+          param.isFavorite = false;
+          this.myplanService.updateFavorite(param);
+        }
+        this.delFavorite(item, true);
       }
     });
   }
@@ -318,5 +315,43 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.condition.select = val;
     this.indexedDBService.registListSearchConditionMyfav(this.condition);
     this.getPlanSpotDataSet();
+  }
+
+
+  delFavorite(item:PlanSpotList, isMessage: boolean) {
+    this.planspots.registFavorite(
+      item.id,
+      item.isPlan,
+      false,
+      item.isRemojuPlan,
+      this.guid,
+      item.googleSpot ? true: false
+    )
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(async ()=>{
+      this.rows.splice(
+        this.rows.findIndex(v => v.id === item.id && v.isPlan === item.isPlan && v.googleSpot === item.googleSpot),1
+      )
+      this.count = this.rows.length;
+      if(this.rows.length < this.end){
+        this.end = this.rows.length;
+      }
+
+      if (isMessage) {
+        this.commonService.snackBarDisp("FavoriteRemoved");
+      }
+
+      if(!this.rows[this.end - 1].isDetail && !this.rows[this.end - 1].googleSpot){
+        this.planspots.fetchDetails(this.rows[this.end - 1], this.guid)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(d => {
+          this.rows[this.end - 1] = d;
+          this.rows[this.end - 1].userName = this.commonService.isValidJson(this.rows[this.end - 1].userName, this.lang);
+          this.details$ = this.rows.slice(0,this.end);
+        });
+      } else {
+        this.details$ = this.rows.slice(0,this.end);
+      }
+    });
   }
 }

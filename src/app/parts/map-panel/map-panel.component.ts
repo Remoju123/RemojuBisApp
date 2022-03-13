@@ -355,6 +355,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         mapSpot.transfer = planSpot.transfer;
         mapSpot.displayOrder = planSpot.displayOrder;
         mapSpot.isDetail = isDetail;
+        mapSpot.isFavorite = planSpot.isFavorite;
         return mapSpot;
       });
 
@@ -411,27 +412,6 @@ export class MapPanelComponent implements OnInit,OnDestroy {
           anchor:$anchor,
           labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
         };
-
-        // お気に入り
-        if (this.mapSpots[i].type === 1) {
-          this.mapService.getSpotFavorite(
-            this.mapSpots[i].spotId,
-            0,
-            this.guid)
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe(r => {
-              this.mapSpots[i].isFavorite = r;
-            });
-        } else if (this.mapSpots[i].type === 2){
-          this.mapService.getSpotFavorite(
-            0,
-            this.mapSpots[i].spotId,
-            this.guid)
-            .pipe(takeUntil(this.onDestroy$))
-            .subscribe(r => {
-              this.mapSpots[i].isFavorite = r;
-            });
-        }
       } else {
         // 掲載終了アイコンURL
         this.mapSpots[i].iconUrl = {

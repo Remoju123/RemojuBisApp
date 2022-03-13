@@ -459,12 +459,14 @@ export class PlanSpotListService {
   }
 
   // プランに追加
-  async addPlan(id: number, isPlan: boolean, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot) {
+  async addPlan(id: number, isPlan: boolean, guid: string, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot) {
     let myPlan: any = await this.indexedDBService.getEditPlan(true);
     if (!myPlan){
       myPlan = new MyPlanApp();
     }
     myPlan.languageCd1 = [ this.translate.currentLang ];
+    myPlan.guid = guid;
+    myPlan.objectId = this.commonService.objectId;
 
     if(isPlan){
       let addPlan: AddPlan = new AddPlan();

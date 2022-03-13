@@ -3,7 +3,7 @@ import { DatePipe, isPlatformBrowser } from "@angular/common";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { MyPlanApp, NestDataSelected } from "../class/common.class";
 import { ListSearchCondition } from "../class/indexeddb.class";
-import { MyPlanAppListSelected } from "../class/mypageplanlist.class";
+import { MyPlanAppListSelected, UpdFavorite } from "../class/mypageplanlist.class";
 import { IndexedDBService } from "./indexeddb.service";
 import { CommonService } from "./common.service";
 import { TranslateService } from "@ngx-translate/core";
@@ -41,6 +41,9 @@ export class MyplanService  {
 
   public searchSubject = new Subject<string[]>();
   public searchFilter = this.searchSubject.asObservable();
+
+  private updFavorite = new Subject<UpdFavorite>();
+  public updFavirute$ = this.updFavorite.asObservable();
 
   constructor(
     private http: HttpClient,
@@ -188,6 +191,10 @@ export class MyplanService  {
       })
     }
     this.MySpots.next(_mySpots);
+  }
+
+  public updateFavorite(param: UpdFavorite) {
+    this.updFavorite.next(param);
   }
 
   private SetItem(myPlanApp: MyPlanApp){

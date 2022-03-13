@@ -7,9 +7,9 @@ import { CommonService } from '../../service/common.service';
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { PlanSpotListService } from '../../service/planspotlist.service';
 import { MyplanService } from '../../service/myplan.service';
-import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
 import { ComfirmDialogParam, DataSelected, ListSelectMaster } from '../../class/common.class';
 import { ListSearchCondition } from '../../class/indexeddb.class';
+import { UpdFavorite } from '../../class/mypageplanlist.class';
 import { CacheStore, PlanSpotList, tarms } from '../../class/planspotlist.class';
 import { UserPlanData } from '../../class/plan.class';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
@@ -78,7 +78,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
-    private mypageFavoriteListService: MypageFavoriteListService,
     private myplanService: MyplanService,
     private transferState: TransferState,
     private router: Router,
@@ -115,18 +114,37 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.recoveryQueryParams();
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
-      this.cacheRecoveryDataSet();
+      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+      this.rows = cache.data;
+      this.end = cache.end;
+      this.offset = cache.offset;
+      this.details$ = this.rows.slice(0, this.end);
+      this.p = cache.p - 1;
+      this.condition.select = cache.select;
+      this.condition.sortval = cache.sortval;
+      this.condition.keyword = cache.keyword;
+      this.$mSort = cache.mSort;
+      this.count = cache.data.length;
+      this.isList = cache.isList; //change
+      this.listSelectMaster = cache.ListSelectMaster;
+      this.optionKeywords = cache.optionKeywords;
+      this.googleSearchArea = cache.googleSearchArea;
+
+      this.transferState.remove(PLANSPOT_KEY);
       this.mergeNextDataSet(true);
-      if (this.details$.length > 0) {
-        this.details$[0].objectId = this.commonService.objectId;
-        this.planspots.getFavorite(this.details$).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          r.forEach(x => {
-            if (x.isDetail) {
-              this.rows.find(y => y.id === x.id && y.isPlan === x.isPlan).isFavorite = x.isFavorite;
-              this.details$.find(y => y.id === x.id && y.isPlan === x.isPlan).isFavorite = x.isFavorite;
-            }
+      if (!cache.isDetail && this.rows.length > 0) {
+        const details = this.rows.slice(0, this.end).filter(x => x.isDetail === true);
+        if (details && details.length > 0) {
+          this.details$[0].objectId = this.commonService.objectId;
+          this.planspots.getFavorite(details).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            r.forEach(x => {
+              if (x.isDetail) {
+                this.rows.find(y => y.isPlan === x.isPlan && y.id === x.id && y.googleSpot && x.googleSpot).isFavorite = x.isFavorite;
+                this.details$.find(y => y.isPlan === x.isPlan && y.id === x.id && y.googleSpot && x.googleSpot).isFavorite = x.isFavorite;
+              }
+            });
           });
-        });
+        }
       }
     } else {
       this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
@@ -145,14 +163,32 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r => {
       this.myPlanSpots = r;
-    })
+    });
 
     this.planspots.searchSubject.subscribe(r => {
       this.condition = r;
       this.indexedDBService.registListSearchCondition(this.condition);
 
       this.getPlanSpotDataSet();
-    })
+    });
+
+    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      let spot: PlanSpotList, spotDetail: PlanSpotList;
+      if (x.type === 1) {
+        spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
+        spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
+      }
+      else {
+        spot = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+        spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+      }
+      if (spot) {
+        spot.isFavorite = x.isFavorite;
+      }
+      if (spotDetail) {
+        spotDetail.isFavorite = x.isFavorite;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -245,9 +281,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
       for (let i = startIndex; i < this.end; i++) {
         if (this.rows[i].isDetail) {
+          this.details$ = this.rows.slice(0, this.end);
           continue;
         }
-        (await this.planspots.fetchDetails(this.rows[i], this.guid))
+        this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
             const idx = this.rows.findIndex(v => v.id === d.id);
@@ -263,7 +300,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             }
             this.details$ = this.rows.slice(0, this.end);
             if (i === this.end - 1 && isPlatformServer(this.platformId)) {
-              this.setTransferState();
+              this.setTransferState(false);
             }
           })
       }
@@ -284,25 +321,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  cacheRecoveryDataSet() {
-    const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-    this.rows = cache.data;
-    this.end = cache.end;
-    this.offset = cache.offset;
-    this.details$ = this.rows.slice(0, this.end);
-    this.p = cache.p - 1;
-    this.condition.select = cache.select;
-    this.condition.sortval = cache.sortval;
-    this.condition.keyword = cache.keyword;
-    this.$mSort = cache.mSort;
-    this.count = cache.data.length;
-    this.isList = cache.isList; //change
-    this.listSelectMaster = cache.ListSelectMaster;
-    this.optionKeywords = cache.optionKeywords;
-    this.googleSearchArea = cache.googleSearchArea;
-
-    this.transferState.remove(PLANSPOT_KEY);
-  }
 
   historyReplace(searchParams: string): void {
     if (isPlatformBrowser(this.platformId)) {
@@ -353,7 +371,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プラン/スポット詳細リンク
   linktoDetail(item: PlanSpotList) {
-    this.setTransferState();
+    this.setTransferState(true);
 
     if (item.isPlan) {
       this.router.navigate(["/" + this.lang + "/plans/detail", item.id]);
@@ -364,7 +382,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  setTransferState() {
+  setTransferState(isDetail: boolean) {
     let _offset: number;
     if (this.list.isMobile) {
       _offset = window.pageYOffset;
@@ -384,6 +402,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.ListSelectMaster = this.listSelectMaster;
     c.optionKeywords = this.optionKeywords;
     c.googleSearchArea = this.googleSearchArea;
+    c.isDetail = isDetail;
 
     this.transferState.set<CacheStore>(PLANSPOT_KEY, c);
   }
@@ -459,6 +478,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.planspots.addPlan(
       item.id,
       item.isPlan,
+      this.guid,
       item.isRemojuPlan,
       item.googleSpot ? true : false,
       item.googleSpot
@@ -477,10 +497,18 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // お気に入り登録・除外
   setFavorite(item: PlanSpotList) {
+    item.isFavorite = !item.isFavorite;
+    if (!item.isPlan) {
+      const param = new UpdFavorite();
+      param.spotId =  item.id;
+      param.type = item.googleSpot ? 2: 1
+      param.isFavorite = item.isFavorite;
+      this.myplanService.updateFavorite(param);
+    }
     this.planspots.registFavorite(
       item.id,
       item.isPlan,
-      !item.isFavorite,
+      item.isFavorite,
       item.isRemojuPlan,
       this.guid,
       item.googleSpot ? true : false,
@@ -488,9 +516,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     )
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        this.mypageFavoriteListService.GetFavoriteCount(this.guid);
+        //this.mypageFavoriteListService.GetFavoriteCount(this.guid);
       });
-    item.isFavorite = !item.isFavorite;
+
   }
 
   onViewUserPost(item: PlanSpotList) {
