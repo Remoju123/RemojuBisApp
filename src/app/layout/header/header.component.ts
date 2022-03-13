@@ -123,7 +123,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     if (this.commonService.loggedIn) {
       // ユーザー情報
       this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
-        if (r && r.pictureUrl!=="") {
+        if (r && r.pictureUrl) {
           this.pictureUrl = r.pictureUrl;
         }
       });
@@ -136,7 +136,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     this.commonService.isupdHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
       // ユーザー情報
       this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
-        if (r) {
+        if (r && r.pictureUrl) {
           this.pictureUrl = r.pictureUrl;
         }
       });
