@@ -119,6 +119,15 @@ export class AppComponent implements OnInit, OnDestroy {
             return Promise.resolve();
           }
           localStorage.setItem('iskeep', 'true');
+          const guid = await this.commonService.getGuid();
+          this.userService.userCompletion(guid)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(r => {
+              if (r) {
+                this.commonService.loggedIn = true;
+                this.commonService.onUpdHeader();
+              }
+            });
           return Promise.resolve();
         } else {
           this.commonService.loggedIn = false;
