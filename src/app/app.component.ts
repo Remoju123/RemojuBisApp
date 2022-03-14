@@ -108,24 +108,18 @@ export class AppComponent implements OnInit, OnDestroy {
       })
       .then(async () => {
         if (this.oauthService.hasValidAccessToken() && this.oauthService.hasValidIdToken()) {
-          this.commonService.loggedIn = true;
-          this.commonService.onUpdHeader();
-
-          if (this.oauthService.state.length > 0) {
-            this.router.navigate([this.oauthService.state]);
-          }
-          if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
-            this.commonService.loggedIn = true;
-            return Promise.resolve();
-          }
-          localStorage.setItem('iskeep', 'true');
           const guid = await this.commonService.getGuid();
           this.userService.userCompletion(guid)
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(r => {
               if (r) {
+                localStorage.setItem('iskeep', 'true');
                 this.commonService.loggedIn = true;
                 this.commonService.onUpdHeader();
+
+                if (this.oauthService.state.length > 0) {
+                  this.router.navigate([this.oauthService.state]);
+                }
               }
             });
           return Promise.resolve();
