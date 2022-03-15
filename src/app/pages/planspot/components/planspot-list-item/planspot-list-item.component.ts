@@ -121,8 +121,8 @@ export class PlanspotListItemComponent implements OnInit {
           arr.push(x.spotName)
         }
       })
-      let list = arr.join("</span><span>");
-      return "<span>" + list + "</span>";
+      let list = arr.join("</span></div><div class='wrap'><span>");
+      return "<div class='wrap'><span>" + list + "</span></div>";
     }else{
       return null;
     }
@@ -178,7 +178,7 @@ export class PlanspotListItemComponent implements OnInit {
     ],
     stagePadding:40,
     margin:0,
-    items: 1,
+    items: 2,
     nav: true
   };
 

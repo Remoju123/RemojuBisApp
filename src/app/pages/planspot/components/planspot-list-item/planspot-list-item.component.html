@@ -10,9 +10,9 @@
         </span>
       </div>
       <div class='rt' [ngClass]="{'fav':myFavorite}">
-        <span class='mark'>
+        <!-- <span class='mark'>
           <img [src]="genMarkPath()" alt="mark">
-        </span>
+        </span> -->
         <span class='title'>
           {{genTitle()}}
         </span>
@@ -26,24 +26,16 @@
             <ng-container *ngFor="let src of item.pictures; index as i">
               <ng-template carouselSlide id="row.planId">
                 <div class="thumbmain">
-                  <img
-                    [src]="src"
-                    [alt]="item.id"
-                    [title]="item.id"
-                  />
+                  <img [src]="src" [alt]="item.id" [title]="item.id" />
                 </div>
               </ng-template>
             </ng-container>
           </owl-carousel-o>
           <ng-template #single>
             <ng-container *ngFor="let src of item.pictures; index as i">
-                <div class="thumbmain fullwidth">
-                  <img
-                    [src]="src"
-                    [alt]="item.id"
-                    [title]="item.id"
-                  />
-                </div>
+              <div class="thumbmain fullwidth">
+                <img [src]="src" [alt]="item.id" [title]="item.id" />
+              </div>
             </ng-container>
           </ng-template>
         </div>
@@ -81,36 +73,39 @@
             <!-- <span *ngIf="!isProd">
               {{item.id}}
             </span> -->
-            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}"
+              (click)="onClickFavorite(item)">
             </button>
           </mat-list-item>
-          <ng-container *ngIf="item.isPlan; else isSpot" >
-            <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>
-            </mat-list-item>
-            <mat-list-item class="row mt02">
+          <ng-container *ngIf="item.isPlan; else isSpot">
+            <mat-list-item class="row mt02 summery">
+              <span class="spots">
+                <label>{{ "NumberOfSpots" | translate }}：</label>
+                <div class='maru'>
+                  <span>{{ item.spotQty }}</span>
+                </div>
+              </span>
               <span class="timerequired">
-                <label>{{ "TimeRequired" | translate }}：</label>
+                <!-- <label>{{ "TimeRequired" | translate }}：</label> -->
                 <span *ngIf="item.timeRequiredHour !== null">{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span>
                 <span *ngIf="item.timeRequiredMin !== null">{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span>
               </span>
-              <span class="spots">
-                <label>{{ "NumberOfSpots" | translate }}：</label>
-                <span>{{ item.spotQty }}</span>
-              </span>
+            </mat-list-item>
+            <mat-list-item class="row psname" [innerHtml]=genPlanSpotNames(item.planSpotNames)>
             </mat-list-item>
           </ng-container>
+
           <ng-template #isSpot>
             <mat-list-item class="row">
               <p>{{item.overview | langFilter:lang}}</p>
             </mat-list-item>
-            <mat-list-item
-              class="row">
+            <mat-list-item class="row">
               <span class="directions">
                 {{ genSpotAccess()}}
               </span>
             </mat-list-item>
             <mat-list-item class="row">
-              <span class="businesshour" >{{ "Businesshours" | translate }}：{{ genSpotBusinessHour()}}</span>
+              <span class="businesshour">{{ "Businesshours" | translate }}：{{ genSpotBusinessHour()}}</span>
               <span class="regularholiday">{{ genSpotHoliday() }}</span>
             </mat-list-item>
           </ng-template>
@@ -125,7 +120,8 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}" (click)="onClickAddToPlan(item)">
+            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}"
+              (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
             </button>
           </mat-list-item>
@@ -179,7 +175,8 @@
             <span class="note">
               Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。
             </span>
-            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}" (click)="onClickFavorite(item)">
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}"
+              (click)="onClickFavorite(item)">
             </button>
           </mat-list-item>
           <mat-list-item class="row mt1">
@@ -187,7 +184,8 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}" (click)="onClickAddToPlan(item)">
+            <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}"
+              (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
             </button>
           </mat-list-item>
