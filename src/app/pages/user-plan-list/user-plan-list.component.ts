@@ -1,17 +1,17 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject, Input } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { Location } from '@angular/common';
+import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ComfirmDialogParam } from '../../class/common.class';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { UpdFavorite } from '../../class/mypageplanlist.class';
-import { UserPlanData } from '../../class/plan.class';
+import { OtherUser } from '../../class/plan.class';
 import { PlanSpotList } from '../../class/planspotlist.class';
 import { CommonService } from '../../service/common.service';
 import { IndexedDBService } from '../../service/indexeddb.service';
-import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
+import { UserService } from '../../service/user.service';
 import { MyplanService } from '../../service/myplan.service';
 import { PlanSpotListService } from '../../service/planspotlist.service';
 import { threadId } from 'worker_threads';
@@ -24,24 +24,26 @@ export class UserPlanListComponent implements OnInit {
   private onDestroy$ = new Subject();
 
   constructor(
+    private activatedRoute: ActivatedRoute,
     private translate: TranslateService,
     private commonService: CommonService,
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
     private planSpotListService: PlanSpotListService,
-    private mypageFavoriteListService: MypageFavoriteListService,
-    private router: Router,
-    public dialogRef:MatDialogRef<UserPlanListComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UserPlanData
+    private userService: UserService,
+    private location: Location,
+    private router: Router
   ) {
-    this.myPlanSpots = this.data.myplanspot;
     this.limit = 6;
     this.p = 1;
     this.condition = new ListSearchCondition();
   }
 
   condition: ListSearchCondition;
+
+  user: OtherUser;
+  userPlanSpots: PlanSpotList[] = [];
 
   myPlanSpots:any;
 
@@ -61,14 +63,29 @@ export class UserPlanListComponent implements OnInit {
   async ngOnInit() {
     this.guid= await this.commonService.getGuid();
 
-    this.mergeNextDataSet();
+    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
+      const id = params.get("id");
+      if (id) {
+        this.userService.getOtherUser(id).pipe(takeUntil(this.onDestroy$)).subscribe(r =>{
+          this.user = r;
+        });
+        this.userService.getUserPlanList(id).pipe(takeUntil(this.onDestroy$)).subscribe(r =>{
+          this.userPlanSpots = r.userPlanSpotList;
+          let ids = [];
+          this.userPlanSpots.map(c => {
+            ids = ids.concat(c.searchCategoryIds);
+          });
+          this.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), r.mSearchCategoryPlan);
+          this.mergeNextDataSet();
+        });
+      } else {
+        this.router.navigate(["/" + this.lang + "/404"]);
+      }
+    });
 
-    let ids = [];
-    this.data.userPlanList.map(c => {
-      ids = ids.concat(c.searchCategoryIds);
-    })
-
-    this.searchCategories = this.planSpotListService.getMasterCategoryNames(new Set(ids), this.data.mSearchCategory);
+    this.myplanService.MySpots$.subscribe(v => {
+      this.myPlanSpots = v;
+    });
   }
 
   onScrollDown() {
@@ -76,29 +93,31 @@ export class UserPlanListComponent implements OnInit {
   }
 
   mergeNextDataSet() {
-    let startIndex = (this.p - 1) * this.limit;
-    this.end = startIndex + this.limit;
-    if (this.data.userPlanList.length - startIndex < this.limit) {
-      this.end = this.data.userPlanList.length;
-    }
-
-    for (let i = startIndex; i < this.end; i++) {
-      if (this.data.userPlanList[i].isDetail) {
-        this.details$ = this.data.userPlanList.slice(0, this.end);
-        continue;
+    if (this.userPlanSpots.length > 0) {
+      let startIndex = (this.p - 1) * this.limit;
+      this.end = startIndex + this.limit;
+      if (this.userPlanSpots.length - startIndex < this.limit) {
+        this.end = this.userPlanSpots.length;
       }
-      this.planspots.fetchDetails(this.data.userPlanList[i], this.guid)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(d => {
-          const idx = this.data.userPlanList.findIndex(v => v.id === d.id);
 
-          this.data.userPlanList[idx] = d;
-          this.data.userPlanList.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+      for (let i = startIndex; i < this.end; i++) {
+        if (this.userPlanSpots[i].isDetail) {
+          this.details$ = this.userPlanSpots.slice(0, this.end);
+          continue;
+        }
+        this.planspots.fetchDetails(this.userPlanSpots[i], this.guid)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            const idx = this.userPlanSpots.findIndex(v => v.id === d.id);
 
-          this.details$ = this.data.userPlanList.slice(0, this.end);
-        })
+            this.userPlanSpots[idx] = d;
+            this.userPlanSpots.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+
+            this.details$ = this.userPlanSpots.slice(0, this.end);
+          })
+      }
+      this.p++;
     }
-    this.p++;
   }
 
   // プランに追加
@@ -111,7 +130,7 @@ export class UserPlanListComponent implements OnInit {
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if(d === "ok"){
-          this.dialogRef.close();
+          //this.dialogRef.close();
           // 編集中のプランを表示
           this.commonService.onNotifyIsShowCart(true);
         }
@@ -136,19 +155,20 @@ export class UserPlanListComponent implements OnInit {
           }
         }
       )
-    }).then(()=>{
-      this.dialogRef.close();
-    })
+    });
   }
 
   // お気に入り登録・除外
   setFavorite(item:PlanSpotList){
     item.isFavorite = !item.isFavorite;
-    const param = new UpdFavorite();
-    param.spotId =  item.id;
-    param.type = item.googleSpot ? 2 : 1;
-    param.isFavorite = item.isFavorite;
-    this.myplanService.updateFavorite(param);
+    if (!item.isPlan) {
+      const param = new UpdFavorite();
+      param.spotId =  item.id;
+      param.type = item.googleSpot ? 2 : 1;
+      param.isFavorite = item.isFavorite;
+      this.myplanService.updateFavorite(param);
+    }
+    this.planSpotListService.setTransferState(item.isPlan, item.id, item.isFavorite, item.googleSpot ? true : false);
     this.planspots.registFavorite(
       item.id,
       item.isPlan,
@@ -166,14 +186,13 @@ export class UserPlanListComponent implements OnInit {
   linktoDetail(item:PlanSpotList){
     if(item.isPlan){
       this.router.navigate(["/" + this.lang + "/plans/detail",item.id]).then(()=>{
-        this.dialogRef.close();
       });
     }else{
       this.router.navigate(["/" + this.lang + "/spots/detail",item.id]);
     }
   }
 
-  onClose(){
-    this.dialogRef.close();
+  onSwipeRight(){
+    this.location.back();
   }
 }

@@ -1,9 +1,9 @@
-<div class='listheader'>
-  <button mat-icon-button (click)="onClose()"><mat-icon>arrow_back</mat-icon>戻る</button>
-  <span>{{data.user.displayName}}さんの投稿一覧</span>
+<div class='listheader' (swiperight)="onSwipeRight()">
+  <button mat-icon-button (click)="onSwipeRight()"><mat-icon>arrow_back</mat-icon>戻る</button>
+  <span *ngIf="user">{{ user.displayName }}さんの投稿一覧</span>
 </div>
 <!-- user-profile -->
-<app-userprofile-panel *ngIf="data.user" [otherUser]="data.user" [detail]="true"></app-userprofile-panel>
+<app-userprofile-panel *ngIf="user" [otherUser]="user" [detail]="true"></app-userprofile-panel>
 
 <h4>私がおすすめの旅プラン</h4>
 

@@ -1,7 +1,8 @@
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DataSelected } from "../class/common.class";
-import { LoginParam, User } from "../class/user.class";
+import { OtherUser } from "../class/plan.class";
+import { LoginParam, User, UserPlanList } from "../class/user.class";
 import { CommonService } from "./common.service";
 import { Observable } from "rxjs";
 import { isPlatformBrowser } from "@angular/common";
@@ -28,6 +29,10 @@ export class UserService {
     @Inject("BASE_API_URL") private host: string,
     @Inject(PLATFORM_ID) private platformId:Object
   ) { }
+
+  public onupdUserName() {
+    this.isupdUserName.next();
+  }
 
   // サーバー側ユーザー情報補完処理
   userCompletion(guid: string){
@@ -63,7 +68,14 @@ export class UserService {
   // 他ユーザ取得
   getOtherUser(objectId: string){
     const url = this.host + "/api/User/GetOtherUser";
-    return this.http.get<User>(url, {
+    return this.http.get<OtherUser>(url, {
+      params: { objectId: objectId}
+    });
+  }
+
+  getUserPlanList(objectId: string) {
+    const url = this.host + "/api/User/UserPlanList";
+    return this.http.get<UserPlanList>(url, {
       params: { objectId: objectId}
     });
   }
@@ -107,9 +119,5 @@ export class UserService {
     formData.append("objectId", user.object_id);
     const url = this.host + "/api/User/SaveFile";
     return this.http.post<boolean>(url, formData, { headers: {}});
-  }
-
-  public onupdUserName() {
-    this.isupdUserName.next();
   }
 }

@@ -16,7 +16,6 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
-import { UserPlanListComponent } from '../../parts/user-plan-list/user-plan-list.component';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
@@ -179,7 +178,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
       }
       else {
-        spot = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+        spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
         spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
       }
       if (spot) {
@@ -522,26 +521,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onViewUserPost(item: PlanSpotList) {
-    const param = new UserPlanData();
-    param.user = item.user;
-    param.userPlanList = item.userPlanList;
-    param.mSearchCategory = this.listSelectMaster.mSearchCategoryPlan;
-    param.myplanspot = this.myPlanSpots;
-
-    this.animationDialog.open(UserPlanListComponent, {
-      id: "userplanlist",
-      maxWidth: "100%",
-      width: "100%",
-      height: "100%",
-      position: { top: "0" },
-      data: param,
-      autoFocus: false,
-      animation: {
-        to: "left",
-        incomingOptions: {
-          keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
-        }
-      }
-    });
+    this.setTransferState(true);
+    this.router.navigate(["/" + this.lang + "/userplans", item.userObjectId]);
   }
 }

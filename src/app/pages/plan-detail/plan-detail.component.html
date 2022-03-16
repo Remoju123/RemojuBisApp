@@ -1,4 +1,4 @@
-<div class="plandtl" (swiperight)="onSwipeRight($event,data.planId)">
+<div class="plandtl" (swiperight)="onSwipeRight($event)">
   <mat-card id="plandtlheader" [ngClass]="{'onplan':match(planSpotids,myPlanSpots)}">
     <div class='link' (click)="linktolist()">
       <span class="frame">{{"BackEveryoneRecommendations" | translate}}</span>
@@ -309,7 +309,7 @@
         <app-userprofile-panel *ngIf="data.user" [otherUser]="data.user"
           [detail]="true"></app-userprofile-panel>
         <div class='buttons'>
-          <button mat-button disableRipple matBadge="{{ userPlanList.length }}" matBadgeSize="small"
+          <button mat-button disableRipple matBadge="{{ data.userPlanQty }}" matBadgeSize="small"
             (click)="onViewUserPost()">{{"ViewUserPost"|translate}}</button>
         </div>
       </ng-template>
