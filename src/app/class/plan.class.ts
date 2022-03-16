@@ -24,7 +24,7 @@ export class PlanApp {
   reviewResult: ReviewResult;
   userStaff: UserStaff;
   user: OtherUser;
-  country: DataSelected[];
+  userPlanQty: number;
   memo: string;
   spotToGoList: Recommended[];
   featureList: mFeature[];
@@ -80,7 +80,7 @@ export class OtherUser {
   aboutMe: string;
   countryName: string;
   displayName: string;
-  age: string;
+  age: number;
   pictureUrl: string;
   coverUrl: string;
   gender: string;

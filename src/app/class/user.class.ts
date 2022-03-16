@@ -1,3 +1,6 @@
+import { NestDataSelected } from "./common.class";
+import { PlanSpotList } from "./planspotlist.class";
+
 export class LoginParam {
   rjGuid: any;
   email: string;
@@ -34,4 +37,9 @@ export class User {
   coverImageCropped: any;
   coverCropperPosition: any;
   guid: any;
+}
+
+export class UserPlanList {
+  mSearchCategoryPlan: NestDataSelected[];
+  userPlanSpotList: PlanSpotList[]
 }

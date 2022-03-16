@@ -46,6 +46,7 @@ export class PlanSpotList {
   timeRequiredMin: number;
   travelDate: string;
   userName: string;
+  userObjectId: string;
   userPictureUrl: string;
   versionNo: number;
   user: OtherUser;

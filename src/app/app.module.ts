@@ -103,7 +103,7 @@ import { PlanspotModule } from './pages/planspot/planspot.module';
 import { PlanDetailModule } from './pages/plan-detail/plan-detail.module';
 import { ImageCropperDialogComponent } from "./parts/image-cropper-dialog/image-cropper-dialog.component";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
-import { UserPlanListComponent } from './parts/user-plan-list/user-plan-list.component';
+import { UserPlanListComponent } from './pages/user-plan-list/user-plan-list.component';
 import { MypageReviewlistComponent } from './pages/mypage/mypage-reviewlist/mypage-reviewlist.component';
 import { PrivacyComponent } from './pages/offcial/privacy/privacy.component';
 import { AboutComponent } from './pages/offcial/about/about.component';
@@ -278,8 +278,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ReviewPostDialogComponent,
     TransferPanelComponent,
     MapDialogComponent,
-    ImageCropperDialogComponent,
-    UserPlanListComponent
+    ImageCropperDialogComponent
   ],
   bootstrap: [AppComponent]
 })

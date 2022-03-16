@@ -16,7 +16,6 @@ import { MyplanService } from '../../service/myplan.service';
 import { PlanService } from "../../service/plan.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
 import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
-import { UserPlanListComponent } from "../../parts/user-plan-list/user-plan-list.component";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { isPlatformBrowser } from "@angular/common";
@@ -47,7 +46,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
-    private transferState: TransferState,
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -149,7 +147,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     param.type = item.type
     param.isFavorite = item.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.setTransferState(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
+    this.planSpotListService.setTransferState(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
     this.planSpotListService
       .registFavorite(
         item.spotId,
@@ -169,7 +167,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @Catch()
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
-    this.setTransferState(true, this.data.planId, this.data.isFavorite);
+    this.planSpotListService.setTransferState(true, this.data.planId, this.data.isFavorite);
     this.planSpotListService
       .registFavorite(
         this.data.planId,
@@ -292,18 +290,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.mapPanelComponent.setMapCenter(latitude, longitude);
   }
 
-  setTransferState(isPlan: boolean, id: number, isFavorite: boolean, isGoogle = false) {
-    if (this.transferState.hasKey(PLANSPOT_KEY)) {
-      let cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-      let row = cache.data.find(x => x.isPlan === isPlan && x.id === id
-        && ((x.googleSpot && isGoogle) || (!x.googleSpot && !isGoogle)))
-      if (row) {
-        row.isFavorite = isFavorite;
-        this.transferState.set<CacheStore>(PLANSPOT_KEY, cache);
-      }
-    }
-}
-
   /*----------------------------
    *
    * プラン情報の取得
@@ -418,7 +404,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       });
 
       // ユーザープランリストデータを事前取得
-      if (this.data.user) {
+      /*if (this.data.user) {
         this.planSpotListService.getUserPlanSpotList(id)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(rows => {
@@ -434,7 +420,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
             });
           }
         });
-      }
+      }*/
     });
   }
 
@@ -454,7 +440,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   }
 
   onViewUserPost() {
-    const param = new UserPlanData();
+    /*const param = new UserPlanData();
     param.user = this.data.user;
     param.userPlanList = this.userPlanList;
     param.mSearchCategory = this.mSearchCategory;
@@ -480,8 +466,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         window.scroll({ top: 0, behavior: 'smooth' });
       }, 800);
-    })
-
+    })*/
+    this.router.navigate(["/" + this.lang + "/userplans", this.data.user.objectId]);
   }
 
   linktolist() {
@@ -630,7 +616,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   };
 
   // スワイプで一覧に戻る
-  onSwipeRight(event, data) {
+  onSwipeRight(event) {
     this.linktolist();
   }
 

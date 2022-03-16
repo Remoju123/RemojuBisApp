@@ -4,7 +4,8 @@ import { AddPlan, AddSpot, ListSelectMaster, MyPlanApp, NestDataSelected, Regist
 import { PlanSpotList,searchResult,
   SearchParamsObj,
   GoogleSearchResult,
-  GoogleSpot} from "../class/planspotlist.class";
+  GoogleSpot,
+  CacheStore} from "../class/planspotlist.class";
 import { CommonService } from "./common.service";
 import { Observable, Subject } from "rxjs";
 import { ListSearchCondition } from "../class/indexeddb.class";
@@ -17,6 +18,9 @@ import { PlanFavorite, PlanUserFavorite } from "../class/plan.class";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { response } from "express";
 import { ThisReceiver } from "@angular/compiler";
+import { makeStateKey, TransferState } from "@angular/platform-browser";
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -46,6 +50,7 @@ export class PlanSpotListService {
     private indexedDBService: IndexedDBService,
     private filterPipe: FilterPipe,
     private translate: TranslateService,
+    private transferState: TransferState,
     @Inject("BASE_API_URL") private host: string
   ) {
     this.result = new searchResult();
@@ -397,6 +402,18 @@ export class PlanSpotListService {
       });
       return x;
     }, []);
+  }
+
+  setTransferState(isPlan: boolean, id: number, isFavorite: boolean, isGoogle = false) {
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      let cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+      let row = cache.data.find(x => x.isPlan === isPlan && x.id === id
+        && ((x.googleSpot && isGoogle) || (!x.googleSpot && !isGoogle)))
+      if (row) {
+        row.isFavorite = isFavorite;
+        this.transferState.set<CacheStore>(PLANSPOT_KEY, cache);
+      }
+    }
   }
 
   // お気に入り登録

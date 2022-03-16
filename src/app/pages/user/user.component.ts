@@ -2,9 +2,7 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { UserService } from "../../service/user.service";
-import { DataSelected } from "../../class/common.class";
-import { User } from "../../class/user.class";
-import { LangFilterPipe } from "../../utils/lang-filter.pipe";
+import { OtherUser } from "../../class/plan.class";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,7 +21,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private userService: UserService,
   ) { }
 
-  data: User;
+  data: OtherUser;
 
   currentlang = this.lang;
 
