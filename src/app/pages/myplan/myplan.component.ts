@@ -815,7 +815,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
   }
     // スポット一括クリア
   spotAllRemove() {
-    this.row.isTransferSearch = false;
+    if (this.row.startPlanSpot || this.row.endPlanSpot) {
+      this.row.isTransferSearch = true;
+    }else {
+      this.row.isTransferSearch = false;
+    }
     this.row.timeRequired = null;
     this.row.timeRequiredDisp = null;
     this.row.isAuto = false;
