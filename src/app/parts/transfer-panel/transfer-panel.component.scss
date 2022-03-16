@@ -1,13 +1,21 @@
 @import "vars";
+
 .mat-expansion-panel {
-  border-radius: 0;
+  //border-radius: 0;
   box-shadow: none;
-  padding-bottom: 24px;
+  //padding-bottom: 24px;
+
+  margin-left: 16px;
+  margin-right: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px!important;
 
   .mat-expansion-panel-header {
     padding: 0;
-    background-color: #f7f6f6!important;
+    //background-color: #f7f6f6 !important;
     z-index: 10;
+
+
 
     .container {
       display: flex;
@@ -16,32 +24,38 @@
       text-align: center;
       justify-content: space-between;
       margin: auto 16px;
+      margin-top: 5px;
 
-      .rt{
+      .rt {
         display: flex;
-        .times{
-          &::before{
+
+        .times {
+          &::before {
             content: "";
             display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-top: 2px solid $color-gld01;
-            border-right: 2px solid $color-gld01;
-            transform: rotate(135deg);
+            // width: 8px;
+            // height: 8px;
+            // border-top: 2px solid $color-gld01;
+            // border-right: 2px solid $color-gld01;
+            border-right: 8px solid transparent;
+            border-top: 11px solid #BAA069;
+            border-left: 8px solid transparent;
+            transform: rotate(0deg);
             transition: all 0.3s;
             margin-right: 5px;
           }
         }
       }
+
       @include routeIcons();
     }
 
-    &.mat-expanded{
-      .container{
-        .rt{
-          .times{
-            &::before{
-              transform: rotate(-45deg);
+    &.mat-expanded {
+      .container {
+        .rt {
+          .times {
+            &::before {
+              transform: rotate(-180deg);
             }
           }
         }
@@ -74,22 +88,24 @@
   }
 
   ::ng-deep .mat-expansion-panel-content {
-    .mat-expansion-panel-body{
+    .mat-expansion-panel-body {
       padding: 0;
       background-color: #f7f6f6;
       border-top: 1px solid #fff;
 
-      .point-of-dept{
+      .point-of-dept {
         position: absolute;
         top: 58px;
         display: flex;
         width: 100%;
-        span.times{
+
+        span.times {
           flex-basis: 28%;
           display: flex;
           justify-content: center;
         }
-        span.dept{
+
+        span.dept {
           font-size: 16px;
           font-weight: bolder;
           margin-left: 1em;
@@ -97,53 +113,53 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 64vw;
+          max-width: 62vw;
         }
-        
+
       }
 
-      .point-of-arrival{
+      .point-of-arrival {
         position: absolute;
-        bottom: 34px;
-        left: 119px;
+        bottom: 11px;
+        left: 115px;
         font-size: 16px;
         font-weight: bolder;
         color: #555;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 64vw;
+        max-width: 62vw;
       }
 
-      @media screen and (min-width: 429px) and (max-width: 1024px) { 
-        .point-of-dept{
-          span.times{
+      @media screen and (min-width: 429px) and (max-width: 1024px) {
+        .point-of-dept {
+          span.times {
             flex-basis: 18%;
           }
         }
       }
     }
 
-    
+
   }
 
   @include transfer-style();
 
-  &::after{
-    content: "";
-    width: 16px;
-    height: 8px;
-    background: url(../../../assets/img/allow_down_fill.svg) no-repeat;
-    position: absolute;
-    margin: auto;
-    right: 0;
-    left: 0;
-    bottom: 4px;
+  &::after {
+    // content: "";
+    // width: 16px;
+    // height: 8px;
+    // background: url(../../../assets/img/allow_down_fill.svg) no-repeat;
+    // position: absolute;
+    // margin: auto;
+    // right: 0;
+    // left: 0;
+    // bottom: 4px;
   }
 }
 
-.blank{
-  &::after{
+.blank {
+  &::after {
     content: "";
     width: 16px;
     height: 8px;
