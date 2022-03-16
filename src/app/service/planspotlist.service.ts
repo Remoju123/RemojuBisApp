@@ -194,27 +194,42 @@ export class PlanSpotListService {
     let _result = this.getFilterbyCondition(data,cond);
 
     // ソート処理
-    switch(parseInt(cond.sortval)){
-      case 7: // 閲覧順
-        _result = _result.sort((a,b) => {
-          return a.pvQtyAll < b.pvQtyAll ? 1 : -1
-        })
-        break;
-      case 10: // レビュー評価
-        _result = _result.sort((a,b) => {
-          return a.reviewAvg < b.reviewAvg ? 1 : -1
-        })
-        break;
-      case 11: // 新着純
-        _result = _result.sort((a,b) => {
-          return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
-        })
-        break;
-      case 9: // プランに追加された件数
-        _result = _result.sort((a,b) => {
-          return a.planSpotQty < b.planSpotQty ? 1: -1
-        })
-        break;
+    if (cond.keyword) {
+      _result = _result.sort((a, b) => {
+        let aIndex: number, bIndex : number;
+        aIndex = a.keyword.indexOf(cond.keyword);
+        bIndex = b.keyword.indexOf(cond.keyword);
+        if (aIndex === -1 || aIndex === null){
+          aIndex = 999999;
+        }
+        if (bIndex === -1 || bIndex === null) {
+          bIndex = 999999;
+        }
+        return aIndex > bIndex ? 1 : -1;
+      });
+    } else {
+      switch(parseInt(cond.sortval)){
+        case 7: // 閲覧順
+          _result = _result.sort((a,b) => {
+            return a.pvQtyAll < b.pvQtyAll ? 1 : -1
+          })
+          break;
+        case 10: // レビュー評価
+          _result = _result.sort((a,b) => {
+            return a.reviewAvg < b.reviewAvg ? 1 : -1
+          })
+          break;
+        case 11: // 新着純
+          _result = _result.sort((a,b) => {
+            return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
+          })
+          break;
+        case 9: // プランに追加された件数
+          _result = _result.sort((a,b) => {
+            return a.planSpotQty < b.planSpotQty ? 1: -1
+          })
+          break;
+      }
     }
 
     /*-----------------------------------------
