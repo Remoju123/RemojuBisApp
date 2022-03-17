@@ -232,7 +232,7 @@
               <button class="btn" (click)="onClickAddToPlan(item)">{{"AddToPlanOnly"|translate}}</button>
             </div>
 
-            <mat-list style="margin: auto 16px;">
+            <mat-list>
               <mat-list-item class="subheading" *ngIf="item.subheading">
                 <p>{{ item.subheading }}</p>
                 <mat-divider class="rj-linecolor"></mat-divider>
@@ -248,7 +248,9 @@
                 <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
               </mat-list-item> -->
               <!-- 終了時間 -->
-              <mat-list-item class="endtime" *ngIf="i === spots.length - 1 && data.endTime">
+            </mat-list >
+            <mat-list style="margin: auto 16px;" *ngIf="i === spots.length - 1 && data.endTime">
+              <mat-list-item class="endtime">
                 <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
               </mat-list-item>
             </mat-list>

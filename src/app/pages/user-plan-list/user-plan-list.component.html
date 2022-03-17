@@ -1,31 +1,29 @@
-<div class='listheader' (swiperight)="onSwipeRight()">
-  <button mat-icon-button (click)="onSwipeRight()"><mat-icon>arrow_back</mat-icon>戻る</button>
-  <span *ngIf="user">{{ user.displayName }}さんの投稿一覧</span>
+<div (swiperight)="onSwipeRight()">
+  <div class='listheader'>
+    <button mat-icon-button (click)="onSwipeRight()">
+      <mat-icon>arrow_back</mat-icon>戻る
+    </button>
+    <span *ngIf="user">{{ user.displayName }}さんの投稿一覧
+    </span>
+    <div class='badge'>{{userPlanSpots.length}}</div>
+  </div>
+  <mat-card>
+    <!-- user-profile -->
+    <app-userprofile-panel *ngIf="user" [otherUser]="user" [detail]="true"></app-userprofile-panel>
+
+    <h4>私がおすすめの旅プラン</h4>
+    <dl class='category' *ngIf="searchCategories.length > 0">
+      <dd *ngFor="let item of searchCategories">
+        {{ item | langFilter:lang}}
+      </dd>
+    </dl>
+  </mat-card>
+
+  <div class='rows'>
+    <app-planspot-list (scrolled)="onScrollDown()" [isList]="true" [condition]="condition">
+      <app-planspot-list-item *ngFor="let item of details$" [item]="item" [lang]="lang" [myPlanSpots]="myPlanSpots"
+        (linked)="linktoDetail($event)" (addMyPlan)="addMyPlan($event)" (setFav)="setFavorite($event)">
+      </app-planspot-list-item>
+    </app-planspot-list>
+  </div>
 </div>
-<!-- user-profile -->
-<app-userprofile-panel *ngIf="user" [otherUser]="user" [detail]="true"></app-userprofile-panel>
-
-<h4>私がおすすめの旅プラン</h4>
-
-<dl class='category' *ngIf="searchCategories.length > 0">
-  <dd *ngFor="let item of searchCategories">
-    {{ item | langFilter:lang}}
-  </dd>
-</dl>
-
-<div class='rows'>
-  <app-planspot-list (scrolled)="onScrollDown()" [isList]="true" [condition]="condition">
-    <app-planspot-list-item
-      *ngFor="let item of details$"
-      [item]="item"
-      [lang]="lang"
-      [myPlanSpots]="myPlanSpots"
-      (linked)="linktoDetail($event)"
-      (addMyPlan)="addMyPlan($event)"
-      (setFav)="setFavorite($event)">
-    </app-planspot-list-item>
-  </app-planspot-list>
-</div>
-
-
-

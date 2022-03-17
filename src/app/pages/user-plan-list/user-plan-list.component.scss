@@ -1,59 +1,70 @@
-::ng-deep #userplanlist.mat-dialog-container{
-  border-radius: 0;
-  padding: 0 16px 16px;
+.listheader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 16px;
+  height: 40px;
 
-  .listheader{
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: #fff;
+
+  button {
+    position: absolute;
+    width: 60px;
+    left: 0;
+
+    span {
+      display: flex;
+      align-items: center;
+      margin-top: 0;
+    }
+  }
+
+  span {
+    font-size: 14px;
+    margin-top: -4px;
+  }
+
+  .badge{
+    position: absolute;
+    right: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: #3f51b5;
+    height: 16px;
+    color: #fff;
+    font-size: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 16px;
-    height: 40px;
-
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background-color: #fff;
-    button{
-      position: absolute;
-      width: 60px;
-      left: 0;
-      span{
-        display: flex;
-        align-items: center;
-        margin-top: 0;
-      }
-    }
-    span{
-      font-size: 14px;
-      margin-top: -4px;
-    }
   }
 
-  h4{
-    font-size: 14px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-  }
+}
 
-  dl.category{
-    display: inline-flex;
-    margin: initial;
-    margin-bottom: 2em;
-    dd{
-      margin: auto 2px;
-      font-size: 11px;
-      color: #fff;
-      background-color: #bfa060;
-      border-radius: 2px;
-      min-height: 20px;
-      padding: 2px 5px 0;
-      line-height: 20px;
-      white-space: nowrap;
-    }
-  }
+h4 {
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
 
-  .rows{
-    margin: auto -16px;
+dl.category {
+  display: inline-flex;
+  margin: initial;
+  margin-bottom: 2em;
+  flex-wrap: wrap;
+
+  dd {
+    margin: auto 2px 2px;
+    font-size: 11px;
+    color: #fff;
+    background-color: #bfa060;
+    border-radius: 2px;
+    min-height: 20px;
+    padding: 2px 5px 0;
+    line-height: 20px;
+    white-space: nowrap;
   }
 }
