@@ -1,15 +1,38 @@
 .listheader {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   border-bottom: 1px solid #eee;
   margin-bottom: 16px;
-  height: 40px;
-
-  position: sticky;
-  top: 0;
   z-index: 20;
   background-color: #fff;
+  position: sticky;
+  top: 0;
+  @media screen and (min-width: 1025px) {
+    margin-bottom: 59px;
+  }
+
+  .head{
+    height: 40px;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 20;
+    background-color: #fff;
+    //position: fixed;
+    //top: 0;
+
+     @media screen and (min-width: 1025px) {
+       width: 634px;
+       top: 59px;
+     }
+  }
+  .profile{
+    margin: auto 16px;
+    @media screen and (min-width: 1025px) {
+      margin-top: 59px;
+    }
+  }
 
   button {
     position: absolute;
@@ -41,7 +64,6 @@
     align-items: center;
     justify-content: center;
   }
-
 }
 
 h4 {

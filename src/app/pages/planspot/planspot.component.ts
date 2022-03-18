@@ -337,10 +337,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         );
       }
       // history back desabled
-      history.pushState(null, null, null);
-      window.onpopstate = () => {
-        history.pushState(null, null, null);
-      }
+      // history.pushState(null, null, null);
+      // window.onpopstate = () => {
+      //   history.pushState(null, null, null);
+      // }
     }
   }
 
