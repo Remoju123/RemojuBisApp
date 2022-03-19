@@ -62,7 +62,7 @@
           </mat-expansion-panel-header>
           <ng-container *ngIf="row">
             <div class='sub'>
-              旅のしおり（プラン）
+              {{ 'TravelBookmark' | translate }}
             </div>
             <!-- 写真 -->
             <div class='select'>
@@ -74,7 +74,7 @@
                 class="selectPhoto"
                 (change)="onClickSelectPhotoPlan($event)" />
               </div>
-              <label>旅のしおりにふさわしいプランイメージを貼りましょう</label>
+              <label>{{ 'PasteImg' | translate }}</label>
             </div>
             <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
               <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
@@ -121,7 +121,7 @@
               </mat-chip-list>
             </div>
             <div class='close'>
-              <button (click)="mep.expanded = false;">閉じる</button>
+              <button (click)="mep.expanded = false;">{{ 'Close' | translate}}</button>
             </div>
           </ng-container>
         </mat-expansion-panel>
@@ -234,7 +234,7 @@
               <!-- panel body -->
               <div class='panel-content'>
                 <div class='sub'>
-                  旅のしおり（スポット）
+                  {{ 'TravelBookmark' | translate }}
                 </div>
                 <mat-form-field  hintLabel="{{ 'Required' | translate }}" appearance="outline">
                   <mat-label>{{ 'SpotNameEx' | translate }}</mat-label>
@@ -260,7 +260,7 @@
                     accept="image/*"
                     (change)="onClickSelectPhotoSpot($event, item)" />
                   </div>
-                  <label>旅のしおりにふさわしいスポットイメージを貼りましょう</label>
+                  <label>{{ 'PasteImg' | translate }}</label>
                 </div>
 
                 <div *ngFor="let picture of item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">

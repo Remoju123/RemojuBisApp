@@ -130,7 +130,7 @@
     <!-- プランスポットサムネイル -->
     <mat-card id="planPictures">
       <mat-card-content>
-        <h4>周遊スポット</h4>
+        <h4>{{ 'SpotsVisited' | translate }}</h4>
         <owl-carousel-o [options]="thumbOptions">
           <ng-container *ngFor="let item of spots; index as i">
             <ng-template carouselSlide>
