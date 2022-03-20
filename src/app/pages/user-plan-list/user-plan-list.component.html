@@ -1,9 +1,9 @@
   <div class='listheader'>
     <div class="head">
       <button mat-icon-button (click)="onSwipeRight()">
-        <mat-icon>arrow_back</mat-icon>戻る
+        <mat-icon>arrow_back</mat-icon>{{ 'Return' | translate }}
       </button>
-      <span *ngIf="user">{{ user.displayName }}さんの投稿一覧
+      <span *ngIf="user">{{ user.displayName }}{{ 'PostList' | translate }}
       </span>
       <div class='badge'>{{userPlanSpots.length}}</div>
     </div>
@@ -14,10 +14,10 @@
         <dd *ngFor="let item of searchCategories">
           {{ item | langFilter:lang}}
         </dd>
-      </dl>  
+      </dl>
     </div> -->
   </div>
-  
+
   <app-planspot-list (scrolled)="onScrollDown()" [isList]="true" [condition]="condition" (swiperight)="onSwipeRight()">
     <app-planspot-list-item *ngFor="let item of details$" [item]="item" [lang]="lang" [myPlanSpots]="myPlanSpots"
       (linked)="linktoDetail($event)" (addMyPlan)="addMyPlan($event)" (setFav)="setFavorite($event)">

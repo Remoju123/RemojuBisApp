@@ -34,7 +34,7 @@
       </div>
     </mat-card-content>
   </mat-card>
-  
+
   <div class='container' #cont>
     <mat-card id="mainPictures">
       <mat-card-content class="mt10">
@@ -51,7 +51,7 @@
             </ng-template>
           </ng-container>
         </owl-carousel-o>
-    
+
         <ng-template #singlePict>
             <div class="thumb">
               <img
@@ -78,9 +78,9 @@
         </div>
       </div>
     </mat-card>
-    
+
     <mat-card class="p0" id="spotHeader">
-      <mat-card-content>    
+      <mat-card-content>
         <mat-list class="spot-info">
           <mat-list-item class="title">
             {{ "BasicInfomation" | translate }}
@@ -115,7 +115,7 @@
         </mat-list>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card id="content">
       <mat-card-content>
         <div class='avatar'>
@@ -124,7 +124,7 @@
         <p [innerHTML]="data.spotOverview | langFilter: lang | replaceNewline"></p>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card>
       <mat-card-content>
         <ng-container *ngFor="let item of spotPictures; index as i">
@@ -145,7 +145,7 @@
         </ng-container>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card id="spot-detail">
       <mat-card-header>
         <h4 class="header">
@@ -186,7 +186,7 @@
             </tr>
             <tr>
               <td class="title" translate>URL</td>
-              <td style="word-break: break-all;" [innerHTML]="$hpUrl">            
+              <td style="word-break: break-all;" [innerHTML]="$hpUrl">
               </td>
             </tr>
             <tr>
@@ -222,9 +222,9 @@
         </table>
       </mat-card-content>
     </mat-card>
-    
+
     <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId" [spotplanName]="data.spotName"></app-review-list-panel>
-    
+
     <mat-card id="nearbySpot" class="pics">
       <mat-card-header>
         <h4 class="header">
@@ -250,7 +250,7 @@
         </owl-carousel-o>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card id="recommendPlan" class="pics" *ngIf="modePlanshow">
       <mat-card-header>
         <h4 class="header">
@@ -277,7 +277,7 @@
         </owl-carousel-o>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card id="writer" *ngIf="$userStaff">
       <mat-card-header>
         <h4 class="header">
@@ -285,13 +285,13 @@
         </h4>
       </mat-card-header>
       <mat-divider class="rj-linecolor"></mat-divider>
-      
+
       <mat-card-content>
         <div class="card-box">
           <div class="card-header">
             <div class="cover">
               <div class="wrap">
-                
+
               </div>
             </div>
             <div class="user">
@@ -309,7 +309,7 @@
               <span>{{ "Age" | translate }}</span>
               <span>/{{ "Female" | translate }}</span>
               <span>/{{ "Male" | translate }}</span>
-    
+
             </div>
             <div class="about">
               <p>{{ $userStaff?.introduction | langFilter: lang }}</p>
@@ -317,9 +317,9 @@
           </div>
         </div>
       </mat-card-content>
-  
+
       <div class='buttons'>
-        <button mat-button disableRipple matBadge="4" matBadgeSize="small" >この投稿者の投稿一覧へ</button>
+        <button mat-button disableRipple matBadge="4" matBadgeSize="small" >{{ 'ViewUserPost' | translate }}</button>
       </div>
     </mat-card>
     <!-- <app-userprofile-panel [detail]="true"></app-userprofile-panel> -->
@@ -327,5 +327,5 @@
       <img src="../../../../../assets/img/toTop3.svg" alt="toTop" />
     </button>
   </div>
-  
+
 </div>

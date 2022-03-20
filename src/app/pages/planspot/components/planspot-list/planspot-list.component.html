@@ -12,20 +12,20 @@ infinite-scroll
 #box>
   <mat-card id="nolist" *ngIf="!isList && condition.select!=='google'">
     <mat-card-content>
-      みんなのおすすめは、見つかりませんでした。<br>
-      代わりに<a href="javascript:void(0);" class="glink" (click)="googleLink('google')">Google検索</a>でスポットを検索できます。
+      {{ 'NotFindRecommendations' | translate }}<br>
+      {{ 'Instead' | translate }}<a href="javascript:void(0);" class="glink" (click)="googleLink('google')">{{ 'GoogleSearch' | translate }}</a>{{ 'SearchSpot' | translate }}
     </mat-card-content>
   </mat-card>
   <mat-card id="nolist" *ngIf="!isList && condition.select==='google'">
     <mat-card-content>
-      Googleで任意のスポットを検索できます。<br>
-      キーワードを入れ替えて検索してください。<br>
-      （これらのスポットもプランに入れることができます。）
+      {{ 'GoogleSearchAny' | translate }}<br>
+      {{ 'ReplaceKeyword' | translate }}<br>
+      {{ 'includedPlan' | translate }}
     </mat-card-content>
   </mat-card>
   <mat-card id="nolist" *ngIf="!isList && condition.select==='user'">
     <mat-card-content>
-      ユーザープラン
+      {{ 'UserPlan' | translate }}
     </mat-card-content>
   </mat-card>
   <ng-content>
