@@ -483,10 +483,10 @@ div.plandtl {
       font-size: 12px;
 
       &.summery{
+        margin-top: 6px;
         ::ng-deep{
           .mat-list-item-content{
             justify-content: space-between;
-            margin-top: 6px;
           }
         }
       }
@@ -553,7 +553,9 @@ div.plandtl {
       .spots {
         padding-right: 3px;
         padding-left: 2px;
-
+        display: flex;
+        align-items: center;
+        
         &::before {
           display: inline-block;
           content: url("../../../assets/img/location_on.svg");
