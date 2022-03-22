@@ -178,10 +178,11 @@ div.plandtl {
   }
 
   @media screen and (min-width: 1025px) {
-    div.container{
+    div.container {
       height: calc(100vh - 278px);
       overflow-y: scroll;
       position: relative;
+
       .scroll-to-top {
         position: fixed;
         margin: auto;
@@ -191,20 +192,20 @@ div.plandtl {
         padding: 0;
         cursor: pointer;
         transition: all 0.2s ease-in-out;
-      
+
         @include ios-reset();
-      
+
         img {
           width: 49px;
         }
-      
-        &.up{
+
+        &.up {
           bottom: 198px;
         }
       }
     }
   }
-  
+
 
   #mainPictures {
     padding: 0;
@@ -438,6 +439,7 @@ div.plandtl {
     background-color: #f6f6f6;
     border-top: 20px solid #dccda9;
     border-radius: 0;
+    border-bottom: 1px solid #dccda9;
 
     .mat-card-content {
       position: relative;
@@ -449,7 +451,7 @@ div.plandtl {
         right: 0;
         padding-top: 0;
         padding-bottom: 10px;
-        margin: -21px 8px 0;
+        margin: -21px 0 0;
 
         .title {
           height: auto;
@@ -480,6 +482,15 @@ div.plandtl {
       line-height: 2;
       font-size: 12px;
 
+      &.summery{
+        ::ng-deep{
+          .mat-list-item-content{
+            justify-content: space-between;
+            margin-top: 6px;
+          }
+        }
+      }
+
       &.psname {
         font-size: 11px;
         line-height: 1.6;
@@ -490,15 +501,37 @@ div.plandtl {
 
         ::ng-deep.mat-list-item-content {
           padding: 0;
-          display: block;
-
-          span {
-            display: inline-flex;
-            padding: 0 4px;
-            border: 1px solid #bdbdbd;
-            border-radius: 4px;
-            margin-right: 2px;
+          display: flow-root;
+          .wrap {
+            display: inline-block;
             margin-bottom: 2px;
+
+            span {
+              padding: 2px 4px;
+              border: 1px solid #bdbdbd;
+              border-radius: 4px;
+              margin-right: 2px;
+              margin-bottom: -2px;
+              white-space: nowrap;
+              max-width: 46%;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              font-weight: 600;
+              color: #00000087;
+            }
+
+            &::after {
+              content: url("../../../assets/img/arrow-left-bold.svg");
+              width: 16px;
+              height: 16px;
+              vertical-align: -4px;
+            }
+
+            &:last-child {
+              &::after {
+                content: '';
+              }
+            }
           }
         }
       }
@@ -509,7 +542,7 @@ div.plandtl {
 
         &::before {
           display: inline-block;
-          content: url("../../../assets/img/business-hour.svg");
+          content: url("../../../assets/img/av-timer.svg");
           width: 16px;
           height: 16px;
           padding-right: 3px;
@@ -523,11 +556,24 @@ div.plandtl {
 
         &::before {
           display: inline-block;
-          content: url("../../../assets/img/icon_spot.svg");
+          content: url("../../../assets/img/location_on.svg");
           width: 16px;
           height: 16px;
           padding-right: 3px;
           vertical-align: sub;
+        }
+        .maru{
+          display: inline-flex;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color:#00000087;
+          justify-content: center;
+          align-items: center;
+        }
+        span{
+          font-weight: bold;
+          color: #fff;
         }
       }
 
@@ -820,9 +866,10 @@ div.plandtl {
           display: flex;
           justify-content: center;
           //background-color: #f7f6f6;
-          
+
           border: 1px solid #ccc;
           border-radius: 8px;
+
           .sufix {
             font-size: 14px;
             margin-right: 0.5em;
@@ -934,6 +981,7 @@ div.plandtl {
           margin: 0.5em 16px 0;
 
           ::ng-deep .owl-carousel {
+
             .owl-prev,
             .owl-next {
               position: absolute;

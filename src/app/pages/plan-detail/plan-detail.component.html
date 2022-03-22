@@ -91,22 +91,25 @@
             </mat-menu>
           </mat-list-item>
           <span class='divider'></span>
-          <mat-list-item class="row psname">
-            <span *ngFor="let item of spots; index as i">{{item.spotName}}</span>
-          </mat-list-item>
-          <mat-list-item class="row mt02">
-            <span class="timerequired">
-              <label>{{ "TimeRequired" | translate }}：</label>
-              <span *ngIf="data.timeRequiredHour !== null">{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span>
-              <span *ngIf="data.timeRequiredMin !== null">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
-            </span>
-            <span class="timespan">
-              ({{ data.startTime }}～{{ data.endTime }})
-            </span>
+          <mat-list-item class="row mt02 summery">
             <span class="spots">
               <label>{{ "NumberOfSpots" | translate }}：</label>
-              <span>{{ data.spots?.length }}</span>
+              <div class='maru'>
+                <span>{{ data.spots?.length }}</span>
+              </div>
             </span>
+            <div>
+              <span class="timerequired">
+                <span *ngIf="data.timeRequiredHour !== null">{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span>
+                <span *ngIf="data.timeRequiredMin !== null">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
+              </span>
+              <span class="timespan">
+                ({{ data.startTime }}～{{ data.endTime }})
+              </span>
+            </div>
+          </mat-list-item>
+          <mat-list-item class="row psname">
+            <div class="wrap" *ngFor="let item of spots; index as i"><span>{{item.spotName}}</span></div>
           </mat-list-item>
           <mat-list-item class="row categories">
             <ng-container *ngFor="let item of categoryNames">
@@ -187,7 +190,7 @@
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pict of item.pictures">
                       <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain"  (click)="linktoSpot(item)">
+                        <div class="thumbmain" (click)="linktoSpot(item)">
                           <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
                         </div>
                       </ng-template>
@@ -248,7 +251,7 @@
                 <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
               </mat-list-item> -->
               <!-- 終了時間 -->
-            </mat-list >
+            </mat-list>
             <mat-list style="margin: auto 16px;" *ngIf="i === spots.length - 1 && data.endTime">
               <mat-list-item class="endtime">
                 <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
@@ -308,8 +311,7 @@
       </ng-container>
 
       <ng-template #profile>
-        <app-userprofile-panel *ngIf="data.user" [otherUser]="data.user"
-          [detail]="true"></app-userprofile-panel>
+        <app-userprofile-panel *ngIf="data.user" [otherUser]="data.user" [detail]="true"></app-userprofile-panel>
         <div class='buttons'>
           <button mat-button disableRipple matBadge="{{ data.userPlanQty }}" matBadgeSize="small"
             (click)="onViewUserPost()">{{"ViewUserPost"|translate}}</button>
