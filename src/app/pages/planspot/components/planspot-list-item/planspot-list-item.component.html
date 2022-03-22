@@ -41,12 +41,15 @@
         </div>
         <div class='info'>
           <div class='lt'>
+            <span class='mark'>
+              <img [src]="genMarkPath()" alt="mark">
+            </span>
             <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter: lang }}
             </span>
-            <span class="category" *ngIf="item.areaName2">
+            <!-- <span class="category" *ngIf="item.areaName2">
               {{ item.areaName2 | langFilter: lang }}
-            </span>
+            </span> -->
           </div>
         </div>
       </div>

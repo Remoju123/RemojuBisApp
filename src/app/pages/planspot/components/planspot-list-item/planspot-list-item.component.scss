@@ -296,6 +296,11 @@
         .lt {
           display: flex;
 
+          .mark{
+            width: 52px;
+            margin-right: 4px;
+          }
+
           .areaName {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 0 4px;
