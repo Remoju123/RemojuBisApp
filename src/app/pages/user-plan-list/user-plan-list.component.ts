@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, Input,ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { TranslateService } from '@ngx-translate/core';
@@ -15,6 +15,7 @@ import { UserService } from '../../service/user.service';
 import { MyplanService } from '../../service/myplan.service';
 import { PlanSpotListService } from '../../service/planspotlist.service';
 import { threadId } from 'worker_threads';
+import { PlanspotListComponent } from '../planspot/components/planspot-list/planspot-list.component';
 @Component({
   selector: 'app-user-plan-list',
   templateUrl: './user-plan-list.component.html',
@@ -22,6 +23,7 @@ import { threadId } from 'worker_threads';
 })
 export class UserPlanListComponent implements OnInit {
   private onDestroy$ = new Subject();
+  @ViewChild(PlanspotListComponent) private list: PlanspotListComponent;
 
   constructor(
     private activatedRoute: ActivatedRoute,

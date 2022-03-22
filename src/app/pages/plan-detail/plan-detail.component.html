@@ -183,11 +183,11 @@
                     </button>
                   </div>
                 </div>
-                <div class="spot-image" (click)="linktoSpot(item)">
+                <div class="spot-image">
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pict of item.pictures">
                       <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain">
+                        <div class="thumbmain"  (click)="linktoSpot(item)">
                           <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
                         </div>
                       </ng-template>
@@ -196,7 +196,7 @@
 
                   <ng-template #singlePict>
                     <ng-container *ngFor="let pict of item.pictures">
-                      <div class="thumbmain">
+                      <div class="thumbmain" (click)="linktoSpot(item)">
                         <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
                       </div>
                     </ng-container>
