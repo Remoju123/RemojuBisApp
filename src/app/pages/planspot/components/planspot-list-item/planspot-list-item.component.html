@@ -64,7 +64,7 @@
             </div>
             <div class='row'>
               <span class='view'>
-                {{'InplanCount'|translate}}：{{item.planSpotQty}} 人
+                {{'InplanCount'|translate}}：{{item.planSpotQty}} {{ 'Man' | translate}}
               </span>
               <span class='view'>
                 {{'ReviewRate'|translate}}：{{item.reviewAvg}}
@@ -173,7 +173,7 @@
         <mat-list>
           <mat-list-item class="bottom-view">
             <span class="note">
-              Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。
+              {{ 'NotPostedRemoju' | translate }}
             </span>
             <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}"
               (click)="onClickFavorite(item)">
