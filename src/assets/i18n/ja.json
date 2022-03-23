@@ -284,6 +284,7 @@
   "ViewUserPost":"この投稿者の投稿一覧へ",
   "ViewReview":"投稿したレビューを見る",
   "NoReviewMsg":"投稿中のレビューはありません",
+  "NoPlanMsg":"作成中のプランはありません",
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
