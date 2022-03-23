@@ -160,7 +160,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "cancel") {
         } else {
-          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, d).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               row.isRelease = !row.isRelease;
               this.commonService.snackBarDisp("ReleaseSaved");

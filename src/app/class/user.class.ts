@@ -1,4 +1,5 @@
 import { NestDataSelected } from "./common.class";
+import { OtherUser } from "./plan.class";
 import { PlanSpotList } from "./planspotlist.class";
 
 export class LoginParam {
@@ -41,5 +42,10 @@ export class User {
 
 export class UserPlanList {
   mSearchCategoryPlan: NestDataSelected[];
+  userPlanSpotList: PlanSpotList[];
+}
+
+export class UserPlanData {
+  user: OtherUser;
   userPlanSpotList: PlanSpotList[]
 }

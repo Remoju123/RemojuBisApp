@@ -87,14 +87,6 @@ export class OtherUser {
   objectId: string;
 }
 
-export class UserPlanData{
-  user: OtherUser;
-  userPlanList: PlanSpotList[];
-  mSearchCategory: NestDataSelected[];
-
-  myplanspot: any;
-}
-
 export class PlanFavorite {
   plan_id: number;
   guid: string;
