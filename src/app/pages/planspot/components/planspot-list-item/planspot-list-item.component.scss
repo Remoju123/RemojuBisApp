@@ -556,24 +556,21 @@
             width: auto;
 
             .wrap {
-              display: inline-block;
+              display: inline-flex;
               margin-bottom: 2px;
-
+              max-width: 42vw;
+              align-items: center;
+              
               span {
-                padding: 2px 4px;
-                // background-color: #BFA060;
-                // color: #fff;
+                padding: 0 4px;
                 border: 1px solid #bdbdbd;
                 border-radius: 4px;
                 margin-right: 2px;
-                margin-bottom: -2px;
                 white-space: nowrap;
-                max-width: 46%;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 font-weight: 600;
                 color: #00000087;
-
               }
               &::after {
                 content: url("../../../../../assets/img/arrow-left-bold.svg");
