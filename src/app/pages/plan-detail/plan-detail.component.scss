@@ -482,10 +482,11 @@ div.plandtl {
       line-height: 2;
       font-size: 12px;
 
-      &.summery{
+      &.summery {
         margin-top: 6px;
-        ::ng-deep{
-          .mat-list-item-content{
+
+        ::ng-deep {
+          .mat-list-item-content {
             justify-content: space-between;
           }
         }
@@ -502,18 +503,19 @@ div.plandtl {
         ::ng-deep.mat-list-item-content {
           padding: 0;
           display: flow-root;
+
           .wrap {
-            display: inline-block;
+            display: inline-flex;
             margin-bottom: 2px;
+            max-width: 42vw;
+            align-items: center;
 
             span {
-              padding: 2px 4px;
+              padding: 0 4px;
               border: 1px solid #bdbdbd;
               border-radius: 4px;
               margin-right: 2px;
-              margin-bottom: -2px;
               white-space: nowrap;
-              max-width: 46%;
               overflow: hidden;
               text-overflow: ellipsis;
               font-weight: 600;
@@ -555,7 +557,7 @@ div.plandtl {
         padding-left: 2px;
         display: flex;
         align-items: center;
-        
+
         &::before {
           display: inline-block;
           content: url("../../../assets/img/location_on.svg");
@@ -564,16 +566,18 @@ div.plandtl {
           padding-right: 3px;
           vertical-align: sub;
         }
-        .maru{
+
+        .maru {
           display: inline-flex;
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background-color:#00000087;
+          background-color: #00000087;
           justify-content: center;
           align-items: center;
         }
-        span{
+
+        span {
           font-weight: bold;
           color: #fff;
         }
