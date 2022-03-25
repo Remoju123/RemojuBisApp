@@ -95,6 +95,7 @@ export class CacheStore {
   optionKeywords: tarms;
   googleSearchArea: string;
   isDetail: boolean;
+  planSpotList: PlanSpotList;
 }
 
 export class GoogleSpot {

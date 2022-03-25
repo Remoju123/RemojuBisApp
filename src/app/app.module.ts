@@ -93,7 +93,7 @@ import { MessageDialogComponent } from './parts/message-dialog/message-dialog.co
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
-import { UserComponent } from './pages/user/user.component';
+import { UserDialogComponent } from './parts/user-dialog/user-dialog.component';
 import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
 import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-favoritelist.component';
 import { MypagePlanListComponent } from './pages/mypage-planlist/mypage-planlist.component';
@@ -166,7 +166,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MapInfowindowDialogComponent,
     MypageComponent,
     HeaderPlanPanelComponent,
-    UserComponent,
+    UserDialogComponent,
     ConfirmMessageDialogComponent,
     ReviewListPanelComponent,
     ReviewPostDialogComponent,
@@ -278,7 +278,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ReviewPostDialogComponent,
     TransferPanelComponent,
     MapDialogComponent,
-    ImageCropperDialogComponent
+    ImageCropperDialogComponent,
+    UserDialogComponent
   ],
   bootstrap: [AppComponent]
 })

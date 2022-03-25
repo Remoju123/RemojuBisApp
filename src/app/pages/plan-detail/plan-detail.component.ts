@@ -1,15 +1,15 @@
 import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { PlanApp, Trans, mFeature, UserStaff, UserPlanData } from "../../class/plan.class";
+import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { UpdFavorite } from "../../class/mypageplanlist.class";
-import { CacheStore, GoogleSpot, PlanSpotList } from "../../class/planspotlist.class";
+import { CacheStore, PlanSpotList } from "../../class/planspotlist.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
+import { makeStateKey, Meta } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from '../../service/myplan.service';

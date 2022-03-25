@@ -11,7 +11,7 @@ import { ComfirmDialogParam, DataSelected, ListSelectMaster } from '../../class/
 import { ListSearchCondition } from '../../class/indexeddb.class';
 import { UpdFavorite } from '../../class/mypageplanlist.class';
 import { CacheStore, PlanSpotList, tarms } from '../../class/planspotlist.class';
-import { UserPlanData } from '../../class/plan.class';
+import { UserPlanData } from '../../class/user.class';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
+import { UserDialogComponent } from 'src/app/parts/user-dialog/user-dialog.component';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 @Component({
@@ -128,6 +129,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.listSelectMaster = cache.ListSelectMaster;
       this.optionKeywords = cache.optionKeywords;
       this.googleSearchArea = cache.googleSearchArea;
+      if (cache.planSpotList) {
+        this.onViewUserPost(cache.planSpotList);
+      }
 
       this.transferState.remove(PLANSPOT_KEY);
       this.mergeNextDataSet(true);
@@ -381,7 +385,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  setTransferState(isDetail: boolean) {
+  setTransferState(isDetail: boolean, planSpotList: PlanSpotList = null) {
     let _offset: number;
     if (this.list.isMobile) {
       _offset = window.pageYOffset;
@@ -402,6 +406,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.optionKeywords = this.optionKeywords;
     c.googleSearchArea = this.googleSearchArea;
     c.isDetail = isDetail;
+    c.planSpotList = planSpotList;
 
     this.transferState.set<CacheStore>(PLANSPOT_KEY, c);
   }
@@ -521,7 +526,26 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onViewUserPost(item: PlanSpotList) {
-    this.setTransferState(true);
-    this.router.navigate(["/" + this.lang + "/userplans", item.userObjectId]);
+    this.setTransferState(true, item);
+
+    const param = new UserPlanData();
+    param.user = item.user;
+    param.userPlanSpotList = item.userPlanList;
+
+    this.animationDialog.open(UserDialogComponent, {
+      id: "userplanlist",
+      maxWidth: "100%",
+      width: "100%",
+      height: "100%",
+      position: { top: "0" },
+      data: param,
+      autoFocus: false,
+      animation: {
+        to: "left",
+        incomingOptions: {
+          keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
+        }
+      }
+    });
   }
 }
