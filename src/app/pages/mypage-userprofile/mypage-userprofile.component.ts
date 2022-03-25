@@ -87,7 +87,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   }
 
   get email():any{
-    return this.myForm.get("email");
+    return this.myForm.get("email") as FormControl;
   }
 
   createForm(){
@@ -139,7 +139,6 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
    * -----------------------------*/
 
   ngOnInit() {
-
     if(isPlatformBrowser(this.platformId)){
       this.currentlang = localStorage.getItem("gml");
     }
