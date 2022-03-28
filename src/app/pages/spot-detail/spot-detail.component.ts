@@ -277,13 +277,13 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const langpipe = new LangFilterPipe();
+      this.data = r;
 
       this.$spotId = this.data.spotId;
       this.$versionNo = this.data.versionNo;
       this.$googleSpot = new GoogleSpot();
 
-      this.data = r;
+      const langpipe = new LangFilterPipe();
 
       this.meta.addTags([
         {
