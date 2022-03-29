@@ -113,12 +113,23 @@ export class AppComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.onDestroy$))
             .subscribe(r => {
               if (r) {
-                localStorage.setItem('iskeep', 'true');
                 this.commonService.loggedIn = true;
                 this.commonService.onUpdHeader();
 
+                if (!localStorage.getItem('iskeep')) {
+                  this.commonService.snackBarDisp("LoginMessage");
+                  localStorage.setItem('iskeep', 'true');
+                }
+
                 if (this.oauthService.state.length > 0) {
-                  this.router.navigate([this.oauthService.state]);
+                  if (this.oauthService.state.indexOf('#') > 0) {
+                    this.router.navigate([this.oauthService.state.substring(0, this.oauthService.state.indexOf('#'))
+                    ,{fragment:this.oauthService.state.substring(this.oauthService.state.indexOf('#') + 1)}]);
+                  } else if (this.oauthService.state.indexOf('?') > 0) {
+                    this.router.navigate([this.oauthService.state.substring(0, this.oauthService.state.indexOf('?'))]);
+                  } else {
+                    this.router.navigate([this.oauthService.state]);
+                  }
                 }
               }
             });
