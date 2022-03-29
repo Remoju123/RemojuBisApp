@@ -1,4 +1,4 @@
-import { Inject, Injectable,OnDestroy, PLATFORM_ID } from "@angular/core";
+import { Inject, Injectable, OnDestroy, PLATFORM_ID } from "@angular/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 import { ComfirmDialogParam, MyPlanApp, PlanSpotCommon, ImageSize, Location } from "../class/common.class";
@@ -17,7 +17,7 @@ import { isPlatformBrowser } from "@angular/common";
 @Injectable({
   providedIn: "root"
 })
-export class CommonService implements OnDestroy{
+export class CommonService implements OnDestroy {
   private isshowHeader = new Subject<boolean>();
   public isshowHeader$ = this.isshowHeader.asObservable();
 
@@ -36,26 +36,26 @@ export class CommonService implements OnDestroy{
   private isMobile = new Subject<boolean>();
   public isMobile$ = this.isMobile.asObservable();
 
-  public loggedIn:boolean = false;
+  public loggedIn: boolean = false;
 
   private onDestroy$ = new Subject();
 
   constructor(
     private oauthService: OAuthService,
-    private router:Router,
+    private router: Router,
     private translate: TranslateService,
     private indexedDBService: IndexedDBService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
-    @Inject(PLATFORM_ID) private platformId:Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   /*----------------------------
    *
    * 通知
    *
    *  ---------------------------*/
-  public onNotifyIsShowHeader(update: boolean){
+  public onNotifyIsShowHeader(update: boolean) {
     this.isshowHeader.next(update);
   }
 
@@ -63,19 +63,19 @@ export class CommonService implements OnDestroy{
     this.isupdHeader.next();
   }
 
-  public onNotifyIsShowCart(state:boolean){
+  public onNotifyIsShowCart(state: boolean) {
     this.isshowcart.next(state)
   }
 
-  public onNotifyIsShowMenu(state:boolean){
+  public onNotifyIsShowMenu(state: boolean) {
     this.isshowmenu.next(state)
   }
 
-  public onNotifyIsLoadingFinish(state:boolean){
+  public onNotifyIsLoadingFinish(state: boolean) {
     this.isloadfin.next(state);
   }
 
-  public onNotifyIsMobile(state:boolean){
+  public onNotifyIsMobile(state: boolean) {
     this.isMobile.next(state);
   }
 
@@ -85,21 +85,21 @@ export class CommonService implements OnDestroy{
    *
    *  ---------------------------*/
 
-  public login(){
+  public login() {
     //const state = this.router.routerState.snapshot;
     this.oauthService.initImplicitFlow(this.router.url);
   }
 
-  public async logout(){
+  public async logout() {
     const myPlan: any = await this.indexedDBService.getEditPlan();
     const myPlanApp: MyPlanApp = myPlan;
-    if(myPlanApp && !myPlanApp.isSaved){
+    if (myPlanApp && !myPlanApp.isSaved) {
       const param = new ComfirmDialogParam();
       param.title = "LogoutConfirmTitle";
       param.text = "LogoutConfirmText";
       const dialog = this.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-        if (result === "ok"){
+        if (result === "ok") {
           this.indexedDBService.clearMyPlan();
           localStorage.removeItem("iskeep");
           this.oauthService.logOut();
@@ -122,15 +122,14 @@ export class CommonService implements OnDestroy{
       console.log("Refreshing the token")
       this.oauthService.silentRefresh();
     }
-    else
-    {
+    else {
       console.log("Token is still valid")
     };
   }
 
   public get name() {
-    if(isPlatformBrowser(this.platformId)){
-      const claims:any = this.oauthService.getIdentityClaims();
+    if (isPlatformBrowser(this.platformId)) {
+      const claims: any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
@@ -139,8 +138,8 @@ export class CommonService implements OnDestroy{
   }
 
   public get email() {
-    if(isPlatformBrowser(this.platformId)){
-      const claims:any = this.oauthService.getIdentityClaims();
+    if (isPlatformBrowser(this.platformId)) {
+      const claims: any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
@@ -148,9 +147,9 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  public get objectId(){
-    if(isPlatformBrowser(this.platformId)){
-      const claims:any = this.oauthService.getIdentityClaims();
+  public get objectId() {
+    if (isPlatformBrowser(this.platformId)) {
+      const claims: any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
@@ -158,9 +157,9 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  public get idp(){
-    if(isPlatformBrowser(this.platformId)){
-      const claims:any = this.oauthService.getIdentityClaims();
+  public get idp() {
+    if (isPlatformBrowser(this.platformId)) {
+      const claims: any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
@@ -168,9 +167,9 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  public get picture(){
-    if(isPlatformBrowser(this.platformId)){
-      const claims:any = this.oauthService.getIdentityClaims();
+  public get picture() {
+    if (isPlatformBrowser(this.platformId)) {
+      const claims: any = this.oauthService.getIdentityClaims();
       if (!claims) {
         return null;
       }
@@ -178,8 +177,8 @@ export class CommonService implements OnDestroy{
     }
   }
 
-  public get token(){
-    if(isPlatformBrowser(this.platformId)){
+  public get token() {
+    if (isPlatformBrowser(this.platformId)) {
       return this.oauthService.getIdentityClaims();
     }
     return null;
@@ -189,7 +188,7 @@ export class CommonService implements OnDestroy{
     return this.oauthService.getAccessToken();
   }
 
-  public get idToken(){
+  public get idToken() {
     return this.oauthService.getIdToken();
   }
 
@@ -244,21 +243,21 @@ export class CommonService implements OnDestroy{
     return String(guid);
   }
 
-  async checkAddPlan(addSpotQty: number): Promise<boolean>{
+  async checkAddPlan(addSpotQty: number): Promise<boolean> {
     const myPlan: any = await this.indexedDBService.getEditPlan();
-    if (!myPlan){
+    if (!myPlan) {
       return true;
     }
     const myPlanApp: MyPlanApp = myPlan;
 
-    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6){
+    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6) {
       return false;
     } else {
       return true;
     }
   }
 
-  setAddPlanLang(planSpot: PlanSpotCommon, lang: string){
+  setAddPlanLang(planSpot: PlanSpotCommon, lang: string) {
     planSpot.spotName = this.isValidJson(planSpot.spotName, lang);
     planSpot.subheading = this.isValidJson(planSpot.subheading, lang);
     planSpot.overview = this.isValidJson(planSpot.overview, lang);
@@ -275,8 +274,8 @@ export class CommonService implements OnDestroy{
     return langpipe.transform(value, lang);
   }
 
-  reportComplete(result: boolean){
-    if (result){
+  reportComplete(result: boolean) {
+    if (result) {
       this.snackBarDisp("ReportReviewComplete");
     } else {
       this.snackBarDisp("ReportedReviewComplete");
@@ -299,8 +298,7 @@ export class CommonService implements OnDestroy{
 
       let age = Math.floor((Number(y1 + m1 + d1) - Number(y2 + m2 + d2)) / 10000);
 
-      if (age % 10 != 0)
-      {
+      if (age % 10 != 0) {
         age = age - age % 10;
       }
       return age;
@@ -341,7 +339,7 @@ export class CommonService implements OnDestroy{
   }
 
   locationGoogleMap(currentlang: any, latitude: number, longitude: number) {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       /*if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         if (navigator.userAgent === "Android") {
           location.href = `https://maps.google.com/maps?saddr=&daddr=${latitude},${longitude}&z=16`;
@@ -349,13 +347,13 @@ export class CommonService implements OnDestroy{
           location.href = `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&z=16`;
         }
       } else {*/
-        window.open(`https://www.google.co.jp/maps/dir/?api=1&hl=${currentlang}&destination=${latitude},${longitude}&z=16`, "_blank");
+      window.open(`https://www.google.co.jp/maps/dir/?api=1&hl=${currentlang}&destination=${latitude},${longitude}&z=16`, "_blank");
       //}
     }
   }
 
   locationPlaceIdGoogleMap(currentlang: any, latitude: string, longitude: string, placeId: string) {
-    if(isPlatformBrowser(this.platformId)){
+    if (isPlatformBrowser(this.platformId)) {
       /*if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         if (navigator.userAgent === "Android") {
           location.href = `https://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
@@ -363,7 +361,7 @@ export class CommonService implements OnDestroy{
           location.href = `comgooglemapsurl://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
         }
       } else {*/
-        window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`, "_blank");
+      window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`, "_blank");
       //}
     }
   }
@@ -396,7 +394,7 @@ export class CommonService implements OnDestroy{
     return <File>theBlob;
   }
 
-  async imageSize(file: File): Promise<ImageSize>{
+  async imageSize(file: File): Promise<ImageSize> {
     return new Promise((resolve, reject) => {
       let result = new ImageSize();
 
@@ -413,10 +411,10 @@ export class CommonService implements OnDestroy{
         const canvas = document.createElement("canvas");
         canvas.width = dstWidth;
         canvas.height = dstHeight;
-        const ctx:any = canvas.getContext("2d");
+        const ctx: any = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, dstWidth, dstHeight);
         // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/webp",0.75);
+        const resized = canvas.toDataURL("image/webp", 0.75);
         result.previewUrl = resized;
         // blobに再変換
         var blob = this.base64toBlob(resized);
@@ -430,10 +428,10 @@ export class CommonService implements OnDestroy{
   snackBarDisp(message: string) {
     this.snackBar.open(
       this.translate.instant(message), "", {
-        duration: 2000,
-        verticalPosition:"top",
-        panelClass:"custom-snackbar"
-      });
+      duration: 2000,
+      verticalPosition: "top",
+      panelClass: "custom-snackbar"
+    });
   }
 
   messageDialog(message: string) {
@@ -443,7 +441,7 @@ export class CommonService implements OnDestroy{
       position: { top: "10px" },
       data: message,
       autoFocus: false,
-      id:"mesdlg"
+      id: "mesdlg"
     });
   }
 
@@ -454,11 +452,11 @@ export class CommonService implements OnDestroy{
       position: { top: "10px" },
       data: param,
       autoFocus: false,
-      id:"cmd"
+      id: "cmd"
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
