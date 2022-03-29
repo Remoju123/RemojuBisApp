@@ -121,14 +121,16 @@ export class AppComponent implements OnInit, OnDestroy {
                   localStorage.setItem('iskeep', 'true');
                 }
 
-                if (this.oauthService.state.length > 0) {
-                  if (this.oauthService.state.indexOf('#') > 0) {
-                    this.router.navigate([this.oauthService.state.substring(0, this.oauthService.state.indexOf('#'))
-                    ,{fragment:this.oauthService.state.substring(this.oauthService.state.indexOf('#') + 1)}]);
-                  } else if (this.oauthService.state.indexOf('?') > 0) {
-                    this.router.navigate([this.oauthService.state.substring(0, this.oauthService.state.indexOf('?'))]);
+                const state = this.oauthService.state;
+
+                if (state.length > 0) {
+                  if (state.indexOf('#') > 0) {
+                    this.router.navigate([state.substring(0, state.indexOf('#'))
+                      , { fragment: state.substring(state.indexOf('#') + 1) }]);
+                  } else if (state.indexOf('?') > 0) {
+                    this.router.navigate([state.substring(0, state.indexOf('?'))]);
                   } else {
-                    this.router.navigate([this.oauthService.state]);
+                    this.router.navigate([state]);
                   }
                 }
               }
