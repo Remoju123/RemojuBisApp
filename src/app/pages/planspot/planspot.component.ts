@@ -309,10 +309,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.p++;
     } else {
-      this.details$ = [];
       this.isList = false;
       this.condition.select = 'google';
       const keyword = this.condition.keyword;
+      if (this.prevkeyword !== keyword) {
+        this.details$ = [];
+      }
       if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
         (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
