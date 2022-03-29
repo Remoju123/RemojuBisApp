@@ -319,5 +319,6 @@
   "NotPostedRemoju": "Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。",
   "PostList": "さんの投稿一覧",
   "ShareLink": "リンク共有",
-  "ShareLinkPlanContents" : "このリンクを知っているユーザーとは、このプランの内容を共有できます。"
+  "ShareLinkPlanContents" : "このリンクを知っているユーザーとは、このプランの内容を共有できます。",
+  "LoginMessage": "ログインできました！"
 }
