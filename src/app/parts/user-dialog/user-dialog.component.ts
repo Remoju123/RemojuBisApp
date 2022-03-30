@@ -36,7 +36,8 @@ export class UserDialogComponent implements OnInit, OnDestroy {
   }
 
   onViewUserPost() {
-    this.router.navigate(["/" + this.lang + "/userplans", this.data.user.objectId]);
     this.dialogRef.close();
+    this.router.navigate(["/" + this.lang + "/userplans", this.data.user.objectId]);
+    
   }
 }

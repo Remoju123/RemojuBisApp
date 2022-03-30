@@ -1,8 +1,6 @@
-<button mat-icon-button  mat-dialog-close="cancel">
-  <mat-icon>arrow_back</mat-icon>{{ 'Return' | translate }}
-</button>
+<button type="button" mat-dialog-close="cancel" class="abscancel"></button>
 <app-userprofile-panel *ngIf="data.user" [otherUser]="data.user"></app-userprofile-panel>
 <div class='buttons'>
-  <button *ngIf="data.userPlanSpotList" mat-button disableRipple matBadge="{{ data.userPlanSpotList.length }}" matBadgeSize="small"
-    (click)="onViewUserPost()">{{ "ViewUserPost" | translate }}</button>
+  <button *ngIf="data.userPlanSpotList" mat-button disableRipple matBadge="{{ data.userPlanSpotList.length }}"
+    matBadgeSize="small" (click)="onViewUserPost()">{{ "ViewUserPost" | translate }}</button>
 </div>

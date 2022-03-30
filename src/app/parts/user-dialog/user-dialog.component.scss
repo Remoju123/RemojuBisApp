@@ -1,0 +1,22 @@
+
+::ng-deep{
+  #userpost{
+    position: relative;
+    button {
+      &.abscancel {
+        all: unset;
+        position: absolute;
+        width: 25px;
+        top: 3px;
+        right: 4px;
+        z-index: 5;
+
+        &::before {
+          content: url("../../../assets/img/btn_delete.svg");
+        }
+      }
+    }
+  }
+}
+
+    

@@ -534,20 +534,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     param.user = item.user;
     param.userPlanSpotList = item.userPlanList;
 
-    this.animationDialog.open(UserDialogComponent, {
-      id: "userplanlist",
+    this.dialog.open(UserDialogComponent,{
+      id: "userpost",
       maxWidth: "100%",
-      width: "100%",
-      height: "100%",
-      position: { top: "0" },
+      width: this.list.isMobile?"92vw":"50vw",
+      position: { top: "12px" },
       data: param,
-      autoFocus: false,
-      animation: {
-        to: "left",
-        incomingOptions: {
-          keyframeAnimationOptions: { duration: 300, easing: "steps(8, end)" }
-        }
-      }
-    });
+      autoFocus: false
+    })
   }
 }

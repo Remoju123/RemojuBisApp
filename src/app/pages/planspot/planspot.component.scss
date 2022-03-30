@@ -6,3 +6,25 @@
     z-index: 11;
   }  
 }
+
+::ng-deep{
+  #userpost{
+    .buttons {
+      position: relative;
+      display: inline-block;
+      margin-top: 12px;
+  
+      button {
+        all: unset;
+        width: 188px;
+        height: 26px;
+        border: 1px solid #F3787F;
+        border-radius: 13px;
+        color: #F3787F;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+}
+
