@@ -202,8 +202,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   onScrollDown() {
     if (!this.isGoogleSearch) {
       this.isGoogleSearch = true;
-      this.mergeNextDataSet();
     }
+    this.mergeNextDataSet();
   }
 
   recoveryQueryParams() {
