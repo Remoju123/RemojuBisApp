@@ -63,7 +63,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   prevkeyword: string;
   token: string;
-  isGoogleSearch: boolean = false;
 
   get lang() {
     return this.translate.currentLang;
@@ -200,10 +199,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onScrollDown() {
-    if (!this.isGoogleSearch) {
-      this.isGoogleSearch = true;
-      this.mergeNextDataSet();
-    }
+    this.mergeNextDataSet();
   }
 
   recoveryQueryParams() {
@@ -309,7 +305,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (i === this.end - 1 && isPlatformServer(this.platformId)) {
               this.setTransferState(false);
             }
-          })
+          });
       }
       this.p++;
     } else {
@@ -325,7 +321,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.details$ = this.details$.concat(g.planSpotList);
           this.count += g.planSpotList.length;
           this.token = g.tokenGoogle;
-          this.isGoogleSearch = false;
         })
       }
     }
