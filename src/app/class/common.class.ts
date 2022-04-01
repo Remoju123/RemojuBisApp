@@ -138,7 +138,7 @@ export class PlanSpotCommon {
   stayTime: number;
   isFavorite: boolean;
   pictures: string[];
-  PictureMemos: string[];
+  pictureMemos: string[];
   pvAllQty: number;
   isEndOfPublication: boolean;
   memo: string;
