@@ -63,6 +63,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   prevkeyword: string;
   token: string;
+  isGoogleSearch: boolean = false;
 
   get lang() {
     return this.translate.currentLang;
@@ -199,7 +200,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onScrollDown() {
-    this.mergeNextDataSet();
+    if (!this.isGoogleSearch) {
+      this.isGoogleSearch = true;
+      this.mergeNextDataSet();
+    }
   }
 
   recoveryQueryParams() {
@@ -321,6 +325,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.details$ = this.details$.concat(g.planSpotList);
           this.count += g.planSpotList.length;
           this.token = g.tokenGoogle;
+          this.isGoogleSearch = false;
         })
       }
     }
