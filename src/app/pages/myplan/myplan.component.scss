@@ -667,48 +667,53 @@
           }
 
           .picpreview{
-            position: relative;
-            button.delete{
-              all: unset;
-              position: absolute;
-              top: 6px;
-              right: 6px;
-              &::before{
-                content: url("../../../assets/img/btn_delete.svg");
-                display: inline-block;
-                width: 20px;
-                height: 20px;
-                vertical-align: text-bottom;
+            .picture{
+              position: relative;
+              button.delete{
+                all: unset;
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                &::before{
+                  content: url("../../../assets/img/btn_delete.svg");
+                  display: inline-block;
+                  width: 20px;
+                  height: 20px;
+                  vertical-align: text-bottom;
+                }
               }
-            }
-            button.crop{
-              all:unset;
-              position: absolute;
-              top: 6px;
-              left: 6px;
-              width: 60px;
-              height: 24px;
-              background-color: #4A4A4A;
-              border-radius: 2px;
-              font-size: 12px;
-              color: #fff;
-              &::before{
-                content: url("../../../assets/img/icon_crop.svg");
-                display: inline-block;
-                width: 17px;
-                height: 17px;
-                vertical-align: sub;
-                padding: 0 5px;
-              }
-            }
-            button.swapbtn{
-              all:unset;
-              position: absolute;
-              bottom: 8px;
-              right: 6px;
-              img{
+              button.crop{
+                all:unset;
+                position: absolute;
+                top: 6px;
+                left: 6px;
                 width: 60px;
+                height: 24px;
+                background-color: #4A4A4A;
+                border-radius: 2px;
+                font-size: 12px;
+                color: #fff;
+                &::before{
+                  content: url("../../../assets/img/icon_crop.svg");
+                  display: inline-block;
+                  width: 17px;
+                  height: 17px;
+                  vertical-align: sub;
+                  padding: 0 5px;
+                }
               }
+              button.swapbtn{
+                all:unset;
+                position: absolute;
+                bottom: 8px;
+                right: 6px;
+                img{
+                  width: 60px;
+                }
+              }
+            }
+            .memo{
+              margin-bottom: 1em;
             }
           }
 
