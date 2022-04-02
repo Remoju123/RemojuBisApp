@@ -270,6 +270,20 @@
                   <button class="swapbtn" *ngIf="item.planUserpictures.length > j + 1" (click)="onClickSpotPicture(picture)">
                     <img src="../../../assets/img/icon_changepic.svg" alt="swip">
                   </button>
+                  <!-- 写真メモ -->
+                  <mat-form-field appearance="outline">
+                    <textarea
+                      matInput
+                      #memo
+                      name="memo{{i}}{{j}}"
+                      maxlength="1000"
+                      rows="5"
+                      placeholder="{{ 'PictureMemo' | translate }}"
+                      #inputinfo="ngModel"
+                      [(ngModel)]="picture.memo"
+                      (change)="onChange(false)"></textarea>
+                      <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a href="javascript:void(0);" (click)="picture.memo='';"><span class="material-icons">backspace</span></a></mat-hint>
+                  </mat-form-field>
                 </div>
 
                 <!-- スポット概要 -->
