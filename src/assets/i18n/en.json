@@ -320,5 +320,6 @@
   "PostList": "さんの投稿一覧",
   "ShareLink": "リンク共有",
   "ShareLinkPlanContents" : "このリンクを知っているユーザーとは、このプランの内容を共有できます。",
-  "LoginMessage": "ログインしました"
+  "LoginMessage": "ログインしました",
+  "PictureMemo": "写真のコメント"
 }

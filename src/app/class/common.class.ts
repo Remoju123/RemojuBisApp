@@ -138,6 +138,7 @@ export class PlanSpotCommon {
   stayTime: number;
   isFavorite: boolean;
   pictures: string[];
+  pictureMemos: string[];
   pvAllQty: number;
   isEndOfPublication: boolean;
   memo: string;
@@ -172,6 +173,7 @@ export class PlanUserPicture {
   display_order: number;
   picture_display_order: number;
   picture_url: string;
+  memo: string;
   is_video: boolean;
   is_main: boolean;
   picturePreviewUrl: string;
