@@ -981,8 +981,7 @@ div.plandtl {
 
         .spot-image {
           position: relative;
-          height: 62.6vw;
-          height: 271px;
+          height: 69vw;
           overflow: hidden;
           margin: 0.5em 16px 0;
 
@@ -991,7 +990,7 @@ div.plandtl {
             .owl-prev,
             .owl-next {
               position: absolute;
-              top: 50%;
+              top: 48%;
               //display: block !important;
               display: flex;
               width: 14px;
@@ -1037,7 +1036,7 @@ div.plandtl {
               background: $color-gry06;
 
               img {
-                height: 62.6vw;
+                height: 69vw;
                 object-fit: cover;
                 @include copy-protect;
               }
