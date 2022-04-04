@@ -441,12 +441,12 @@
               </div>
             </div>
             <div class="card-box">
-              <div class="card-header" (click)="linktoSpot(item)">
+              <div class="card-header">
                 <!-- 写真(複数枚) -->
                 <owl-carousel-o *ngIf="item.previewPictures?.length > 1; else singlePict" [options]="mainOptions">
                   <ng-container *ngFor="let pic of item.previewPictures; index as i">
                     <ng-template carouselSlide id="item.spotId">
-                      <div class="thumbmain covered">
+                      <div class="thumbmain covered" (click)="linktoSpot(item)">
                         <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
                       </div>
                     </ng-template>
@@ -455,7 +455,7 @@
                 <!-- 写真(1枚) -->
                 <ng-template #singlePict>
                   <ng-container *ngFor="let pic of item.previewPictures; index as i">
-                    <div class="thumbmain">
+                    <div class="thumbmain" (click)="linktoSpot(item)">
                       <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
                     </div>
                   </ng-container>
