@@ -52,8 +52,9 @@ button {
 .scroll-to-top {
   position: fixed;
   margin: auto;
-  right: 17px;
-  bottom: 90px;
+  left:0;
+  right: 0;
+  bottom: 19px;
   z-index: 100;
   padding: 0;
   opacity: 0;
@@ -62,11 +63,11 @@ button {
   @include ios-reset();
 
   img {
-    width: 49px;
+    //width: 49px;
   }
 
   &.up{
-    bottom: 198px;
+    //bottom: 198px;
   }
 }
 
@@ -109,7 +110,7 @@ button {
   }
 
   &.up{
-    bottom:116px;
+    //bottom:116px;
   }
 }
 
@@ -222,7 +223,7 @@ mat-sidenav-content {
       @include ios-reset();
     
       img {
-        width: 49px;
+        //width: 49px;
       }
     
       &.up{
