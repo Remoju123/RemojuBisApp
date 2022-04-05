@@ -3,7 +3,7 @@
   {{ userName }}{{ "Sanno" | translate }}
   {{ "MyPage" | translate }}
 </div>
-<mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)" id="mypage">
+<mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)" id="mypage" [disablePagination]="true">
   <mat-tab label="{{ 'MyplanList' | translate }}">
     <app-mypage-planlist *ngIf="planlist"></app-mypage-planlist>
   </mat-tab>
