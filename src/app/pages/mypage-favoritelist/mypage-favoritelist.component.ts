@@ -96,6 +96,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       if (condition){
         this.condition = condition;
       }
+      this.condition.sortval = "11";
 
       this.getPlanSpotDataSet();
     }
@@ -149,10 +150,10 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     });
   }
 
-  isDetail() {
+  async isDetail() {
     if ((this.condition.select === 'plan' || this.spots.length > 0)
       && (this.condition.select === 'spot' || this.plans.length > 0)) {
-        this.rows = this.planspots.getFilterbyCondition(this.spots.concat(this.plans),this.condition);
+        this.rows = (await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, null)).list;
         this.count = this.rows.length;
         this.mergeNextDataSet();
       }
