@@ -36,6 +36,9 @@ export class CommonService implements OnDestroy {
   private isMobile = new Subject<boolean>();
   public isMobile$ = this.isMobile.asObservable();
 
+  private curlang = new Subject<string>();
+  public curlang$ = this.curlang.asObservable();
+
   public loggedIn: boolean = false;
 
   private onDestroy$ = new Subject();
@@ -77,6 +80,10 @@ export class CommonService implements OnDestroy {
 
   public onNotifyIsMobile(state: boolean) {
     this.isMobile.next(state);
+  }
+
+  public onNotifyChangeLang(state:string){
+    this.curlang.next(state);
   }
 
   /*----------------------------

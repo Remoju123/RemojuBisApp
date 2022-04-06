@@ -4,31 +4,24 @@ import {
   OnInit,
   ChangeDetectorRef,
   OnDestroy,
-  ViewChild,
-  Inject,
-  PLATFORM_ID
-} from "@angular/core";
-import { Router, NavigationEnd } from "@angular/router";
+  ViewChild} from "@angular/core";
+import { Router } from "@angular/router";
 import { DataService } from "../../service/data.service";
 import { CommonService } from "../../service/common.service";
 import { MyplanService } from "../../service/myplan.service";
 import { LoadNotifyService } from "../../service/load-notify.service";
 import { Catch } from "../../class/log.class";
-import { TranslateService } from "@ngx-translate/core";
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from "../header/header.component";
-import { isPlatformBrowser } from "@angular/common";
 import { MatSidenav } from "@angular/material/sidenav";
 
-import { DeviceDetectorService } from 'ngx-device-detector';
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
   styleUrls: ["../../common.scss", "./root.component.scss"]
 })
 export class RootComponent implements OnInit, OnDestroy {
-  private readonly subscription = new Subscription();
   private reloadRequestCount = 0;
   private onDestroy$ = new Subject();
   title = "Remoju";
@@ -51,11 +44,11 @@ export class RootComponent implements OnInit, OnDestroy {
   myPlanSpots: any;
   spots!: number;
 
-  viewbtn_src: string | undefined;
-  backbtn_src: string | undefined;
+  viewbtn_src = "../../../assets/img/view-my-plan.svg";
+  backbtn_src = "../../../assets/img/close-my-plan.svg";
+  toTop_src = "../../../assets/img/toTop4.svg";
 
-  //isMobile: boolean = true;
-  isMobile:boolean;
+  isMobile: boolean;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
@@ -65,39 +58,19 @@ export class RootComponent implements OnInit, OnDestroy {
   protected headerCompornent!: HeaderComponent;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
-
+  
   constructor(
     public router: Router,
     public dataService: DataService,
     private commonService: CommonService,
     private myplanService: MyplanService,
     private changeDetectionRef: ChangeDetectorRef,
-    private loadNotifyService: LoadNotifyService,
-    translate: TranslateService,
-    private deviceService: DeviceDetectorService,
-    @Inject(PLATFORM_ID) private platformId: Object) {
-    translate.setDefaultLang("ja");
-    translate.use("ja");
-    // translate.use(
-    //   (localStorage && localStorage.gml) || environment.defaultLang
-    // );
-
-    // NavigationEnd https://swfz.hatenablog.com/entry/2017/05/22/034415
-    this.router.events.pipe(takeUntil(this.onDestroy$)).subscribe(e => {
-      if (e instanceof NavigationEnd) {
-        // this.currentlang = e.url.split("/")[1];
-        //this.currentLang = "ja";
-        // this.opened = false;
-        // this.cartopened = false;
-        //ページ遷移後は全てページトップに戻す
-        // window.scrollTo(0,0);
-      }
-    });
+    private loadNotifyService: LoadNotifyService) {
   }
 
   ngOnInit() {
 
-    this.loadNotifyService.requestLoad$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
+    this.loadNotifyService.requestLoad$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
       //this.reloadRequestCount$.next(++this.reloadRequestCount);
       location.reload();
     })
@@ -122,13 +95,14 @@ export class RootComponent implements OnInit, OnDestroy {
       this.spots = Array.from(v).length;
     })
 
-    if (isPlatformBrowser(this.platformId)) {
-      let suffix = localStorage.getItem("gml") === "en" ? "_en" : "";
-      this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
-      this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg"
-    }
-
     this.isMobile = this.detectIsMobile(window.innerWidth);
+
+    this.commonService.curlang$.pipe(takeUntil(this.onDestroy$)).subscribe(lang => {
+      let suffix = lang==="en"?"_en":"";
+      this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
+      this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg";
+      this.toTop_src = "../../../assets/img/toTop4" + suffix + ".svg";
+    })
   }
 
   ngOnDestroy() {
@@ -239,7 +213,7 @@ export class RootComponent implements OnInit, OnDestroy {
     this.cartopened = false;
   }
 
-  onSwipeDown(event: any) {
+  onSwipeDown() {
     //console.log(event);
     window.location.reload();
   }
@@ -248,10 +222,10 @@ export class RootComponent implements OnInit, OnDestroy {
     this.sidenav?.close();
   }
 
-  detectIsMobile(w:any){
-    if(w<1024){
+  detectIsMobile(w: any) {
+    if (w < 1024) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }

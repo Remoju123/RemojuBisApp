@@ -96,6 +96,7 @@ export class NavMenuComponent implements OnInit, OnDestroy{
       this.translate.use('ja');
       this.translate.currentLang = 'ja';
     }
+    this.commonService.onNotifyChangeLang(this.translate.currentLang);
   }
 
   onClose(){

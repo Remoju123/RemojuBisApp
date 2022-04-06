@@ -19,7 +19,7 @@
             <router-outlet class="outletWidth"></router-outlet>
             <button [ngClass]="{ 'show-scroll': showScroll,'up': jumpFooter }" (click)="scrollToTop()"
               class="scroll-to-top">
-              <img src="../../../assets/img/toTop4.svg" alt="toTop" />
+              <img src="{{toTop_src}}" alt="toTop" />
             </button>
             <button mat-button matBadge="{{spots}}" (click)="togglecart()" class="view-my-plan"
               [ngClass]="{'on':spots > 0,'up':jumpFooter}" disableRipple="true">
