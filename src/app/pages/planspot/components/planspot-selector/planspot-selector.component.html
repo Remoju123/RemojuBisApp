@@ -33,9 +33,9 @@
     </div>
     <div class='row info'>
       <div class='count'>
-        {{count}}<span class="sm">&nbsp;{{ "Count" | translate }}</span>
+        <span *ngIf="condition.select!=='google'">{{count}}</span><span class="sm" *ngIf="condition.select!=='google'">&nbsp;{{ "Count" | translate }}</span>
       </div>
-      <mat-form-field class='condition' *ngIf="!myFavorite">
+      <mat-form-field class='condition' *ngIf="!myFavorite && condition.select!=='google'">
         <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval" disableRipple="true">
           <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
             {{ item.name | langFilter:lang}}

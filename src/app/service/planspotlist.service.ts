@@ -232,6 +232,11 @@ export class PlanSpotListService {
       }
     }
 
+    if (!master) {
+      this.result.list = _result;
+      return this.result;
+    }
+
     /*-----------------------------------------
     * 2.検索条件文字列結合
     -----------------------------------------*/
@@ -470,7 +475,7 @@ export class PlanSpotListService {
       if (isGoogle) {
         param.spotFavorite = {
           spot_id: 0,
-          google_spot_id: id,
+          google_spot_id: googleSpot.google_spot_id,
           guid: guid,
           is_delete: !isFavorite,
           objectId: this.commonService.objectId
