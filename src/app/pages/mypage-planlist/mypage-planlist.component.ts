@@ -163,6 +163,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
           this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, d).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
               row.isRelease = !row.isRelease;
+              row.memo = d;
               this.commonService.snackBarDisp("ReleaseSaved");
             }
           });
