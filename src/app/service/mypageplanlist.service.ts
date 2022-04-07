@@ -43,6 +43,9 @@ export class MypagePlanListService {
     planUserId: number,
     isRelease: boolean,
     memo: string) {
+    if (!memo) {
+      memo = "";
+    }
     const url = this.host + "/api/MypagePlanList/RegistIsRelease";
     return this.http.get<boolean>(url, {
       params: {
