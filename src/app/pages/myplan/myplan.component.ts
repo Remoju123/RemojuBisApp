@@ -755,18 +755,21 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 変更を保存
           this.registPlan(true);
           // 保存完了
-          const param = new ComfirmDialogParam();
-          param.title = "PlanSavedConfirmTitle";
-          param.leftButton = "PlanSavedConfirmButton";
-          const dialog = this.commonService.confirmMessageDialog(param);
-          dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-            // マイプラン一覧へ
-            if (d === "ok") {
-              this.commonService.onNotifyIsShowCart(false);
-              this.router.navigate(["/" + this.lang + "/mypage"], { fragment: "list" });
-            }
-          });
-
+          if (location.pathname.indexOf("mypage") > 0) {
+            this.commonService.snackBarDisp("PlanSave");
+          } else {
+            const param = new ComfirmDialogParam();
+            param.title = "PlanSavedConfirmTitle";
+            param.leftButton = "PlanSavedConfirmButton";
+            const dialog = this.commonService.confirmMessageDialog(param);
+            dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+              // マイプラン一覧へ
+              if (d === "ok") {
+                this.commonService.onNotifyIsShowCart(false);
+                this.router.navigate(["/" + this.lang + "/mypage"], { fragment: "list" });
+              }
+            });
+          }
           // 保存ボタンロック解除
           this.isSaving = false;
 
