@@ -129,6 +129,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.myPlanSpots = v;
     });
 
+    this.myplanService.PlanUserSaved$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      if (x.planUserId === this.$planId) {
+        this.setPlanDetail(this.$planId.toString());
+      }
+    });
+
     // お気に入り更新通知
     this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
       let spot = this.data.spots.find(planSpot => planSpot.spotId === x.spotId && planSpot.type === x.type)
@@ -305,12 +311,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
       const langpipe = new LangFilterPipe();
 
+      this.data = r;
+      this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
+
       this.$isRemojuPlan = this.data.isRemojuPlan;
       this.$versionNo = this.data.versionNo;
       this.$planId = this.data.planId;
-
-      this.data = r;
-      this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
 
       if (this.$isRemojuPlan) {
         this.meta.addTags([

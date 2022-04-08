@@ -168,6 +168,20 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.myPlanSpots = r;
     });
 
+    this.myplanService.PlanUserSaved$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+      const idx = this.details$.findIndex(v => v.isPlan === true && v.id === x.planUserId);
+      if (idx > -1) {
+        this.planspots.fetchDetails(this.details$[idx], this.guid)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(d => {
+          const rowIdx = this.rows.findIndex(v => v.isPlan === true && v.id === x.planUserId);
+          this.rows[rowIdx] = d;
+          this.rows[rowIdx].userName = this.commonService.isValidJson(this.rows[rowIdx].userName, this.lang);
+          this.details$ = this.rows.slice(0, this.end);
+        });
+      }
+    });
+
     this.planspots.searchSubject.subscribe(r => {
       this.condition = r;
       this.indexedDBService.registListSearchCondition(this.condition);

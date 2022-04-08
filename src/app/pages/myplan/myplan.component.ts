@@ -670,6 +670,11 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     // 保存ボタンロック
     this.isSaving = true;
 
+    let isNew = false;
+    if (this.row.planUserId === 0) {
+      isNew = true;
+    }
+
     // プランメイン写真の画像URL(ファイル名はプランユーザID＋拡張子)
     if (this.row.pictureFile) {
       this.row.pictureUrl = environment.blobUrl + "/pr{0}/{0}_{1}.webp";
@@ -755,7 +760,7 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           // 変更を保存
           this.registPlan(true);
           // 保存完了
-          if (location.pathname.indexOf("mypage") > 0) {
+          if (location.pathname.indexOf("mypage") > 0 || !isNew) {
             this.commonService.snackBarDisp("PlanSave");
           } else {
             const param = new ComfirmDialogParam();
