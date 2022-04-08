@@ -182,7 +182,7 @@ mat-sidenav-content {
   } 
 }
 
-
+$body_margin:141px;
 #pc{
   width: 1024px;
   display: flex;
@@ -190,7 +190,7 @@ mat-sidenav-content {
   margin: auto;
   .left{
     overflow-y: scroll;
-    height: calc(100vh - 182px);
+    height: calc(100vh - $body_margin);
     width: 380px;
     background-color: #fff;
     margin-right: 10px;
@@ -201,7 +201,7 @@ mat-sidenav-content {
   .right {
     //flex-basis: 70%;
     width: 634px;
-    height: calc(100vh - 182px);
+    height: calc(100vh - $body_margin);
     overflow-y: scroll;
     scrollbar-width: none;
     background-color: #fff;
@@ -231,4 +231,21 @@ mat-sidenav-content {
       }
     }
   }
+}
+#pc-f{
+  height: $body_margin;
+  ::ng-deep{
+    footer{
+      padding-bottom: 0;
+      .row.public{
+        padding-top: 10px;
+      }
+      p{
+        margin: unset;
+        margin-top: 0.5em;
+      }
+    }
+    
+  }
+  
 }
