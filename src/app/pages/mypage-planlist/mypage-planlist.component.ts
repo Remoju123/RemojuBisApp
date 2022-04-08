@@ -91,29 +91,25 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     this.isMobile = this.detectIsMobile(window.innerWidth);
 
     if (this.transferState.hasKey(MYPLANLIST_KEY)) {
-      this.cacheRecoveryDataSet();
-      this.getPlanListDetail(0, true);
-    } else {
-      // 一覧取得
-      this.mypagePlanListService
-        .getMypagePlanList()
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(r => {
-          this.rows = r;
-          this.limit = 6;
-          this.p = 1;
+      const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
+      //console.log(this.transferState);
+      this.rows = cache.data;
+      this.end = cache.end;
+      this.offset = cache.offset;
+      this.details$ = this.rows.slice(0, this.end);
+      this.p = cache.p - 1;
+      this.count = cache.data.length;
 
-          // ソート
-          this.listsort(this.rows, this.sortval);
-          // 検索結果補完
-          this.getPlanListDetail();
-        });
+      this.transferState.remove(MYPLANLIST_KEY);
+
+      this.getPlanListDetail(true);
+    } else {
+      this.getPlanList();
     }
 
     // 保存通知
     this.myplanService.PlanUserSaved$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      // 保存されたプランが表示されている場合、最新を取得
-      this.getPlanListDetail(x.planUserId, true);
+      this.getPlanList();
     });
   }
 
@@ -287,8 +283,25 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     }
   }
 
+  getPlanList(){
+    // 一覧取得
+    this.mypagePlanListService
+    .getMypagePlanList()
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe(r => {
+      this.rows = r;
+      this.limit = 6;
+      this.p = 1;
+
+      // ソート
+      this.listsort(this.rows, this.sortval);
+      // 検索結果補完
+      this.getPlanListDetail();
+    });
+  }
+
   // マイページプラン一覧詳細取得
-  async getPlanListDetail(planUserId: number = 0, isFirst: boolean = false) {
+  async getPlanListDetail(isFirst: boolean = false) {
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
     if (this.rows.length - startIndex < this.limit) {
@@ -299,23 +312,17 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     }
     const result = [];
     for (let i = startIndex; i < this.end; i++) {
-      if (planUserId > 0 && planUserId !== this.rows[i].planUserId){
-        continue;
-      }
-      if (planUserId === 0 && this.rows[i].isDetail) {
+      if (this.rows[i].isDetail) {
         this.details$ = this.rows.slice(0, this.end);
         continue;
       }
       result.push(this.getDetail(i));
     }
-
-    if (planUserId === 0) {
-      this.p++;
-    }
+    this.p++;
 
     await Promise.all(result);
 
-    if (planUserId === 0 && isPlatformServer(this.platformId)) {
+    if (isPlatformServer(this.platformId)) {
       this.setTransferState();
     }
   }
@@ -340,19 +347,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
           resolve(true);
       });
     });
-  }
-
-  cacheRecoveryDataSet() {
-    const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
-    //console.log(this.transferState);
-    this.rows = cache.data;
-    this.end = cache.end;
-    this.offset = cache.offset;
-    this.details$ = this.rows.slice(0, this.end);
-    this.p = cache.p - 1;
-    this.count = cache.data.length;
-
-    this.transferState.remove(MYPLANLIST_KEY);
   }
 
   setTransferState() {
