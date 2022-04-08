@@ -6,6 +6,10 @@
   font-size: 14px;
   align-items: center;
   //color: #bfa060;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #fff;
 }
 
 #mypage{// .mat-tab-group{
@@ -13,6 +17,10 @@
       background-color: #ece9e7;
       height: 67px;
       border-bottom: none;
+
+      top:36px;
+      z-index: 1000;
+      position: sticky;
       .mat-tab-labels{
         justify-content: space-between;
         .mat-tab-label{

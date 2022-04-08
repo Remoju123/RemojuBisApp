@@ -117,6 +117,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     this.onDestroy$.next();
   }
 
+  onScroll(e:any){
+    console.log(e.target.scrollTop);
+  }
+
   onScrollDown() {
     this.getPlanListDetail();
   }
@@ -290,7 +294,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     .pipe(takeUntil(this.onDestroy$))
     .subscribe(r => {
       this.rows = r;
-      this.limit = 6;
+      this.limit = 999;
       this.p = 1;
 
       // ソート
