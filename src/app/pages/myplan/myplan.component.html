@@ -4,7 +4,7 @@
       {{ "ArragePlan" | translate }}
     </div>
     <div class="switchView" [ngClass]="{'en':lang==='en'}">
-      <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+      <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
@@ -340,7 +340,7 @@
       <div class="bottom">
         <div></div>
         <div class="switchView" [ngClass]="{'en':lang==='en'}">
-          <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+          <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
           <label for="switch-view1"><span></span></label>
           <div id="swImg"></div>
         </div>
@@ -572,7 +572,7 @@
     <div class="bottom prev">
       <div></div>
       <div class="switchView" [ngClass]="{'en':lang==='en'}">
-        <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="isEdit" [disabled]="!row">
+        <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
         <label for="switch-view1"><span></span></label>
         <div id="swImg"></div>
       </div>

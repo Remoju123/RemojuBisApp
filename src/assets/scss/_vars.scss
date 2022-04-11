@@ -602,7 +602,7 @@ $color-grn01: #81C5B4;
       &:checked +label{
         border-color: $color-pnk02;
         span::after{
-          content: $preview;
+          content: $edit;//$preview;
           padding: 0 65px 0 0;
           color: $color-pnk02;
         }
@@ -612,7 +612,7 @@ $color-grn01: #81C5B4;
         transform: translateX(60px);
         background: $color-pnk02;
         &::before{
-          content: $edit;
+          content: $preview;//$edit;
           color: #fff;
         }
       }
@@ -626,7 +626,7 @@ $color-grn01: #81C5B4;
       border-radius: $radius;
 
       span::after{
-        content: $edit;
+        content: $preview;//$edit;
         padding: 0 0 0 67px;
         color: $color-pnk02;
       }
@@ -643,7 +643,7 @@ $color-grn01: #81C5B4;
       transition: .2s;
 
       &::before{
-        content: $preview;
+        content: $edit;//$preview;
         color: #fff;
       }
     }
