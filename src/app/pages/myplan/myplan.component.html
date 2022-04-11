@@ -24,7 +24,7 @@
                   <ng-container *ngIf="row">
                     <mat-form-field>
                       <mat-label>{{ 'PlanName' | translate }}</mat-label>
-                      <input #inpName id="planName" name="planName" maxlength="30" required matInput
+                      <input #inpName id="planName" name="planName" maxlength="36" required matInput
                         placeholder="{{ 'PlanName' | translate }}" [(ngModel)]="row.planName">
                       <button *ngIf="row.planName" matSuffix mat-icon-button aria-label="Clear"
                         (click)="row.planName=''">
