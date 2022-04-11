@@ -60,7 +60,9 @@
         justify-content: flex-end;
 
         .switch-toggle {
-          background: #7D9E9F;
+          //background: #7D9E9F;
+          background-image: url('../../../../../assets/img/selecter_bg.svg');
+          background-repeat: no-repeat;
           height: 34px;
           border-radius: $r;
           display: flex;
