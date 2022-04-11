@@ -36,7 +36,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.limit = 6;
+    this.limit = 999;
     this.p = 1;
     this.condition = new ListSearchCondition();
   }
