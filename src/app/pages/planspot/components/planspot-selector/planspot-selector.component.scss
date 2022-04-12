@@ -17,6 +17,8 @@
       &.title {
         font-size: 14px;
         padding: 4px 12px 8px;
+        color: #de7274;
+        font-weight: 600;
       }
 
       &.input {
@@ -82,9 +84,14 @@
               justify-content: center;
               height: inherit;
 
-              &.google {
-                border-left: 1px solid #fff;
-              }
+              height: 28px;
+              width: 52px;
+              border-radius: 14px;
+              margin-left: 1em;
+
+              // &.google {
+              //   border-left: 1px solid #fff;
+              // }
             }
 
             &#spot {
@@ -105,14 +112,15 @@
               &:checked+label {
                 //background:#797E86;
                 background: #de7274;
-                border-radius: $r 0 0 $r;
+                //border-radius: $r 0 0 $r;
               }
             }
 
             &#google {
               &:checked+label {
-                background: #797E86;
-                border-radius: 0 $r $r 0;
+                background: #aeaeae;
+                //border-radius: 0 $r $r 0;
+                //border:1px solid #797E86; outline-offset: -1px;
               }
             }
           }
@@ -128,7 +136,7 @@
               &::before {
                 content: "";
                 display: inline-block;
-                width: 23px;
+                width: 15px;
                 height: 14px;
                 background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
                 vertical-align: middle;
@@ -153,7 +161,7 @@
               &::before {
                 content: "";
                 display: inline-block;
-                width: 13px;
+                width: 11px;
                 height: 14px;
                 background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
                 vertical-align: middle;
@@ -177,11 +185,13 @@
               &::before {
                 content: "";
                 display: inline-block;
-                width: 14px;
+                width: 39px;
                 height: 14px;
-                background: url("../../../../../assets/img/icon_google.svg") no-repeat;
+                background: url("../../../../../assets/img/logo_google_icon.svg") no-repeat;
+                background-size: contain;
                 vertical-align: middle;
                 margin-right: 2px;
+                margin-top: 2px;
               }
             }
           }

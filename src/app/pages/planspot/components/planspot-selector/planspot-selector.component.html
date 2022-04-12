@@ -19,15 +19,16 @@
     </div>
     <div class='row switch'>
       <div class="switch-toggle">
+        <span>探す先</span>
         <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
-        <label for="all" class="all" value="all">All</label>
-        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
-        <label for="spot" class="spot" value="spot">Spot</label>
+        <label for="all" class="all" value="all">All</label>        
         <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
         <label for="plan" class="plan">Plan</label>
+        <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
+        <label for="spot" class="spot" value="spot">Spot</label>
         <ng-container *ngIf="!myFavorite" >
           <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='google'" />
-          <label for="google" class="google">Google</label>
+          <label for="google" class="google"></label>
         </ng-container>
       </div>
     </div>
