@@ -92,6 +92,7 @@ div.plandtl {
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        margin-left: 6px;
 
         .name {
           display: flex;
@@ -107,7 +108,7 @@ div.plandtl {
           }
 
           .title {
-            font-size: 10px;
+            font-size: 16px;
             color: #000;
             font-weight: bolder;
           }
@@ -289,10 +290,12 @@ div.plandtl {
     }
 
     .thumb {
+
       //height: 252px;
       @media screen and (max-width:428px) {
         height: 252px;
       }
+
       @media screen and (min-width: 429px) and (max-width: 1024px) {
         height: 425px;
       }
@@ -318,6 +321,11 @@ div.plandtl {
 
       .lt {
         display: flex;
+
+        .mark {
+          width: 52px;
+          margin-right: 4px;
+        }
 
         .areaName {
           background-color: rgba(255, 255, 255, 0.8);
@@ -897,10 +905,10 @@ div.plandtl {
         .spot-title {
           display: flex;
           align-items: center;
-          margin: auto 12px;
+          margin: auto 16px;
           justify-content: space-between;
 
-          .rt {
+          .lt {
             display: flex;
             align-items: center;
 
@@ -920,38 +928,36 @@ div.plandtl {
               margin-right: 5px;
             }
 
-            .starttime {
-              font-size: 18px;
-              margin-left: 0.5em;
+            .titleline{
+              display: flex;
+              flex-direction: column;
+              .spotname{
+                font-size: 16px;
+                font-weight: 600;
+              }
+              div{
+                span{
+                  border:1px solid #DE7274;
+                  padding: 1px 6px;
+                  margin-right: 0.2em;
+                  font-size: 12px;
+                  color: #DE7274;
+                  border-radius: 0.2em;
+                }
+              }
+              
             }
+
+            
 
             p {
               margin: 5px;
             }
           }
 
-          .lt {
+          .rt {
             display: flex;
-            align-items: flex-start;
-
-            .sugtime {
-              display: flex;
-              align-items: center;
-
-              .caption {
-                font-size: 10px;
-                color: #a6a29e;
-
-                &::after {
-                  content: ":";
-                  margin: 0 5px;
-                }
-              }
-
-              .text {
-                font-size: 15px;
-              }
-            }
+            align-items: center;
 
             button.add-to-favorite {
               box-shadow: none;
@@ -983,22 +989,44 @@ div.plandtl {
                 height: 0;
               }
             }
+
+            button.link-to-spot{
+              box-shadow: none;
+              min-width: auto;
+              padding: 0;
+              width: 32px;
+              height: 32px;
+              line-height: initial;
+              margin-left: 6px;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 32px;
+                height: 32px;
+                background: url("../../../assets/img/map-icon.svg");
+                background-repeat: no-repeat;
+              }
+            }
           }
         }
 
         $img_height:42vw;
         $img_height_m:54vw;
         $img_height_s:69vw;
-        
+
         .spot-image {
           position: relative;
           height: $img_height;
+
           @media screen and (max-width:428px) {
             height: $img_height_s;
           }
+
           @media screen and (min-width: 429px) and (max-width: 1024px) {
             height: $img_height_m;
           }
+
           overflow: hidden;
           margin: 0.5em 16px 0;
 
@@ -1052,9 +1080,11 @@ div.plandtl {
               text-align: center;
               background: $color-gry06;
               height: $img_height;
+
               @media screen and (max-width:428px) {
                 height: $img_height_s;
               }
+
               @media screen and (min-width: 429px) and (max-width: 1024px) {
                 height: $img_height_m;
               }
@@ -1064,6 +1094,16 @@ div.plandtl {
                 object-fit: cover;
                 @include copy-protect;
               }
+
+              .memo {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                text-align: left;
+                padding: 3px 6px;
+                background: #00000060;
+                color: #fff;
+              }
             }
           }
 
@@ -1072,9 +1112,11 @@ div.plandtl {
             text-align: center;
             background: $color-gry06;
             height: $img_height;
+
             @media screen and (max-width:428px) {
               height: $img_height_s;
             }
+
             @media screen and (min-width: 429px) and (max-width: 1024px) {
               height: $img_height_m;
             }

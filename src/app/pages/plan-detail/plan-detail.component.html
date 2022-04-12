@@ -14,9 +14,6 @@
         </div>
         <div class="rt">
           <div class='name'>
-            <span class='mark'>
-              <img src="../../../assets/img/mark_plan.svg" alt="mark">
-            </span>
             <span class='title'>
               {{ data.planName }}
             </span>
@@ -58,6 +55,9 @@
 
       <div class='info' *ngIf="data.pictures">
         <div class='lt'>
+          <span class='mark'>
+            <img src="../../../assets/img/mark_plan.svg" alt="mark">
+          </span>
           <span class="areaName" *ngIf="data.areaName">
             {{ data.areaName | langFilter: lang }}
           </span>
@@ -157,6 +157,7 @@
         </owl-carousel-o>
       </mat-card-content>
     </mat-card>
+
     <!-- マップ -->
     <div class='map'>
       <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true">
@@ -172,26 +173,35 @@
             <ng-container *ngIf="!item.isEndOfPublication;">
               <div class="card-box">
                 <div class="spot-title">
-                  <div class="rt">
-                    <span class="mark">{{i+1}}</span>
-                    <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
-                  </div>
                   <div class="lt">
-                    <div class="sugtime">
-                      <span class="caption">{{ "SuggestedTime" | translate }}</span>
-                      <span class="text">{{ item.stayTime }}{{ "Minute" | translate }}</span>
+                    <span class="mark">{{i+1}}</span>
+                    <div class='titleline'>
+                      <div class="spotname">
+                        {{ item.spotName  }}
+                      </div>
+                      <div>
+                        <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
+                        <span class="sugtime">{{ "SuggestedTime" | translate }} {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                      </div>
                     </div>
+                    
+                  </div>
+                  <div class="rt">
                     <button *ngIf="item.type!==3" mat-button class="add-to-favorite" (click)="onClickSpotFavorite(item)"
                       [ngClass]="{'on':item.isFavorite}">
                     </button>
+                    <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>
                   </div>
                 </div>
                 <div class="spot-image">
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
-                    <ng-container *ngFor="let pict of item.pictures">
+                    <ng-container *ngFor="let pict of item.pictures;index as i">
                       <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain" (click)="linktoSpot(item)">
+                        <div class="thumbmain">
                           <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
+                          <div class="memo" *ngIf="item.pictureMemos[i]">
+                            {{item.pictureMemos[i]}}
+                          </div>
                         </div>
                       </ng-template>
                     </ng-container>
@@ -204,20 +214,7 @@
                       </div>
                     </ng-container>
                   </ng-template>
-
-                  <div class="info">
-                    <div class="lt">
-                      <div class="spotname">
-                        {{ item.spotName  }}
-                      </div>
-                    </div>
-                    <div class="rt" *ngIf="item.pvAllQty">
-                      <div class="views">
-                        <span class="label">View</span>
-                        <span class="item">{{ item.pvAllQty.toLocaleString() }}</span>
-                      </div>
-                    </div>
-                  </div>
+                  
                 </div>
               </div>
             </ng-container>
