@@ -626,6 +626,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.linktolist();
   }
 
+  onSwipeStop(e){
+    return;
+  }
+
   scrollToTop() {
     this.cont.nativeElement.scrollTo(0, 0);
   }

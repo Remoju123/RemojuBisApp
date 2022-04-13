@@ -320,5 +320,6 @@
   "ShareLink": "リンク共有",
   "ShareLinkPlanContents" : "このリンクを知っているユーザーとは、このプランの内容を共有できます。",
   "LoginMessage": "ログインしました",
-  "PictureMemo": "写真のコメント"
+  "PictureMemo": "写真のコメント",
+  "Hedtitle": "はじめての方へ"
 }
