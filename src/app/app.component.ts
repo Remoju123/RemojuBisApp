@@ -101,6 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.oauthService.configure(authConfig);
     this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.timeoutFactor = 0.1;
     this.oauthService.loadDiscoveryDocument(environment.openidConf)
     this.oauthService.tryLogin()
       .catch(() => {
@@ -124,14 +125,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 const state = this.oauthService.state;
 
                 if (state.length > 0) {
-                  if (state.indexOf('#') > 0) {
-                    this.router.navigate([state.substring(0, state.indexOf('#'))
-                      , { fragment: state.substring(state.indexOf('#') + 1) }]);
-                  } else if (state.indexOf('?') > 0) {
-                    this.router.navigate([state.substring(0, state.indexOf('?'))]);
-                  } else {
-                    this.router.navigate([state]);
-                  }
+                  this.router.navigateByUrl(state);
                 }
               }
             });
