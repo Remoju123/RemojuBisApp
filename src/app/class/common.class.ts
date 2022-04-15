@@ -162,7 +162,7 @@ export class PlanSpotCommon {
   holiday: string;
   planUserpictures: PlanUserPicture[];
   previewPictures: string[];
-  previewMemo:string[];
+  previewMemos:string[];
 
   googleSpot: GoogleSpot;
   place_id: string;

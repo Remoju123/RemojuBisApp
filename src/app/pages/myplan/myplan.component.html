@@ -211,6 +211,7 @@
                   </dt>
                 </dl>
               </mat-expansion-panel-header>
+              
               <!-- panel body -->
               <div class='panel-content'>
                 <div class='sub'>
@@ -282,6 +283,7 @@
                   <button (click)="setStep(999)">{{"Close"|translate}}</button>
                 </div>
               </div>
+              <!-- end of panel body -->
             </mat-expansion-panel>
           </mat-accordion>
         </div>
@@ -438,8 +440,8 @@
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain covered" (click)="linktoSpot(item)">
                           <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.previewMemo[j]">
-                            {{item.previewMemo[j]}}
+                          <div class="memo" *ngIf="item.previewMemos[j]">
+                            {{item.previewMemos[j]}}
                           </div>
                         </div>
                       </ng-template>
