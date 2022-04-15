@@ -438,7 +438,7 @@
                   <owl-carousel-o *ngIf="item.previewPictures?.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pic of item.previewPictures; index as j">
                       <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain covered" (click)="linktoSpot(item)">
+                        <div class="thumbmain covered">
                           <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
                           <div class="memo" *ngIf="item.previewMemos[j]">
                             {{item.previewMemos[j]}}
@@ -450,7 +450,7 @@
                   <!-- 写真(1枚) -->
                   <ng-template #singlePict>
                     <ng-container *ngFor="let pic of item.previewPictures; index as i">
-                      <div class="thumbmain" (click)="linktoSpot(item)">
+                      <div class="thumbmain">
                         <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
                       </div>
                     </ng-container>
