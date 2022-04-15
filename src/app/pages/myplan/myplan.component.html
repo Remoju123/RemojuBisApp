@@ -308,7 +308,7 @@
       </div>
       <!-- スポットを追加する -->
       <div *ngIf="row" class="myplan-box">
-        <button class="clear" [disabled]="!row?.planSpots"
+        <button mat-button class="del-spot" [disabled]="!row?.planSpots"
           (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
           <span class='label'>{{ "AddSpot" | translate }}</span>
@@ -335,14 +335,14 @@
         </div>
       </div>
 
-      <div class="bottom">
+      <!-- <div class="bottom">
         <div></div>
         <div class="switchView" [ngClass]="{'en':lang==='en'}">
           <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
           <label for="switch-view1"><span></span></label>
           <div id="swImg"></div>
         </div>
-      </div>
+      </div> -->
     </mat-card-content>
   </mat-card>
 
@@ -508,14 +508,14 @@
       </mat-list-item>
     </mat-list>
 
-    <div class="bottom prev">
+    <!-- <div class="bottom prev">
       <div></div>
       <div class="switchView" [ngClass]="{'en':lang==='en'}">
         <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
         <label for="switch-view1"><span></span></label>
         <div id="swImg"></div>
       </div>
-    </div>
+    </div> -->
   </div>
   <div class="footer">
     <!-- 保存 -->
