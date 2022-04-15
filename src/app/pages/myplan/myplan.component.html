@@ -397,7 +397,6 @@
       </div>
     </ng-container>
 
-
     <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" [item]="row.startPlanSpot">
     </app-transfer-panel>
 
@@ -435,9 +434,9 @@
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain covered" (click)="linktoSpot(item)">
                           <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
-                          <!-- <div class="memo" *ngIf="item.pictureMemos[i]">
-                        {{item.pictureMemos[i]}}
-                      </div> -->
+                          <div class="memo" *ngIf="item.pictureMemos[i]">
+                            {{item.pictureMemos[i]}}
+                          </div>
                         </div>
                       </ng-template>
                     </ng-container>
