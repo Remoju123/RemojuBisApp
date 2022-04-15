@@ -1067,6 +1067,21 @@
     .rt {
       display: flex;
       align-items: center;
+      .timerequired{
+        padding-right: 3px;
+        padding-left: 2px;
+        font-size: 12px;
+        white-space: nowrap;
+        &::before {
+          display: inline-block;
+          //content: url("../../../../../assets/img/business-hour.svg");
+          content: url("../../../assets/img/av-timer.svg");
+          width: 16px;
+          height: 16px;
+          padding-right: 3px;
+          vertical-align: sub;
+        }
+      }
       button.link-to-spot {
         box-shadow: none;
         min-width: auto;

@@ -1058,8 +1058,6 @@ export class MyplanComponent implements OnInit ,OnDestroy{
           this.row.planSpots[i].previewPictures = this.row.planSpots[i].pictures;
         }
       }
-
-      console.log(this.row);
     }
   }
 
