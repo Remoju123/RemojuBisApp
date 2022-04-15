@@ -8,7 +8,7 @@
       <button mat-button class="close-my-plan" (click)="onhandleCartNav(true)">
         <img src="{{backbtn_src}}" alt="close my plan" />
       </button>
-      <app-myplan [isMobile]="isMobile"></app-myplan>
+      <app-myplan [isMobile]="isMobile" [userPic]="userPic" [useName]="userName"></app-myplan>
     </mat-sidenav>
     <mat-sidenav-content>
       <div class="body">
@@ -42,7 +42,7 @@
       <app-header (event)="onhandleSiteNav($event)" [sidenav_closed]="!sidenav.opened"></app-header>
       <div id='pc'>
         <div class='left'>
-          <app-myplan [isMobile]="isMobile"></app-myplan>
+          <app-myplan [isMobile]="isMobile" [userPic]="userPic" [useName]="userName"></app-myplan>
         </div>
         <div class='right'>
           <div class='menu'></div>

@@ -29,7 +29,7 @@ import { isPlatformBrowser } from "@angular/common";
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.scss"]
 })
-export class HeaderComponent implements OnInit ,OnDestroy{
+export class HeaderComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
   mode = new FormControl("over");
   shouldRun: boolean = false;
@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit ,OnDestroy{
   logo_body = "remoju-logo";
   isDesktopDevice: boolean = false;
 
-  favcount:any;
+  favcount: any;
 
   loggedIn: boolean = false;
   public userInfo: any = null;
@@ -72,9 +72,9 @@ export class HeaderComponent implements OnInit ,OnDestroy{
       .centerVertically()
   });
 
-  ppisshow:boolean = true;
-  pictureUrl:string = "../../../assets/img/icon_who.svg";
-  userName:string="";
+  ppisshow: boolean = true;
+  public pictureUrl: string = "../../../assets/img/icon_who.svg";
+  public userName: string = "";
 
   constructor(
     private commonService: CommonService,
@@ -84,11 +84,10 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     public router: Router,
     public dialog: MatDialog,
     private overlay: Overlay,
-    @Inject(PLATFORM_ID) private platformId:Object)
-  {
-    if(isPlatformBrowser(this.platformId)){
+    @Inject(PLATFORM_ID) private platformId: Object) {
+    if (isPlatformBrowser(this.platformId)) {
       this.shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h =>
-          h.test(window.location.host)
+        h.test(window.location.host)
       );
     }
   }
@@ -114,30 +113,22 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     this.event.emit(!this.status);
   }
 
-  togglecart(){
-   this.cartStatus = this.cartnav_closed;
-   this.cartevent.emit(!this.cartStatus);
+  togglecart() {
+    this.cartStatus = this.cartnav_closed;
+    this.cartevent.emit(!this.cartStatus);
   }
 
   async ngOnInit() {
-    if (this.commonService.loggedIn) {
-      // ユーザー情報
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
-        if (r && r.pictureUrl) {
-          this.pictureUrl = r.pictureUrl;
-        }
-      });
-    }
-
-    this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+    this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       this.ppisshow = v;
     });
 
-    this.commonService.isupdHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
-      // ユーザー情報
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+    this.commonService.isupdHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
+      //ユーザー情報
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         if (r && r.pictureUrl) {
           this.pictureUrl = r.pictureUrl;
+          this.userName = r.displayName;
         }
       });
     });
@@ -153,32 +144,32 @@ export class HeaderComponent implements OnInit ,OnDestroy{
     });*/
   }
 
-  linktoProfile(){
-    let navigationExtras:NavigationExtras = {
-      fragment:'profile'
+  linktoProfile() {
+    let navigationExtras: NavigationExtras = {
+      fragment: 'profile'
     }
-    this.router.navigate(["/" + this.currentLang + "/mypage"],navigationExtras);
+    this.router.navigate(["/" + this.currentLang + "/mypage"], navigationExtras);
   }
 
-  linktoFavorite(){
-    let navigationExtras:NavigationExtras = {
-      fragment:'favorite'
+  linktoFavorite() {
+    let navigationExtras: NavigationExtras = {
+      fragment: 'favorite'
     }
-    this.router.navigate(["/" + this.currentLang + "/mypage"],navigationExtras);
+    this.router.navigate(["/" + this.currentLang + "/mypage"], navigationExtras);
   }
 
-  linktoMyplan(){
-    let navigationExtras:NavigationExtras = {
-      fragment:'list'
+  linktoMyplan() {
+    let navigationExtras: NavigationExtras = {
+      fragment: 'list'
     }
-    this.router.navigate(["/" + this.currentLang + "/mypage"],navigationExtras);
+    this.router.navigate(["/" + this.currentLang + "/mypage"], navigationExtras);
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
-  onLoading(){
+  onLoading() {
     // ローディング開始
     this.spinner.attach(new ComponentPortal(MatSpinner));
     setTimeout(() => {

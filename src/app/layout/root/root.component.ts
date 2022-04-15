@@ -49,13 +49,14 @@ export class RootComponent implements OnInit, OnDestroy {
   toTop_src = "../../../assets/img/toTop4.svg";
 
   isMobile: boolean;
+  userPic:string;
+  userName:string;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
   deviceInfo = null;
 
-  @ViewChild(HeaderComponent)
-  protected headerCompornent!: HeaderComponent;
+  @ViewChild(HeaderComponent) protected header: HeaderComponent;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
   
@@ -96,7 +97,7 @@ export class RootComponent implements OnInit, OnDestroy {
     })
 
     this.isMobile = this.detectIsMobile(window.innerWidth);
-
+    
     this.commonService.curlang$.pipe(takeUntil(this.onDestroy$)).subscribe(lang => {
       let suffix = lang==="en"?"_en":"";
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
@@ -206,7 +207,7 @@ export class RootComponent implements OnInit, OnDestroy {
 
   // slide to myplan panel
   togglecart() {
-    this.headerCompornent.togglecart();
+    this.header.togglecart();
   }
 
   onSwipeRight() {

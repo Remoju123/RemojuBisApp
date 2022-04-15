@@ -55,8 +55,8 @@
 
       <div class='info' *ngIf="data.pictures">
         <div class='lt'>
-          <span class='mark'>
-            <img src="../../../assets/img/mark_plan.svg" alt="mark">
+          <span class='mark plan'>
+            Plan
           </span>
           <span class="areaName" *ngIf="data.areaName">
             {{ data.areaName | langFilter: lang }}
@@ -181,10 +181,10 @@
                       </div>
                       <div>
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
-                        <span class="sugtime">{{ "SuggestedTime" | translate }} {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                        <span class="sugtime">{{ "SuggestedTime" | translate }}
+                          {{ item.stayTime }}{{ "Minute" | translate }}</span>
                       </div>
                     </div>
-                    
                   </div>
                   <div class="rt">
                     <button *ngIf="item.type!==3" mat-button class="add-to-favorite" (click)="onClickSpotFavorite(item)"
@@ -193,13 +193,14 @@
                     <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>
                   </div>
                 </div>
+                
                 <div class="spot-image">
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pict of item.pictures;index as i">
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain">
                           <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.pictureMemos[i]">
+                          <div class="memo" *ngIf="item.pictureMemos && item.pictureMemos[i]">
                             {{item.pictureMemos[i]}}
                           </div>
                         </div>
@@ -214,7 +215,7 @@
                       </div>
                     </ng-container>
                   </ng-template>
-                  
+
                 </div>
               </div>
             </ng-container>

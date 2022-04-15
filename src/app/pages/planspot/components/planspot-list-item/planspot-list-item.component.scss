@@ -296,9 +296,49 @@
         .lt {
           display: flex;
 
-          .mark{
+          .mark {
             width: 52px;
             margin-right: 4px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+
+            &.plan {
+              height: 28px;
+              width: 52px;
+              border-radius: 14px;
+              background: #FDB750;
+              position: relative;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 15px;
+                height: 14px;
+                background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
+                vertical-align: middle;
+                margin-left: 2px;
+              }
+            }
+
+            &.spot {
+              height: 28px;
+              width: 52px;
+              border-radius: 14px;
+              background: #679ecf;
+              position: relative;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 15px;
+                height: 14px;
+                background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
+                vertical-align: middle;
+              }
+            }
           }
 
           .areaName {
@@ -539,9 +579,9 @@
           font-size: 12px;
           line-height: 2;
 
-          &.summery{
-            ::ng-deep{
-              .mat-list-item-content{
+          &.summery {
+            ::ng-deep {
+              .mat-list-item-content {
                 justify-content: space-between;
               }
             }
@@ -560,7 +600,7 @@
               margin-bottom: 2px;
               max-width: 42vw;
               align-items: center;
-              
+
               span {
                 padding: 0 4px;
                 border: 1px solid #bdbdbd;
@@ -572,6 +612,7 @@
                 font-weight: 600;
                 color: #00000087;
               }
+
               &::after {
                 content: url("../../../../../assets/img/arrow-left-bold.svg");
                 width: 16px;
@@ -579,8 +620,8 @@
                 vertical-align: -4px;
               }
 
-              &:last-child{
-                &::after{
+              &:last-child {
+                &::after {
                   content: '';
                 }
               }
@@ -733,16 +774,18 @@
               padding-right: 3px;
               vertical-align: -5px;
             }
-            .maru{
+
+            .maru {
               display: inline-flex;
               width: 16px;
               height: 16px;
               border-radius: 50%;
-              background-color:#00000087;
+              background-color: #00000087;
               justify-content: center;
               align-items: center;
             }
-            span{
+
+            span {
               font-weight: bold;
               color: #fff;
             }
@@ -852,7 +895,7 @@
               display: inline-block;
               width: 24px;
               height: 24px;
-              background: url(../../../../../assets/img/icon_fav_b.svg);
+              background: url("../../../../../assets/img/icon_fav_b.svg");
               background-repeat: no-repeat;
             }
 
@@ -860,7 +903,7 @@
 
               // background-color: $color-pnk04;
               &::before {
-                background: url(../../../../../assets/img/icon_fav_b_on.svg);
+                background: url("../../../../../assets/img/icon_fav_b_on.svg");
                 background-repeat: no-repeat;
               }
             }

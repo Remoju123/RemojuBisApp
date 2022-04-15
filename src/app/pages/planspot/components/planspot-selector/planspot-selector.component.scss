@@ -88,7 +88,7 @@
 
               height: 28px;
               width: 52px;
-              border-radius: 14px;
+              border-radius: 16px;
               margin-left: 0.3em;
 
               // &.google {
@@ -106,7 +106,7 @@
 
             &#plan {
               &:checked+label {
-                background: #fabd00;
+                background: #FDB750;
                 //border-radius: 0 12px 12px 0;
                 border: $boder-width solid #ae8200;
               }
@@ -142,7 +142,7 @@
             &.plan {
               //width: 58px;
               position: relative;
-              background: #fabd00;
+              background: #FDB750;
               border: $boder-width solid #fff;
 
               &::before {

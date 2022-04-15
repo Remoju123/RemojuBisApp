@@ -325,6 +325,29 @@ div.plandtl {
         .mark {
           width: 52px;
           margin-right: 4px;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+
+          &.plan {
+            height: 28px;
+            width: 52px;
+            border-radius: 14px;
+            background: #FDB750;
+            position: relative;
+
+            &::before {
+              content: "";
+              display: inline-block;
+              width: 15px;
+              height: 14px;
+              background: url("../../../assets/img/pref_plan.svg") no-repeat;
+              vertical-align: middle;
+              margin-left: 2px;
+            }
+          }
         }
 
         .areaName {
@@ -928,16 +951,18 @@ div.plandtl {
               margin-right: 5px;
             }
 
-            .titleline{
+            .titleline {
               display: flex;
               flex-direction: column;
-              .spotname{
+
+              .spotname {
                 font-size: 16px;
                 font-weight: 600;
               }
-              div{
-                span{
-                  border:1px solid #DE7274;
+
+              div {
+                span {
+                  border: 1px solid #DE7274;
                   padding: 1px 6px;
                   margin-right: 0.2em;
                   font-size: 12px;
@@ -945,10 +970,9 @@ div.plandtl {
                   border-radius: 0.2em;
                 }
               }
-              
             }
 
-            
+
 
             p {
               margin: 5px;
@@ -990,7 +1014,7 @@ div.plandtl {
               }
             }
 
-            button.link-to-spot{
+            button.link-to-spot {
               box-shadow: none;
               min-width: auto;
               padding: 0;
