@@ -350,7 +350,7 @@
   <div class="myplan-preview" *ngIf="!isEdit">
     <mat-card>
       <mat-card-header class="myplan-header">
-        <div class='name'>
+        <div class='lt'>
           <ng-container *ngIf="row.planName; else noplanName">
             <span>
               {{ row.planName }}
@@ -361,6 +361,9 @@
               {{"PlanName"|translate}}
             </span>
           </ng-template>
+        </div>
+        <div class='rt'>
+          <button mat-button class='link-to-spot' (click)="onClickMap()"></button>
         </div>
       </mat-card-header>
     </mat-card>
@@ -430,13 +433,10 @@
                 <div class="spot-image">
                   <!-- 写真(複数枚) -->
                   <owl-carousel-o *ngIf="item.previewPictures?.length > 1; else singlePict" [options]="mainOptions">
-                    <ng-container *ngFor="let pic of item.previewPictures; index as i">
+                    <ng-container *ngFor="let pic of item.previewPictures; index as j">
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain covered" (click)="linktoSpot(item)">
                           <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.pictureMemos[i]">
-                            {{item.pictureMemos[i]}}
-                          </div>
                         </div>
                       </ng-template>
                     </ng-container>

@@ -1053,10 +1053,13 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       for (let i = 0; i < this.row.planSpots.length; i++) {
         if (this.row.planSpots[i].planUserpictures?.length > 0) {
           this.row.planSpots[i].previewPictures = this.row.planSpots[i].planUserpictures.map(x => x.imageCropped ?? x.picturePreviewUrl ?? x.picture_url);
+          this.row.planSpots[i].previewMemo = this.row.planSpots[i].planUserpictures.map(x => x.memo);
         } else {
           this.row.planSpots[i].previewPictures = this.row.planSpots[i].pictures;
         }
       }
+
+      console.log(this.row);
     }
   }
 
