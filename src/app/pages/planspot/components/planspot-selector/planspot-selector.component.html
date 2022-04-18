@@ -19,9 +19,9 @@
     </div>
     <div class='row switch'>
       <div class="switch-toggle">
-        <span>探す先</span>
+        <span>{{ "WhereToLook" | translate }}</span>
         <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='all'" />
-        <label for="all" class="all" value="all">All</label>        
+        <label for="all" class="all" value="all">All</label>
         <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='plan'" />
         <label for="plan" class="plan">Plan</label>
         <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)" [checked]="condition.select==='spot'" />
@@ -65,7 +65,7 @@
   <div class='popup' [ngClass]="{'on':isChk}">
     <div class='popupInner'>
       <button class="popupItem cnt">
-        <span>{{count}}件</span>
+        <span>{{count}}{{ "Count" | translate }}</span>
       </button>
       <button *ngIf="!myFavorite" class='popupItem are' (click)="openDialog(0)">
         <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>

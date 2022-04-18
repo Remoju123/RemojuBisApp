@@ -329,7 +329,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (this.prevkeyword !== keyword) {
         this.details$ = [];
       }
-      if (keyword !== null && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
+      if (keyword && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
         (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
@@ -368,6 +368,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   keywordSearch(v: any) {
     setTimeout(() => {
       this.condition.keyword = v;
+      if (!v) {
+        this.condition.select = 'all'
+      }
       this.indexedDBService.registListSearchCondition(this.condition);
       this.getPlanSpotDataSet();
     }, 100);
