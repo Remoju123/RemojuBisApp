@@ -378,7 +378,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         return "";
       });
       // Googlemap url
-      this.$mapUrl = "https://www.google.com/maps/search/?api=1&query=" + this.data.latitude + "," + this.data.longitude;
+      this.$mapUrl = "https://www.google.com/maps/search/?api=1&query=" + langpipe.transform(this.data.spotName, this.lang) + "," + langpipe.transform(this.data.address, this.lang);
 
       this.$budgetFrameHead = this.spotService.getBudgetFrameLine(this.data.budgets);
       this.$businessHourHead = this.spotService.getBusinessHourHead(
