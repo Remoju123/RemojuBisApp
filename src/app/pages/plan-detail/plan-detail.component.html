@@ -142,7 +142,7 @@
               </div>
               <div class="thumbspots">
                 <a (click)="setMapCenter(item.latitude, item.longitude)">
-                  <img [src]="item.pictureUrl" />
+                  <img [src]="item.pictureUrl?item.pictureUrl:noPic" />
                 </a>
               </div>
 
@@ -199,7 +199,7 @@
                     <ng-container *ngFor="let pict of item.pictures;index as i">
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain">
-                          <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
+                          <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
                           <div class="memo" *ngIf="item.pictureMemos && item.pictureMemos[i]">
                             {{item.pictureMemos[i]}}
                           </div>
@@ -211,7 +211,7 @@
                   <ng-template #singlePict>
                     <ng-container *ngFor="let pict of item.pictures">
                       <div class="thumbmain" (click)="linktoSpot(item)">
-                        <img [src]="pict" [alt]="item.spotId" [title]="item.spotId" />
+                        <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
                       </div>
                     </ng-container>
                   </ng-template>

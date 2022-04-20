@@ -87,6 +87,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   blankUserSrc: string = "../../../../../assets/img/icon_who.svg";
   blankuserName: string = "---";
 
+  noPic:string = "../../../assets/img/nopict.png";
+
   ct_department: any[] = [
     { id: 1, text: "Remoju コンテンツチーム" },
     { id: 2, text: "-----" },
