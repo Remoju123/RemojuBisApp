@@ -205,7 +205,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     AppRoutingModule,
     // Angular GoogleMapの登録
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyCI2dZI15MTMgdspEV2OznClDzY76MnQ20",
+      apiKey: environment.apiKey,
       libraries: ["places", "geometry"]
     }),
     MatGoogleMapsAutocompleteModule,
