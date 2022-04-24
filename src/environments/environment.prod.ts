@@ -12,5 +12,6 @@ export const environment = {
   blobUrl: "https://ik.imagekit.io/2qejhoz7bda",
   // pwdreset:"https://remojuauth.b2clogin.com/remojuauth.onmicrosoft.com/oauth2/v2.0/authorize?p=B2C_1A_PasswordReset&client_id=3e5bffaf-86d7-4a4c-bcde-6ba4d1cb52d3&nonce=defaultNonce&redirect_uri=" + window.location.origin + "&scope=openid&response_type=id_token&prompt=login",
   pwdreset:"",
-  indexeddbValidityPeriod: 14
+  indexeddbValidityPeriod: 14,
+  apiKey: "AIzaSyCI2dZI15MTMgdspEV2OznClDzY76MnQ20"
 };
