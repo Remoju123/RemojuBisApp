@@ -291,8 +291,8 @@
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
           <div class="guide">
-            <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
-            <p class="bold">{{ "MyPlan#Sec2" | translate }}</p>
+            <!-- <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
+            <p class="bold">{{ "MyPlan#Sec2" | translate }}</p> -->
             <p class='under'>{{ "MyPlan#Sec3" | translate }}</p>
             <div class="inputWrapper">
               <input placeholder="{{'SearchGuide'| translate}}" class="keyword" #keywordInput
@@ -305,7 +305,7 @@
             </div>
             <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
             <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
-            <p class='under'>{{ "MyPlan#notice" | translate }}</p>
+            <!-- <p class='under'>{{ "MyPlan#notice" | translate }}</p> -->
           </div>
         </div>
       </div>
