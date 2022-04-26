@@ -180,6 +180,7 @@
           color: #fff;
           font-size: 13px;
           font-weight: bold;
+          margin-bottom: 0.5em;
 
           &::before {
             content: '';
@@ -694,7 +695,7 @@
 
             .mat-form-field-infix {
               // border-top: 0;
-              padding-top: 5px;
+              padding-top: 9px;
             }
 
             .mat-form-field-label-wrapper {
@@ -885,7 +886,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(100, 100, 100, .7);
+      background: rgba(100, 100, 100, .8);
       z-index: 18;
       display: flex;
       align-items: center;
@@ -990,8 +991,9 @@
       display: flex;
       align-items: center;
       font-size: 16px;
-      color: $color-pnk02;
+      color: $color-gry06;
       padding-left: 8px;
+      width: 30%;
 
       &::before {
         content: url("../../../assets/img/icon_delete.svg");
@@ -999,8 +1001,8 @@
         height: 24px;
         display: inline-block;
         margin-right: 4px;
-        position: absolute;
-        left: -16px;
+        //position: absolute;
+        //left: -16px;
       }
     }
 
@@ -1009,6 +1011,7 @@
       align-items: flex-start;
       font-size: 16px;
       color: $color-pnk02;
+      width: 70%;
 
       &::before {
         content: url("../../../assets/img/add_spot.svg");

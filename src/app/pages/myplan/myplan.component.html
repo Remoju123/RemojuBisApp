@@ -58,20 +58,6 @@
             <div class='sub'>
               {{ 'TravelBookmark' | translate }}
             </div>
-            <!-- 写真 -->
-            <div class='select'>
-              <div class="fileselector">
-                {{ "MyplanSelectPhoto" | translate }}
-                <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
-              </div>
-              <label>{{ 'PasteImg' | translate }}</label>
-            </div>
-            <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
-              <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
-              <button *ngIf="row.pictureFile" type="button" class="crop"
-                (click)="onClickCropPlan()">{{"Edit"|translate}}</button>
-              <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
-            </div>
             <!-- プラン概要 -->
             <mat-form-field appearance="outline">
               <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
@@ -90,6 +76,21 @@
                   href="javascript:void(0);" (click)="row.memo='';"><span class="material-icons">backspace</span></a>
               </mat-hint>
             </mat-form-field>
+            <!-- 写真 -->
+            <div class='select'>
+              <div class="fileselector">
+                {{ "MyplanSelectPhoto" | translate }}
+                <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
+              </div>
+              <label>{{ 'PasteImg' | translate }}</label>
+            </div>
+            <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
+              <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
+              <button *ngIf="row.pictureFile" type="button" class="crop"
+                (click)="onClickCropPlan()">{{"Edit"|translate}}</button>
+              <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
+            </div>
+            
             <!-- カテゴリー選択ボタン -->
             <button mat-stroked-button (click)="onClickAreaCategory()">
               {{ "SelectAnAreaCategory" | translate }}
@@ -290,8 +291,8 @@
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
           <div class="guide">
-            <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
-            <p class="bold">{{ "MyPlan#Sec2" | translate }}</p>
+            <!-- <p class="bold">{{ "MyPlan#Sec1" | translate }}</p>
+            <p class="bold">{{ "MyPlan#Sec2" | translate }}</p> -->
             <p class='under'>{{ "MyPlan#Sec3" | translate }}</p>
             <div class="inputWrapper">
               <input placeholder="{{'SearchGuide'| translate}}" class="keyword" #keywordInput
@@ -304,7 +305,7 @@
             </div>
             <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
             <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
-            <p class='under'>{{ "MyPlan#notice" | translate }}</p>
+            <!-- <p class='under'>{{ "MyPlan#notice" | translate }}</p> -->
           </div>
         </div>
       </div>

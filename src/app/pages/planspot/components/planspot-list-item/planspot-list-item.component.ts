@@ -28,6 +28,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Output() userPosts = new EventEmitter<PlanSpotList>();
 
   isProd:boolean;
+  noPic:string = "../../../../../assets/img/nopict.png";
 
   constructor(
     private commonService: CommonService,

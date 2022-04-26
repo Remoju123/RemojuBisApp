@@ -26,7 +26,7 @@
             <ng-container *ngFor="let src of item.pictures; index as i">
               <ng-template carouselSlide id="row.planId">
                 <div class="thumbmain">
-                  <img [src]="src" [alt]="item.id" [title]="item.id" />
+                  <img [src]="src?src:noPic" [alt]="item.id" [title]="item.id" />
                 </div>
               </ng-template>
             </ng-container>
@@ -34,7 +34,7 @@
           <ng-template #single>
             <ng-container *ngFor="let src of item.pictures; index as i">
               <div class="thumbmain fullwidth">
-                <img [src]="src" [alt]="item.id" [title]="item.id" />
+                <img [src]="src?src:noPic" [alt]="item.id" [title]="item.id" />
               </div>
             </ng-container>
           </ng-template>
