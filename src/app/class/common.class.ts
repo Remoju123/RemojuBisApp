@@ -255,3 +255,8 @@ export class ImageSize {
   previewUrl: string;
 }
 
+export class editparams {
+  item:PlanSpotCommon;
+  stayTimes:DataSelected[];
+}
+

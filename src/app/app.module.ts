@@ -112,6 +112,7 @@ import { SpotDetailModule } from './pages/spot-detail/spot-detail.module';
 import { MypageModule } from './pages/mypage/mypage.module';
 import { OffcialModule } from './pages/offcial/offcial.module';
 import { RouterModule } from '@angular/router';
+import { MyplanEditDialogComponent } from './parts/myplan-edit-dialog/myplan-edit-dialog.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -181,7 +182,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MypageReviewlistComponent,
     PrivacyComponent,
     AboutComponent,
-    GuideComponent
+    GuideComponent,
+    MyplanEditDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),

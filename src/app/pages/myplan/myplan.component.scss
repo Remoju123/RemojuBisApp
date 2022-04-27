@@ -531,7 +531,8 @@
         }
       }
 
-      .mat-expansion-panel-header {
+      //.mat-expansion-panel-header,
+      .row {
         padding: 0;
         height: 68px;
 
@@ -987,13 +988,13 @@
     position: relative;
     justify-content: center;
 
-    button.del-spot{
+    button.del-spot {
       display: flex;
       align-items: center;
       font-size: 16px;
       color: $color-gry06;
       padding-left: 8px;
-      width: 30%;
+      width: 35%;
 
       &::before {
         content: url("../../../assets/img/icon_delete.svg");
@@ -1011,14 +1012,14 @@
       align-items: flex-start;
       font-size: 16px;
       color: $color-pnk02;
-      width: 70%;
+      width: 65%;
 
       &::before {
         content: url("../../../assets/img/add_spot.svg");
         width: 40px;
         height: 40px;
         display: inline-block;
-        margin-right: 16px;
+        margin-right: 6px;
       }
 
       ::ng-deep .mat-button-wrapper {
@@ -1074,7 +1075,7 @@
       width: 100%;
       display: flex;
       align-items: center;
-      
+
       span {
         font-weight: 700;
       }
@@ -1089,11 +1090,13 @@
     .rt {
       display: flex;
       align-items: center;
-      .timerequired{
+
+      .timerequired {
         padding-right: 3px;
         padding-left: 2px;
         font-size: 12px;
         white-space: nowrap;
+
         &::before {
           display: inline-block;
           content: url("../../../assets/img/av-timer.svg");
@@ -1103,6 +1106,7 @@
           vertical-align: sub;
         }
       }
+
       button.link-to-spot {
         box-shadow: none;
         min-width: auto;
@@ -1111,6 +1115,7 @@
         height: 32px;
         line-height: initial;
         margin-left: 6px;
+
         &::before {
           content: "";
           display: inline-block;
@@ -2021,7 +2026,7 @@
     box-shadow: none;
     border-radius: 0;
 
-    .mat-expansion-panel-header {
+    .row {
       padding: 0;
       height: 68px;
 
@@ -2072,12 +2077,13 @@
                   position: absolute;
                   background: url("../../../assets/img/pin_gold-s.svg") no-repeat;
                   display: inline-block;
-                  width: 20px;
-                  height: 24px;
+                  width: 25px;
+                  height: 30px;
                   background-size: contain;
                   color: #fff;
-                  font-size: 12px;
-
+                  font-size: 16px;
+                  line-height: 24px;
+                  left: -8px;
                 }
 
                 img {

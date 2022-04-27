@@ -176,7 +176,44 @@
 
         <div *ngFor="let item of row?.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
           (cdkDragMoved)="setStep(999)">
-          <mat-accordion #mepSpot="matAccordion" multi>
+          <div class='transfer' [ngClass]="{'zero':!row?.planSpots}">
+            <div class='row'>
+              <dl class="td">
+                <dt>
+                  <button (click)="onClickSpotDelete($event,item)" class="remove">
+                  </button>
+                </dt>
+                <dt (click)="onClickSpotEdit(item)">
+                  <div class="lt">
+                    <span class="order">{{ item.displayOrder }}</span>
+                    <ng-container *ngIf="item.planUserpictures && item.planUserpictures.length > 0; else spotPicture">
+                      <img
+                        [src]="item.planUserpictures[0].imageCropped ?? item.planUserpictures[0].picturePreviewUrl ?? item.planUserpictures[0].picture_url"
+                        [alt]="item.spotId" [title]="item.spotId" />
+                    </ng-container>
+                    <ng-template #spotPicture>
+                      <img [src]="item.pictures[0]" [alt]="item.spotId" [title]="item.spotId" />
+                    </ng-template>
+                  </div>
+                  <div class="rt">
+                    <span class="spotName" [innerHTML]="item.spotName"></span>
+                    <span class="areaName">
+                      <ng-container *ngIf="item.areaName">{{ item.areaName | langFilter: lang }}</ng-container>
+                      <ng-container *ngIf="item.categoryText">
+                        / {{ item.categoryText | langFilter: lang }}
+                      </ng-container>
+                    </span>
+                  </div>
+                </dt>
+                <dt cdkDragHandle>
+                  <img src="../../../assets/img/icon_swap.svg" width="16px" />
+                </dt>
+              </dl>
+            </div>
+          </div>
+
+
+          <!-- <mat-accordion #mepSpot="matAccordion" multi>
             <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" #mepSpotPanel="matExpansionPanel"
               class="transfer" hideToggle [ngClass]="{'zero':!row?.planSpots}">
               <mat-expansion-panel-header [@.disabled]="true">
@@ -213,7 +250,6 @@
                 </dl>
               </mat-expansion-panel-header>
               
-              <!-- panel body -->
               <div class='panel-content'>
                 <div class='sub'>
                   {{ 'TravelBookmark' | translate }}
@@ -224,7 +260,7 @@
                     [(ngModel)]="item.spotName" (change)="onChange(false)"></textarea>
                   <mat-hint align="end">{{spotName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
                 </mat-form-field>
-                <!-- 写真 -->
+              
                 <div class='select'>
                   <div class="fileselector">
                     {{ "MyplanSelectPhoto" | translate }}
@@ -258,7 +294,6 @@
                   </div>
                 </div>
 
-                <!-- スポット概要 -->
                 <mat-form-field appearance="outline">
                   <textarea matInput #memo name="memo{{i}}" maxlength="1000" rows="5"
                     placeholder="{{ 'SpotExplanationEx' | translate }}" #inputinfo="ngModel" rows="5"
@@ -269,7 +304,6 @@
                         class="material-icons">backspace</span></a></mat-hint>
                 </mat-form-field>
 
-                <!-- 滞在時間 -->
                 <div class="selectStay">
                   <label>{{ "SuggestedTime" | translate }}</label>
                   <div class="stayTime">
@@ -284,9 +318,8 @@
                   <button (click)="setStep(999)">{{"Close"|translate}}</button>
                 </div>
               </div>
-              <!-- end of panel body -->
             </mat-expansion-panel>
-          </mat-accordion>
+          </mat-accordion> -->
         </div>
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
@@ -315,8 +348,6 @@
           (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
         <button mat-button class="add-spot" (click)="onClickAddSpot()">
           <span class='label'>{{ "AddSpot" | translate }}</span>
-          <span class='count'>{{"NumberOfSpots"|translate}}{{ row?.planSpots ? row.planSpots.length : 0 }} /
-            {{"Max6spots"|translate}}</span>
         </button>
       </div>
 
