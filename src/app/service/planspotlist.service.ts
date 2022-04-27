@@ -458,7 +458,7 @@ export class PlanSpotListService {
           is_delete: !isFavorite,
           objectId: this.commonService.objectId
         };
-        url = this.host + "/api/PlanList/Favorite";
+        url = this.host + "/api/Plan/Favorite";
 
       }else{
         param = new PlanUserFavorite();
@@ -468,7 +468,7 @@ export class PlanSpotListService {
           is_delete: !isFavorite,
           objectId: this.commonService.objectId
         };
-        url = this.host + "/api/PlanList/UserFavorite";
+        url = this.host + "/api/Plan/UserFavorite";
       }
     }else{
       param = new RegistFavorite();
@@ -490,7 +490,7 @@ export class PlanSpotListService {
           objectId: this.commonService.objectId
         };
       }
-      url = this.host + "/api/SpotList/Favorite";
+      url = this.host + "/api/Spot/Favorite";
     }
     return this.http.post<any>(url, param, httpOptions);
   }
@@ -513,7 +513,7 @@ export class PlanSpotListService {
         isRemojuPlan: isRemojuPlan,
         isTransferSearch: false // trueにするとスポットを追加して駅探検索する
       };
-      const url = this.host + "/api/PlanList/Addplan";
+      const url = this.host + "/api/Plan/Addplan";
       return this.http.post<MyPlanApp>(url, addPlan, httpOptions);
     }else{
       let addSpot: AddSpot = new AddSpot();
@@ -525,7 +525,7 @@ export class PlanSpotListService {
         basePlanId: null,
         isTransferSearch: false // trueにするとスポットを追加して駅探検索する
       };
-      const url = this.host + "/api/SpotList/AddSpot";
+      const url = this.host + "/api/Spot/AddSpot";
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
     }
   }
