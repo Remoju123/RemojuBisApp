@@ -496,7 +496,7 @@ export class PlanSpotListService {
   }
 
   // プランに追加
-  async addPlan(id: number, isPlan: boolean, guid: string, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot) {
+  async addPlan(id: number, isPlan: boolean, guid: string, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot, basePlanId: number = null) {
     let myPlan: any = await this.indexedDBService.getEditPlan(true);
     if (!myPlan){
       myPlan = new MyPlanApp();
@@ -522,7 +522,7 @@ export class PlanSpotListService {
         spotId: id,
         type: isGoogle ? 2 : 1,
         googleSpot: googleSpot,
-        basePlanId: null,
+        basePlanId: basePlanId,
         isTransferSearch: false // trueにするとスポットを追加して駅探検索する
       };
       const url = this.host + "/api/Spot/AddSpot";
