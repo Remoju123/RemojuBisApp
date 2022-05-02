@@ -209,7 +209,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
     // プランに追加
     if (spot) {
-      this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false).then(result => {
+      this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false, null, this.$planId).then(result => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
           if (myPlanApp) {
             this.addToPlanAfter(myPlanApp);
