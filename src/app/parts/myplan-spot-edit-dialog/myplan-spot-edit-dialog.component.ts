@@ -7,19 +7,21 @@ import { CommonService } from 'src/app/service/common.service';
 import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
 
 @Component({
-  selector: 'app-myplan-edit-dialog',
-  templateUrl: './myplan-edit-dialog.component.html',
-  styleUrls: ['./myplan-edit-dialog.component.scss']
+  selector: 'app-myplan-spot-edit-dialog',
+  templateUrl: './myplan-spot-edit-dialog.component.html',
+  styleUrls: ['./myplan-spot-edit-dialog.component.scss']
 })
-export class MyplanEditDialogComponent implements OnInit, OnDestroy {
+export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
 
   constructor(
     private commonService: CommonService,
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<MyplanEditDialogComponent>,
+    public dialogRef: MatDialogRef<MyplanSpotEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public p: editparams
-  ) { }
+  ) { 
+    this.row = p.myPlan;
+  }
 
   // 作成中のプラン
   row: MyPlanApp;

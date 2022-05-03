@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MyplanEditDialogComponent } from './myplan-edit-dialog.component';
+import { MyplanEditDialogComponent } from './myplan-spot-edit-dialog.component';
 
 describe('MyplanEditDialogComponent', () => {
   let component: MyplanEditDialogComponent;

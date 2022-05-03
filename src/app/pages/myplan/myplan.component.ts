@@ -32,7 +32,9 @@ import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
-import { MyplanEditDialogComponent } from "src/app/parts/myplan-edit-dialog/myplan-edit-dialog.component";
+import { MyplanSpotEditDialogComponent } from "src/app/parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component";
+import { MyplanPlanEditDialogComponent } from "src/app/parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component";
+import { PlanspotComponent } from "../planspot/planspot.component";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -345,13 +347,31 @@ export class MyplanComponent implements OnInit ,OnDestroy{
     });
   }
 
-  // スポットRowクリック
+
+  // プラン編集ダイアログ
+  onClickPlanEdit(row:MyPlanApp){
+    console.log(row);
+    const dialogRef = this.dialog.open(MyplanPlanEditDialogComponent,{
+      maxWidth:"100%",
+      width: this.isMobile?"92vw":"52vw",
+      maxHeight: "90vh",
+      position: { top: "10px" },
+      data:row,
+      autoFocus: false,
+      id:"editplan"
+    })
+
+
+  }
+
+  // スポット編集ダイアログ
   onClickSpotEdit(item:PlanSpotCommon){
     let params = new editparams();
     params.item = item;
     params.stayTimes=this.$stayTime;
+    params.myPlan=this.row;
 
-    const dialogRef = this.dialog.open(MyplanEditDialogComponent,{
+    const dialogRef = this.dialog.open(MyplanSpotEditDialogComponent,{
       maxWidth:"100%",
       width: this.isMobile?"92vw":"52vw",
       maxHeight: "90vh",
@@ -361,9 +381,9 @@ export class MyplanComponent implements OnInit ,OnDestroy{
       id:"editspot"
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-      console.log(item);
-    })
+    // dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+    //   console.log(item);
+    // })
   }
 
   // スポット写真

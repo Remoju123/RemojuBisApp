@@ -13,101 +13,48 @@
   <!--*----------- 編集 -----------*-->
   <mat-card *ngIf="isEdit" class="myplan-edit">
     <mat-card-content>
-      <mat-accordion #mepPlan="matAccordion">
-        <mat-expansion-panel id="edit" #mep="matExpansionPanel" class="edit" [hideToggle]=true [disabled]="!row">
-          <mat-expansion-panel-header>
-            <div class="myplan-edit-box">
-              <div class="lt">
-                <div class="container">
-                  <ng-container *ngIf="row">
-                    <mat-form-field>
-                      <mat-label>{{ 'PlanName' | translate }}</mat-label>
-                      <input #inpName id="planName" name="planName" maxlength="36" required matInput
-                        placeholder="{{'RequiredPlanName'|translate}}" [(ngModel)]="row.planName">
-                      <button *ngIf="row.planName" matSuffix mat-icon-button aria-label="Clear"
-                        (click)="row.planName=''">
-                        <mat-icon>close</mat-icon>
-                      </button>
-                    </mat-form-field>
-                  </ng-container>
-                </div>
-              </div>
-              <div class="rt" (click)="$event.stopPropagation()">
-                <!-- バス -->
-                <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
-                  <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
-                  <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
-                  <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
-                    <img src="/assets/img/bus.svg" alt="Bωus">
-                  </span>
-                </button>
-
-                <!-- 最短ルート -->
-                <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
-                  <span class="label"
-                    [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
-                  <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
-                    <img src="/assets/img/keiro.svg" alt="Auto">
-                  </span>
-                </button>
-
-              </div>
+      <div id='edit'>
+        <div class="myplan-edit-box">ƒ
+          <div class="lt">
+            <div class="container">
+              <ng-container *ngIf="row">
+                <mat-form-field>
+                  <mat-label>{{ 'PlanName' | translate }}</mat-label>
+                  <input #inpName id="planName" name="planName" maxlength="36" required matInput
+                    placeholder="{{'RequiredPlanName'|translate}}" [(ngModel)]="row.planName">
+                  <button *ngIf="row.planName" matSuffix mat-icon-button aria-label="Clear"
+                    (click)="row.planName=''">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </ng-container>
+              <button mat-icon-button (click)="onClickPlanEdit(row)">
+                <mat-icon>edit_note</mat-icon>
+              </button>
             </div>
-          </mat-expansion-panel-header>
-          <ng-container *ngIf="row">
-            <div class='sub'>
-              {{ 'TravelBookmark' | translate }}
-            </div>
-            <!-- プラン概要 -->
-            <mat-form-field appearance="outline">
-              <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
-                placeholder="{{ 'PlanExplanationEx' | translate }}" #inputinfo="ngModel"
-                [(ngModel)]="row.planExplanation" (change)="onChange(false)"></textarea>
-              <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a
-                  href="javascript:void(0);" (click)="row.planExplanation='';"><span
-                    class="material-icons">backspace</span></a></mat-hint>
-            </mat-form-field>
-            <!-- フリー文章 -->
-            <mat-form-field appearance="outline" *ngIf="row.isRelease">
-              <textarea matInput #memo name="memo" maxlength="1000" rows="5"
-                placeholder="{{ 'FreeMemoEx' | translate }}" #inputinfo="ngModel" [(ngModel)]="row.memo"
-                (change)="onChange(false)"></textarea>
-              <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
-                  href="javascript:void(0);" (click)="row.memo='';"><span class="material-icons">backspace</span></a>
-              </mat-hint>
-            </mat-form-field>
-            <!-- 写真 -->
-            <div class='select'>
-              <div class="fileselector">
-                {{ "MyplanSelectPhoto" | translate }}
-                <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
-              </div>
-              <label>{{ 'PasteImg' | translate }}</label>
-            </div>
-            <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
-              <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
-              <button *ngIf="row.pictureFile" type="button" class="crop"
-                (click)="onClickCropPlan()">{{"Edit"|translate}}</button>
-              <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
-            </div>
-            
-            <!-- カテゴリー選択ボタン -->
-            <button mat-stroked-button (click)="onClickAreaCategory()">
-              {{ "SelectAnAreaCategory" | translate }}
+          </div>
+          <div class="rt" (click)="$event.stopPropagation()">
+            <!-- バス -->
+            <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
+              <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
+              <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
+              <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
+                <img src="/assets/img/bus.svg" alt="Bωus">
+              </span>
             </button>
-            <div class="chips">
-              <mat-chip-list>
-                <mat-chip *ngFor="let keyword of optionKeywords">
-                  {{ keyword }}
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-            <div class='close'>
-              <button (click)="mep.expanded = false;">{{ 'Close' | translate}}</button>
-            </div>
-          </ng-container>
-        </mat-expansion-panel>
-      </mat-accordion>
+  
+            <!-- 最短ルート -->
+            <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
+              <span class="label"
+                [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+              <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+                <img src="/assets/img/keiro.svg" alt="Auto">
+              </span>
+            </button>
+  
+          </div>
+        </div>
+      </div>
 
       <div class="set depart">
         <div class="lt">
