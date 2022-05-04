@@ -85,8 +85,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   @ViewChild("keywordInput") keywordInput: { nativeElement: any };
 
-
-
   // 編集/プレビュー
   isEdit: boolean = true;
   // スポット0件時のダミー表示
@@ -125,8 +123,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean;
   @Input() userPic: string;
   @Input() useName: string;
-
-
 
   /*------------------------------
    *

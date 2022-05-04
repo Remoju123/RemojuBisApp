@@ -97,7 +97,7 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
       id: "imgcrop",
       maxWidth: "100%",
       width: "92vw",
-      position: { top: "10px" },
+      //position: { top: "10px" },
       data: param,
       autoFocus: false
     });

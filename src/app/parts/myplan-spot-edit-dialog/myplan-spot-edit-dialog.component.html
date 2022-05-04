@@ -1,6 +1,6 @@
 <div class='panel-content'>
   <div class='sub'>
-    {{ 'TravelBookmark' | translate }}
+    {{ 'SpotOverview' | translate }}
   </div>
   <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" class="spotname">
     <mat-label>{{ 'SpotNameEx' | translate }}</mat-label>
@@ -17,15 +17,6 @@
         href="javascript:void(0);" class="aclear" (click)="p.item.memo='';"><span
           class="material-icons">backspace</span></a></mat-hint>
   </mat-form-field>
-
-  <div class='select'>
-    <div class="fileselector">
-      {{ "MyplanSelectPhoto" | translate }}
-      <input type="file" multiple="multiple" name="selectPhoto" accept="image/*"
-        (change)="onClickSelectPhotoSpot($event, p.item)" />
-    </div>
-    <label>{{ 'PasteImg' | translate }}</label>
-  </div>
 
   <div *ngFor="let picture of p.item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">
     <div class='picture'>
@@ -48,6 +39,15 @@
         </mat-hint>
       </mat-form-field>
     </div>
+  </div>
+
+  <div class='select'>
+    <div class="fileselector">
+      {{ "MyplanSelectPhoto" | translate }}
+      <input type="file" multiple="multiple" name="selectPhoto" accept="image/*"
+        (change)="onClickSelectPhotoSpot($event, p.item)" />
+    </div>
+    <label>{{ 'PasteImgSpot' | translate }}</label>
   </div>
 
   <div class="selectStay">

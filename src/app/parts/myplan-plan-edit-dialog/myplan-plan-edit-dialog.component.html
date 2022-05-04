@@ -21,13 +21,6 @@
     </mat-hint>
   </mat-form-field>
   <!-- 写真 -->
-  <div class='select'>
-    <div class="fileselector">
-      {{ "MyplanSelectPhoto" | translate }}
-      <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
-    </div>
-    <label>{{ 'PasteImg' | translate }}</label>
-  </div>
   <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
     <div class='picture'>
       <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
@@ -36,7 +29,13 @@
       <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
     </div>
   </div>
-  
+  <div class='select'>
+    <div class="fileselector">
+      {{ "MyplanSelectPhoto" | translate }}
+      <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
+    </div>
+    <label>{{ 'PasteImg' | translate }}</label>
+  </div>
   <!-- カテゴリー選択ボタン -->
   <!-- <button mat-stroked-button (click)="onClickAreaCategory()">
     {{ "SelectAnAreaCategory" | translate }}
