@@ -282,7 +282,7 @@
   "isEdit":"編集する",
   "isSave":"保存する",
   "ViewUserPost":"この投稿者の投稿一覧へ",
-  "ViewReview":"投稿したレビューを見る",
+  "ViewReview":"View my review",
   "NoReviewMsg":"投稿中のレビューはありません",
   "NoPlanMsg":"作成中のプランはありません",
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
