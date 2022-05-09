@@ -155,7 +155,7 @@ export class DataService {
   @Catch()
   openSnackBar(msg: string) {
     this.snackBar.open(msg, "✖閉じる", {
-      verticalPosition: "top",
+      verticalPosition: "bottom",
       horizontalPosition: "left"
     });
   }

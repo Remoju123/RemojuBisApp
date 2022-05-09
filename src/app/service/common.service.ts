@@ -436,7 +436,7 @@ export class CommonService implements OnDestroy {
     this.snackBar.open(
       this.translate.instant(message), "", {
       duration: 2000,
-      verticalPosition: "top",
+      verticalPosition: "bottom",
       panelClass: "custom-snackbar"
     });
   }
