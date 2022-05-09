@@ -6,6 +6,9 @@
   //background-color: $color-remoju;
   //color: #fff;
   background-color: #fff;
+  @media screen and (min-width: 1025px) { 
+    width: 50%;
+  }
 
   .navbar-header {
     // padding: 15px 10px;
