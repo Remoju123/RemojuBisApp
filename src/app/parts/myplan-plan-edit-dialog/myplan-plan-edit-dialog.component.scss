@@ -169,14 +169,17 @@
 
       button.abscancel {
         all: unset;
-        position: absolute;
-        width: 23px;
-        top: 10px;
-        right: 10px;
-
-        &::before {
-          content: url("../../../assets/img/btn_delete.svg");
-        }
+        position: fixed;
+        width: 100px;
+        top: 29px!important;
+        right: 0;
+        left: 0;
+        margin: 0 auto;
+        text-align: center;
+        height: 30px;
+        background-color: #00000070;
+        color: #fff;
+        border-radius: 17px;
       }
     }
   }
