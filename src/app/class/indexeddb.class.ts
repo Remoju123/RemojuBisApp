@@ -31,6 +31,8 @@ export class MyPlan {
   isTransferSearch: boolean;
   planUserId: number;
   isBus: boolean;
+  isCar: boolean;
+  overviewPolyline: string;
   optimized: boolean;
   travelDate: string;
   planName: string;

@@ -434,6 +434,13 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChange(true);
   }
 
+  // 交通機関・車ON・OFF
+  onClickTran(isCar: boolean) {
+    this.row.isCar = isCar;
+    // 保存
+    this.onChange(true);
+  }
+
   // 変更時保存
   onChange(value: boolean) {
     // 移動方法(一旦trueになったらfalseがきてもtrueのままにする)
@@ -469,6 +476,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     param.planSpots = this.row.planSpots;
     param.startPlanSpot = this.row.startPlanSpot;
     param.endPlanSpot = this.row.endPlanSpot;
+    param.isCar = this.row.isCar;
     const dialog = this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",
@@ -788,7 +796,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       // 多言語項目の使用言語で設定
       this.commonService.setAddPlanLang(this.row.startPlanSpot, this.lang);
       // 移動方法
-      if (this.row.startPlanSpot.transfer) {
+      if (!this.row.isCar && this.row.startPlanSpot.transfer) {
         // 次のスポットがある場合
         if (this.row.planSpots.length > 0) {
           if (this.row.planSpots[0].type === 1) {
@@ -853,7 +861,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         }
 
         // 移動方法
-        if (this.row.planSpots[i].transfer) {
+        if (!this.row.isCar && this.row.planSpots[i].transfer) {
           // 次のスポットがある場合
           if (i + 1 < this.row.planSpots.length) {
             if (this.row.planSpots[i + 1].type === 1) {

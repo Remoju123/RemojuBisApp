@@ -369,7 +369,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         }
 
         // 移動方法
-        if (x.transfer) {
+        if (!this.data.isCar && x.transfer) {
           let transfer: any;
           try {
             transfer = this.commonService.isValidJson(x.transfer, this.lang);
