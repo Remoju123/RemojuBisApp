@@ -233,7 +233,17 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   // 編集・プレビュー切り替え
-  onClickEdit(isAuto: boolean = false) {
+  async onClickEdit(isAuto: boolean = false) {
+    // スポット数チェック
+    if (this.isEdit && await this.commonService.checkTransfer() === false) {
+      if (this.row.isCar) {
+        this.commonService.messageDialog("ErrorMsgSetTransferCar");
+      } else {
+        this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
+      }
+      return;
+    }
+
     this.isEdit = !this.isEdit;
     // プレビューの場合
     if (!this.isEdit) {
@@ -542,6 +552,16 @@ export class MyplanComponent implements OnInit, OnDestroy {
           this.commonService.login();
         }
       });
+      return;
+    }
+
+    // スポット数チェック
+    if (await this.commonService.checkTransfer() === false) {
+      if (this.row.isCar) {
+        this.commonService.messageDialog("ErrorMsgSetTransferCar");
+      } else {
+        this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
+      }
       return;
     }
 

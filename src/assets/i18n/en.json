@@ -127,7 +127,7 @@
   "Article": "Written by",
   "RecommendedPlanwithSpot": " Related plan",
   "NumberOfSpots": "My Spots",
-  "ErrorMsgAddSpot": "Up to 6 spots.",
+  "ErrorMsgAddSpot": "1つのプランに追加できるスポット数は最大20スポットです。(出発地・到着地を含む)",
   "SearchByKeyword": "Enter the keyward",
   "AreaAndCommitment": "Area・Preferences",
   "RemojuStaff": "Remoju staff",
@@ -324,5 +324,7 @@
   "PictureMemo": "写真のコメント",
   "Hedtitle": "はじめての方へ",
   "WhereToLook": "探す先",
-  "SpotOverview": "スポット概要"
+  "SpotOverview": "スポット概要",
+  "ErrorMsgSetTransferCar": "1つのプランに保存できるスポット数は、車の場合、最大10スポットです。(出発地・到着地を含む)",
+  "ErrorMsgSetTransferEkitan": "1つのプランに保存できるスポット数は、公共交通機関の場合、最大8スポットです。(出発地・到着地を含む)"
 }

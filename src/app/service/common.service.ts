@@ -257,7 +257,33 @@ export class CommonService implements OnDestroy {
     }
     const myPlanApp: MyPlanApp = myPlan;
 
-    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 6) {
+    if (myPlanApp.planSpots && myPlanApp.planSpots.length + addSpotQty > 20) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  async checkTransfer(): Promise<boolean> {
+    const myPlan: any = await this.indexedDBService.getEditPlan();
+    if (!myPlan) {
+      return true;
+    }
+    const myPlanApp: MyPlanApp = myPlan;
+
+    let qty = 0;
+    if (myPlanApp.startPlanSpot) {
+      qty++;
+    }
+    if (myPlanApp.planSpots) {
+      qty = myPlanApp.planSpots.length;
+    }
+    if (myPlanApp.endPlanSpot) {
+      qty++;
+    }
+
+    if ((myPlanApp.isCar && qty > 10)
+      || (!myPlanApp.isCar && qty > 8)) {
       return false;
     } else {
       return true;
