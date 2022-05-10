@@ -6,7 +6,7 @@ import { MyplanService } from "../../service/myplan.service";
 import { PlanService } from "../../service/plan.service";
 import { MapDialogComponent } from "../../parts/map-dialog/map-dialog.component";
 import { MapInfowindowDialogComponent } from "../map-infowindow-dialog/map-infowindow-dialog.component";
-import { MapFullScreenParam, MapSpot, PlanSpotCommon } from "../../class/common.class";
+import { MapFullScreenParam, MapSpot, PlanSpotCommon, Directions } from "../../class/common.class";
 import { Router } from "@angular/router";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
@@ -28,6 +28,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   @Input() isFull: boolean;
   @Input() planId: number;
   @Input() isDetail: boolean;
+  @Input() isCar : boolean;
 
   // @ViewChild("AgmMap", { static: false }) agmMap: AgmMap;
   private onDestroy$ = new Subject();
@@ -256,6 +257,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     param.isDetail = true;
     param.planId = this.planId;
     param.planSpots = this.planSpots;
+    param.isCar = this.isCar;
     this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",
@@ -430,18 +432,23 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
       // 移動方法
       if (this.mapSpots[i].transfer) {
-        const dir = this.direction(
-          langpipe.transform(JSON.parse(this.mapSpots[i].transfer), this.lang)
-          , i);
+        if (this.isCar) {
+          const directions: Directions = JSON.parse(this.mapSpots[i].transfer);
+          this.mapSpots[i].directions =  directions.Distance + " " + (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
+          + directions.DurationMin + " " + this.translate.instant("Minute");
+        } else {
+          const dir = this.direction(
+            langpipe.transform(JSON.parse(this.mapSpots[i].transfer), this.lang)
+            , i);
 
-        let _dir = [];
+          let _dir = [];
 
-        for (let j = 0; j < dir.length; j++) {
-          _dir.push(dir[j]);
-        };
+          for (let j = 0; j < dir.length; j++) {
+            _dir.push(dir[j]);
+          };
 
-        this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
-
+          this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
+        }
       // 移動方法設定なしかつ最終スポットではない場合
       } else if (i < this.mapSpots.length){
         this.mapSpots[i].directions = "<dl><dd>" + this.translate.instant("DuringRouteCalculation") + "</dd></dl>";
@@ -592,7 +599,13 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     // 移動経路を設定
     this.directions = this.mapSpots[this.spotIndex].directions;
     // 移動時間合計を計算
-    this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer),this.lang));
+    if (this.isCar) {
+      const directions: Directions = JSON.parse(this.mapSpots[this.spotIndex].transfer);
+      this.transtime = (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
+      + directions.DurationMin + " " + this.translate.instant("Minute");
+    } else {
+      this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer),this.lang));
+    }
     // スポット名From
     this.spotNameFrom = this.mapSpots[this.spotIndex].spotName;
     // スポット写真From

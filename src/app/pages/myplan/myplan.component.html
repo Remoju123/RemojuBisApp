@@ -33,25 +33,6 @@
               </ng-container>
             </div>
           </div>
-          <div class="rt" (click)="$event.stopPropagation()">
-            <!-- バス -->
-            <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
-              <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
-              <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
-              <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
-                <img src="/assets/img/bus.svg" alt="Bωus">
-              </span>
-            </button>
-
-            <!-- 最短ルート -->
-            <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
-              <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
-              <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
-                <img src="/assets/img/keiro.svg" alt="Auto">
-              </span>
-            </button>
-
-          </div>
         </div>
       </div>
 
@@ -106,6 +87,35 @@
 
       <div class='spacer'>
         <img src="../../../assets/img/allow_down_slv.svg" alt="">
+        <div class="rt" (click)="$event.stopPropagation()">
+          <!-- バス
+          <button class="option" (click)="onClickBus()" [disabled]="!row?.planSpots">
+            <span class="label color-brown" *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
+            <span class="label color-silver" *ngIf="!row?.isBus">{{ "Nobus" | translate }}</span>
+            <span class="icon" [ngClass]="row?.isBus?'color-brown':'color-silver'">
+              <img src="/assets/img/bus.svg" alt="Bωus">
+            </span>
+          </button> -->
+          <!-- 交通機関 -->
+          <button class="option" (click)="onClickTran(false)" [disabled]="!row?.planSpots">
+            <span class="icon" [ngClass]="!row?.isCar?'color-brown':'color-silver'">
+              <img src="/assets/img/move_JR_h.svg" alt="Bωus">
+            </span>
+          </button>
+          <!-- 車 -->
+          <button class="option" (click)="onClickTran(true)" [disabled]="!row?.planSpots">
+            <span class="icon" [ngClass]="row?.isCar?'color-brown':'color-silver'">
+              <img src="/assets/img/move_walk_h.svg" alt="Bωus">
+            </span>
+          </button>
+          <!-- 最短ルート -->
+          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
+            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+              <img src="/assets/img/keiro.svg" alt="Auto">
+            </span>
+          </button>
+        </div>
       </div>
 
       <!-- スポットを表示 -->
@@ -149,6 +159,8 @@
                         / {{ item.categoryText | langFilter: lang }}
                       </ng-container>
                     </span>
+                    <span class="sugtime">{{ "SuggestedTime" | translate }}
+                      {{ item.stayTime }}{{ "Minute" | translate }}</span>
                   </div>
                 </dt>
                 <dt cdkDragHandle>
@@ -261,7 +273,7 @@
       </div>
     </ng-container>
 
-    <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" [item]="row.startPlanSpot">
+    <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" [isCar]="row.isCar" [item]="row.startPlanSpot">
     </app-transfer-panel>
 
     <div class="box" *ngIf="row.planSpots">
@@ -298,7 +310,7 @@
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain covered">
                           <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.previewMemos[j]">
+                          <div class="memo" *ngIf="item.previewMemos && item.previewMemos[j]">
                             {{item.previewMemos[j]}}
                           </div>
                         </div>
@@ -330,7 +342,7 @@
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel [item]="item"></app-transfer-panel>
+            <app-transfer-panel [isCar]="row.isCar" [item]="item"></app-transfer-panel>
           </mat-card-content>
           <!-- 掲載終了スポットの場合 -->
           <mat-card-content *ngIf="item.isEndOfPublication">

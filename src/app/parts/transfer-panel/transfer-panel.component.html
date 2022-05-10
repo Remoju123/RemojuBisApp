@@ -1,4 +1,4 @@
-<mat-accordion *ngIf="item.transfer;else nontrans">
+<mat-accordion *ngIf="!isCar && item.transfer;else car">
   <mat-expansion-panel #mep class="transfer">
     <mat-expansion-panel-header
       [@.disabled]="true"
@@ -48,6 +48,11 @@
     <div class="point-of-arrival">{{ item.destination }} {{ "SpotEnd" | translate }}</div>
   </mat-expansion-panel>
 </mat-accordion>
-<ng-template #nontrans>
-  <div class="blank"></div>
+<ng-template #car>
+  <div *ngIf="isCar && item.transfer;else nontrans">
+    {{ directions.Distance }} {{ duration }}
+  </div>
+  <ng-template #nontrans>
+    <div class="blank"></div>
+  </ng-template>
 </ng-template>

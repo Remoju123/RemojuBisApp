@@ -29,6 +29,7 @@ export class PlanApp {
   spotToGoList: Recommended[];
   featureList: mFeature[];
   seo: Seo;
+  isCar: boolean;
 }
 
 export class Trans {

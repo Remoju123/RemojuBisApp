@@ -91,6 +91,8 @@ export class MyPlanApp {
   isTransferSearch: boolean;
   planUserId: number;
   isBus: boolean;
+  isCar: boolean;
+  overviewPolyline: string;
   isAuto: boolean;
   optimized: boolean;
   travelDate: string;
@@ -189,6 +191,7 @@ export class MapFullScreenParam {
   planSpots: PlanSpotCommon[];
   startPlanSpot: PlanSpotCommon;
   endPlanSpot: PlanSpotCommon;
+  isCar: boolean;
 }
 
 export class MapSpot {
@@ -261,3 +264,8 @@ export class editparams {
   myPlan:MyPlanApp;
 }
 
+export class Directions {
+  Distance: string;
+  DurationHour: number;
+  DurationMin: number;
+}

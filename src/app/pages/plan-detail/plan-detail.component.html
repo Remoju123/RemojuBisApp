@@ -160,7 +160,7 @@
 
     <!-- マップ -->
     <div class='map'>
-      <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true">
+      <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true" [isCar]="data.isCar">
       </app-map-panel>
     </div>
 
@@ -193,7 +193,7 @@
                     <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>
                   </div>
                 </div>
-                
+
                 <div class="spot-image">
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pict of item.pictures;index as i">
@@ -256,7 +256,7 @@
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel *ngIf="i + 1 < spots.length" [item]="item"></app-transfer-panel>
+            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item"></app-transfer-panel>
           </mat-card-content>
         </mat-card>
       </ng-container>

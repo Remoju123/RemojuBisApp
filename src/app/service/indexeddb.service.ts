@@ -118,6 +118,8 @@ export class IndexedDBService {
       isTransferSearch: myPlanApp.isTransferSearch,
       planUserId: myPlanApp.planUserId,
       isBus: myPlanApp.isBus,
+      isCar: myPlanApp.isCar,
+      overviewPolyline: myPlanApp.overviewPolyline,
       optimized: myPlanApp.optimized,
       travelDate: myPlanApp.travelDate,
       planName: myPlanApp.planName,
