@@ -303,6 +303,7 @@
   "ImgSelected" : "写真を選択する",
   "TravelBookmark": "プラン概要",
   "PasteImg": "プランの表紙になる写真を決めよう",
+  "PasteImgSpot": "スポットの写真を追加します",
   "NotFound" : "お探しのページは見つかりませんでした。",
   "ToTopPage": "トップページへ戻る",
   "SpotsVisited": "周遊スポット",
@@ -322,5 +323,6 @@
   "LoginMessage": "ログインしました",
   "PictureMemo": "写真のコメント",
   "Hedtitle": "はじめての方へ",
-  "WhereToLook": "探す先"
+  "WhereToLook": "探す先",
+  "SpotOverview": "スポット概要"
 }

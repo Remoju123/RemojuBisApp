@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - staging
+      - remoju-470B
 
 env:
   AZURE_WEBAPP_NAME: remojuapp-v3u    # set this to your application's name 20210720up
