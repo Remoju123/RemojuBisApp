@@ -159,6 +159,8 @@
                         / {{ item.categoryText | langFilter: lang }}
                       </ng-container>
                     </span>
+                    <span class="sugtime">{{ "SuggestedTime" | translate }}
+                      {{ item.stayTime }}{{ "Minute" | translate }}</span>
                   </div>
                 </dt>
                 <dt cdkDragHandle>
