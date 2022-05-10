@@ -18,18 +18,19 @@
           <div class="lt">
             <div class="container">
               <ng-container *ngIf="row">
-                <mat-form-field>
-                  <mat-label>{{ 'PlanName' | translate }}</mat-label>
-                  <input #inpName id="planName" name="planName" maxlength="36" required matInput
-                    placeholder="{{'RequiredPlanName'|translate}}" [(ngModel)]="row.planName">
-                  <button *ngIf="row.planName" matSuffix mat-icon-button aria-label="Clear" (click)="row.planName=''">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
+                <mat-card-header class="myplan-header" (click)="onClickPlanEdit(row)">
+                  <ng-container *ngIf="row.planName; else noplanName">
+                    <span>
+                      {{ row.planName }}
+                    </span>
+                  </ng-container>
+                  <ng-template #noplanName>
+                    <span class='noName'>
+                      {{"PlanName"|translate}}
+                    </span>
+                  </ng-template>
+                </mat-card-header>
               </ng-container>
-              <button mat-icon-button (click)="onClickPlanEdit(row)">
-                <mat-icon>edit_note</mat-icon>
-              </button>
             </div>
           </div>
           <div class="rt" (click)="$event.stopPropagation()">

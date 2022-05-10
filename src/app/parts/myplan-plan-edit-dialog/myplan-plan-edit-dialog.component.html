@@ -2,6 +2,13 @@
   <div class='sub'>
     {{ 'TravelBookmark' | translate }}
   </div>
+  <!-- プラン名 -->
+  <mat-form-field appearance="outline">
+    <mat-label>{{ 'PlanName' | translate }}</mat-label>
+    <textarea matInput #planName name="planName" maxlength="30" required #inputinfo="ngModel"
+      [(ngModel)]="row.planName" (change)="onChange(false)"></textarea>
+    <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
+  </mat-form-field>
   <!-- プラン概要 -->
   <mat-form-field appearance="outline">
     <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
