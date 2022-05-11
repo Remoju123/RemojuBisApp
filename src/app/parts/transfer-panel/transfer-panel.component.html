@@ -1,10 +1,6 @@
 <mat-accordion *ngIf="!isCar && item.transfer;else car">
   <mat-expansion-panel #mep class="transfer">
-    <mat-expansion-panel-header
-      [@.disabled]="true"
-      expandedHeight="48px"
-      collapsedHeight="48px"
-    >
+    <mat-expansion-panel-header [@.disabled]="true" expandedHeight="48px" collapsedHeight="48px">
       <div class="container">
         <div class="rt">
           <div class="times">{{ "DisplayRoute" | translate }}
@@ -23,14 +19,11 @@
       <span class="dept">{{ item.spotName }} {{ "SpotStart" | translate }}</span>
     </div>
     <mat-list class="pt40">
-      <mat-list-item
-        *ngFor="let t of item.line; index as i"
-        [ngClass]="t.Init"
-      >
+      <mat-list-item *ngFor="let t of item.line; index as i" [ngClass]="t.Init">
         <dl [ngClass]="t.Pos">
           <dd>
             <span class="icon">
-              <img src="../../../assets/img/move_{{ item.transflow[i]}}_r.svg" style="height: 20px;"/>
+              <img src="../../../assets/img/move_{{ item.transflow[i]}}_r.svg" style="height: 20px;" />
             </span>
             <span class="line">
               {{ t.LineName }} {{ t.Minute }}&nbsp;{{ "Minute" | translate }}
@@ -49,8 +42,9 @@
   </mat-expansion-panel>
 </mat-accordion>
 <ng-template #car>
-  <div *ngIf="isCar && item.transfer;else nontrans">
-    {{ directions.Distance }} {{ duration }}
+  <div *ngIf="isCar && item.transfer;else nontrans" class="iscarpanel">
+    <span class="distance">{{ directions.Distance }}</span>
+    <span class="duration">{{ duration }}</span>
   </div>
   <ng-template #nontrans>
     <div class="blank"></div>

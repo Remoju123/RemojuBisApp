@@ -170,3 +170,24 @@
     // left: 0;
   }
 }
+
+.iscarpanel{
+  margin: auto 16px;
+  padding: 0 12px;
+  height: 48px;
+  border: 1px solid #ccc ;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  span.distance{
+    display: flex;
+    align-items: center;
+    &::before{
+      content: url("../../../assets/img/icon_car.svg");
+      width: 24px;
+      margin-right: 1em;
+
+    }
+  }
+}

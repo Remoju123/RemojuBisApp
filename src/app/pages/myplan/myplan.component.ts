@@ -99,6 +99,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   listSelectedPlan: ListSelectedPlan;
   // エリア・カテゴリ選択値(表示用)
   optionKeywords: string[] = [];
+  // 移動手段
+  isPublic:boolean = false;
 
   $stayTime: DataSelected[];
 
@@ -444,10 +446,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChange(true);
   }
 
-  // 交通機関・車ON・OFF
-  onClickTran(isCar: boolean) {
-    this.row.isCar = isCar;
-    // 保存
+  onClickTran(){
+    this.row.isCar = !this.row.isCar;
     this.onChange(true);
   }
 
