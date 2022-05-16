@@ -8,6 +8,9 @@
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
+    <div class='mapview'>
+      <button mat-button (click)="onClickMap()">マップ表示</button>
+    </div>
   </div>
 
   <!--*----------- 編集 -----------*-->
@@ -33,6 +36,26 @@
               </ng-container>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class='transport' (click)="$event.stopPropagation()">
+        <div class='lt'>
+          <span class="label">移動手段</span>
+          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
+            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+            <label for="switch-tran"><span></span></label>
+            <div id="swImg"></div>
+          </div>
+        </div>
+        <div class='rt'>
+          <!-- 最短ルート -->
+          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
+            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+              <img src="/assets/img/keiro.svg" alt="Auto">
+            </span>
+            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+          </button>
         </div>
       </div>
 
@@ -83,27 +106,6 @@
             </div>
           </ng-template>
         </div>
-      </div>
-
-      <div class='transport' (click)="$event.stopPropagation()">
-        <div class='lt'>
-          <span class="label">移動手段</span>
-          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
-            <label for="switch-tran"><span></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <div class='rt'>
-          <!-- 最短ルート -->
-          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
-            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
-              <img src="/assets/img/keiro.svg" alt="Auto">
-            </span>
-            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
-          </button>
-        </div>
-
       </div>
 
       <div class='spacer'>
@@ -227,10 +229,30 @@
         </div>
         <div class='rt'>
           <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
-          <button mat-button class='link-to-spot' (click)="onClickMap()"></button>
         </div>
       </mat-card-header>
     </mat-card>
+
+    <div class='transport' (click)="$event.stopPropagation()">
+      <div class='lt'>
+        <span class="label">移動手段</span>
+        <div class="switchTran" [ngClass]="{'en':lang==='en'}">
+          <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+          <label for="switch-tran"><span></span></label>
+          <div id="swImg"></div>
+        </div>
+      </div>
+      <div class='rt'>
+        <!-- 最短ルート -->
+        <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
+          <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+            <img src="/assets/img/keiro.svg" alt="Auto">
+          </span>
+          <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+        </button>
+      </div>
+    </div>
+    
     <div class='planhead'>
       <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
         <img width="100%" height="100%"
@@ -247,6 +269,7 @@
         </mat-list-item>
       </mat-list>
     </div>
+    
     <!-- 出発地 -->
     <ng-container *ngIf="row.startPlanSpot">
       <div class="startSpot">
@@ -374,13 +397,15 @@
   </div>
   <div class="footer">
     <!-- 共有先 -->
-    <label class="time-label">{{"ReleaseDestination"|translate}}</label>
-    <div class="startTime" *ngIf="row">
-      <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onChange(true)">
-        <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
-          {{ commonService.isValidJson(destination.name, lang) }}
-        </option>
-      </select>
+    <div class='share'>
+      <label class="time-label">{{"ReleaseDestination"|translate}}</label>
+      <div class="container" *ngIf="row">
+        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onChange(true)">
+          <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
+            {{ commonService.isValidJson(destination.name, lang) }}
+          </option>
+        </select>
+      </div>
     </div>
     <!-- 保存 -->
     <div class="save">

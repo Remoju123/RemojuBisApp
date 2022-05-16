@@ -20,6 +20,20 @@
   }
 
   @include switchView();
+
+  .mapview {
+    button {
+      all: unset;
+      font-size: 10px;
+      font-weight: 700;
+      height: 32px;
+      width: 68px;
+      background-color: #BCBCBC;
+      border-radius: 16px;
+      color: #fff;
+      text-align: center;
+    }
+  }
 }
 
 .bottom {
@@ -30,8 +44,96 @@
   }
 }
 
+.transport {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  @include switchTran();
+
+  .lt {
+    display: flex;
+    align-items: center;
+    background: #F8F7F7;
+    border-radius: 20px;
+    padding: 0 5px 0 15px;
+    height: 40px;
+
+    span.label {
+      margin-right: 15px;
+    }
+
+  }
+
+  .rt {
+    span.label {
+      font-size: 10px;
+    }
+  }
+
+  button.option {
+    all: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: 50%;
+
+    .icon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      width: 31px;
+      height: 31px;
+      padding: 7px;
+      box-sizing: border-box;
+      margin-top: 0.4em;
+
+      &.color-brown {
+        background-color: #bfa060;
+      }
+
+      &.color-white {
+        background-color: #fff;
+      }
+
+      &.color-silver {
+        background-color: #cecac7;
+      }
+
+      >img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+// edit-section style adjust!
+.myplan-preview {
+  .transport {
+    padding: 0 12px !important;
+
+    span.label {
+      font-size: 14px;
+    }
+
+    .rt {
+      span.label {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
 .myplan-edit {
   padding: 0;
+
+  .mat-card-header.myplan-header {
+    span {
+      font-size: 15px;
+    }
+  }
 
   #edit {
     box-shadow: none;
@@ -46,7 +148,7 @@
       border-top: $color-gld06 1px solid;
       border-bottom: $color-gld06 1px solid;
       display: flex;
-      box-shadow: 0 4px 6px #0000001f;
+      //box-shadow: 0 4px 6px #0000001f;
       height: 65px;
       box-sizing: border-box;
       align-items: center;
@@ -246,71 +348,6 @@
     img {
       width: 36px;
       margin: 6px;
-    }
-  }
-
-  .transport {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 12px;
-    @include switchTran();
-
-    .lt {
-      display: flex;
-      align-items: center;
-      background: #F8F7F7;
-      border-radius: 20px;
-      padding: 0 5px 0 15px;
-      height: 40px;
-
-      span.label{
-        margin-right: 15px;
-      }
-      
-    }
-
-    .rt {
-      span.label {
-        font-size: 10px;
-      }
-    }
-
-    button.option {
-      all: inherit;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-basis: 50%;
-
-      .icon {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        width: 31px;
-        height: 31px;
-        padding: 7px;
-        box-sizing: border-box;
-        margin-top: 0.4em;
-
-        &.color-brown {
-          background-color: #bfa060;
-        }
-
-        &.color-white {
-          background-color: #fff;
-        }
-
-        &.color-silver {
-          background-color: #cecac7;
-        }
-
-        >img {
-          width: 100%;
-          height: auto;
-        }
-      }
     }
   }
 
@@ -659,6 +696,8 @@
   >* {
     padding: 0;
   }
+
+  @include switchView();
 
   .mat-card-header.myplan-header {
     height: 63px;
@@ -1492,10 +1531,12 @@
   $width: 19vw;
   $mtop: 30px;
 
+  padding: 0 30px;
   height: 100px;
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  //justify-content: center;
+  justify-content: space-evenly;
   background-color: #fff;
   position: sticky;
   bottom: 0;
@@ -1540,8 +1581,33 @@
     }
   }
 
+  .share {
+    display: flex;
+    //align-items: center;
+    flex-direction: column;
+    margin: 30px 0;
+    .container{
+      select {
+        all: unset;
+        font-size: 11px;
+        font-weight: 700;
+  
+      }
+  
+      background-color: #eee;
+      padding: 6px;
+      border-radius: 6px;
+  
+      &::after {
+        content: "▼";
+        font-size: 9px;
+        color: #999;
+      }
+    }
+  }
+
   .save {
-    margin: $mtop;
+    margin: $mtop 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1560,7 +1626,7 @@
   }
 
   .newplan {
-    margin: $mtop;
+    margin: $mtop 0;
     display: flex;
     flex-direction: column;
     align-items: center;
