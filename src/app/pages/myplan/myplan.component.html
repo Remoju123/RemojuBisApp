@@ -373,6 +373,15 @@
     </mat-list>
   </div>
   <div class="footer">
+    <!-- 共有先 -->
+    <label class="time-label">{{"ReleaseDestination"|translate}}</label>
+    <div class="startTime" *ngIf="row">
+      <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onChange(true)">
+        <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
+          {{ commonService.isValidJson(destination.name, lang) }}
+        </option>
+      </select>
+    </div>
     <!-- 保存 -->
     <div class="save">
       <button mat-button type="button" id="plansave" (click)="onClickSavePlan()">

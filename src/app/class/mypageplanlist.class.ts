@@ -27,6 +27,7 @@ export class MypagePlanAppList {
 export class MyPlanAppListSelected{
   stayTime: DataSelected[];
   businessDay: DataSelected[];
+  releaseDestination: DataSelected[];
   listSelectedPlan: ListSelectedPlan;
   myPlan: MyPlanApp;
 }

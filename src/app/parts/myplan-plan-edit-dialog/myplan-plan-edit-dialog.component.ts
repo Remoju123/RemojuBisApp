@@ -3,10 +3,10 @@ import { CommonService } from "../../service/common.service";
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from "rxjs/operators";
-import { ImageCropperParam, MyPlanApp } from 'src/app/class/common.class';
+import { NestDataSelected, ImageCropperParam, EditPlanParam, MyPlanApp } from 'src/app/class/common.class';
 import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
-import { PlanApp } from 'src/app/class/plan.class';
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
   selector: 'app-myplan-plan-edit-dialog',
@@ -15,19 +15,26 @@ import { PlanApp } from 'src/app/class/plan.class';
 })
 export class MyplanPlanEditDialogComponent implements OnInit,OnDestroy {
   private onDestroy$ = new Subject();
-  
+
   constructor(
-    private commonService: CommonService,
+    public commonService: CommonService,
     private indexedDBService: IndexedDBService,
+    private translate: TranslateService,
     public dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public p:MyPlanApp
-  ) { 
-    this.row = p;
+    @Inject(MAT_DIALOG_DATA) public p:EditPlanParam
+  ) {
+    this.row = p.myPlanApp;
   }
 
   row:MyPlanApp;
+  $area: NestDataSelected[];
+
+  get lang() {
+    return this.translate.currentLang;
+  }
 
   ngOnInit(): void {
+    this.$area = this.p.mArea;
   }
 
   ngOnDestroy() {

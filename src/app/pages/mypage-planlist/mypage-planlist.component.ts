@@ -149,6 +149,12 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     }
     // 非公開⇒公開
     else {
+      // スポット数0の場合、エラー
+      if (!row.spots) {
+        this.commonService.messageDialog("ErrorMsgNoSpot");
+        return;
+      }
+
       const dialog = this.dialog.open(MemoDialogComponent, {
         id:"urlShare",
         maxWidth: "100%",
