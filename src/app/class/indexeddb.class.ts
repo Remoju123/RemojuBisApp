@@ -49,6 +49,7 @@ export class MyPlan {
   categories: number[];
   timeRequired: string;
   isShare: boolean;
+  isRelease: boolean;
   basePlanId: number;
   timeRequiredDisp: string;
   startTime: string;

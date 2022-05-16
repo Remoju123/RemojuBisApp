@@ -136,6 +136,7 @@ export class IndexedDBService {
       categories: myPlanApp.categories,
       timeRequired: myPlanApp.timeRequired,
       isShare: myPlanApp.isShare,
+      isRelease: myPlanApp.isRelease,
       basePlanId: myPlanApp.basePlanId,
       timeRequiredDisp: myPlanApp.timeRequiredDisp,
       startTime: myPlanApp.startTime,

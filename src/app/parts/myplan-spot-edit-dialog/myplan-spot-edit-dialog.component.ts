@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { editparams, ImageCropperParam, MyPlanApp, PlanSpotCommon, PlanUserPicture } from 'src/app/class/common.class';
+import { Editparams, ImageCropperParam, MyPlanApp, PlanSpotCommon, PlanUserPicture } from 'src/app/class/common.class';
 import { CommonService } from 'src/app/service/common.service';
 import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
 
@@ -18,8 +18,8 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
     private commonService: CommonService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<MyplanSpotEditDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public p: editparams
-  ) { 
+    @Inject(MAT_DIALOG_DATA) public p: Editparams
+  ) {
     this.row = p.myPlan;
   }
 
@@ -104,7 +104,7 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
       if (r && r !== "cancel") {
-        
+
 
         const idx = this.row.planSpots.findIndex(x => x.displayOrder === planSpot.displayOrder);
         const idxPic = this.row.planSpots[idx].planUserpictures.findIndex(x => x.picture_display_order === picture.picture_display_order);

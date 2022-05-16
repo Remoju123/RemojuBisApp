@@ -86,6 +86,11 @@ export class AddPlan {
   isTransferSearch: boolean;
 }
 
+export class EditPlanParam {
+  myPlanApp: MyPlanApp;
+  mArea: NestDataSelected[];
+}
+
 export class MyPlanApp {
   isSaved: boolean;
   isTransferSearch: boolean;
@@ -227,7 +232,6 @@ export class FavoriteCount {
 }
 
 export class ComfirmDialogParam {
-  id: string;
   title: string;
   text: string;
   textRep: string[];
@@ -258,7 +262,7 @@ export class ImageSize {
   previewUrl: string;
 }
 
-export class editparams {
+export class Editparams {
   item:PlanSpotCommon;
   stayTimes:DataSelected[];
   myPlan:MyPlanApp;

@@ -326,5 +326,7 @@
   "WhereToLook": "探す先",
   "SpotOverview": "スポット概要",
   "ErrorMsgSetTransferCar": "1つのプランに保存できるスポット数は、車の場合、最大10スポットです。(出発地・到着地を含む)",
-  "ErrorMsgSetTransferEkitan": "1つのプランに保存できるスポット数は、公共交通機関の場合、最大8スポットです。(出発地・到着地を含む)"
+  "ErrorMsgSetTransferEkitan": "1つのプランに保存できるスポット数は、公共交通機関の場合、最大8スポットです。(出発地・到着地を含む)",
+  "ReleaseDestination": "共有先",
+  "ErrorMsgNoSpot": "スポットを追加してください。"
 }

@@ -43,6 +43,15 @@
     </div>
     <label>{{ 'PasteImg' | translate }}</label>
   </div>
+  <!-- 都道府県 -->
+  <label class="time-label">{{"SelectAnAreaCategory"|translate}}</label>
+  <div class="area" *ngIf="row">
+    <select [(ngModel)]="row.areaId" (change)="onChange(true)">
+      <option *ngFor="let area of $area" [ngValue]="area.parentId">
+        {{ commonService.isValidJson(area.parentName, lang) }}
+      </option>
+    </select>
+  </div>
   <!-- カテゴリー選択ボタン -->
   <!-- <button mat-stroked-button (click)="onClickAreaCategory()">
     {{ "SelectAnAreaCategory" | translate }}
