@@ -4,7 +4,7 @@
       {{ "ArragePlan" | translate }}
     </div>
     <div class="switchView" [ngClass]="{'en':lang==='en'}">
-      <input type="checkbox" id="switch-view1" (click)="onClickEdit()" [checked]="!isEdit" [disabled]="!row">
+      <input type="checkbox" id="switch-view1" (change)="onClickEdit()" [checked]="!isEdit" [value]="isEdit" [disabled]="!row" #switch>
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>

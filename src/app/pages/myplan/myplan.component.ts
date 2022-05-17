@@ -80,9 +80,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   @ViewChild("keywordInput") keywordInput: { nativeElement: any };
+  @ViewChild("switch") switch: { nativeElement: any };
 
   // 編集/プレビュー
   isEdit: boolean = true;
+  isChecked: string = "checked";
   // スポット0件時のダミー表示
   spotZero: PlanSpotCommon[];
   // 初期プラン
@@ -96,7 +98,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // エリア・カテゴリ選択値(表示用)
   optionKeywords: string[] = [];
   // 移動手段
-  isPublic:boolean = false;
+  isPublic: boolean = false;
 
   $stayTime: DataSelected[];
   $releaseDestination: DataSelected[];
@@ -235,34 +237,37 @@ export class MyplanComponent implements OnInit, OnDestroy {
   async onClickEdit(isAuto: boolean = false) {
     // スポット数チェック
     if (this.isEdit && await this.commonService.checkTransfer() === false) {
+      let dialogRef = null;
       if (this.row.isCar) {
-        this.commonService.messageDialog("ErrorMsgSetTransferCar");
+        dialogRef = this.commonService.messageDialog("ErrorMsgSetTransferCar");
       } else {
-        this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
+        dialogRef = this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
       }
-      return;
-    }
-
-    this.isEdit = !this.isEdit;
-    // プレビューの場合
-    if (!this.isEdit) {
-      // 移動方法取得処理
-      if (this.row.isTransferSearch) {
-        const ref = this.loading.show();
-        this.myplanService.setTransfer(isAuto).then(result => {
-          result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-            if (r) {
-              this.setUserPicture(r);
-              // 変更を保存
-              this.registPlan(false);
-              // 最適化OFF
-              this.row.isAuto = false;
-              ref.close();
-            }
+      dialogRef.afterClosed().subscribe(() => {
+        this.switch.nativeElement.checked = false;
+      })
+    } else {
+      this.isEdit = !this.isEdit;
+      // プレビューの場合
+      if (!this.isEdit) {
+        // 移動方法取得処理
+        if (this.row.isTransferSearch) {
+          const ref = this.loading.show();
+          this.myplanService.setTransfer(isAuto).then(result => {
+            result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+              if (r) {
+                this.setUserPicture(r);
+                // 変更を保存
+                this.registPlan(false);
+                // 最適化OFF
+                this.row.isAuto = false;
+                ref.close();
+              }
+            });
           });
-        });
-      } else {
-        this.setPreviewPicture();
+        } else {
+          this.setPreviewPicture();
+        }
       }
     }
   }
@@ -446,7 +451,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChange(true);
   }
 
-  onClickTran(){
+  onClickTran() {
     this.row.isCar = !this.row.isCar;
     this.onChange(true);
   }
@@ -588,7 +593,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
 
     // 公開の場合、確認メッセージ
-    if(this.row.isRelease) {
+    if (this.row.isRelease) {
       // スポット数0の場合、エラー
       if (!this.row.planSpots) {
         this.commonService.messageDialog("ErrorMsgNoSpot");
