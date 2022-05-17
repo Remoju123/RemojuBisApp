@@ -458,10 +458,10 @@ export class CommonService implements OnDestroy {
     });
   }
 
-  snackBarDisp(message: string) {
+  snackBarDisp(message: string, duration: number = 2000) {
     this.snackBar.open(
       this.translate.instant(message), "", {
-      duration: 2000,
+      duration: duration,
       verticalPosition: "bottom",
       panelClass: "custom-snackbar"
     });
