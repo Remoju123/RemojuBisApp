@@ -13,16 +13,18 @@
               (markerClick)="onClickMarker(mapSpot)">
   </agm-marker>
   <!--スポット間の線-->
-  <ng-container *ngFor="let mapSpot of mapSpotsDisp; index as i">
-    <agm-polyline *ngIf="i < mapSpotsDisp.length - 1"
-                  [strokeColor]="mapSpot.polylineColor"
-                  [strokeWeight]="6"
-                  [strokeOpacity]="0.8">
-      <agm-polyline-point [latitude]="mapSpotsDisp[i].latitude" [longitude]="mapSpotsDisp[i].longitude">
-      </agm-polyline-point>
-      <agm-polyline-point [latitude]="mapSpotsDisp[i + 1].latitude" [longitude]="mapSpotsDisp[i + 1].longitude">
-      </agm-polyline-point>
-    </agm-polyline>
+  <ng-container *ngIf="!isCar">
+    <ng-container *ngFor="let mapSpot of mapSpotsDisp; index as i">
+      <agm-polyline *ngIf="i < mapSpotsDisp.length - 1"
+                    [strokeColor]="mapSpot.polylineColor"
+                    [strokeWeight]="6"
+                    [strokeOpacity]="0.8">
+        <agm-polyline-point [latitude]="mapSpotsDisp[i].latitude" [longitude]="mapSpotsDisp[i].longitude">
+        </agm-polyline-point>
+        <agm-polyline-point [latitude]="mapSpotsDisp[i + 1].latitude" [longitude]="mapSpotsDisp[i + 1].longitude">
+        </agm-polyline-point>
+      </agm-polyline>
+    </ng-container>
   </ng-container>
   <!-- 他のスポット -->
   <agm-marker *ngFor="let otherMapSpot of otherMapSpotsDisp; index as i"
@@ -32,13 +34,13 @@
               [iconUrl]="otherMapSpot.iconUrl"
               [zIndex]="otherMapSpot.zIndex"
               (markerClick)="onClickMarker(otherMapSpot)">
-  </agm-marker>  
+  </agm-marker>
   <!--ユーザの位置-->
   <agm-marker *ngIf="userLocation"
               [latitude]="userLocation.latitude"
               [longitude]="userLocation.longitude">
   </agm-marker>
-  
+
   <button id="fullScreenButton" class="fsbtn" (click)="onClickFullScreen()">
     <span>{{ "FullScreen" | translate }}</span>
   </button>

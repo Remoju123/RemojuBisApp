@@ -29,6 +29,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   @Input() planId: number;
   @Input() isDetail: boolean;
   @Input() isCar : boolean;
+  @Input() overviewPolyline: string;
 
   // @ViewChild("AgmMap", { static: false }) agmMap: AgmMap;
   private onDestroy$ = new Subject();
@@ -106,6 +107,14 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   mapReady(event: any) {
     // Mapにボタンを追加
     this.map = event;
+    var decodedPath = google.maps.geometry.encoding.decodePath(this.overviewPolyline);
+    var poly = new google.maps.Polyline({
+                  path: decodedPath,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 3,
+                  map: this.map
+           });
     // 地図の中心を設定
     this.setMapFitBounds(false);
     // 地図にコントロールを追加(移動方法の表示等)
@@ -258,6 +267,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     param.planId = this.planId;
     param.planSpots = this.planSpots;
     param.isCar = this.isCar;
+    param.overviewPolyline = this.overviewPolyline;
     this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",

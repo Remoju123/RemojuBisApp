@@ -30,6 +30,7 @@ export class PlanApp {
   featureList: mFeature[];
   seo: Seo;
   isCar: boolean;
+  overviewPolyline: string;
 }
 
 export class Trans {
