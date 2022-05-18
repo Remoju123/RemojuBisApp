@@ -30,7 +30,7 @@
                   <!-- 共有先 -->
                   <div class='share'>
                     <label class="time-label">{{"ReleaseDestination"|translate}}</label>
-                    <div class="container" *ngIf="row">
+                    <div class="container" *ngIf="row" [ngClass]="{'all':row.isRelease}">
                       <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onClickRelease(row)">
                         <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
                           {{ commonService.isValidJson(destination.name, lang) }}

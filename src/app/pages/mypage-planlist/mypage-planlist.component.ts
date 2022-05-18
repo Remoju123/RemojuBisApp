@@ -97,7 +97,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
     if (this.transferState.hasKey(MYPLANLIST_KEY)) {
       const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
-      //console.log(this.transferState);
       this.rows = cache.data;
       this.end = cache.end;
       this.offset = cache.offset;
