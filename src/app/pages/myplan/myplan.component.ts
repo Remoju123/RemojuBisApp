@@ -485,6 +485,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // Map
   onClickMap() {
+    console.log(this.row);
     const param = new MapFullScreenParam();
     param.isDetail = false;
     param.planId = this.row.planUserId;
@@ -492,6 +493,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     param.startPlanSpot = this.row.startPlanSpot;
     param.endPlanSpot = this.row.endPlanSpot;
     param.isCar = this.row.isCar;
+    param.overviewPolyline = this.row.overviewPolyline;
     const dialog = this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",
