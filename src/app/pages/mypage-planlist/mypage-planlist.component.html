@@ -1,13 +1,13 @@
 <ng-container *ngIf="details$?.length>0; else noPlan">
   <!-- マイページプラン一覧 -->
-  <div class="box" 
-    infinite-scroll 
-    [infiniteScrollDistance]="5" 
+  <div class="box"
+    infinite-scroll
+    [infiniteScrollDistance]="5"
     [infiniteScrollUpDistance]="1.5"
-    [infiniteScrollThrottle]="100" 
-    [infiniteScrollContainer]="isMobile?null:box" 
+    [infiniteScrollThrottle]="100"
+    [infiniteScrollContainer]="isMobile?null:box"
     [scrollWindow]="isMobile?true:false"
-    [fromRoot]="isMobile?false:true" 
+    [fromRoot]="isMobile?false:true"
     (scrolled)="onScrollDown()"
     (scroll)="onScroll($event)"
     #box>
@@ -23,9 +23,20 @@
                   </div>
                 </div>
                 <div class="rt">
-                  <div class="release" (click)="onClickRelease(row)">
+                  <!--<div class="release" (click)="onClickRelease(row)">
                     <img *ngIf="row.isRelease" src="../../../assets/img/sw_release_on.svg" alt="">
                     <img *ngIf="!row.isRelease" src="../../../assets/img/sw_release_off.svg" alt="">
+                  </div>-->
+                  <!-- 共有先 -->
+                  <div class='share'>
+                    <label class="time-label">{{"ReleaseDestination"|translate}}</label>
+                    <div class="container" *ngIf="row">
+                      <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onClickRelease(row)">
+                        <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
+                          {{ commonService.isValidJson(destination.name, lang) }}
+                        </option>
+                      </select>
+                    </div>
                   </div>
                   <div class="delete">
                     <button class="deletePlan" (click)="onClickDeletePlan(row)">
@@ -79,6 +90,9 @@
                 </div>
                 <button mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
                   {{ "EditPlan" | translate }}
+                </button>
+                <button mat-flat-button class="edit-to-plan" (click)="onClickPlanCopy(row)">
+                  {{ "CopyPlan" | translate }}
                 </button>
               </mat-list-item>
             </mat-list>

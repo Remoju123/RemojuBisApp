@@ -28,7 +28,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   private baseUrl:string;
 
   constructor(
-    private commonService: CommonService,
+    public commonService: CommonService,
     private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
@@ -51,6 +51,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
   isMobile:boolean;
 
+  $releaseDestination: DataSelected[];
   rows: MypagePlanAppList[];
   details$: MypagePlanAppList[] = [];
   count: number = 0;
@@ -89,6 +90,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
   ngOnInit() {
     this.isMobile = this.detectIsMobile(window.innerWidth);
+
+    this.mypagePlanListService.getDataSelected().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+      this.$releaseDestination = r;
+    });
 
     if (this.transferState.hasKey(MYPLANLIST_KEY)) {
       const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
@@ -133,17 +138,19 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
     const param = new ComfirmDialogParam();
     // 公開⇒非公開
-    if (row.isRelease) {
+    if (!row.isRelease) {
       param.title = "PrivateConfirm";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {
-          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
-              row.isRelease = !row.isRelease;
+              //row.isRelease = !row.isRelease;
               this.commonService.snackBarDisp("PrivateSaved");
             }
           });
+        } else {
+          row.isRelease = !row.isRelease;
         }
       });
     }
@@ -165,10 +172,11 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       });
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "cancel") {
+          row.isRelease = !row.isRelease;
         } else {
-          this.mypagePlanListService.registIsRelease(row.planUserId, !row.isRelease, d).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, d).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
-              row.isRelease = !row.isRelease;
+              //row.isRelease = !row.isRelease;
               row.memo = d;
               this.commonService.snackBarDisp("ReleaseSaved");
             }
@@ -219,6 +227,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
               this.rows.findIndex(v => v.planUserId === row.planUserId),
               1
             );
+            this.details$.splice(
+              this.details$.findIndex(v => v.planUserId === row.planUserId),
+              1
+            );
             this.getPlanListDetail();
             this.commonService.snackBarDisp("PlanDeleted");
             scrollTo(0, 0);
@@ -233,6 +245,33 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       }
     });
 
+  }
+
+  async onClickPlanCopy(row: MypagePlanAppList) {
+    // 編集中のプランを取得
+    let myPlan: any = await this.indexedDBService.getEditPlan();
+    const myPlanApp: MyPlanApp = myPlan;
+
+    // 編集中のプランIDが異なる場合
+    if(myPlanApp && myPlanApp.planUserId !== row.planUserId && !myPlanApp.isSaved){
+      // 確認ダイアログの表示
+      const param = new ComfirmDialogParam();
+      param.title = "EditPlanConfirmTitle";
+      param.text = "EditPlanConfirmText";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+        if (r === "ok") {
+          // プランを取得してプラン作成に反映
+          this.getPlan(row.planUserId, true);
+        } else {
+          // 編集中のプランを表示
+          this.commonService.onNotifyIsShowCart(true);
+        }
+      });
+    } else {
+      // プランを取得してプラン作成に反映
+      this.getPlan(row.planUserId, true);
+    }
   }
 
   async onClickEditPlan(row: MypagePlanAppList){
@@ -396,13 +435,21 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   // プラン取得
-  getPlan(userPlanId: number){
+  getPlan(userPlanId: number, isCopy = false){
     // DBから取得
     this.myplanService.getPlanUser(userPlanId.toString()).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
         // this.router.navigate(["/" + this.currentlang + "/systemerror"]);
         // return;
       }
+      if (isCopy) {
+        r.isSaved = false;
+        r.planUserId = 0;
+        r.isRelease = false;
+        r.isShare = false;
+        r.shareUrl = null;
+      }
+
       // プラン作成に反映
       this.myplanService.onPlanUserEdit(r);
       // プラン保存

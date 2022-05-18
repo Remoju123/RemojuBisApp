@@ -197,6 +197,7 @@ export class MapFullScreenParam {
   startPlanSpot: PlanSpotCommon;
   endPlanSpot: PlanSpotCommon;
   isCar: boolean;
+  overviewPolyline: string;
 }
 
 export class MapSpot {

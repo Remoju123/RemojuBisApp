@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { MypagePlanAppList } from "../class/mypageplanlist.class";
 import { CommonService } from "./common.service";
+import { DataSelected } from "../class/common.class";
 import { Review } from "../class/review.class";
 
 const httpOptions = {
@@ -20,6 +21,12 @@ export class MypagePlanListService {
     private commonService: CommonService,
     @Inject("BASE_API_URL") private host: string
   ) { }
+
+  // 選択値を取得
+  getDataSelected() {
+    const url = this.host + "/api/MypagePlanList/ListSelected";
+    return this.http.get<DataSelected[]>(url);
+  }
 
   // マイページ・プラン一覧を取得
   getMypagePlanList() {
