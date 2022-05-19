@@ -399,6 +399,28 @@ export class CommonService implements OnDestroy {
     }
   }
 
+  directionGoogleMap(item: PlanSpotCommon, nextItem: PlanSpotCommon) {
+    let url =`https://www.google.com/maps/dir/?api=1&origin=`;
+    let fromSpotName: string, toSpotName: string;
+    let fromPlaceId: string, toPlaceId: string;
+    if (item.googleSpot) {
+      fromSpotName = item.googleSpot.spot_name;
+      fromPlaceId = item.googleSpot.place_id;
+    } else {
+      fromSpotName = item.spotName;
+      fromPlaceId = item.latitude + "," + item.longitude;
+    }
+    if (nextItem.googleSpot) {
+      toSpotName = nextItem.googleSpot.spot_name;
+      toPlaceId = nextItem.googleSpot.place_id;
+    } else {
+      toSpotName = nextItem.spotName;
+      toPlaceId = nextItem.latitude + "," + nextItem.longitude;
+    }
+    window.open(`https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&origin=${fromSpotName}&origin_place_id=${fromPlaceId}&destination=${toSpotName}&destination_place_id=${toPlaceId}`, "_blank");
+    //window.open(`https://www.google.com/maps/dir/?api=1&mode=driving&origin=${fromPlaceId}&destination_place_id=${toPlaceId}`, "_blank");
+  }
+
   base64toBlob(base64: string) {
     // カンマで分割して以下のようにデータを分ける
     // tmp[0] : データ形式（data:image/png;base64）

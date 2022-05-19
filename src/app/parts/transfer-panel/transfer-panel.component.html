@@ -42,7 +42,7 @@
   </mat-expansion-panel>
 </mat-accordion>
 <ng-template #car>
-  <div *ngIf="isCar && item.transfer;else nontrans" class="iscarpanel">
+  <div *ngIf="isCar && item.transfer;else nontrans" class="iscarpanel" (click)="linktoDirection()">
     <span class="distance">{{ directions.Distance }}</span>
     <span class="duration">{{ duration }}</span>
   </div>
