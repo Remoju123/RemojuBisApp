@@ -256,7 +256,7 @@
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item"></app-transfer-panel>
+            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item" [nextItem]="data.spots[i + 1]"></app-transfer-panel>
           </mat-card-content>
         </mat-card>
       </ng-container>

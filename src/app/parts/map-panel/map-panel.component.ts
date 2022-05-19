@@ -107,14 +107,19 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   mapReady(event: any) {
     // Mapにボタンを追加
     this.map = event;
-    var decodedPath = google.maps.geometry.encoding.decodePath(this.overviewPolyline);
-    var poly = new google.maps.Polyline({
-                  path: decodedPath,
-                  strokeColor: '#FF0000',
-                  strokeOpacity: 1.0,
-                  strokeWeight: 3,
-                  map: this.map
-           });
+
+    // 車の経路表示
+    if (this.isCar) {
+      var decodedPath = google.maps.geometry.encoding.decodePath(this.overviewPolyline);
+      var poly = new google.maps.Polyline({
+                    path: decodedPath,
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 1.0,
+                    strokeWeight: 3,
+                    map: this.map
+            });
+    }
+
     // 地図の中心を設定
     this.setMapFitBounds(false);
     // 地図にコントロールを追加(移動方法の表示等)

@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import { Directions, PlanSpotCommon } from "../../class/common.class";
+import { CommonService } from "../../service/common.service";
 import { Subject } from "rxjs";
 
 @Component({
@@ -12,6 +13,7 @@ export class TransferPanelComponent implements OnInit {
 
   @Input() isCar: boolean;
   @Input() item: PlanSpotCommon;
+  @Input() nextItem: PlanSpotCommon;
 
   directions: Directions;
   duration: string;
@@ -23,6 +25,7 @@ export class TransferPanelComponent implements OnInit {
   private onDestroy$ = new Subject();
 
   constructor(
+    private commonService: CommonService,
     private translate: TranslateService
   ) { }
 
@@ -34,4 +37,7 @@ export class TransferPanelComponent implements OnInit {
     }
   }
 
+  linktoDirection () {
+    this.commonService.directionGoogleMap(this.item, this.nextItem);
+  }
 }
