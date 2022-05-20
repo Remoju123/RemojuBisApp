@@ -4,7 +4,8 @@
       {{ "ArragePlan" | translate }}
     </div>
     <div class="switchView" [ngClass]="{'en':lang==='en'}">
-      <input type="checkbox" id="switch-view1" (change)="onClickEdit()" [checked]="!isEdit" [value]="isEdit" [disabled]="!row" #switch>
+      <input type="checkbox" id="switch-view1" (change)="onClickEdit()" [checked]="!isEdit" [value]="isEdit"
+        [disabled]="!row" #switch>
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
@@ -252,7 +253,7 @@
         </button>
       </div>
     </div>
-    
+
     <div class='planhead'>
       <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
         <img width="100%" height="100%"
@@ -269,7 +270,7 @@
         </mat-list-item>
       </mat-list>
     </div>
-    
+
     <!-- 出発地 -->
     <ng-container *ngIf="row.startPlanSpot">
       <div class="startSpot">
@@ -288,7 +289,7 @@
     </ng-container>
 
     <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" [isCar]="row.isCar"
-      [item]="row.startPlanSpot">
+      [item]="row.startPlanSpot" [nextItem]="row.planSpots[0]">
     </app-transfer-panel>
 
     <div class="box" *ngIf="row.planSpots">
@@ -357,7 +358,8 @@
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel [isCar]="row.isCar" [item]="item"></app-transfer-panel>
+            <app-transfer-panel *ngIf="item.transfer" [isCar]="row.isCar" [item]="item" [nextItem]="row.planSpots[i+1]">
+            </app-transfer-panel>
           </mat-card-content>
           <!-- 掲載終了スポットの場合 -->
           <mat-card-content *ngIf="item.isEndOfPublication">
