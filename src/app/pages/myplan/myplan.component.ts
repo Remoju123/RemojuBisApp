@@ -33,6 +33,7 @@ import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
 import { MyplanSpotEditDialogComponent } from "../../parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component";
 import { MyplanPlanEditDialogComponent } from "../../parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component";
+import { MyplanAutoDialogComponent } from "src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -392,31 +393,25 @@ export class MyplanComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // 最適化ON
-    this.row.isAuto = true;
-    this.row.isTransferSearch = true;
-
-    const param = new ComfirmDialogParam();
-    param.title = "AutoSearchConfirmTitle";
-    param.text = "AutoSearchConfirmText";
-    if (this.row.startPlanSpot) {
-      param.textRep = [this.row.startPlanSpot.spotName];
-    } else {
-      param.textRep = [this.row.planSpots[0].spotName];
-    }
-    if (this.row.endPlanSpot) {
-      param.textRep.push(this.row.endPlanSpot.spotName);
-    } else {
-      param.textRep.push(this.row.planSpots[this.row.planSpots.length - 1].spotName);
-    }
-    const dialog = this.commonService.confirmMessageDialog(param);
+    const dialog = this.dialog.open(MyplanAutoDialogComponent, {
+      maxWidth: "100%",
+      width: this.isMobile ? "92vw" : "52vw",
+      maxHeight: "90vh",
+      position: { top: "10px" },
+      data: [this.isMobile, this.row],
+      autoFocus: false,
+      id: "auto"
+    });
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
-        //  最適化
+        // 最適化ON
+        this.row.isAuto = true;
+        this.row.isTransferSearch = true;
         this.onClickEdit(true);
       } else {
         // 最適化OFF
         this.row.isAuto = false;
+        this.onChange(true);
       }
     });
   }
