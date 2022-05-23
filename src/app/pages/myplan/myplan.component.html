@@ -157,6 +157,11 @@
                     </span>
                   </div>
                 </dt>
+                <dt>
+                  <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}"
+                    (click)="onClickFavorite(item)">
+                  </button>
+                </dt>
                 <dt cdkDragHandle>
                   <img src="../../../assets/img/icon_swap.svg" width="16px" />
                 </dt>

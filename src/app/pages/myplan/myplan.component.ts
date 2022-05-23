@@ -17,6 +17,7 @@ import {
   EditPlanParam
 } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
+import { UpdFavorite } from "../../class/mypageplanlist.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
 import { GoogleSpotDialogComponent } from "../../parts/google-spot-dialog/google-spot-dialog.component";
@@ -30,8 +31,9 @@ import { environment } from "../../../environments/environment";
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { isPlatformBrowser, isPlatformServer } from "@angular/common";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
-import { MyplanSpotEditDialogComponent } from "src/app/parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component";
-import { MyplanPlanEditDialogComponent } from "src/app/parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component";
+import { MyplanSpotEditDialogComponent } from "../../parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component";
+import { MyplanPlanEditDialogComponent } from "../../parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component";
+import { MyplanAutoDialogComponent } from "src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component";
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -115,6 +117,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   collapse: boolean = false;
 
+  guid: string;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -133,6 +137,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     await this.getListSelected();
+
+    // GUID取得
+    this.guid = await this.commonService.getGuid();
 
     //出発時間リストを生成
     for (let hour = 0; hour < 24; hour++) {
@@ -386,31 +393,25 @@ export class MyplanComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // 最適化ON
-    this.row.isAuto = true;
-    this.row.isTransferSearch = true;
-
-    const param = new ComfirmDialogParam();
-    param.title = "AutoSearchConfirmTitle";
-    param.text = "AutoSearchConfirmText";
-    if (this.row.startPlanSpot) {
-      param.textRep = [this.row.startPlanSpot.spotName];
-    } else {
-      param.textRep = [this.row.planSpots[0].spotName];
-    }
-    if (this.row.endPlanSpot) {
-      param.textRep.push(this.row.endPlanSpot.spotName);
-    } else {
-      param.textRep.push(this.row.planSpots[this.row.planSpots.length - 1].spotName);
-    }
-    const dialog = this.commonService.confirmMessageDialog(param);
+    const dialog = this.dialog.open(MyplanAutoDialogComponent, {
+      maxWidth: "100%",
+      width: this.isMobile ? "92vw" : "52vw",
+      maxHeight: "90vh",
+      position: { top: "10px" },
+      data: [this.isMobile, this.row],
+      autoFocus: false,
+      id: "auto"
+    });
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       if (d === "ok") {
-        //  最適化
+        // 最適化ON
+        this.row.isAuto = true;
+        this.row.isTransferSearch = true;
         this.onClickEdit(true);
       } else {
         // 最適化OFF
         this.row.isAuto = false;
+        this.onChange(true);
       }
     });
   }
@@ -544,6 +545,28 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChange(true);
     // subject更新
     this.myplanService.FetchMyplanSpots();
+  }
+
+  onClickFavorite(planSpot: PlanSpotCommon) {
+    planSpot.isFavorite = !planSpot.isFavorite;
+    this.planSpotListService
+      .registFavorite(
+        planSpot.spotId,
+        false,
+        planSpot.isFavorite,
+        false,
+        this.guid,
+        planSpot.googleSpot ? true : false
+      )
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(r => {
+        // プランスポットに反映
+        const param = new UpdFavorite();
+        param.isFavorite = planSpot.isFavorite;
+        param.spotId = planSpot.spotId;
+        param.type = planSpot.googleSpot ? 2: 1;
+        this.myplanService.updateFavorite(param);
+      });
   }
 
   // プランを保存する
