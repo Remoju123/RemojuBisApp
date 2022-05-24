@@ -475,7 +475,7 @@ export class PlanSpotListService {
       if (isGoogle) {
         param.spotFavorite = {
           spot_id: 0,
-          google_spot_id: googleSpot.google_spot_id,
+          google_spot_id: id,
           guid: guid,
           is_delete: !isFavorite,
           objectId: this.commonService.objectId
