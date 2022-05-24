@@ -867,6 +867,12 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   savePlan() {
+    // 保存済みの場合、何もしない
+    if (this.row.isSaved) {
+      this.commonService.snackBarDisp("PlanSave");
+      return;
+    }
+
     // 保存ボタンロック
     this.isSaving = true;
 
