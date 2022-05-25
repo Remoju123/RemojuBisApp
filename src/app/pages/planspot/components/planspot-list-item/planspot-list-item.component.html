@@ -41,8 +41,8 @@
         </div>
         <div class='info'>
           <div class='lt'>
-            <span class='mark' [ngClass]="{'spot':!item.isPlan,'plan':item.isPlan}">
-              {{ item.isPlan?'Plan':'Spot'}}
+            <span class='mark' [ngClass]="{'spot':!item.isPlan || item.spotQty === 1,'plan':item.isPlan && item.spotQty > 1}">
+              {{ item.isPlan && item.spotQty > 1?'Plan':'Spot'}}
             </span>
             <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter: lang }}
