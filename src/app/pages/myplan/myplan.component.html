@@ -403,9 +403,7 @@
     </mat-list>
   </div>
   <div class="footer">
-    <div *ngIf="isWarningCar">{{ "ErrorMsgSetTransferCar" | translate }}</div>
-    <div *ngIf="isWarningEkitan">{{ "ErrorMsgSetTransferEkitan" | translate }}</div>
-      <!-- 共有先 -->
+    <!-- 共有先 -->
     <div class='share'>
       <label class="time-label">{{"ReleaseDestination"|translate}}</label>
       <div class="container" *ngIf="row">
@@ -429,4 +427,8 @@
       <label for="plannew">{{"CreatingNewPlan" | translate}}</label>
     </div>
   </div>
+
+  <div class="alert" *ngIf="isWarningCar">{{ "ErrorMsgSetTransferCar" | translate }}</div>
+  <div class="alert" *ngIf="isWarningEkitan">{{ "ErrorMsgSetTransferEkitan" | translate }}</div>
+
 </form>

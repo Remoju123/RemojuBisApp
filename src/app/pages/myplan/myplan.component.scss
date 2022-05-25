@@ -1,5 +1,9 @@
 @import "vars";
 
+form {
+  position: relative;
+}
+
 .top,
 .bottom {
   height: 47px;
@@ -506,11 +510,12 @@
 
               &:nth-child(3) {
                 flex-basis: 8%;
+
                 button.add-to-favorite {
                   box-shadow: none;
                   min-width: auto;
                   padding: 0;
-                  
+
                   &::before {
                     content: "";
                     display: inline-block;
@@ -519,15 +524,16 @@
                     background: url("../../../assets/img/icon_fav_b.svg");
                     background-repeat: no-repeat;
                   }
-        
+
                   &.on {
+
                     // background-color: $color-pnk04;
                     &::before {
                       background: url("../../../assets/img/icon_fav_b_on.svg");
                       background-repeat: no-repeat;
                     }
                   }
-        
+
                   ::ng-deep.mat-button-ripple {
                     width: 0;
                     height: 0;
@@ -1616,18 +1622,19 @@
     //align-items: center;
     flex-direction: column;
     margin: 30px 0;
-    .container{
+
+    .container {
       select {
         all: unset;
         font-size: 11px;
         font-weight: 700;
-  
+
       }
-  
+
       background-color: #eee;
       padding: 6px;
       border-radius: 6px;
-  
+
       &::after {
         content: "▼";
         font-size: 9px;
@@ -1673,6 +1680,22 @@
       }
     }
   }
+}
+
+.alert {
+  position: sticky;
+  z-index: 30;
+  //top: calc(100vh - 158px);
+  bottom: 73px;
+  padding: 10px;
+  width: 80%;
+  margin: auto;
+  right: 0;
+  left: 0;
+  background-color: #00000080;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 ::ng-deep.mat-card:not([class*="mat-elevation-z"]) {
