@@ -264,32 +264,6 @@ export class CommonService implements OnDestroy {
     }
   }
 
-  async checkTransfer(): Promise<boolean> {
-    const myPlan: any = await this.indexedDBService.getEditPlan();
-    if (!myPlan) {
-      return true;
-    }
-    const myPlanApp: MyPlanApp = myPlan;
-
-    let qty = 0;
-    if (myPlanApp.startPlanSpot) {
-      qty++;
-    }
-    if (myPlanApp.planSpots) {
-      qty = myPlanApp.planSpots.length;
-    }
-    if (myPlanApp.endPlanSpot) {
-      qty++;
-    }
-
-    if ((myPlanApp.isCar && qty > 10)
-      || (!myPlanApp.isCar && qty > 8)) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   setAddPlanLang(planSpot: PlanSpotCommon, lang: string) {
     planSpot.spotName = this.isValidJson(planSpot.spotName, lang);
     planSpot.subheading = this.isValidJson(planSpot.subheading, lang);

@@ -119,6 +119,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   guid: string;
 
+  isWarningCar: boolean;
+  isWarningEkitan: boolean;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -171,6 +174,17 @@ export class MyplanComponent implements OnInit, OnDestroy {
           //   this.isEdit = this.isMobile?false:true;
           // }
           this.indexedDBService.registPlan(this.row);
+
+          if (this.checkTransfer(this.row) === false) {
+            if (this.row.isCar) {
+              this.isWarningCar = true;
+            } else {
+              this.isWarningEkitan = true;
+            }
+          } else {
+            this.isWarningCar = false;
+            this.isWarningEkitan = false;
+          }
         });
       });
     } else {
@@ -243,7 +257,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // 編集・プレビュー切り替え
   async onClickEdit(isAuto: boolean = false) {
     // スポット数チェック
-    if (this.isEdit && await this.commonService.checkTransfer() === false) {
+    if (this.isEdit && this.checkTransfer(this.row) === false) {
       let dialogRef = null;
       if (this.row.isCar) {
         dialogRef = this.commonService.messageDialog("ErrorMsgSetTransferCar");
@@ -585,12 +599,12 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
 
     // スポット数チェック
-    if (await this.commonService.checkTransfer() === false) {
-      if (this.row.isCar) {
+    if (this.checkTransfer(this.row) === false) {
+      /*if (this.row.isCar) {
         this.commonService.messageDialog("ErrorMsgSetTransferCar");
       } else {
         this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
-      }
+      }*/
       return;
     }
 
@@ -855,7 +869,37 @@ export class MyplanComponent implements OnInit, OnDestroy {
     } else {
       this.row.isSaved = isSaved;
     }
+    if (this.checkTransfer(this.row) === false) {
+      if (this.row.isCar) {
+        this.isWarningCar = true;
+      } else {
+        this.isWarningEkitan = true;
+      }
+    } else {
+      this.isWarningCar = false;
+      this.isWarningEkitan = false;
+    }
     this.indexedDBService.registPlan(this.row);
+  }
+
+  checkTransfer(myPlanApp: MyPlanApp): boolean {
+    let qty = 0;
+    if (myPlanApp.startPlanSpot) {
+      qty++;
+    }
+    if (myPlanApp.planSpots) {
+      qty = myPlanApp.planSpots.length;
+    }
+    if (myPlanApp.endPlanSpot) {
+      qty++;
+    }
+
+    if ((myPlanApp.isCar && qty > 10)
+      || (!myPlanApp.isCar && qty > 8)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   linktoSpot(planSpot: PlanSpotCommon) {
