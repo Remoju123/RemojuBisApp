@@ -161,10 +161,10 @@ export class PlanSpotListService {
     // プラン・スポット選択
     switch(cond.select){
       case 'plan':
-        _result = _result.filter(d => d.isPlan);
+        _result = _result.filter(d => d.isPlan && d.spotQty > 1);
         break;
       case 'spot':
-        _result = _result.filter(d => !d.isPlan);
+        _result = _result.filter(d => !d.isPlan || d.spotQty === 1);
         break;
       case 'google':
         _result = [];
