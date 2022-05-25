@@ -8,7 +8,7 @@ import {
 import { Router } from "@angular/router";
 import { DataService } from "../../service/data.service";
 import { CommonService } from "../../service/common.service";
-import { IndexedDBService } from "../../service/indexeddb.service";
+//import { IndexedDBService } from "../../service/indexeddb.service";
 import { MyplanService } from "../../service/myplan.service";
 import { LoadNotifyService } from "../../service/load-notify.service";
 import { Catch } from "../../class/log.class";
@@ -66,7 +66,7 @@ export class RootComponent implements OnInit, OnDestroy {
     public router: Router,
     public dataService: DataService,
     private commonService: CommonService,
-    private indexedDBService: IndexedDBService,
+    //private indexedDBService: IndexedDBService,
     private myplanService: MyplanService,
     private changeDetectionRef: ChangeDetectorRef,
     private loadNotifyService: LoadNotifyService) {
@@ -206,7 +206,7 @@ export class RootComponent implements OnInit, OnDestroy {
   // カート開閉状態の切り替え
   async onhandleCartNav(e: boolean) {
     this.cartopened = !e;
-    if (this.cartopened) {
+    /*if (this.cartopened) {
       // 編集中のプランを取得
       let myPlan: any = await this.indexedDBService.getEditPlan();
       const myPlanApp: MyPlanApp = myPlan;
@@ -218,7 +218,7 @@ export class RootComponent implements OnInit, OnDestroy {
           this.commonService.snackBarDisp("ErrorMsgSetTransferEkitan", 5000);
         }
       }
-    }
+    }*/
   }
 
   // slide to myplan panel

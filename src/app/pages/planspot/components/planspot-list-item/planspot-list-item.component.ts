@@ -153,8 +153,10 @@ export class PlanspotListItemComponent implements OnInit {
             return this.getIsDuplicate(planSpotIds,this.myPlanSpots);
           }
           return false;
-        }else{
-          return Array.from(this.myPlanSpots).includes(item.id)
+        }else if (item.googleSpot){
+          return Array.from(this.myPlanSpots).includes(item.googleSpot.google_spot_id);
+        } else {
+          return Array.from(this.myPlanSpots).includes(item.id);
         }
       }else{
         return false;
