@@ -255,12 +255,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.spots = [];
       this.plans = [];
       this.rows = [];
-      if (this.condition.select === 'all' || this.condition.select === 'plan') {
+      //if (this.condition.select === 'all' || this.condition.select === 'plan') {
         this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.plans = r;
           this.isDetail();
         });
-      }
+      //}
       if (this.condition.select === 'all' || this.condition.select === 'spot') {
         this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.spots = r;
