@@ -434,7 +434,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   openDialog(e: number) {
     this.listSelectMaster.tabIndex = e;
     this.listSelectMaster.isGoogle = this.condition.select === 'google';
-    this.listSelectMaster.planSpotList = this.rows;
+    this.listSelectMaster.planSpotList = this.spots.concat(this.plans);
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       maxWidth: "100%",
