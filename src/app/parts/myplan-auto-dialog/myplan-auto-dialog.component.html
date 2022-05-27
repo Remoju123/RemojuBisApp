@@ -1,10 +1,14 @@
 <h2 mat-dialog-title>{{ "AutoSearchConfirmTitle" | translate }}</h2>
 <mat-dialog-content>
   <dl class='route'>
-    <dt><button mat-raised-button class="ok" (click)="onClickStartEndSelect(true)">{{ "PointOfDeparture" | translate }}</button></dt>
-    <dd>{{ data[1].startPlanSpot ? data[1].startPlanSpot.spotName : data[1].planSpots[0].spotName }}</dd>
-    <dt><button mat-raised-button class="ok" (click)="onClickStartEndSelect(false)">{{ "ArrivalPlace" | translate }}</button></dt>
-    <dd>{{ data[1].endPlanSpot ? data[1].endPlanSpot.spotName : data[1].planSpots[data[1].planSpots.length - 1].spotName }}</dd>
+    <div>
+      <dt><button mat-raised-button class="ok" (click)="onClickStartEndSelect(true)">{{ "PointOfDeparture" | translate }}</button></dt>
+      <dd>{{ data[1].startPlanSpot ? data[1].startPlanSpot.spotName : data[1].planSpots[0].spotName }}</dd>
+    </div>
+    <div>
+      <dt><button mat-raised-button class="ok" (click)="onClickStartEndSelect(false)">{{ "ArrivalPlace" | translate }}</button></dt>
+      <dd>{{ data[1].endPlanSpot ? data[1].endPlanSpot.spotName : data[1].planSpots[data[1].planSpots.length - 1].spotName }}</dd>
+    </div>
   </dl>
 </mat-dialog-content>
 <mat-dialog-actions>

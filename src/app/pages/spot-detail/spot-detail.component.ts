@@ -220,8 +220,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         //   this.router.navigate(["/SystemError"]);
         //   return;
         // }
-
       });
+      
   }
 
   // プランに追加する TBD:googleSpot
