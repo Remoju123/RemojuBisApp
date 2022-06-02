@@ -223,7 +223,7 @@
       </mat-card-content>
     </mat-card>
 
-    <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId" [spotplanName]="data.spotName"></app-review-list-panel>
+    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId"></app-comment-list-post-panel>
 
     <mat-card id="nearbySpot" class="pics">
       <mat-card-header>

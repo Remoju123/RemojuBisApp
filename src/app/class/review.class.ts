@@ -11,6 +11,7 @@ export class Review {
   parentDisplayOrder: number;
   title: string;
   contents: string;
+  editContents: string;
   evaluation: number;
   visitDate: string;
   postedDate: string;
@@ -18,7 +19,7 @@ export class Review {
   userName: string;
   pictureUrl: string;
   pictures: ReviewPicture[];
-  reviews: Review[];
+  childReviews: Review[];
   // 表示時に取得
   age: number;
   gender: string;
@@ -28,6 +29,8 @@ export class Review {
   isPlan:boolean;
   planSpotName:string;
   type:number;
+  isEdit: boolean;
+  isReply: boolean;
 }
 
 export class ReviewPicture {
@@ -46,9 +49,10 @@ export class RegistReviewResult{
 }
 
 // スポット
-export interface SpotReviews {
+export class SpotReviews {
   spot_id: number;
   display_order: number;
+  parent_display_order: number;
   user_id: number;
   title: string;
   contents: string;
@@ -58,7 +62,7 @@ export interface SpotReviews {
   objectId: string;
 }
 
-export interface SpotReviewsPicture {
+export class SpotReviewsPicture {
   spot_id: number;
   display_order: number;
   picture_display_order: number;
@@ -66,9 +70,10 @@ export interface SpotReviewsPicture {
 }
 
 // プラン
-export interface PlanReviews {
+export class PlanReviews {
   plan_id: number;
   display_order: number;
+  parent_display_order: number;
   user_id: number;
   title: string;
   contents: string;
@@ -78,7 +83,7 @@ export interface PlanReviews {
   objectId: string;
 }
 
-export interface PlanReviewsPicture {
+export class PlanReviewsPicture {
   plan_id: number;
   display_order: number;
   picture_display_order: number;
@@ -86,9 +91,10 @@ export interface PlanReviewsPicture {
 }
 
 // プランユーザ
-export interface PlanUserReviews {
+export class PlanUserReviews {
   plan_user_id: number;
   display_order: number;
+  parent_display_order: number;
   user_id: number;
   title: string;
   contents: string;
@@ -98,7 +104,7 @@ export interface PlanUserReviews {
   objectId: string;
 }
 
-export interface PlanUserReviewsPicture {
+export class PlanUserReviewsPicture {
   plan_user_id: number;
   display_order: number;
   picture_display_order: number;

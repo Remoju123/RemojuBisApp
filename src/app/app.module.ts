@@ -115,6 +115,7 @@ import { RouterModule } from '@angular/router';
 import { MyplanSpotEditDialogComponent } from './parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component';
 import { MyplanPlanEditDialogComponent } from './parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component';
 import { MyplanAutoDialogComponent } from './parts/myplan-auto-dialog/myplan-auto-dialog.component';
+import { CommentListPostPanelComponent } from './parts/comment-list-post-panel/comment-list-post-panel.component';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -187,7 +188,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     GuideComponent,
     MyplanSpotEditDialogComponent,
     MyplanPlanEditDialogComponent,
-    MyplanAutoDialogComponent
+    MyplanAutoDialogComponent,
+    CommentListPostPanelComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
