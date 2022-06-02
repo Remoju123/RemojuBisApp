@@ -526,13 +526,22 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   setMapFitBounds(currentLocation: boolean) {
     if (this.map && this.mapSpots && this.mapSpots.length > 0) {
       const bounds = new google.maps.LatLngBounds();
-      for (let i = 0; i < this.mapSpots.length; i++) {
-        bounds.extend(new google.maps.LatLng(this.mapSpots[i].latitude, this.mapSpots[i].longitude));
+      if (this.mapSpots.length === 1) {
+        const adjust = 0.001;
+        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude, this.mapSpots[0].longitude));
+        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude-adjust, this.mapSpots[0].longitude-adjust));
+        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude+adjust, this.mapSpots[0].longitude+adjust));
+        this.map.fitBounds(bounds);
+      } else {
+        for (let i = 0; i < this.mapSpots.length; i++) {
+          bounds.extend(new google.maps.LatLng(this.mapSpots[i].latitude, this.mapSpots[i].longitude));
+        }
+        if (currentLocation) {
+          bounds.extend(new google.maps.LatLng(this.userLocation.latitude, this.userLocation.longitude));
+        }
+        this.map.fitBounds(bounds);
       }
-      if (currentLocation) {
-        bounds.extend(new google.maps.LatLng(this.userLocation.latitude, this.userLocation.longitude));
-      }
-      this.map.fitBounds(bounds);
+
     }
   }
 
