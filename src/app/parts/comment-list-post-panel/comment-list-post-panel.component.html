@@ -1,0 +1,184 @@
+<mat-card id="review" class="p0">
+  <mat-card-header>
+    <h4 class="header">
+      {{ "Review" | translate }}
+    </h4>
+  </mat-card-header>
+  <mat-divider class="rj-linecolor"></mat-divider>
+  <mat-card-content>
+    <mat-accordion *ngIf="reviewResult && reviewResult.reviews && reviewResult.reviews.length > 0;else noReview">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header
+          expandedHeight="48px"
+          collapsedHeight="48px">
+          <div class="container">
+            <span class="item">
+              ( {{ reviewResult.reviews.length }} {{ "Results" | translate }})
+            </span>
+          </div>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item *ngFor="let item of reviewResult.reviews | slice: 0:dispQty">
+            <div class="header">
+              <div class="date">
+                <img [src]="item.pictureUrl ?? '../../../assets/img/icon_who.svg'" alt="user">
+                <span>{{ item.userName }}</span>
+                <span>
+                  <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menu">
+                    <mat-icon>
+                      more_vert</mat-icon>
+                  </button>
+                </span>
+              </div>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onClickReport(item)">{{ "ReportReview" | translate }}</button>
+              </mat-menu>
+            </div>
+            <div class="content" *ngIf="!item.isEdit">
+              {{ item.contents }}
+            </div>
+            <div class="btnedit" *ngIf="!item.isEdit && objectId === item.objectId">
+              <button class="edit" mat-stroked-button (click)="item.isEdit = !item.isEdit">
+                {{ "Edit" | translate }}
+              </button>
+              <button class="remove" mat-stroked-button (click)="onClickDelete(item)">
+                {{ "Remove" | translate }}
+              </button>
+            </div>
+            <div class="btnedit" *ngIf="item.isEdit && objectId === item.objectId">
+              <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
+                <mat-label>{{ "contentsEx" | translate }}</mat-label>
+                <textarea
+                  matInput
+                  #contents
+                  name="contents"
+                  maxlength="1000"
+                  placeholder="{{ 'contentsEx' | translate }}"
+                  required
+                  #inputinfo="ngModel"
+                  [(ngModel)]="item.editContents"></textarea>
+                <mat-hint align="end">{{ contents.value?.length || 0 }}/1000{{ "Characters" | translate }}</mat-hint>
+              </mat-form-field>
+              <button
+                mat-stroked-button class="edit" [disabled]="contents.value?.length === 0"
+                (click)="onClickPosted(null, item)">
+                {{ "Save" | translate }}
+              </button>
+              <button
+                mat-stroked-button class="edit"
+                (click)="item.isEdit = !item.isEdit; item.editContents = item.contents;">
+                {{ "Save" | translate }}{{ "EditCancel" | translate }}
+              </button>
+            </div>
+            <mat-list *ngIf="item.childReviews">
+              <mat-list-item *ngFor="let childItem of item.childReviews">
+                <div class="header">
+                  <div class="date">
+                    ∟<img [src]="childItem.pictureUrl ?? '../../../assets/img/icon_who.svg'" alt="user">
+                    <span>{{ childItem.userName }}</span>
+                    <span>
+                      <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menuChild">
+                        <mat-icon>
+                          more_vert</mat-icon>
+                      </button>
+                    </span>
+                  </div>
+                  <mat-menu #menuChild="matMenu">
+                    <button mat-menu-item (click)="onClickReport(childItem)">{{ "ReportReview" | translate }}</button>
+                  </mat-menu>
+                </div>
+                <div *ngIf="!childItem.isEdit">{{ childItem.contents }}</div>
+                <div class="btnedit" *ngIf="!childItem.isEdit && objectId === childItem.objectId">
+                  <button class="edit" mat-stroked-button (click)="childItem.isEdit = !childItem.isEdit">
+                    {{ "Edit" | translate }}
+                  </button>
+                  <button class="remove" mat-stroked-button (click)="onClickDelete(childItem)">
+                    {{ "Remove" | translate }}
+                  </button>
+                </div>
+                <div class="btnedit" *ngIf="childItem.isEdit">
+                  <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
+                    <mat-label>{{ "contentsEx" | translate }}</mat-label>
+                    <textarea
+                      matInput
+                      #contentsC
+                      name="contentsC"
+                      maxlength="1000"
+                      placeholder="{{ 'contentsEx' | translate }}"
+                      required
+                      #inputinfo="ngModel"
+                      [(ngModel)]="childItem.editContents"></textarea>
+                    <mat-hint align="end">{{ contentsC.value?.length || 0 }}/1000{{ "Characters" | translate }}</mat-hint>
+                  </mat-form-field>
+                  <button
+                    mat-stroked-button class="edit" [disabled]="contentsC.value?.length === 0"
+                    (click)="onClickPosted(null, childItem)">
+                    {{ "Save" | translate }}
+                  </button>
+                  <button
+                    mat-stroked-button class="edit"
+                    (click)="childItem.isEdit = !childItem.isEdit; childItem.editContents = childItem.contents">
+                    {{ "Save" | translate }}{{ "EditCancel" | translate }}
+                  </button>
+                </div>
+              </mat-list-item>
+            </mat-list>
+            <div class="btnedit" *ngIf="!item.isReply && objectId !== item.objectId">
+              <button
+                mat-stroked-button class="edit" (click)="item.isReply = !item.isReply;">
+                {{ "Reply" | translate }}
+              </button>
+            </div>
+            <div class="btnedit" *ngIf="item.isReply && objectId !== item.objectId">
+              <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
+                <mat-label>{{ "contentsEx" | translate }}</mat-label>
+                <textarea
+                  matInput
+                  #contentsR
+                  name="contentsR"
+                  maxlength="1000"
+                  placeholder="{{ 'contentsEx' | translate }}"
+                  required></textarea>
+                <mat-hint align="end">{{ contentsR.value?.length || 0 }}/1000{{ "Characters" | translate }}</mat-hint>
+              </mat-form-field>
+              <button
+                mat-stroked-button class="edit" [disabled]="contentsR.value?.length === 0"
+                (click)="onClickPosted(contentsR.value, null, item.displayOrder);contentsR.value = null;">
+                {{ "Reply" | translate }}
+              </button>
+              <button
+                mat-stroked-button class="edit"
+                (click)="item.isReply = !item.isReply">
+                {{ "Reply" | translate }}{{ "EditCancel" | translate }}
+              </button>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <div class="more">
+          <button mat-stroked-button *ngIf="reviewResult.reviews.length > dispQty"
+            (click)="onClickMore()">{{reviewbtnName()}}
+          </button>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+    <ng-template #noReview>
+      <div class="alert">{{ "NoReview" | translate}}</div>
+    </ng-template>
+    <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" style="width: 100%;">
+      <mat-label>{{ "contentsEx" | translate }}</mat-label>
+      <textarea
+        matInput
+        #contentsN
+        name="contentsN"
+        maxlength="1000"
+        placeholder="{{ 'contentsEx' | translate }}"
+        required></textarea>
+      <mat-hint align="end">{{ contentsN.value?.length || 0 }}/1000{{ "Characters" | translate }}</mat-hint>
+    </mat-form-field>
+    <button
+      mat-stroked-button class="edit" [disabled]="contentsN.value?.length === 0"
+      (click)="onClickPosted(contentsN.value);contentsN.value = null;">
+      {{ "ReviewPosted" | translate }}
+    </button>
+  </mat-card-content>
+</mat-card>

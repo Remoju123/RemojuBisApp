@@ -270,8 +270,8 @@
     </div>
 
     <!-- レビュー投稿 -->
-    <app-review-list-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
-      [id]="data.planId" [spotplanName]="data.planName"></app-review-list-panel>
+    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
+      [id]="data.planId"></app-comment-list-post-panel>
 
     <!-- 投稿者のプロフィール-->
     <mat-card id="writer" *ngIf="data.user || data.userStaff">
