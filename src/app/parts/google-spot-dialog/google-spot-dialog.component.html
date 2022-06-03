@@ -1,6 +1,10 @@
 <h2 mat-dialog-title *ngIf="data[1]">{{ "StartSearch" | translate }}<span>{{"Option"|translate}}</span></h2>
 <h2 mat-dialog-title *ngIf="!data[1]">{{ "EndSearch" | translate }}<span>{{"Option"|translate}}</span></h2>
 <mat-dialog-content>
+  <div>
+    <span *ngIf="data[1]">{{ "StartEx" | translate }}</span>
+    <span *ngIf="!data[1]">{{ "EndEx" | translate }}</span>
+  </div>
   <div class="form">
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>{{ 'GoogleKeyword' | translate }}</mat-label>
