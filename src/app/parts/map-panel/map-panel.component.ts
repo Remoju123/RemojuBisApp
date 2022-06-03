@@ -63,6 +63,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   markerSubIcon = "../../../assets/img/mks{0}.svg";
   markerNoDispIcon = "../../../assets/img/pin_gray-r.svg";
   markerStartEndIcon = "../../../assets/img/pin_red.svg";
+  markerStartIcon = "../../../assets/img/pin_start.svg";
+  markerEndIcon = "../../../assets/img/pin_end.svg";
 
   polylineColor = "#6699ff";
   polylineColorSelected = "#ff6666";
@@ -408,9 +410,19 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       this.mapSpots[i].polylineColor = this.polylineColor;
 
       // 出発地と到着地のアイコンURL
-      if (this.mapSpots[i].isStart || this.mapSpots[i].isEnd){
+      if (this.mapSpots[i].isStart){
         this.mapSpots[i].iconUrl = {
-          url: this.markerStartEndIcon,
+          url: this.markerStartIcon,
+          scaledSize: {
+            width: $width,
+            height: $height
+          },
+          anchor:$anchor,
+          labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+        };
+      } else if (this.mapSpots[i].isEnd) {
+        this.mapSpots[i].iconUrl = {
+          url: this.markerEndIcon,
           scaledSize: {
             width: $width,
             height: $height
@@ -604,7 +616,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     const langpipe = new LangFilterPipe();
     // アイコンを変更
     if(this.mapSpots[this.spotIndex].isStart || this.mapSpots[this.spotIndex].isEnd) {
-      this.spotMarkerFrom = this.markerStartEndIcon;
+      this.spotMarkerFrom = this.markerStartIcon;
     } else if (this.mapSpots[this.spotIndex].isEndOfPublication){
       this.spotMarkerFrom = this.markerNoDispIcon;
     } else {
@@ -612,7 +624,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     }
     if (this.mapSpots.length > 1){
       if(this.mapSpots[this.spotIndex + 1].isEnd) {
-        this.spotMarkerTo = this.markerStartEndIcon;
+        this.spotMarkerTo = this.markerEndIcon;
       } else if (this.mapSpots[this.spotIndex + 1].isEndOfPublication){
         this.spotMarkerTo = this.markerNoDispIcon;
       } else {

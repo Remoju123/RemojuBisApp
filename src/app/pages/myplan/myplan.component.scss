@@ -259,12 +259,28 @@ form {
       }
 
       &::before {
-        content: url("../../../assets/img/location_on.svg");
-        width: 13px;
-        height: 16px;
+        content: "";
+        width: 25px;
+        height: 30px;
         display: inline-block;
         vertical-align: -3px;
         margin-right: 3px;
+      }
+    }
+
+    &.arrival{
+      button.setting{
+        &::before{
+          content: url("../../../assets/img/location_end.svg");
+        }
+      }
+    }
+
+    &.depart{
+      button.setting{
+        &::before{
+          content: url("../../../assets/img/location_start.svg");
+        }
       }
     }
 
@@ -879,7 +895,7 @@ form {
       .mark {
         min-width: 30px;
         height: 36px;
-        background-image: url("../../../assets/img/location_on.svg");
+        //background-image: url("../../../assets/img/location_on.svg");
         margin-right: 5px;
       }
 
@@ -903,6 +919,20 @@ form {
       left: 56px;
       font-size: 10px;
       color: $color-gld01;
+    }
+  }
+  .startSpot{
+    .lt{
+      .mark{
+        background-image: url("../../../assets/img/location_start.svg");
+      }
+    }
+  }
+  .endSpot{
+    .lt{
+      .mark{
+        background-image: url("../../../assets/img/location_end.svg");
+      }
     }
   }
 
