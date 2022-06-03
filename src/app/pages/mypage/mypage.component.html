@@ -1,7 +1,12 @@
 
-<div class="title">
-  {{ userName }}{{ "Sanno" | translate }}
-  {{ "MyPage" | translate }}
+<div class='headline'>
+  <div class="title">
+    {{ userName }}{{ "Sanno" | translate }}
+    {{ "MyPage" | translate }}
+  </div>
+  <div class='link' (click)="linktolist()">
+    <span class="frame">{{"BackEveryoneRecommendations" | translate}}</span>
+  </div>
 </div>
 <mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabChange($event)" id="mypage" [disablePagination]="true">
   <mat-tab label="{{ 'MyplanList' | translate }}">

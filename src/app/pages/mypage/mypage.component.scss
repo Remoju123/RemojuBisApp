@@ -1,112 +1,160 @@
 @import "vars";
-.title{
-  display: flex;
-  justify-content: center;
-  height: 36px;
-  font-size: 14px;
-  align-items: center;
-  //color: #bfa060;
+
+.headline {
   position: sticky;
   top: 0;
   z-index: 999;
   background-color: #fff;
+
+  .title {
+    display: flex;
+    justify-content: center;
+    height: 36px;
+    font-size: 14px;
+    align-items: center;
+    //color: #bfa060;
+  }
+
+  .link {
+    //display: none;
+    display: block;
+    font-size: 14px;
+    position: absolute;
+    z-index: 1000;
+    top: 7px;
+    left: 10px;
+    cursor: pointer;
+
+    .frame {
+      border: 1px solid #B7B7B7;
+      padding: 1px 8px;
+      border-radius: 12px;
+      &::before {
+        content: "keyboard_arrow_left";
+        font-family: "Material Icons";
+        font-size: 18px;
+        vertical-align: sub;
+      }
+    }
+  }
 }
 
-#mypage{// .mat-tab-group{
-  ::ng-deep.mat-tab-header{
-      background-color: #ece9e7;
-      height: 67px;
-      border-bottom: none;
 
-      top:36px;
-      z-index: 1000;
-      position: sticky;
-      .mat-tab-labels{
-        justify-content: space-between;
-        .mat-tab-label{
-          height: 55px;
-          padding: 0;
-          width: 25vw;
-          //margin-top: 8px;
-          .mat-tab-label-content{
-            font-size: 12px;
-            padding: 6px 0;
-            //width: 112px;
-            background-color: #fff;
-            //border-radius: 10px;
-            color: #bfa060;
-            //height: 52px;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            align-items: flex-end;
-            &::before{
-              position: absolute;
-              top: 6px;
-            }
-          }
-          &.mat-tab-label-active{
-            .mat-tab-label-content{
-              background-color: $color-gld01;
-              color: #fff;
-            }
-          }
+#mypage {
 
-          &:nth-of-type(1){
-            .mat-tab-label-content::before{
-              content: url("../../../assets/img/icon_myplan2.svg"); 
-              width: 31px;
-              height: 31px;
-              margin-right: 6px;
-            }
+  // .mat-tab-group{
+  ::ng-deep.mat-tab-header {
+    background-color: #ece9e7;
+    height: 67px;
+    border-bottom: none;
+
+    top: 36px;
+    z-index: 1000;
+    position: sticky;
+
+    .mat-tab-labels {
+      justify-content: space-between;
+
+      .mat-tab-label {
+        height: 55px;
+        padding: 0;
+        width: 25vw;
+
+        //margin-top: 8px;
+        .mat-tab-label-content {
+          font-size: 12px;
+          padding: 6px 0;
+          //width: 112px;
+          background-color: #fff;
+          //border-radius: 10px;
+          color: #bfa060;
+          //height: 52px;
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          align-items: flex-end;
+
+          &::before {
+            position: absolute;
+            top: 6px;
           }
-          &:nth-of-type(2){
-            .mat-tab-label-content::before{
-              content: url("../../../assets/img/icon_myfav2.svg"); 
-              width: 314px;
-              height: 31px;
-              margin-right: 6px;
-            }
+        }
+
+        &.mat-tab-label-active {
+          .mat-tab-label-content {
+            background-color: $color-gld01;
+            color: #fff;
           }
-          &:nth-of-type(3){
-            .mat-tab-label-content::before{
-              content: url("../../../assets/img/icon_myprof2.svg"); 
-              width: 31px;
-              height: 31px;
-              margin-right: 6px;
-            }
+        }
+
+        &:nth-of-type(1) {
+          .mat-tab-label-content::before {
+            content: url("../../../assets/img/icon_myplan2.svg");
+            width: 31px;
+            height: 31px;
+            margin-right: 6px;
           }
-          &:nth-of-type(4){
-            .mat-tab-label-content::before{
-              content: url("../../../assets/img/icon_myrev2.svg"); 
-              width: 31px;
-              height: 31px;
-              margin-right: 6px;
-            }
+        }
+
+        &:nth-of-type(2) {
+          .mat-tab-label-content::before {
+            content: url("../../../assets/img/icon_myfav2.svg");
+            width: 314px;
+            height: 31px;
+            margin-right: 6px;
+          }
+        }
+
+        &:nth-of-type(3) {
+          .mat-tab-label-content::before {
+            content: url("../../../assets/img/icon_myprof2.svg");
+            width: 31px;
+            height: 31px;
+            margin-right: 6px;
+          }
+        }
+
+        &:nth-of-type(4) {
+          .mat-tab-label-content::before {
+            content: url("../../../assets/img/icon_myrev2.svg");
+            width: 31px;
+            height: 31px;
+            margin-right: 6px;
           }
         }
       }
+    }
 
-      .mat-tab-header-pagination{
-        min-width: 20px;
-        box-shadow: none;
-      }
+    .mat-tab-header-pagination {
+      min-width: 20px;
+      box-shadow: none;
+    }
 
-      ::ng-deep.mat-ink-bar{
-        background-image: url("../../../assets/img/tab_alt.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-        height: 10px;
-        background-color: transparent;
-      }
-      
+    ::ng-deep.mat-ink-bar {
+      background-image: url("../../../assets/img/tab_alt.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 10px;
+      background-color: transparent;
+    }
+
   }
 
   @media screen and (min-width: 1025px) {
-    ::ng-deep.mat-tab-header{
-      .mat-tab-labels{
-        .mat-tab-label{
+
+    ::ng-deep.mat-tab-header {
+      .mat-tab-labels {
+        .mat-tab-label {
           width: auto;
+        }
+      }
+    }
+
+    ::ng-deep.mat-tab-body-wrapper {
+      .mat-tab-body {
+        .mat-tab-body-content {
+          height: 100vh;
+          overflow-y: scroll !important;
         }
       }
     }

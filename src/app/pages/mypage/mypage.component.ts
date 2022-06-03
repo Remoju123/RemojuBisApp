@@ -105,6 +105,10 @@ export class MypageComponent implements OnInit, OnDestroy {
     }
   }
 
+  linktolist() {
+    this.router.navigate(["/" + this.lang + "/planspot"]);
+  }
+
   // async getPlanSpotDataSet() {
   //   this.mypageFavoriteListService.getMypageFavoritePlanSpotList().pipe(takeUntil(this.onDestroy$))
   //   .subscribe((r) => {
