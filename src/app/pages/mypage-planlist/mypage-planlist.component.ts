@@ -273,6 +273,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     }
   }
 
+  async onClickPreview(row: MypagePlanAppList) {
+    this.router.navigate(["/" + this.lang + "/plans/detail",row.planUserId]);
+  }
+
   async onClickEditPlan(row: MypagePlanAppList){
     // 編集中のプランを取得
     let myPlan: any = await this.indexedDBService.getEditPlan();
