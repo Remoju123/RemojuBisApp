@@ -233,9 +233,9 @@
             </span>
           </ng-template>
         </div>
-        <div class='rt'>
+        <!-- <div class='rt'>
           <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
-        </div>
+        </div> -->
       </mat-card-header>
     </mat-card>
 
@@ -263,17 +263,17 @@
       <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
         <img width="100%" height="100%"
           [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl ?? row.refPictureUrl" />
-        <div class='areaName'>
+        <!-- <div class='areaName'>
           <span>
             {{optionKeywords[0]}}
           </span>
-        </div>
+        </div> -->
       </div>
-      <mat-list class="planex">
+      <!-- <mat-list class="planex">
         <mat-list-item>
           <p *ngIf="row.planExplanation">{{ row.planExplanation }}</p>
         </mat-list-item>
-      </mat-list>
+      </mat-list> -->
     </div>
 
     <!-- 出発地 -->

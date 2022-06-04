@@ -135,7 +135,8 @@ form {
 
   .mat-card-header.myplan-header {
     span {
-      font-size: 15px;
+      font-size: 16px;
+      font-weight: 700;
     }
   }
 
@@ -184,7 +185,7 @@ form {
       }
 
       .lt {
-        flex-basis: 74%;
+        //flex-basis: 74%;
         display: flex;
         flex-direction: column;
 
@@ -268,17 +269,17 @@ form {
       }
     }
 
-    &.arrival{
-      button.setting{
-        &::before{
+    &.arrival {
+      button.setting {
+        &::before {
           content: url("../../../assets/img/location_end.svg");
         }
       }
     }
 
-    &.depart{
-      button.setting{
-        &::before{
+    &.depart {
+      button.setting {
+        &::before {
           content: url("../../../assets/img/location_start.svg");
         }
       }
@@ -815,29 +816,29 @@ form {
         }
       }
     }
-
-
-    // .name {
-    //   display: flex;
-    //   align-items: center;
-    //   margin: auto 16px;
-
-    //   span {
-    //     font-weight: 700;
-    //   }
-
-    //   .noName {
-    //     font-size: 15px;
-    //     font-weight: normal;
-    //     color: #f44336;
-    //   }
-    // }
   }
+
+  $img_height:270px;
+  $img_height_m:54vw;
+  $img_height_s:69vw;
 
   .planhead {
     .picpreview {
-      height: fit-content;
+      height: $img_height;
       position: relative;
+      margin: 0.5em 16px;
+
+      @media screen and (max-width:428px) {
+        height: $img_height_s;
+      }
+
+      @media screen and (min-width: 429px) and (max-width: 1024px) {
+        height: $img_height_m;
+      }
+
+      img {
+        object-fit: cover;
+      }
 
       .areaName {
         position: absolute;
@@ -921,16 +922,18 @@ form {
       color: $color-gld01;
     }
   }
-  .startSpot{
-    .lt{
-      .mark{
+
+  .startSpot {
+    .lt {
+      .mark {
         background-image: url("../../../assets/img/location_start.svg");
       }
     }
   }
-  .endSpot{
-    .lt{
-      .mark{
+
+  .endSpot {
+    .lt {
+      .mark {
         background-image: url("../../../assets/img/location_end.svg");
       }
     }
@@ -1098,10 +1101,6 @@ form {
             }
           }
         }
-
-        $img_height:42vw;
-        $img_height_m:54vw;
-        $img_height_s:69vw;
 
         .spot-image {
           position: relative;
@@ -1652,6 +1651,7 @@ form {
     //align-items: center;
     flex-direction: column;
     margin: 30px 0;
+    position: relative;
 
     .container {
       select {

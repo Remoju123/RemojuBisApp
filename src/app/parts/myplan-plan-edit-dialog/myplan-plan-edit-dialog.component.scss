@@ -82,6 +82,7 @@
 
           .mat-form-field-wrapper {
             padding-bottom: 1em;
+            margin-bottom: 1em;
 
             .mat-form-field-hint-wrapper {
               margin-top: 0;
@@ -161,6 +162,33 @@
   
           .memo {
             margin-bottom: 1em;
+          }
+        }
+
+        .area{
+          display: flex;
+          align-items: center;
+          label{
+            font-size: 12px;
+            margin-left: 19px;
+          }
+          .container {
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid $color-gld01;
+            width: 83px;
+      
+            &::after {
+              content: "▼";
+              font-size: 9px;
+              color: #999;
+            }
+
+            select {
+              all: unset;
+              font-size: 11px;
+              font-weight: 700;
+            }
           }
         }
       }
