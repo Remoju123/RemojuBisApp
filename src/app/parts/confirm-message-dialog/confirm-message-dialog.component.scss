@@ -1,8 +1,6 @@
 @import "vars";
-
 ::ng-deep.cdk-global-overlay-wrapper {
-  //align-items: center !important;
-
+  align-items: center !important;
   .cdk-overlay-pane {
     @media screen and (min-width: 1025px) {
       display: flex;

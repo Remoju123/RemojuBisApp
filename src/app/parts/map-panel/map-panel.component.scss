@@ -38,13 +38,13 @@
   width: 100%;
 }
 #routeDiv{
-  position: fixed!important;
+  //position: fixed!important;
   bottom: 0!important;
   width: 100%;
   z-index: 1000002!important;
   background: #fff;
   height: 160px;
-
+  position: relative;
   .route{
     display: flex;
     flex-direction: row;
@@ -116,7 +116,7 @@
       z-index: 10;
       overflow: hidden;
       margin: 0;
-      width: 10%;
+      width: 30px;
 
       &.prev{
 

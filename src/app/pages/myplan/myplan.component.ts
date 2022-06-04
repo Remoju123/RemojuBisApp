@@ -509,15 +509,28 @@ export class MyplanComponent implements OnInit, OnDestroy {
     param.endPlanSpot = this.row.endPlanSpot;
     param.isCar = this.row.isCar;
     param.overviewPolyline = this.row.overviewPolyline;
-    const dialog = this.dialog.open(MapDialogComponent, {
-      maxWidth: "100%",
-      width: "100vw",
-      height: "100vh",
-      position: { top: "0" },
-      data: param,
-      autoFocus: false,
-      id: "fullmap"
-    });
+    if(this.isMobile){
+      this.dialog.open(MapDialogComponent, {
+        maxWidth: "100%",
+        width: "100vw",
+        height: "100vh",
+        position: { top: "0" },
+        data: param,
+        autoFocus: false,
+        id: "fullmap"
+      });
+    }else{
+      this.dialog.open(MapDialogComponent, {
+        maxWidth: "60%",
+        width: "60vw",
+        height: "95vh",
+        //position: { top: "0" },
+        data: param,
+        autoFocus: false,
+        id: "fullmap"
+      });
+    }
+    
   }
 
   // スポット入れ替え
