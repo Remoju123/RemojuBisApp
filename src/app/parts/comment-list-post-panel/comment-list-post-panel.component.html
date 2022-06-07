@@ -89,10 +89,10 @@
                 </div>
                 <div *ngIf="!childItem.isEdit">
                   {{ childItem.contents }}
-                  <button (click)="onClickThanks(childItem)" [ngStyle]="{'color' : (childItem.isThanks? 'red' : 'gray')}">
-                    <i class="material-icons">thumb_up</i>
-                  </button>
                 </div>
+                <button *ngIf="!childItem.isEdit && objectId !== childItem.objectId" (click)="onClickThanks(childItem)" [ngStyle]="{'color' : (childItem.isThanks? 'red' : 'gray')}">
+                  <i class="material-icons">thumb_up</i>
+                </button>
                 <div class="btnedit" *ngIf="!childItem.isEdit && objectId === childItem.objectId">
                   <button class="edit" mat-stroked-button (click)="childItem.isEdit = !childItem.isEdit">
                     {{ "Edit" | translate }}
