@@ -32,15 +32,18 @@ export class CommentListPostPanelComponent implements OnInit, OnDestroy {
     private translate: TranslateService) { }
 
   objectId: string;
+  guid: string;
   dispQty: number;
 
   get lang() {
     return this.translate.currentLang;
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.dispReview(0);
     this.objectId = this.commonService.objectId;
+    // GUID取得
+    this.guid = await this.commonService.getGuid();
 
     this.reviewResult.reviews.map(x=>{
       x.ismore = false;
@@ -247,6 +250,30 @@ export class CommentListPostPanelComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  onClickThanks(review: Review) {
+    review.isThanks = !review.isThanks;
+    switch (this.type) {
+      // スポット
+      case 1:
+        this.spotService.registReviewThanks(review, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          review.thanksCnt = r;
+        });
+        break;
+      // プラン
+      case 2:
+        this.planService.registReviewPlanThanks(review, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          review.thanksCnt = r;
+        });
+        break;
+      // プランユーザ
+      case 3:
+        this.planService.registReviewPlanUserThanks(review, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          review.thanksCnt = r;
+        });
+        break;
+    }
   }
 
   onClickMore(){

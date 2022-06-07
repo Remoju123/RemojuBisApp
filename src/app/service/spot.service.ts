@@ -4,8 +4,8 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
 import { DataSelected } from "../class/common.class";
-import { RegistReviewResult, ReviewResult, SpotReviews } from "../class/review.class";
-import { SpotApp, SpotThanks } from "../class/spot.class";
+import { RegistReviewResult, Review, ReviewResult, SpotReviews } from "../class/review.class";
+import { SpotApp, SpotReviewThanks, SpotThanks } from "../class/spot.class";
 import { CommonService } from "./common.service";
 import { LangFilterPipe } from "../utils/lang-filter.pipe";
 import { TranslateService } from "@ngx-translate/core";
@@ -61,25 +61,43 @@ export class SpotService {
   }
 
   // Thanks初期値取得
-  getThanks(_spot_id: number) {
-    const url = this.host + "/api/spotthanks/" + _spot_id;
-    return this.http.get<number>(url);
-  }
+  // getThanks(_spot_id: number) {
+  //  const url = this.host + "/api/spotthanks/" + _spot_id;
+  //  return this.http.get<number>(url);
+  // }
 
-  // Thanksを言おう
+  // Thanks登録
   registThanks(
-    _spot_id: number,
-    _guid: string
-  ): Observable<number> {
-    const data: SpotThanks = {
-      spot_id: _spot_id,
-      guid: _guid,
-      is_delete: false,
+    spotId: number,
+    isThanks: boolean,
+    guid: string
+  ) {
+    const thanks: SpotThanks = {
+      spot_id: spotId,
+      guid: guid,
+      is_delete: !isThanks,
       objectId: this.commonService.objectId
     };
 
-    const url = this.host + "/api/spotthanks/thanks";
-    return this.http.post<any>(url, data, httpOptions);
+    const url = this.host + "/api/spot/RegistThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
+  }
+
+  // レビューThanks登録
+  registReviewThanks(
+    review: Review,
+    guid: string,
+  ) {
+    const thanks: SpotReviewThanks = {
+      spot_id: review.id,
+      display_order: review.displayOrder,
+      guid: guid,
+      is_delete: !review.isThanks,
+      objectId: this.commonService.objectId
+    };
+
+    const url = this.host + "/api/spot/RegistReviewThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
   }
 
   // 定休日文字列生成

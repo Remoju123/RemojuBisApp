@@ -8,6 +8,8 @@ export class PlanApp {
   planName: string;
   planExplanation: string;
   areaId: number;
+  isThanks: boolean;
+  thanksQty: number;
   isFavorite: boolean;
   pictures: string[];
   picCnt: number;
@@ -99,6 +101,40 @@ export class PlanFavorite {
 
 export class PlanUserFavorite {
   plan_user_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class PlanThanks {
+  plan_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class PlanReviewThanks {
+  plan_id: number;
+  display_order: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class PlanUserThanks {
+  plan_user_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class PlanUserReviewThanks {
+  plan_user_id: number;
+  display_order: number;
   guid: string;
   is_delete: boolean;
 

@@ -68,6 +68,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   $spotId: number;
   $versionNo: number;
   $googleSpot: GoogleSpot;
+  $isThanks: boolean;
   $thanksQty = 0;
 
   $userStaff: UserStaff;
@@ -150,9 +151,10 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   }
 
   @Catch()
-  registThanks() {
+  onClickThanks() {
+    this.$isThanks = !this.$isThanks;
     this.spotService
-      .registThanks(this.$spotId, this.guid)
+      .registThanks(this.$spotId, this.$isThanks,this.guid)
       .subscribe(r => {
         this.$thanksQty = r;
       });
@@ -221,7 +223,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         //   return;
         // }
       });
-      
+
   }
 
   // プランに追加する TBD:googleSpot
@@ -321,12 +323,14 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       this.$latitude = Number(this.data.latitude);
       this.$longitude = Number(this.data.longitude);
 
-      this.spotService.getThanks(this.data.spotId).pipe(takeUntil(this.onDestroy$)).subscribe(t => {
-        this.$thanksQty = t;
-      });
+      // this.spotService.getThanks(this.data.spotId).pipe(takeUntil(this.onDestroy$)).subscribe(t => {
+      //   this.$thanksQty = t;
+      // });
       // this.spotService.registThanks().subscribe(t => {
       //   this.$thanksQty = t;
       // });
+      this.$isThanks = this.data.isThanks;
+      this.$thanksQty = this.data.thanksQty;
 
       this.mainPictures = this.data.pictures;
       this.isMulti = this.data.pictures.length > 1;
