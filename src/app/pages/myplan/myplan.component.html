@@ -188,7 +188,7 @@
           </div>
           <ng-template #pcBlank>
             <div class='pcguide'>
-              <p>スポットはまだありません。<br>お好きなスポットを追加しましょう</p>
+              <p>スポットはまだありません。<br>お好きなスポットを追加しよう。</p>
             </div>
           </ng-template>
         </div>
@@ -197,7 +197,7 @@
       <div *ngIf="row" class="myplan-box">
         <button mat-button class="del-spot" [disabled]="!row?.planSpots"
           (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
-        <button mat-button class="add-spot" (click)="onClickAddSpot()">
+        <button mat-button class="add-spot" (click)="onClickAddSpot()" [ngClass]="{'blank':!isMobile}">
           <span class='label'>{{ "AddSpot" | translate }}</span>
         </button>
       </div>

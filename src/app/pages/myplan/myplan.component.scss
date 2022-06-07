@@ -736,6 +736,10 @@ form {
           }
         }
       }
+
+      &.blank{
+        visibility: hidden;
+      }
     }
 
     button.clear {
