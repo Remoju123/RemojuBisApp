@@ -171,7 +171,7 @@
         </div>
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
-          <div class="guide">
+          <div class="guide" *ngIf="isMobile;else pcBlank">
             <p class='under'>{{ "MyPlan#Sec3" | translate }}</p>
             <div class="inputWrapper">
               <input placeholder="{{'SearchGuide'| translate}}" class="keyword" #keywordInput
@@ -186,6 +186,11 @@
             <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
             <!-- <p class='under'>{{ "MyPlan#notice" | translate }}</p> -->
           </div>
+          <ng-template #pcBlank>
+            <div class='pcguide'>
+              <p>スポットはまだありません。<br>お好きなスポットを追加しましょう</p>
+            </div>
+          </ng-template>
         </div>
       </div>
       <!-- スポットを追加する -->
