@@ -16,6 +16,8 @@ export class Review {
   visitDate: string;
   postedDate: string;
   objectId: string;
+  thanksCnt: number;
+  isThanks: boolean;
   userName: string;
   pictureUrl: string;
   pictures: ReviewPicture[];

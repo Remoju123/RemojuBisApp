@@ -102,6 +102,7 @@ export class SpotApp {
   isRegularHoliday: boolean;
   regularHoliday: string;
   pvQty: number;
+  isThanks: boolean;
   thanksQty: number;
   isFavorite: boolean;
   spotOverview: string;
@@ -130,6 +131,15 @@ export class SpotApp {
 
 export class SpotThanks {
   spot_id: number;
+  guid: string;
+  is_delete: boolean;
+
+  objectId: string;
+}
+
+export class SpotReviewThanks {
+  spot_id: number;
+  display_order: number;
   guid: string;
   is_delete: boolean;
 

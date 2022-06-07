@@ -4,8 +4,9 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { CommonService } from "./common.service";
 import { TranslateService } from "@ngx-translate/core";
-import { PlanApp, Line } from "../class/plan.class";
-import { RegistReviewResult, ReviewResult, PlanReviews, PlanUserReviews } from "../class/review.class";
+import { PlanApp, Line, PlanThanks, PlanReviewThanks, PlanUserThanks, PlanUserReviewThanks } from "../class/plan.class";
+import { RegistReviewResult, ReviewResult, PlanReviews, PlanUserReviews, Review } from "../class/review.class";
+import { Observable } from "rxjs";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -134,6 +135,74 @@ export class PlanService {
       default:
         return "";
     }
+  }
+
+  // Thanks登録(CTプラン)
+  registPlanThanks(
+    planId: number,
+    isThanks: boolean,
+    guid: string
+  ) {
+    const thanks: PlanThanks = {
+      plan_id: planId,
+      guid: guid,
+      is_delete: !isThanks,
+      objectId: this.commonService.objectId
+    };
+
+    const url = this.host + "/api/plan/RegistPlanThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
+  }
+
+  // レビューThanks登録(CTプラン)
+  registReviewPlanThanks(
+    review: Review,
+    guid: string
+  ) {
+    const thanks: PlanReviewThanks = {
+      plan_id: review.id,
+      display_order: review.displayOrder,
+      guid: guid,
+      is_delete: !review.isThanks,
+      objectId: this.commonService.objectId
+    };
+
+    const url = this.host + "/api/plan/RegistPlanReviewThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
+  }
+
+  // Thanks登録(ユーザプラン)
+  registPlanUserThanks(
+    planUserId: number,
+    isThanks: boolean,
+    guid: string
+  ) {
+    const thanks: PlanUserThanks = {
+      plan_user_id: planUserId,
+      guid: guid,
+      is_delete: !isThanks,
+      objectId: this.commonService.objectId
+    };
+
+    const url = this.host + "/api/plan/RegistPlanUserThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
+  }
+
+  // レビューThanks登録(ユーザプラン)
+  registReviewPlanUserThanks(
+    review: Review,
+    guid: string
+  ) {
+    const thanks: PlanUserReviewThanks = {
+      plan_user_id: review.id,
+      display_order: review.displayOrder,
+      guid: guid,
+      is_delete: !review.isThanks,
+      objectId: this.commonService.objectId
+    };
+
+    const url = this.host + "/api/plan/RegistPlanUserReviewThanks";
+    return this.http.post<number>(url, thanks, httpOptions);
   }
 
   // ユーザプラン違反報告

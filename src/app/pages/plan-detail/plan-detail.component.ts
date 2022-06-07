@@ -51,11 +51,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   data: PlanApp = new PlanApp();
-  $thanksQty = 0;
 
   $isRemojuPlan: boolean;
   $versionNo: number;
   $planId: number;
+  $isThanks: boolean;
+  $thanksQty = 0;
 
   spots: PlanSpotCommon[];
   transfers: Trans[];
@@ -144,6 +145,24 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         spot.isFavorite = x.isFavorite;
       }
     });
+  }
+
+  @Catch()
+  onClickThanks() {
+    this.$isThanks = !this.$isThanks;
+    if (this.$isRemojuPlan) {
+      this.planService
+        .registPlanThanks(this.$planId, this.$isThanks,this.guid)
+        .subscribe(r => {
+          this.$thanksQty = r;
+        });
+    } else {
+      this.planService
+        .registPlanUserThanks(this.$planId, this.$isThanks,this.guid)
+        .subscribe(r => {
+          this.$thanksQty = r;
+        });
+    }
   }
 
   // お気に入り登録(スポット)
@@ -319,6 +338,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.$isRemojuPlan = this.data.isRemojuPlan;
       this.$versionNo = this.data.versionNo;
       this.$planId = this.data.planId;
+
+      this.$isThanks = this.data.isThanks;
+      this.$thanksQty = this.data.thanksQty;
 
       if (this.$isRemojuPlan) {
         this.meta.addTags([

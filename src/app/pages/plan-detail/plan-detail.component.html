@@ -19,6 +19,9 @@
             </span>
           </div>
           <div class='buttons'>
+            <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
+              <i class="material-icons">thumb_up</i>
+            </button>
             <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
             </button>
             <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
