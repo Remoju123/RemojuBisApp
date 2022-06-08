@@ -35,6 +35,7 @@ import { MyplanSpotEditDialogComponent } from "../../parts/myplan-spot-edit-dial
 import { MyplanPlanEditDialogComponent } from "../../parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component";
 import { MyplanAutoDialogComponent } from "src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component";
 
+
 // DatePickerの日本語日付表示修正用
 @Injectable()
 export class MyDateAdapter extends NativeDateAdapter {
@@ -409,7 +410,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     const dialog = this.dialog.open(MyplanAutoDialogComponent, {
       maxWidth: "100%",
-      width: this.isMobile ? "92vw" : "52vw",
+      width: this.isMobile ? "92vw" : "540px",
       maxHeight: "90vh",
       position: { top: "10px" },
       data: [this.isMobile, this.row],
@@ -434,7 +435,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   async onClickStartEndSelect(isStart: boolean) {
     const dialog = this.dialog.open(GoogleSpotDialogComponent, {
       maxWidth: "100%",
-      width: this.isMobile ? "92vw" : "52vw",
+      width: this.isMobile ? "92vw" : "540px",
       maxHeight: "90vh",
       position: { top: "10px" },
       data: isStart ? [this.row.startPlanSpot, isStart] : [this.row.endPlanSpot, isStart],

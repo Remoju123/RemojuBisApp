@@ -31,6 +31,13 @@
     }
 
     mat-dialog-content{
+      .caption{
+        font-size: 12px;
+        background-color: #FDF2C9;
+        padding: 4px;
+        border-radius: 10px;
+        
+      }
       .form{
         .mat-form-field{
           .mat-form-field-wrapper{

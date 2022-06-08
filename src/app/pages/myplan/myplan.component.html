@@ -51,7 +51,8 @@
         </div>
         <div class='rt'>
           <!-- 最短ルート -->
-          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
+          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots" matTooltip="出発地から到着地までの最短ルートを計算します。" matTooltipPosition="above"
+          matTooltipClass="toolExplanation">
             <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
               <img src="/assets/img/keiro.svg" alt="Auto">
             </span>
@@ -61,7 +62,8 @@
       </div>
 
       <div class="set depart">
-        <div class="lt">
+        <div class="lt" matTooltip="{{'StartEx'|translate }}" matTooltipPosition="above"
+          matTooltipClass="toolExplanation">
           <!-- 出発地を設定 -->
           <button id="dept" type="button" class="setting" mat-button (click)="onClickStartEndSelect(true)"
             [disabled]="!row">
@@ -208,7 +210,8 @@
 
       <!-- 到着地を設定 -->
       <div class="set arrival">
-        <div class="lt">
+        <div class="lt" matTooltip="{{'EndEx'|translate }}" matTooltipPosition="above"
+          matTooltipClass="toolExplanation">
           <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)"
             [disabled]="!row"></button>
           <label for="arri" *ngIf="!row?.endPlanSpot?.spotName; else endSpot">{{ "SetDestination" | translate }}</label>

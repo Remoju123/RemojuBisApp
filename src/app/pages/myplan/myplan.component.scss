@@ -255,7 +255,6 @@ form {
     justify-content: space-between;
     // margin-top: 5px;
 
-
     button.setting {
 
       &.mat-button {
@@ -1949,3 +1948,12 @@ form {
     }
   }
 }
+
+::ng-deep{
+  .toolExplanation {
+    background: #00000090;
+    padding: 3px;
+    font-size: 12px;
+  }
+}
+
