@@ -6,6 +6,7 @@
 
     .ng-star-inserted {
       .panel-content {
+        position: relative;
         //background-color: $color-gld06;
         .sub {
           display: flex;
@@ -219,20 +220,14 @@
 
       button.abscancel {
         all: unset;
-        position: fixed;
-        width: 24vw;
-        top: 29px!important;
-        right: 0;
-        left: 0;
-        margin: 0 auto;
-        text-align: center;
-        height: 30px;
-        background-color: #00000070;
-        color: #fff;
-        border-radius: 17px;
-        // &::before {
-        //   content: url("../../../assets/img/btn_delete.svg");
-        // }
+        position: absolute;
+        width: 23px;
+        top: -16px;
+        right: -16px;
+
+        &::before {
+          content: url("../../../assets/img/btn_delete.svg");
+        }
       }
 
     }

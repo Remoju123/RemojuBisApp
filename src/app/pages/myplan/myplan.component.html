@@ -274,11 +274,12 @@
           </span>
         </div> -->
       </div>
-      <!-- <mat-list class="planex">
+      <mat-list class="planex" *ngIf="row.planExplanation">
         <mat-list-item>
-          <p *ngIf="row.planExplanation">{{ row.planExplanation }}</p>
+          <p>{{ row.planExplanation }}</p>
         </mat-list-item>
-      </mat-list> -->
+      </mat-list>
+      <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
     </div>
 
     <!-- 出発地 -->
@@ -314,13 +315,13 @@
                     <!--到着時間-->
                     <span class="mark">{{i+1}}</span>
                     <div class='titleline'>
-                      <div class="spotname">
-                        {{ item.spotName  }}
-                      </div>
                       <div>
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
                         <span class="sugtime">{{ "SuggestedTime" | translate }}
                           {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                      </div>
+                      <div class="spotname">
+                        {{ item.spotName  }}
                       </div>
                     </div>
                   </div>

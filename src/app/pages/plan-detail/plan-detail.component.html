@@ -19,9 +19,9 @@
             </span>
           </div>
           <div class='buttons'>
-            <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
+            <!-- <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
               <i class="material-icons">thumb_up</i>
-            </button>
+            </button> -->
             <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
             </button>
             <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
@@ -179,13 +179,13 @@
                   <div class="lt">
                     <span class="mark">{{i+1}}</span>
                     <div class='titleline'>
-                      <div class="spotname">
-                        {{ item.spotName  }}
-                      </div>
                       <div>
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
                         <span class="sugtime">{{ "SuggestedTime" | translate }}
                           {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                      </div>
+                      <div class="spotname">
+                        {{ item.spotName  }}
                       </div>
                     </div>
                   </div>

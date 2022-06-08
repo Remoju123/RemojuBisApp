@@ -1,10 +1,13 @@
 @import "vars";
-::ng-deep{
-  #editplan{
+
+::ng-deep {
+  #editplan {
     position: relative;
 
     .ng-star-inserted {
       .panel-content {
+        position: relative;
+
         //background-color: $color-gld06;
         .sub {
           display: flex;
@@ -108,15 +111,16 @@
 
         .picpreview {
           margin-top: 0.8em;
+
           .picture {
             position: relative;
-  
+
             button.delete {
               all: unset;
               position: absolute;
               top: 6px;
               right: 6px;
-  
+
               &::before {
                 content: url("../../../assets/img/btn_delete.svg");
                 display: inline-block;
@@ -125,7 +129,7 @@
                 vertical-align: text-bottom;
               }
             }
-  
+
             button.crop {
               all: unset;
               position: absolute;
@@ -137,7 +141,7 @@
               border-radius: 2px;
               font-size: 12px;
               color: #fff;
-  
+
               &::before {
                 content: url("../../../assets/img/icon_crop.svg");
                 display: inline-block;
@@ -147,37 +151,39 @@
                 padding: 0 5px;
               }
             }
-  
+
             button.swapbtn {
               all: unset;
               position: absolute;
               bottom: 8px;
               right: 6px;
-  
+
               img {
                 width: 60px;
               }
             }
           }
-  
+
           .memo {
             margin-bottom: 1em;
           }
         }
 
-        .area{
+        .area {
           display: flex;
           align-items: center;
-          label{
+
+          label {
             font-size: 12px;
             margin-left: 19px;
           }
+
           .container {
             padding: 6px;
             border-radius: 12px;
             border: 1px solid $color-gld01;
             width: 83px;
-      
+
             &::after {
               content: "▼";
               font-size: 9px;
@@ -193,21 +199,18 @@
         }
       }
 
-      
+
 
       button.abscancel {
         all: unset;
-        position: fixed;
-        width: 24vw;
-        top: 29px!important;
-        right: 0;
-        left: 0;
-        margin: 0 auto;
-        text-align: center;
-        height: 30px;
-        background-color: #00000070;
-        color: #fff;
-        border-radius: 17px;
+        position: absolute;
+        width: 23px;
+        top: -16px;
+        right: -16px;
+
+        &::before {
+          content: url("../../../assets/img/btn_delete.svg");
+        }
       }
     }
   }

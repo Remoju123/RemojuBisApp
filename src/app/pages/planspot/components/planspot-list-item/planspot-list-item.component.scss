@@ -853,6 +853,17 @@
           position: absolute;
           bottom: 12px;
 
+          .link-to-detail{
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background: $color-gry06;
+            line-height: 27px;
+            white-space: nowrap;
+          }
+
           .add-to-plan {
             color: #fff;
             font-size: 14px;

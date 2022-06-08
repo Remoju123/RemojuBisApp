@@ -41,7 +41,8 @@
         </div>
         <div class='info'>
           <div class='lt'>
-            <span class='mark' [ngClass]="{'spot':!item.isPlan || item.spotQty === 1,'plan':item.isPlan && item.spotQty > 1}">
+            <span class='mark'
+              [ngClass]="{'spot':!item.isPlan || item.spotQty === 1,'plan':item.isPlan && item.spotQty > 1}">
               {{ item.isPlan && item.spotQty > 1?'Plan':'Spot'}}
             </span>
             <span class="areaName" *ngIf="item.areaName">
@@ -123,6 +124,9 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
+            <button mat-flat-button class="link-to-detail" (click)="linktoDetail(item)">
+              {{"LinktoDetail"|translate}}
+            </button>
             <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}"
               (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
@@ -131,7 +135,7 @@
         </mat-list>
       </div>
 
-      <div class='link-area' (click)="linktoDetail(item)"></div>
+      <!-- <div class='link-area' (click)="linktoDetail(item)"></div> -->
     </div>
   </mat-card-content>
   <ng-template #isGoogle>
@@ -187,6 +191,9 @@
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
+            <button mat-flat-button class="link-to-detail" (click)="linktoDetail(item)">
+              {{"LinktoDetail"|translate}}
+            </button>
             <button mat-flat-button class="add-to-plan" [ngClass]="{'on':chkInMyPlanspot(item)}"
               (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
@@ -195,7 +202,7 @@
         </mat-list>
       </div>
 
-      <div class='link-area' (click)="linktoDetail(item)"></div>
+      <!-- <div class='link-area' (click)="linktoDetail(item)"></div> -->
     </div>
   </ng-template>
 </mat-card>

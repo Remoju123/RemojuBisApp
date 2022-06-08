@@ -332,7 +332,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     param.myPlanApp = this.row;
     const dialogRef = this.dialog.open(MyplanPlanEditDialogComponent, {
       maxWidth: "100%",
-      width: this.isMobile ? "92vw" : "52vw",
+      width: this.isMobile ? "92vw" : "540px",
       maxHeight: "90vh",
       position: { top: "10px" },
       data: param,
@@ -350,7 +350,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     const dialogRef = this.dialog.open(MyplanSpotEditDialogComponent, {
       maxWidth: "100%",
-      width: this.isMobile ? "92vw" : "52vw",
+      width: this.isMobile ? "92vw" : "540px",
       maxHeight: "90vh",
       position: { top: "10px" },
       data: params,

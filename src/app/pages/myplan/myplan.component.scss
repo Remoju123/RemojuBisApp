@@ -36,7 +36,8 @@ form {
       border-radius: 16px;
       color: #fff;
       text-align: center;
-      &:hover{
+
+      &:hover {
         background-color: #898989;
       }
     }
@@ -669,8 +670,9 @@ form {
           font-size: 16px;
         }
       }
-      .pcguide{
-        p{
+
+      .pcguide {
+        p {
           color: #fff;
           font-size: 16px;
           text-align: center;
@@ -737,7 +739,7 @@ form {
         }
       }
 
-      &.blank{
+      &.blank {
         visibility: hidden;
       }
     }
@@ -794,22 +796,6 @@ form {
     .rt {
       display: flex;
       align-items: center;
-
-      .timerequired {
-        padding-right: 3px;
-        padding-left: 2px;
-        font-size: 12px;
-        white-space: nowrap;
-
-        &::before {
-          display: inline-block;
-          content: url("../../../assets/img/av-timer.svg");
-          width: 16px;
-          height: 16px;
-          padding-right: 3px;
-          vertical-align: sub;
-        }
-      }
 
       button.link-to-spot {
         box-shadow: none;
@@ -889,8 +875,33 @@ form {
             text-justify: inter-ideograph;
             color: #4d4d4d;
             margin: 0;
+
+            &::before {
+              display: block;
+              content: url("../../../assets/img/icon_point.svg");
+              width: 47px;
+              height: 17px;
+              margin-bottom: 9px;
+            }
           }
         }
+      }
+    }
+
+    .timerequired {
+      padding-top: 2px;
+      font-size: 12px;
+      white-space: nowrap;
+      position: absolute;
+      right: 12px;
+
+      &::before {
+        display: inline-block;
+        content: url("../../../assets/img/av-timer.svg");
+        width: 16px;
+        height: 16px;
+        padding-right: 3px;
+        vertical-align: sub;
       }
     }
   }

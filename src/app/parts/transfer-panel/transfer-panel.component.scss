@@ -30,6 +30,7 @@
         display: flex;
 
         .times {
+          white-space: nowrap;
           &::before {
             content: "";
             display: inline-block;
@@ -45,6 +46,9 @@
             margin-right: 5px;
           }
         }
+      }
+      .lt{
+        white-space: nowrap;
       }
 
       @include routeIcons();
