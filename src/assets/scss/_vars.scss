@@ -583,6 +583,8 @@ $color-grn01: #81C5B4;
     width: 130px;
     background: #fff;
 
+    color: transparent;
+
     &.en {
       input[type="checkbox"] {
         &:checked+label {
