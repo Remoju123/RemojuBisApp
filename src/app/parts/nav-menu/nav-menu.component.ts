@@ -70,6 +70,7 @@ export class NavMenuComponent implements OnInit, OnDestroy{
   }
 
   onNavgate(page: string, frag?: string) {
+    console.log(page);
     if (frag === '') {
       this.router.navigate(['/' + this.lang + '/' + page + '/']);
     } else {

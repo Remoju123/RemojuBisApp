@@ -65,7 +65,9 @@
       <mat-nav-list>
         <div class='header'>{{ 'Other' | translate }}</div>
         <mat-nav-list class="sub">
-
+          <a mat-list-item (click)="onNavgate('offcial/about')">{{ "About" | translate }}</a>
+          <a mat-list-item  (click)="onNavgate('offcial/guide')">{{ "Guide" | translate }}</a>
+          <a mat-list-item  (click)="onNavgate('offcial/privacy')">{{ "Policy" | translate }}</a>
         </mat-nav-list>
       </mat-nav-list>
     </div>
