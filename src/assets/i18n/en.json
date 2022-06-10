@@ -182,8 +182,8 @@
   "Preview": "Preview",
   "EndOfPublication": "End of publication",
   "ShowRoute": "Show route",
-  "EditPlanConfirmTitle": "There is a plan being edited.  (Select OK to display the plan being edited. Select Cancel to discard the changes.)",
-  "EditPlanConfirmText": "Do you want to save your changes?",
+  "EditPlanConfirmTitle": "未保存のプランがあります。",
+  "EditPlanConfirmText": "はいを選択した場合、未保存の編集内容は削除され、選択したプランの編集が開始されます。",
   "Close": "Close",
   "Open": "Open",
   "PlanSavedConfirmTitle": "プランをマイページに保存しました。",
@@ -327,12 +327,13 @@
   "SpotOverview": "スポット概要",
   "ErrorMsgSetTransferCar": "1つのプランに保存できるスポット数は、車の場合、最大10スポットです。(出発地・到着地を含む)",
   "ErrorMsgSetTransferEkitan": "1つのプランに保存できるスポット数は、公共交通機関の場合、最大8スポットです。(出発地・到着地を含む)",
-  "ReleaseDestination": "共有先",
+  "ReleaseDestination": "公開先",
   "ErrorMsgNoSpot": "スポットを追加してください。",
   "CopyPlan": "プランコピー",
   "Reply": "返信",
   "EditCancel": "キャンセル",
   "StartEx": "自宅など出発地を設定すると、1つ目のスポットまでの経路も表示されます。",
   "EndEx": "自宅など到着地を設定すると、最後のスポットからの経路も表示されます。",
-  "LinktoDetail":"詳細を見る"
+  "LinktoDetail":"詳細を見る",
+  "EditPlanRemoveConfirm": "編集中のプランも削除されます。よろしいですか？"
 }

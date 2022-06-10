@@ -75,7 +75,7 @@ import { AuthGuard } from './auth.guard';
 import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.component';
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
-import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
+// import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
 import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
 import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
@@ -158,7 +158,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MyplanComponent,
     MypagePlanListComponent,
     MypageFavoriteListComponent,
-    SearchDialogFormPlanComponent,
+    // SearchDialogFormPlanComponent,
     SystemErrorComponent,
     LanguageComponent,
     MemoDialogComponent,
@@ -270,7 +270,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   ],
   entryComponents: [
     MatSpinner,
-    SearchDialogFormPlanComponent,
+    // SearchDialogFormPlanComponent,
     MemoDialogComponent,
     UrlcopyDialogComponent,
     MessageDialogComponent,
