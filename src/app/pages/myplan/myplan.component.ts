@@ -548,6 +548,10 @@ export class MyplanComponent implements OnInit, OnDestroy {
       }
       i++;
     });
+    // エリア設定
+    if (event.currentIndex === 0 || event.previousIndex === 0) {
+      this.row.areaId = this.row.planSpots[0].areaId;
+    }
     // 保存
     this.onChange(true);
   }
@@ -560,6 +564,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (this.row.planSpots.length === 1) {
       this.spotAllRemove();
     } else {
+      // エリア設定
+      if (planSpot.displayOrder === 1 && this.row.planSpots.length > 1) {
+        this.row.areaId = this.row.planSpots[1].areaId;
+      }
+
       // スポットを削除
       this.row.planSpots.splice(
         this.row.planSpots.findIndex(

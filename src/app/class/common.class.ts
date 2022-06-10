@@ -159,6 +159,7 @@ export class PlanSpotCommon {
   label: string;
   destination: string;
 
+  areaId: number;
   areaName: string;
   categoryText: string;
   categoryIcon: string;
