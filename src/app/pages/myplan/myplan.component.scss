@@ -508,11 +508,14 @@ form {
 
                   .spotName {
                     //width: 156px;
-                    overflow: hidden;
                     // white-space: nowrap;
-                    text-overflow: ellipsis;
                     text-align: left;
                     //height: 3em;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
                   }
 
                   .areaName {
@@ -1086,6 +1089,11 @@ form {
               .spotname {
                 font-size: 16px;
                 font-weight: 600;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
               }
 
               div {
@@ -1740,7 +1748,7 @@ form {
   position: sticky;
   z-index: 30;
   //top: calc(100vh - 158px);
-  bottom: 73px;
+  bottom: 267px;
   padding: 10px;
   width: 80%;
   margin: auto;
@@ -1949,11 +1957,10 @@ form {
   }
 }
 
-::ng-deep{
+::ng-deep {
   .toolExplanation {
     background: #00000090;
     padding: 3px;
     font-size: 12px;
   }
 }
-
