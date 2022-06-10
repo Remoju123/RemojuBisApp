@@ -195,7 +195,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   // 削除する
-  onClickDeletePlan(row: MypagePlanAppList) {
+  async onClickDeletePlan(row: MypagePlanAppList) {
     // ログインチェック
     if(!this.commonService.loggedIn){
       const param = new ComfirmDialogParam();
@@ -210,9 +210,17 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       return;
     }
 
+    // 編集中のプランを取得
+    let myPlan: any = await this.indexedDBService.getEditPlan();
+    const myPlanApp: MyPlanApp = myPlan;
+
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
-    param.title = "PlanRemoveConfirm";
+    if (myPlanApp.planUserId === row.planUserId) {
+      param.title = "EditPlanRemoveConfirm";
+    } else {
+      param.title = "PlanRemoveConfirm";
+    }
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // プランを削除する
@@ -239,7 +247,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
           }
 
           // プラン削除通知
-          this.myplanService.onPlanUserRemoved();
+          this.myplanService.onPlanUserRemoved(row.planUserId);
         });
       }
     });
@@ -462,20 +470,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       // マイプランパネルを開く
       this.commonService.onNotifyIsShowCart(true);
     });
-  }
-
-  // プラン作成画面をクリア
-  async clearMyplan(delPlanUserId: number){
-    // 編集中のプランを取得
-    let myPlan: any = await this.indexedDBService.getEditPlan();
-    const myPlanApp: MyPlanApp = myPlan;
-
-    // 削除したプランと表示しているプランが同じ場合、クリアする
-    if (myPlanApp && delPlanUserId === myPlanApp.planUserId){
-      this.indexedDBService.clearMyPlan();
-      // プラン作成に反映
-      this.myplanService.onPlanUserRemoved();
-    }
   }
 
   // URL共有ダイアログの表示

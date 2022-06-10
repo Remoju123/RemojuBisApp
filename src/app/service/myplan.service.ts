@@ -175,8 +175,8 @@ export class MyplanService  {
   }
 
   // プラン削除通知
-  public onPlanUserRemoved() {
-    this.RemovePlanUser.next();
+  public onPlanUserRemoved(planUserId: number) {
+    this.RemovePlanUser.next(planUserId);
   }
 
   // MyPlanスポットを更新

@@ -233,7 +233,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     // プラン削除通知
     this.myplanService.RemovePlanUser$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      this.planRemove();
+      if (x === this.row.planUserId) {
+        this.planRemove();
+      }
     });
 
     // お気に入り更新通知
@@ -531,7 +533,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         id: "fullmap"
       });
     }
-    
+
   }
 
   // スポット入れ替え
@@ -1025,7 +1027,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         this.registPlan(true);
         // 保存完了
         if (location.pathname.indexOf("mypage") > 0 || !isNew) {
-          this.commonService.snackBarDisp("PlanSave");
+          this.commonService.snackBarDisp("PlanSave", 5000);
         } else {
           const param = new ComfirmDialogParam();
           param.title = "PlanSavedConfirmTitle";
