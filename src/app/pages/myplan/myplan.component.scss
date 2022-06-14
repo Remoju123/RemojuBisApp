@@ -134,13 +134,50 @@ form {
   }
 }
 
+.planex {
+  padding-top: 0;
+
+  .mat-list-item {
+    height: initial;
+    //background-color: #f6f6f6;
+
+    ::ng-deep.mat-list-item-content {
+      padding: 16px;
+
+      p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        line-height: 1.57;
+        text-align: justify;
+        text-justify: inter-ideograph;
+        color: #4d4d4d;
+        margin: 0;
+
+        &::before {
+          display: block;
+          content: url("../../../assets/img/icon_point.svg");
+          width: 47px;
+          height: 17px;
+          margin-bottom: 9px;
+        }
+      }
+    }
+  }
+}
+
 .myplan-edit {
   padding: 0;
 
   .mat-card-header.myplan-header {
+    cursor: pointer;
     span {
       font-size: 16px;
       font-weight: 700;
+      &.noName{
+        font-size: 15px;
+        font-weight: normal;
+        color: #f44336;
+      }
     }
   }
 
@@ -778,6 +815,7 @@ form {
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
+    cursor: pointer;
 
     .lt {
       width: 100%;
@@ -855,37 +893,6 @@ form {
           white-space: nowrap;
           font-size: 12px;
           display: block;
-        }
-      }
-    }
-
-    .planex {
-      padding-top: 0;
-
-      .mat-list-item {
-        height: initial;
-        background-color: #f6f6f6;
-
-        ::ng-deep.mat-list-item-content {
-          padding: 16px;
-
-          p {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 14px;
-            line-height: 1.57;
-            text-align: justify;
-            text-justify: inter-ideograph;
-            color: #4d4d4d;
-            margin: 0;
-
-            &::before {
-              display: block;
-              content: url("../../../assets/img/icon_point.svg");
-              width: 47px;
-              height: 17px;
-              margin-bottom: 9px;
-            }
-          }
         }
       }
     }
@@ -969,12 +976,13 @@ form {
   .endtime {
     display: flex;
     justify-content: center;
-    //background-color: #f7f6f6;
-
     border: 1px solid #ccc;
     border-radius: 8px;
 
-
+    .sufix {
+      font-size: 14px;
+      margin-right: 0.5em;
+    }
   }
 
   .down_fill {

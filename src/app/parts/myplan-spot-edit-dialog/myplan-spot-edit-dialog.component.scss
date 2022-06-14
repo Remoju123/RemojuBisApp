@@ -230,6 +230,20 @@
         }
       }
 
+      button.absclose{
+        all: unset;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        padding: 3px;
+        background-color: #4A4A4A;
+        color: #fff;
+        border:none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
     }
 
 

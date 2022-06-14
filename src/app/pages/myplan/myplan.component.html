@@ -51,8 +51,8 @@
         </div>
         <div class='rt'>
           <!-- 最短ルート -->
-          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots" matTooltip="出発地から到着地までの最短ルートを計算します。" matTooltipPosition="above"
-          matTooltipClass="toolExplanation">
+          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
+            matTooltip="出発地から到着地までの最短ルートを計算します。" matTooltipPosition="above" matTooltipClass="toolExplanation">
             <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
               <img src="/assets/img/keiro.svg" alt="Auto">
             </span>
@@ -60,6 +60,12 @@
           </button>
         </div>
       </div>
+
+      <mat-list class="planex" *ngIf="row.planExplanation">
+        <mat-list-item>
+          <p>{{ row.planExplanation }}</p>
+        </mat-list-item>
+      </mat-list>
 
       <div class="set depart">
         <div class="lt" matTooltip="{{'StartEx'|translate }}" matTooltipPosition="above"
@@ -228,7 +234,7 @@
   <!--*----------- プレビュー ----------*-->
   <div class="myplan-preview" *ngIf="!isEdit">
     <mat-card>
-      <mat-card-header class="myplan-header">
+      <mat-card-header class="myplan-header" (click)="onClickPlanEdit(row)">
         <div class='lt'>
           <ng-container *ngIf="row.planName; else noplanName">
             <span>
@@ -236,9 +242,11 @@
             </span>
           </ng-container>
           <ng-template #noplanName>
-            <span class='noName'>
-              {{"PlanName"|translate}}
-            </span>
+            <!-- <a (click)="onClickEdit()" style="cursor:pointer;"> -->
+              <span class='noName'>
+                {{"PlanName"|translate}}
+              </span>
+            <!-- </a> -->
           </ng-template>
         </div>
         <!-- <div class='rt'>
@@ -284,6 +292,12 @@
       </mat-list>
       <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
     </div>
+    <!-- スタート時間-->
+    <mat-list style="margin: 24px 16px 16px;">
+      <mat-list-item class="endtime">
+        <span class="sufix">{{ "StartTime" | translate  }}</span>{{ row.startTime }}
+      </mat-list-item>
+    </mat-list>
 
     <!-- 出発地 -->
     <ng-container *ngIf="row.startPlanSpot">

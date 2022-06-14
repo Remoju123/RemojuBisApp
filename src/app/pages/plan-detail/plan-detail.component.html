@@ -163,7 +163,8 @@
 
     <!-- マップ -->
     <div class='map'>
-      <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true" [isCar]="data.isCar" [overviewPolyline]="data.overviewPolyline">
+      <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true"
+        [isCar]="data.isCar" [overviewPolyline]="data.overviewPolyline">
       </app-map-panel>
     </div>
 
@@ -172,6 +173,12 @@
       <ng-container *ngFor="let item of spots; index as i">
         <mat-card class="spotinfo">
           <mat-card-content>
+            <!-- スタート時間-->
+            <mat-list style="margin: auto 16px 16px;" *ngIf="i === 0 && item.transfer">
+              <mat-list-item class="endtime">
+                <span class="sufix">{{ "StartTime" | translate }}</span>{{item.startTime}}
+              </mat-list-item>
+            </mat-list>
             <!-- 掲載OK -->
             <ng-container *ngIf="!item.isEndOfPublication;">
               <div class="card-box">
@@ -251,15 +258,16 @@
               <!-- <mat-list-item class="outtime" *ngIf="i + 1 < spots.length && item.transfer">
                 <span class="sufix">{{ "StartTime" | translate }}</span>{{item.line[0].TimeFrom}}
               </mat-list-item> -->
-              <!-- 終了時間 -->
             </mat-list>
+            <!-- 終了時間 -->
             <mat-list style="margin: auto 16px;" *ngIf="i === spots.length - 1 && data.endTime">
               <mat-list-item class="endtime">
                 <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item" [nextItem]="data.spots[i + 1]"></app-transfer-panel>
+            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item"
+              [nextItem]="data.spots[i + 1]"></app-transfer-panel>
           </mat-card-content>
         </mat-card>
       </ng-container>
@@ -273,8 +281,8 @@
     </div>
 
     <!-- レビュー投稿 -->
-    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
-      [id]="data.planId"></app-comment-list-post-panel>
+    <!--app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
+      [id]="data.planId"></app-comment-list-post-panel-->
 
     <!-- 投稿者のプロフィール-->
     <mat-card id="writer" *ngIf="data.user || data.userStaff">
