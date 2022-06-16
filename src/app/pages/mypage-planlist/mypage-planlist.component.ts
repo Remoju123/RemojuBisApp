@@ -459,6 +459,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
         r.isRelease = false;
         r.isShare = false;
         r.shareUrl = null;
+        r.planName = '[copy]' + r.planName;
       }
 
       // プラン作成に反映
