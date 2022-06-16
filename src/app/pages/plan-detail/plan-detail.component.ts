@@ -81,6 +81,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   isMobile: boolean;
   guid: string;
 
+  isSpot: boolean;
+
   userPlanList: PlanSpotList[] = [];
 
   addplanbtn_src: string;
@@ -88,7 +90,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   blankUserSrc: string = "../../../../../assets/img/icon_who.svg";
   blankuserName: string = "---";
 
-  noPic:string = "../../../assets/img/nopict.png";
+  noPic: string = "../../../assets/img/nopict.png";
 
   ct_department: any[] = [
     { id: 1, text: "Remoju コンテンツチーム" },
@@ -152,13 +154,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.$isThanks = !this.$isThanks;
     if (this.$isRemojuPlan) {
       this.planService
-        .registPlanThanks(this.$planId, this.$isThanks,this.guid)
+        .registPlanThanks(this.$planId, this.$isThanks, this.guid)
         .subscribe(r => {
           this.$thanksQty = r;
         });
     } else {
       this.planService
-        .registPlanUserThanks(this.$planId, this.$isThanks,this.guid)
+        .registPlanUserThanks(this.$planId, this.$isThanks, this.guid)
         .subscribe(r => {
           this.$thanksQty = r;
         });
@@ -170,7 +172,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   onClickSpotFavorite(item: PlanSpotCommon) {
     item.isFavorite = !item.isFavorite;
     const param = new UpdFavorite();
-    param.spotId =  item.spotId;
+    param.spotId = item.spotId;
     param.type = item.type
     param.isFavorite = item.isFavorite;
     this.myplanService.updateFavorite(param);
@@ -334,6 +336,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
       this.data = r;
       this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
+
+      this.isSpot = this.data.spots.length === 1;
 
       this.$isRemojuPlan = this.data.isRemojuPlan;
       this.$versionNo = this.data.versionNo;
@@ -650,7 +654,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.linktolist();
   }
 
-  onSwipeStop(e){
+  onSwipeStop(e) {
     return;
   }
 

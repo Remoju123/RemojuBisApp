@@ -7,28 +7,25 @@
       <div class='header'>
         <div class='lt'>
           <span class='avatar'>
-            <img
-                src="{{ $userStaff?.pictureUrl }}"
-                alt=""
-              />
+            <img src="{{ $userStaff?.pictureUrl }}" alt="" />
             <span class="username">{{$userStaff?.romanLetterName|langFilter:lang}}</span>
           </span>
         </div>
         <div class='rt'>
           <div class='name'>
-            <span class='mark'>
+            <!-- <span class='mark'>
               <img src="../../../assets/img/mark_spot.svg" alt="mark">
-            </span>
+            </span> -->
             <span class='title'>
               {{ data.spotName | langFilter: lang }}
             </span>
           </div>
           <div class='buttons'>
-            <button mat-button  (click)="onClickThanks()" [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
+            <!-- <button mat-button  (click)="onClickThanks()" [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
               <i class="material-icons">thumb_up</i>
-            </button>
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
-            </button>
+            </button> -->
+            <!-- <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
+            </button> -->
             <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
               <img src="{{addplanbtn_src}}" alt="add to plan">
             </button>
@@ -45,28 +42,24 @@
           <ng-container *ngFor="let item of mainPictures; index as i">
             <ng-template carouselSlide id="item.spot_id">
               <div class="thumb">
-                <img
-                  [src]="item.picture_url"
-                  [alt]="item.spot_id"
-                  [title]="item.spot_id"
-                />
+                <img [src]="item.picture_url" [alt]="item.spot_id" [title]="item.spot_id" />
               </div>
             </ng-template>
           </ng-container>
         </owl-carousel-o>
 
         <ng-template #singlePict>
-            <div class="thumb">
-              <img
-                [src]="mainPicturesSingle?.picture_url"
-                [alt]="mainPicturesSingle?.spot_id"
-                [title]="mainPicturesSingle?.spot_id"
-              />
-            </div>
+          <div class="thumb">
+            <img [src]="mainPicturesSingle?.picture_url" [alt]="mainPicturesSingle?.spot_id"
+              [title]="mainPicturesSingle?.spot_id" />
+          </div>
         </ng-template>
       </mat-card-content>
       <div class='info'>
         <div class='lt'>
+          <span class='mark spot'>
+            Spot
+          </span>
           <span class="areaName" *ngIf="data.areaName1">
             {{ data.areaName1 | langFilter: lang }}
           </span>
@@ -94,10 +87,8 @@
               {{data.pvQty?.toLocaleString()}}&nbsp;View
             </span>
           </mat-list-item> -->
-          <mat-list-item
-            class="row pt8"
-            *ngIf="($nearest | langFilter: lang) !== ''"
-          >
+          <span class='divider'></span>
+          <mat-list-item class="row pt8" *ngIf="($nearest | langFilter: lang) !== ''">
             <span class="{{ $access}}">
               {{ $nearest | langFilter: lang }}
             </span>
@@ -119,10 +110,27 @@
       </mat-card-content>
     </mat-card>
 
+    <mat-card id="util">
+      <mat-card-content>
+        <div class='comment'>
+          <a pageScroll href="#review">
+            コメント
+            <span>0</span>件
+          </a>
+        </div>
+        <div class='favorite'>
+          <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
+          </button>
+          いいね
+          <span>0</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
     <mat-card id="content">
       <mat-card-content>
         <div class='avatar'>
-          <img src="{{ $userStaff?.pictureUrl }}" alt=""/>
+          <img src="{{ $userStaff?.pictureUrl }}" alt="" />
         </div>
         <p [innerHTML]="data.spotOverview | langFilter: lang | replaceNewline"></p>
       </mat-card-content>
@@ -131,20 +139,11 @@
     <mat-card>
       <mat-card-content>
         <ng-container *ngFor="let item of spotPictures; index as i">
-          <h4
-            class="subheading mt28"
-            [innerHTML]="item.subheading | langFilter: lang | replaceNewline"
-          ></h4>
+          <h4 class="subheading mt28" [innerHTML]="item.subheading | langFilter: lang | replaceNewline"></h4>
           <div class="thumbmain">
-            <img
-              [src]="item.picture_url"
-              [alt]="item.spot_id"
-              [title]="item.spot_id"
-            />
+            <img [src]="item.picture_url" [alt]="item.spot_id" [title]="item.spot_id" />
           </div>
-          <p
-            [innerHTML]="item.comment | langFilter: lang | replaceNewline"
-          ></p>
+          <p [innerHTML]="item.comment | langFilter: lang | replaceNewline"></p>
         </ng-container>
       </mat-card-content>
     </mat-card>
@@ -209,8 +208,10 @@
             <tr>
               <td class="title" translate>Areas</td>
               <td class="line">
-                <span class="feature" *ngIf="$areaName1" (click)="onClickArea(true)">{{ $areaName1 | langFilter:lang }}</span>
-                <span class="feature" *ngIf="$areaName2" (click)="onClickArea(false)">{{ $areaName2 | langFilter:lang }}</span>
+                <span class="feature" *ngIf="$areaName1"
+                  (click)="onClickArea(true)">{{ $areaName1 | langFilter:lang }}</span>
+                <span class="feature" *ngIf="$areaName2"
+                  (click)="onClickArea(false)">{{ $areaName2 | langFilter:lang }}</span>
               </td>
             </tr>
             <tr>
@@ -226,14 +227,18 @@
       </mat-card-content>
     </mat-card>
 
-    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId"></app-comment-list-post-panel>
+    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId">
+    </app-comment-list-post-panel>
 
     <mat-card id="nearbySpot" class="pics">
       <mat-card-header>
         <h4 class="header">
           {{ "NearbySpots" | translate }}
         </h4>
-        <img class="mark" src="../../../assets/img/mark_spot.svg" alt="mark">
+        <!-- <img class="mark" src="../../../assets/img/mark_spot.svg" alt="mark"> -->
+        <span class='mark spot'>
+          Spot
+        </span>
       </mat-card-header>
       <mat-divider class="rj-linecolor"></mat-divider>
       <mat-card-content class="mt16">
@@ -259,7 +264,10 @@
         <h4 class="header">
           {{ "RecommendedPlanwithSpot" | translate }}
         </h4>
-        <img class="mark" src="../../../assets/img/mark_plan.svg" alt="mark">
+        <!-- <img class="mark" src="../../../assets/img/mark_plan.svg" alt="mark"> -->
+        <span class='mark plan'>
+          Plan
+        </span>
       </mat-card-header>
       <mat-divider class="rj-linecolor"></mat-divider>
       <mat-card-content class="mt16">
@@ -299,7 +307,7 @@
             </div>
             <div class="user">
               <div class="wrap">
-                <img src="{{ $userStaff?.pictureUrl }}" alt=""/>
+                <img src="{{ $userStaff?.pictureUrl }}" alt="" />
               </div>
             </div>
           </div>
@@ -322,7 +330,7 @@
       </mat-card-content>
 
       <div class='buttons'>
-        <button mat-button disableRipple matBadge="4" matBadgeSize="small" >{{ 'ViewUserPost' | translate }}</button>
+        <button mat-button disableRipple matBadge="4" matBadgeSize="small">{{ 'ViewUserPost' | translate }}</button>
       </div>
     </mat-card>
     <!-- <app-userprofile-panel [detail]="true"></app-userprofile-panel> -->

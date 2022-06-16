@@ -22,8 +22,8 @@
             <!-- <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
               <i class="material-icons">thumb_up</i>
             </button> -->
-            <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
-            </button>
+            <!-- <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
+            </button> -->
             <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
               <img src="{{addplanbtn_src}}" alt="add to plan">
             </button>
@@ -58,8 +58,8 @@
 
       <div class='info' *ngIf="data.pictures">
         <div class='lt'>
-          <span class='mark plan'>
-            Plan
+          <span class='mark' [ngClass]="{'spot':isSpot,'plan':!isSpot}">
+            {{!isSpot?'Plan':'Spot'}}
           </span>
           <span class="areaName" *ngIf="data.areaName">
             {{ data.areaName | langFilter: lang }}
@@ -120,6 +120,23 @@
             </ng-container>
           </mat-list-item>
         </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card id="util">
+      <mat-card-content>
+        <div class='comment'>
+          <a pageScroll href="#review">
+            コメント
+            <span>0</span>件
+          </a>
+        </div>
+        <div class='favorite'>
+          <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
+          </button>
+          いいね
+          <span>0</span>
+        </div>
       </mat-card-content>
     </mat-card>
 
@@ -280,9 +297,9 @@
       </div>
     </div>
 
-    <!-- レビュー投稿 -->
-    <!--app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
-      [id]="data.planId"></app-comment-list-post-panel-->
+    <!-- コメント投稿 -->
+    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
+      [id]="data.planId"></app-comment-list-post-panel>
 
     <!-- 投稿者のプロフィール-->
     <mat-card id="writer" *ngIf="data.user || data.userStaff">

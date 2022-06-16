@@ -10,9 +10,6 @@
         </span>
       </div>
       <div class='rt' [ngClass]="{'fav':myFavorite}">
-        <!-- <span class='mark'>
-          <img [src]="genMarkPath()" alt="mark">
-        </span> -->
         <span class='title'>
           {{genTitle()}}
         </span>
@@ -48,9 +45,6 @@
             <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter: lang }}
             </span>
-            <!-- <span class="category" *ngIf="item.areaName2">
-              {{ item.areaName2 | langFilter: lang }}
-            </span> -->
           </div>
         </div>
       </div>
@@ -90,7 +84,6 @@
                 </div>
               </span>
               <span class="timerequired">
-                <!-- <label>{{ "TimeRequired" | translate }}：</label> -->
                 <span *ngIf="item.timeRequiredHour !== null">{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span>
                 <span *ngIf="item.timeRequiredMin !== null">{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span>
               </span>
@@ -135,7 +128,7 @@
         </mat-list>
       </div>
 
-      <!-- <div class='link-area' (click)="linktoDetail(item)"></div> -->
+      <div class='link-area' (click)="linktoDetail(item)"></div>
     </div>
   </mat-card-content>
   <ng-template #isGoogle>
@@ -202,7 +195,7 @@
         </mat-list>
       </div>
 
-      <!-- <div class='link-area' (click)="linktoDetail(item)"></div> -->
+      <div class='link-area' (click)="linktoDetail(item)"></div>
     </div>
   </ng-template>
 </mat-card>

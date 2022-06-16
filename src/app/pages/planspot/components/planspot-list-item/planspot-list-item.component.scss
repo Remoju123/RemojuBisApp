@@ -99,8 +99,8 @@
       top: 0;
       left: 0;
       right: 0;
-      width: 63%;
-      height: 63%;
+      width: 40%;
+      height: 40%;
       z-index: 6;
       cursor: pointer;
       margin: auto;
@@ -296,50 +296,7 @@
         .lt {
           display: flex;
 
-          .mark {
-            width: 52px;
-            margin-right: 4px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-
-            &.plan {
-              height: 28px;
-              width: 52px;
-              border-radius: 14px;
-              background: #FDB750;
-              position: relative;
-
-              &::before {
-                content: "";
-                display: inline-block;
-                width: 15px;
-                height: 14px;
-                background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
-                vertical-align: middle;
-                margin-left: 2px;
-              }
-            }
-
-            &.spot {
-              height: 28px;
-              width: 52px;
-              border-radius: 14px;
-              background: #679ecf;
-              position: relative;
-
-              &::before {
-                content: "";
-                display: inline-block;
-                width: 15px;
-                height: 14px;
-                background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
-                vertical-align: middle;
-              }
-            }
-          }
+          @include marks();
 
           .areaName {
             background-color: rgba(255, 255, 255, 0.8);
