@@ -104,12 +104,12 @@ https://material.io/design/layout/responsive-layout-grid.html#breakpoints
   font-weight: bold;
 }
 
-.myBackButton {
-  display: inline;
-  font-size: 4rem;
-  cursor: pointer;
-  padding: 0;
-}
+// .myBackButton {
+//   display:inline-flex;
+//   font-size: 4rem;
+//   cursor: pointer;
+//   padding: 0;
+// }
 
 ::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
   color: #666;
