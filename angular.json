@@ -162,7 +162,6 @@
             "browserTarget": "RemojuApp-V3U:build:production",
             "serverTarget": "RemojuApp-V3U:server:production",
             "routes": [
-              "/",
               "/ja/planspot"
             ],
             "guessRoutes": false
