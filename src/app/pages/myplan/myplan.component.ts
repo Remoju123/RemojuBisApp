@@ -666,7 +666,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
       const param = new ComfirmDialogParam();
       if (this.row.isReleasePrev) {
-        param.title = "ReleaseConfirm";
+        param.title = "ReleaseEditConfirm";
       } else {
         param.title = "ReleaseConfirm";
       }
