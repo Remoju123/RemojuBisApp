@@ -665,7 +665,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
       }
 
       const param = new ComfirmDialogParam();
-      param.title = "ReleaseConfirm";
+      if (this.row.isReleasePrev) {
+        param.title = "ReleaseConfirm";
+      } else {
+        param.title = "ReleaseConfirm";
+      }
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {
@@ -789,6 +793,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     // プレビュー用の画像を設定
     this.setPreviewPicture();
+
+    // 公開フラグ変更前
+    this.row.isReleasePrev = this.row.isRelease;
 
     // 出発地が設定されている場合
     if (this.row.startPlanSpot) {

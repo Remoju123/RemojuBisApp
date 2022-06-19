@@ -239,6 +239,7 @@
   "SelectRating": "評価1～5を選択してください。",
   "SelectAPhotoReview": "写真を選択しよう",
   "ReleaseConfirm": "みんなに公開しますか？",
+  "ReleaseEditConfirm": "新しい編集をみんなに共有しますか？",
   "PrivateConfirm": "非公開にしますか？",
   "ReleaseSaved": "公開しました",
   "PrivateSaved": "非公開にしました",
