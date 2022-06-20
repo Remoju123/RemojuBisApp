@@ -24,7 +24,6 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserDialogComponent } from 'src/app/parts/user-dialog/user-dialog.component';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
-export const PLANSPOT_TESTKEY = makeStateKey<CacheStore>('TEST');
 @Component({
   selector: 'app-planspot',
   templateUrl: './planspot.component.html',
@@ -114,7 +113,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.guid = await this.commonService.getGuid();
     this.recoveryQueryParams();
 
-    if (this.transferState.hasKey(PLANSPOT_TESTKEY)) {
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
       const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
       this.rows = cache.data;
       this.end = cache.end;
