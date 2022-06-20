@@ -106,6 +106,7 @@ export class MyPlanApp {
   memo: string;
   timeRequired: string;
   isRelease: boolean;
+  isReleasePrev: boolean;
   isShare: boolean;
   shareUrl: string;
   isCreation: boolean;
