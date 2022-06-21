@@ -117,7 +117,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.commonService.loggedIn = true;
                 this.commonService.onUpdHeader();
 
-                if (!localStorage.getItem('iskeep')) {
+                if (localStorage.getItem('iskeep') === null) {
                   this.commonService.snackBarDisp("LoginMessage");
                   localStorage.setItem('iskeep', 'true');
                 }
@@ -132,9 +132,6 @@ export class AppComponent implements OnInit, OnDestroy {
           return Promise.resolve();
         } else {
           this.commonService.loggedIn = false;
-          if (localStorage.getItem('iskeep') && localStorage.getItem('iskeep') === "true") {
-            this.oauthService.initLoginFlow();
-          }
         }
       });
     //}
