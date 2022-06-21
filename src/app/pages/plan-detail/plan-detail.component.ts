@@ -55,13 +55,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   $isRemojuPlan: boolean;
   $versionNo: number;
   $planId: number;
-  $isThanks: boolean;
-  $thanksQty = 0;
 
   spots: PlanSpotCommon[];
   transfers: Trans[];
 
   reviewResult: ReviewResult;
+  reviewQty: number;
 
   recommendedPlan: Recommended[];
   features: mFeature[];
@@ -151,18 +150,18 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   @Catch()
   onClickThanks() {
-    this.$isThanks = !this.$isThanks;
+    this.data.isThanks = !this.data.isThanks;
     if (this.$isRemojuPlan) {
       this.planService
-        .registPlanThanks(this.$planId, this.$isThanks, this.guid)
+        .registPlanThanks(this.$planId, this.data.isThanks, this.guid)
         .subscribe(r => {
-          this.$thanksQty = r;
+          this.data.thanksQty = r;
         });
     } else {
       this.planService
-        .registPlanUserThanks(this.$planId, this.$isThanks, this.guid)
+        .registPlanUserThanks(this.$planId, this.data.isThanks, this.guid)
         .subscribe(r => {
-          this.$thanksQty = r;
+          this.data.thanksQty = r;
         });
     }
   }
@@ -290,6 +289,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  onCommentUpd(qty: number) {
+    this.reviewQty = qty;
+  }
+
   /*------------------------------
    *
    * メソッド
@@ -342,9 +345,6 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.$isRemojuPlan = this.data.isRemojuPlan;
       this.$versionNo = this.data.versionNo;
       this.$planId = this.data.planId;
-
-      this.$isThanks = this.data.isThanks;
-      this.$thanksQty = this.data.thanksQty;
 
       if (this.$isRemojuPlan) {
         this.meta.addTags([
@@ -415,6 +415,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       }, []);
 
       this.reviewResult = this.data.reviewResult;
+      this.reviewQty = this.data.reviewResult?.reviews?.length;
 
       this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
         return e.pictureUrl !== null;

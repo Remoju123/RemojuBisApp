@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 import { ComfirmDialogParam } from "../../class/common.class";
 import { Review, SpotReviews, PlanReviews, PlanUserReviews, ReviewResult } from "../../class/review.class";
 import { CommonService } from "../../service/common.service";
@@ -21,6 +21,8 @@ export class CommentListPostPanelComponent implements OnInit, OnDestroy {
   @Input() reviewResult: ReviewResult;
   @Input() type: number; // 1:スポット 2:Remojuプラン 3:ユーザプラン
   @Input() id: number;
+
+  @Output() onCommentUpd: EventEmitter<number> = new EventEmitter();;
 
   private onDestroy$ = new Subject();
 
@@ -323,6 +325,7 @@ export class CommentListPostPanelComponent implements OnInit, OnDestroy {
         });
       }
     }
+    this.onCommentUpd.emit(this.dispQty);
   }
 
   reviewbtnName(){
@@ -342,3 +345,7 @@ export class CommentListPostPanelComponent implements OnInit, OnDestroy {
 
 
 }
+function Outout() {
+  throw new Error("Function not implemented.");
+}
+
