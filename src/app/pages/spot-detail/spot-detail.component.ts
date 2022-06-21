@@ -68,8 +68,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   $spotId: number;
   $versionNo: number;
   $googleSpot: GoogleSpot;
-  $isThanks: boolean;
-  $thanksQty = 0;
 
   $userStaff: UserStaff;
 
@@ -87,6 +85,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   spotPictures: Pictures[];
 
   reviewResult: ReviewResult;
+  reviewQty: number;
 
   nearbySpots: Recommended[];
   nearbySpotshow: boolean;
@@ -141,7 +140,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       .build();
     // 通知を受け取る SpotThanksHubのSendAsyncに指定したターゲットに第一引数を合わせる
     this.connection.on("ReceiveMessage", (count: number) => {
-      this.$thanksQty = count;
+      this.data.thanksQty = count;
     });
     // コネクション開始
     this.connection
@@ -152,11 +151,11 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
   @Catch()
   onClickThanks() {
-    this.$isThanks = !this.$isThanks;
+    this.data.isThanks = !this.data.isThanks;
     this.spotService
-      .registThanks(this.$spotId, this.$isThanks,this.guid)
+      .registThanks(this.$spotId, this.data.isThanks,this.guid)
       .subscribe(r => {
-        this.$thanksQty = r;
+        this.data.thanksQty = r;
       });
   }
 
@@ -266,6 +265,10 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(["/" + this.lang + "/spots"]);
   }
 
+  onCommentUpd(qty: number) {
+    this.reviewQty = qty;
+  }
+
   /*------------------------------
    *
    * スポット登録情報の取得
@@ -305,6 +308,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       ]);
 
       this.reviewResult = this.data.reviewResult;
+      this.reviewQty = this.data.reviewResult?.reviews?.length;
 
       this.nearbySpots = this.data.nearbySpotList.filter((e: any) => {
         return e.pictureUrl !== null;
@@ -329,8 +333,6 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       // this.spotService.registThanks().subscribe(t => {
       //   this.$thanksQty = t;
       // });
-      this.$isThanks = this.data.isThanks;
-      this.$thanksQty = this.data.thanksQty;
 
       this.mainPictures = this.data.pictures;
       this.isMulti = this.data.pictures.length > 1;

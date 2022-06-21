@@ -115,14 +115,19 @@
         <div class='comment'>
           <a pageScroll href="#review" [pageScrollOffset]="80">
             コメント
-            <span>0</span>件
+            <span>{{ reviewQty }}</span>件
           </a>
         </div>
         <div class='favorite'>
           <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
           </button>
+          お気に入り
+        </div>
+        <div class='favorite'>
+          <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isThanks}" (click)="onClickThanks()">
+          </button>
           いいね
-          <span>0</span>
+          <span>{{ data.thanksQty }}</span>
         </div>
       </mat-card-content>
     </mat-card>
@@ -227,7 +232,7 @@
       </mat-card-content>
     </mat-card>
 
-    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId">
+    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="1" [id]="data.spotId" (onCommentUpd)="onCommentUpd($event)">
     </app-comment-list-post-panel>
 
     <mat-card id="nearbySpot" class="pics">
