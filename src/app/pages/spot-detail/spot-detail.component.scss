@@ -1275,6 +1275,47 @@ div.spotdtl {
           }
         }
       }
+
+      .bookmark{
+        display: flex;
+        align-items: center;
+
+        span {
+          margin: auto 8px;
+        }
+
+        button.add-to-bookmark {
+          // @include ios-reset;
+          box-shadow: none;
+          min-width: auto;
+          padding: 0;
+          width: 20px;
+          height: 20px;
+          margin-right: 12px;
+          line-height: initial;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url(../../../assets/img/icon_bookmark_d.svg);
+            background-repeat: no-repeat;
+          }
+
+          &.on {
+            &::before {
+              background: url(../../../assets/img/icon_bookmark_d_on.svg);
+              background-repeat: no-repeat;
+            }
+          }
+
+          ::ng-deep.mat-button-ripple {
+            width: 0;
+            height: 0;
+          }
+        }
+      }
     }
   }
 

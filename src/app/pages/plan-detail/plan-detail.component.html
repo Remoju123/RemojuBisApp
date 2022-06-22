@@ -132,15 +132,15 @@
           </a>
         </div>
         <div class='favorite'>
-          <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
-          </button>
-          お気に入り
-        </div>
-        <div class='favorite'>
           <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isThanks}" (click)="onClickThanks()">
           </button>
           いいね
           <span>{{ data.thanksQty }}</span>
+        </div>
+        <div class='bookmark'>
+          <button mat-button class="add-to-bookmark" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
+          </button>
+          お気に入り
         </div>
       </mat-card-content>
     </mat-card>
