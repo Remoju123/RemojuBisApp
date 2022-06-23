@@ -87,7 +87,7 @@
           <ng-container *ngIf="row;else blanktravel">
             <mat-form-field class="traveldate">
               <input matInput [matDatepicker]="picker" [(ngModel)]="row.travelDate" name="travelDate"
-                (change)="onChange(false)">
+                (dateChange)="registPlan()">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -99,7 +99,7 @@
           <!-- 出発時間 -->
           <label class="time-label">{{"StartTime"|translate}}</label>
           <div class="startTime" *ngIf="row;else blankstart">
-            <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChange(true)">
+            <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChangeTransfer()">
               <option *ngFor="let time of $startTime" [value]="time">
                 {{time}}
               </option>
@@ -430,7 +430,7 @@
     <div class='share'>
       <label class="time-label">{{"ReleaseDestination"|translate}}</label>
       <div class="container" *ngIf="row">
-        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onChange(true)">
+        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="registPlan()">
           <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
             {{ commonService.isValidJson(destination.name, lang) }}
           </option>
