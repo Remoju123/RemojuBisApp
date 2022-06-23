@@ -63,6 +63,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   prevkeyword: string;
   token: string;
+  loading: boolean;
 
   get lang() {
     return this.translate.currentLang;
@@ -172,13 +173,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       const idx = this.details$.findIndex(v => v.isPlan === true && v.id === x.planUserId);
       if (idx > -1) {
         this.planspots.fetchDetails(this.details$[idx], this.guid)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(d => {
-          const rowIdx = this.rows.findIndex(v => v.isPlan === true && v.id === x.planUserId);
-          this.rows[rowIdx] = d;
-          this.rows[rowIdx].userName = this.commonService.isValidJson(this.rows[rowIdx].userName, this.lang);
-          this.details$ = this.rows.slice(0, this.end);
-        });
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(d => {
+            const rowIdx = this.rows.findIndex(v => v.isPlan === true && v.id === x.planUserId);
+            this.rows[rowIdx] = d;
+            this.rows[rowIdx].userName = this.commonService.isValidJson(this.rows[rowIdx].userName, this.lang);
+            this.details$ = this.rows.slice(0, this.end);
+          });
       }
     });
 
@@ -256,10 +257,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.plans = [];
       this.rows = [];
       //if (this.condition.select === 'all' || this.condition.select === 'plan') {
-        this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.plans = r;
-          this.isDetail();
-        });
+      this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        this.plans = r;
+        this.isDetail();
+      });
       //}
       if (this.condition.select === 'all' || this.condition.select === 'spot') {
         this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
@@ -287,6 +288,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async mergeNextDataSet(isComplement: boolean = false) {
     if (this.rows.length > 0) {
       this.isList = true;
+      this.loading = true;
+
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
       if (this.rows.length - startIndex < this.limit) {
@@ -299,6 +302,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       for (let i = startIndex; i < this.end; i++) {
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
+          this.loading = false;
           continue;
         }
         this.planspots.fetchDetails(this.rows[i], this.guid)
@@ -319,6 +323,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             if (i === this.end - 1 && isPlatformServer(this.platformId && this.p === 1)) {
               //this.setTransferState(false);
             }
+            this.loading = false;
           });
       }
       this.p++;
@@ -523,8 +528,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     item.isFavorite = !item.isFavorite;
     if (!item.isPlan) {
       const param = new UpdFavorite();
-      param.spotId =  item.id;
-      param.type = item.googleSpot ? 2: 1
+      param.spotId = item.id;
+      param.type = item.googleSpot ? 2 : 1
       param.isFavorite = item.isFavorite;
       this.myplanService.updateFavorite(param);
     }
@@ -551,10 +556,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     param.user = item.user;
     param.userPlanSpotList = item.userPlanList;
 
-    this.dialog.open(UserDialogComponent,{
+    this.dialog.open(UserDialogComponent, {
       id: "userpost",
       maxWidth: "100%",
-      width: this.list.isMobile?"92vw":"50vw",
+      width: this.list.isMobile ? "92vw" : "50vw",
       position: { top: "12px" },
       data: param,
       autoFocus: false

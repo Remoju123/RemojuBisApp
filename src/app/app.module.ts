@@ -18,6 +18,8 @@ import { MatGoogleMapsAutocompleteModule } from "@angular-material-extensions/go
 
 import { ImageCropperModule } from "ngx-image-cropper";
 
+import { NgxLoadingModule } from 'ngx-loading';
+
 // Materialモジュール
 import { MaterialModule } from "./material/material.module";
 import { MatDialogModule } from "@angular/material/dialog";
@@ -211,6 +213,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     NgxPageScrollCoreModule,
     NgxPageScrollModule,
     AppRoutingModule,
+    NgxLoadingModule.forRoot({}),
     // Angular GoogleMapの登録
     AgmCoreModule.forRoot({
       apiKey: environment.apiKey,

@@ -14,6 +14,7 @@ import { UtilsModule } from "../../utils/utils.module";
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   declarations: [
     PlanspotComponent,
@@ -31,6 +32,7 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
     TranslateModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxLoadingModule.forRoot({}),
   ],
   exports: [
     PlanspotComponent,
