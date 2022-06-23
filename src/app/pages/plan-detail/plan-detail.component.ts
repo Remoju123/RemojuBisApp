@@ -100,6 +100,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   myPlanSpots: any;
   planSpotids: number[] = new Array();
 
+  loading:boolean = false;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -329,6 +331,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
    * ---------------------------*/
   @Catch()
   async setPlanDetail(id: string) {
+    this.loading = true;
     this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
         this.router.navigate(["/" + this.lang + "/404"]);
@@ -456,6 +459,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
           }
         });
       }*/
+      this.loading = false;
     });
   }
 

@@ -105,6 +105,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
   myPlanSpots: any;
 
+  loading: boolean = false;
+
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
@@ -153,7 +155,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   onClickThanks() {
     this.data.isThanks = !this.data.isThanks;
     this.spotService
-      .registThanks(this.$spotId, this.data.isThanks,this.guid)
+      .registThanks(this.$spotId, this.data.isThanks, this.guid)
       .subscribe(r => {
         this.data.thanksQty = r;
       });
@@ -203,7 +205,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
     const param = new UpdFavorite();
-    param.spotId =  this.$spotId;
+    param.spotId = this.$spotId;
     param.type = 1
     param.isFavorite = this.data.isFavorite;
     this.myplanService.updateFavorite(param);
@@ -276,6 +278,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
    * -----------------------------*/
   @Catch()
   async setSpotDetail(id: string) {
+    this.loading = true;
     this.spotService.getSpotDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
       if (!r) {
         this.router.navigate(["/" + this.lang + "/notfound"]);
@@ -407,6 +410,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
           pictureUrl: mainPicture.picture_url};
         this.indexedDBService.registHistorySpot(history)
       }*/
+
+      this.loading = false;
     });
   }
 
