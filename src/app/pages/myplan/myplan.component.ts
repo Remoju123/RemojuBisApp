@@ -175,17 +175,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
           //   this.isEdit = this.isMobile?false:true;
           // }
           this.indexedDBService.registPlan(this.row);
-
-          if (this.checkTransfer(this.row) === false) {
-            if (this.row.isCar) {
-              this.isWarningCar = true;
-            } else {
-              this.isWarningEkitan = true;
-            }
-          } else {
-            this.isWarningCar = false;
-            this.isWarningEkitan = false;
-          }
         });
       });
     } else {
@@ -219,7 +208,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       // 編集モードにする
       this.isEdit = true;
       // 変更を保存
-      this.registPlan(false);
+      this.registPlan();
       this.myplanService.FetchMyplanSpots();
     });
 
@@ -260,7 +249,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // 編集・プレビュー切り替え
   async onClickEdit(isAuto: boolean = false) {
     // スポット数チェック
-    if (this.isEdit && this.checkTransfer(this.row) === false) {
+    if (this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       let dialogRef = null;
       if (this.row.isCar) {
         dialogRef = this.commonService.messageDialog("ErrorMsgSetTransferCar");
@@ -282,7 +271,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
               if (r) {
                 this.setUserPicture(r);
                 // 変更を保存
-                this.registPlan(false);
+                this.registPlan();
                 // 最適化OFF
                 this.row.isAuto = false;
                 ref.close();
@@ -383,7 +372,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   onClickBus() {
     this.row.isBus = !this.row.isBus;
     // 保存
-    this.onChange(true);
+    this.onChangeTransfer();
   }
 
   // 経路最適化
@@ -428,7 +417,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       } else {
         // 最適化OFF
         this.row.isAuto = false;
-        this.onChange(true);
+        this.onChangeTransfer();
       }
     });
   }
@@ -453,7 +442,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
           this.row.endPlanSpot = result;
         }
         // 保存
-        this.onChange(true);
+        this.onChangeTransfer();
       }
     });
   }
@@ -466,25 +455,37 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.endPlanSpot = null;
     }
     // 保存
-    this.onChange(true);
+    this.onChangeTransfer();
   }
 
   onClickTran() {
     this.row.isCar = !this.row.isCar;
-    this.onChange(true);
+    this.row.isTransferSearch = true;
+    this.registPlan();
+    this.checkTransfer();
+
+    // プレビューの場合、切り替えた移動方法で検索
+    if (!this.isEdit) {
+      const ref = this.loading.show();
+      this.myplanService.setTransfer(false).then(result => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          if (r) {
+            this.setUserPicture(r);
+            // 変更を保存
+            this.registPlan();
+            ref.close();
+          }
+        });
+      });
+    }
   }
 
   // 変更時保存
-  onChange(value: boolean) {
-    // 移動方法(一旦trueになったらfalseがきてもtrueのままにする)
-    if (!this.row.isTransferSearch) {
-      this.row.isTransferSearch = value;
-    }
-    if (value) {
-      this.row.optimized = false;
-    }
+  onChangeTransfer() {
+    this.row.isTransferSearch = true;
+    this.row.optimized = false;
     // 保存
-    this.registPlan(false);
+    this.registPlan();
   }
 
   // スポットを追加する
@@ -553,7 +554,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.areaId = this.row.planSpots[0].areaId;
     }
     // 保存
-    this.onChange(true);
+    this.onChangeTransfer();
   }
 
   // スポット削除
@@ -581,7 +582,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.planSpots.forEach(x => x.displayOrder = i++);
     }
     // 保存
-    this.onChange(true);
+    this.onChangeTransfer();
     // subject更新
     this.myplanService.FetchMyplanSpots();
   }
@@ -624,12 +625,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
 
     // スポット数チェック
-    if (this.checkTransfer(this.row) === false) {
-      /*if (this.row.isCar) {
-        this.commonService.messageDialog("ErrorMsgSetTransferCar");
-      } else {
-        this.commonService.messageDialog("ErrorMsgSetTransferEkitan");
-      }*/
+    if (this.isWarningCar || this.isWarningEkitan) {
       return;
     }
 
@@ -745,7 +741,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.endTime = null;
     this.row.planSpots = null;
     this.isEdit = true;
-    this.registPlan(false);
+    this.registPlan();
     this.step = 999;
     //this.accordionSpot.closeAll();
     this.myplanService.FetchMyplanSpots();
@@ -761,6 +757,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     // if (this.accordionSpot) {
     //   this.accordionSpot.closeAll();
     // }
+    this.isWarningCar = false;
+    this.isWarningEkitan = false;
     // プラン初期化
     this.row = JSON.parse(JSON.stringify(this.initRow));
     // 終了時間を削除
@@ -797,32 +795,29 @@ export class MyplanComponent implements OnInit, OnDestroy {
     // 公開フラグ変更前
     this.row.isReleasePrev = this.row.isRelease;
 
+    this.checkTransfer();
+
     // 出発地が設定されている場合
     if (this.row.startPlanSpot) {
       // 多言語項目の使用言語で設定
       this.commonService.setAddPlanLang(this.row.startPlanSpot, this.lang);
-      // 移動方法
-      if (!this.row.isCar && this.row.startPlanSpot.transfer) {
-        // 次のスポットがある場合
-        if (this.row.planSpots.length > 0) {
-          if (this.row.planSpots[0].type === 1) {
-            this.row.startPlanSpot.destination = this.commonService.isValidJson(this.row.planSpots[0].spotName, this.lang);
-          } else {
-            this.row.startPlanSpot.destination = this.row.planSpots[0].spotName;
-          }
+      // 次のスポットがある場合、移動方法を設定
+      if (!this.row.isCar && this.row.startPlanSpot.transfer && this.row.planSpots && this.row.planSpots.length > 0) {
+        if (this.row.planSpots[0].type === 1) {
+          this.row.startPlanSpot.destination = this.commonService.isValidJson(this.row.planSpots[0].spotName, this.lang);
+        } else {
+          this.row.startPlanSpot.destination = this.row.planSpots[0].spotName;
         }
 
-        let transfer: any;
         try {
-          transfer = this.commonService.isValidJson(this.row.startPlanSpot.transfer, this.lang);
+          const transfer = this.commonService.isValidJson(this.row.startPlanSpot.transfer, this.lang);
+
+          this.row.startPlanSpot.line = this.planService.transline(transfer);
+          this.row.startPlanSpot.transtime = this.planService.transtimes(transfer);
+          this.row.startPlanSpot.transflow = this.planService.transflows(transfer);
         }
         catch {
-          transfer = JSON.parse(this.row.startPlanSpot.transfer)[0].text;
         }
-
-        this.row.startPlanSpot.line = this.planService.transline(transfer);
-        this.row.startPlanSpot.transtime = this.planService.transtimes(transfer);
-        this.row.startPlanSpot.transflow = this.planService.transflows(transfer);
       }
     }
 
@@ -847,7 +842,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
       // 多言語項目の使用言語で設定
       this.commonService.setAddPlanLang(this.row.endPlanSpot, this.lang);
       // 最終スポットの到着地を到着地に設定
-      this.row.planSpots[this.row.planSpots.length - 1].destination = this.row.endPlanSpot.spotName;
+      if (this.row.planSpots && this.row.planSpots.length > 0) {
+        this.row.planSpots[this.row.planSpots.length - 1].destination = this.row.endPlanSpot.spotName;
+      }
     }
 
     if (this.row.planSpots) {
@@ -877,60 +874,61 @@ export class MyplanComponent implements OnInit, OnDestroy {
             }
           }
           // 移動方法
-          let transfer: any;
           try {
-            transfer = this.commonService.isValidJson(this.row.planSpots[i].transfer, this.lang);
+            const transfer = this.commonService.isValidJson(this.row.planSpots[i].transfer, this.lang);
+
+            this.row.planSpots[i].line = this.planService.transline(transfer);
+            this.row.planSpots[i].transtime = this.planService.transtimes(transfer);
+            this.row.planSpots[i].transflow = this.planService.transflows(transfer);
           }
           catch {
-            transfer = JSON.parse(this.row.planSpots[i].transfer)[0].text;
           }
 
-          this.row.planSpots[i].line = this.planService.transline(transfer);
-          this.row.planSpots[i].transtime = this.planService.transtimes(transfer);
-          this.row.planSpots[i].transflow = this.planService.transflows(transfer);
+
         }
       }
     }
   }
 
   // プランをIndexedDBに保存
-  registPlan(isSaved: boolean) {
-    // 未保存プランの場合、常にステータスは未保存
-    if (this.row.planUserId === 0) {
-      this.row.isSaved = false;
-    } else {
-      this.row.isSaved = isSaved;
-    }
-    if (this.checkTransfer(this.row) === false) {
-      if (this.row.isCar) {
-        this.isWarningCar = true;
-      } else {
-        this.isWarningEkitan = true;
+  registPlan() {
+    this.row.isSaved = false;
+    this.checkTransfer();
+    // 移動方法クリア
+    if (this.row.isTransferSearch) {
+      if (this.row.startPlanSpot) {
+        this.row.startPlanSpot.transfer = null;
       }
-    } else {
-      this.isWarningCar = false;
-      this.isWarningEkitan = false;
+      if (this.row.planSpots) {
+        this.row.planSpots.forEach(x => x.transfer = null);
+      }
     }
     this.indexedDBService.registPlan(this.row);
   }
 
-  checkTransfer(myPlanApp: MyPlanApp): boolean {
+  checkTransfer() {
     let qty = 0;
-    if (myPlanApp.startPlanSpot) {
+    if (this.row.startPlanSpot) {
       qty++;
     }
-    if (myPlanApp.planSpots) {
-      qty = myPlanApp.planSpots.length;
+    if (this.row.planSpots) {
+      qty += this.row.planSpots.length;
     }
-    if (myPlanApp.endPlanSpot) {
+    if (this.row.endPlanSpot) {
       qty++;
     }
 
-    if ((myPlanApp.isCar && qty > 10)
-      || (!myPlanApp.isCar && qty > 8)) {
-      return false;
+    if (this.row.isCar && qty > 10) {
+      this.isWarningCar = true;
+    }
+    else if (!this.row.isCar && qty > 8) {
+      this.isWarningEkitan = true;
     } else {
-      return true;
+      this.isWarningCar = false;
+      this.isWarningEkitan = false;
+    }
+    if (!this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
+      this.isEdit = true;
     }
   }
 
@@ -979,7 +977,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
 
     // IndexdbDBに一旦保存
-    this.registPlan(false);
+    this.registPlan();
 
     // 保存
     this.myplanService.registPlan().then(result => {
@@ -1040,7 +1038,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         this.row = r;
         this.dataFormat();
         // 変更を保存
-        this.registPlan(true);
+        this.indexedDBService.registPlan(this.row);
         // 保存完了
         if (location.pathname.indexOf("mypage") > 0 || !isNew) {
           this.commonService.snackBarDisp("PlanSave", 5000);
