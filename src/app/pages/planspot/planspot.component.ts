@@ -321,7 +321,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             }
             this.details$ = this.rows.slice(0, this.end);
             if (i === this.end - 1 && isPlatformServer(this.platformId && this.p === 1)) {
-              //this.setTransferState(false);
+              this.setTransferState(false);
             }
             this.loading = false;
           });
