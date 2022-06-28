@@ -377,17 +377,23 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         mapSpot.isFavorite = planSpot.isFavorite;
         return mapSpot;
       });
+    }
 
-      // 出発地がある場合、追加
-      if (this.startPlanSpot){
-        if (this.startPlanSpot.spotName)
+    // 出発地がある場合、追加
+    if (this.startPlanSpot){
+      if (this.mapSpots) {
         this.mapSpots.unshift(this.convMapSpot(true));
+      } else {
+        this.mapSpots = [];
+        this.mapSpots.push(this.convMapSpot(true));
       }
-      // 到着地がある場合、追加
-      if (this.endPlanSpot){
-        if(this.endPlanSpot.spotName)
-        this.mapSpots.push(this.convMapSpot(false));
+    }
+    // 到着地がある場合、追加
+    if (this.endPlanSpot){
+      if (!this.mapSpots) {
+        this.mapSpots = [];
       }
+      this.mapSpots.push(this.convMapSpot(false));
     }
 
     let $width = 30;
@@ -399,89 +405,90 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       $anchor = {x:23.5,y:51.7};
     }
 
-    for (let i = 0; i < this.mapSpots.length; i++) {
-      // マーカーを表示
-      this.mapSpots[i].visible = true;
+    if (this.mapSpots) {
+      for (let i = 0; i < this.mapSpots.length; i++) {
+        // マーカーを表示
+        this.mapSpots[i].visible = true;
 
-      // プランスポットのマーカーが上に表示されるように大きい値を設定
-      this.mapSpots[i].zIndex = 999999;
+        // プランスポットのマーカーが上に表示されるように大きい値を設定
+        this.mapSpots[i].zIndex = 999999;
 
-      // 線の色
-      this.mapSpots[i].polylineColor = this.polylineColor;
+        // 線の色
+        this.mapSpots[i].polylineColor = this.polylineColor;
 
-      // 出発地と到着地のアイコンURL
-      if (this.mapSpots[i].isStart){
-        this.mapSpots[i].iconUrl = {
-          url: this.markerStartIcon,
-          scaledSize: {
-            width: $width,
-            height: $height
-          },
-          anchor:$anchor,
-          labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
-        };
-      } else if (this.mapSpots[i].isEnd) {
-        this.mapSpots[i].iconUrl = {
-          url: this.markerEndIcon,
-          scaledSize: {
-            width: $width,
-            height: $height
-          },
-          anchor:$anchor,
-          labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
-        };
-      } else if (!this.mapSpots[i].isEndOfPublication) {
-        // アイコンURL
-        this.mapSpots[i].iconUrl = {
-          url: this.markerIcon.replace("{0}", (this.mapSpots[i].displayOrder).toString()),
-          scaledSize: {
-            width: $width,
-            height: $height
-          },
-          anchor:$anchor,
-          labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
-        };
-      } else {
-        // 掲載終了アイコンURL
-        this.mapSpots[i].iconUrl = {
-          url: this.markerNoDispIcon,
-          scaledSize: {
-            width: $width,
-            height: $height
-          },
-          anchor:$anchor,
-          labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
-        };
-      }
-
-      // ラベルに何か入っていないとアイコンのscaledSizeが効かなくなる
-      this.mapSpots[i].spotNameLangDisp = "　";
-
-      // 移動方法
-      if (this.mapSpots[i].transfer) {
-        if (this.isCar) {
-          const directions: Directions = JSON.parse(this.mapSpots[i].transfer);
-          this.mapSpots[i].directions =  directions.Distance + " " + (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
-          + directions.DurationMin + " " + this.translate.instant("Minute");
-        } else {
-          const dir = this.direction(
-            langpipe.transform(JSON.parse(this.mapSpots[i].transfer), this.lang)
-            , i);
-
-          let _dir = [];
-
-          for (let j = 0; j < dir.length; j++) {
-            _dir.push(dir[j]);
+        // 出発地と到着地のアイコンURL
+        if (this.mapSpots[i].isStart){
+          this.mapSpots[i].iconUrl = {
+            url: this.markerStartIcon,
+            scaledSize: {
+              width: $width,
+              height: $height
+            },
+            anchor:$anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
           };
-
-          this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
+        } else if (this.mapSpots[i].isEnd) {
+          this.mapSpots[i].iconUrl = {
+            url: this.markerEndIcon,
+            scaledSize: {
+              width: $width,
+              height: $height
+            },
+            anchor:$anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+          };
+        } else if (!this.mapSpots[i].isEndOfPublication) {
+          // アイコンURL
+          this.mapSpots[i].iconUrl = {
+            url: this.markerIcon.replace("{0}", (this.mapSpots[i].displayOrder).toString()),
+            scaledSize: {
+              width: $width,
+              height: $height
+            },
+            anchor:$anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+          };
+        } else {
+          // 掲載終了アイコンURL
+          this.mapSpots[i].iconUrl = {
+            url: this.markerNoDispIcon,
+            scaledSize: {
+              width: $width,
+              height: $height
+            },
+            anchor:$anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+          };
         }
-      // 移動方法設定なしかつ最終スポットではない場合
-      } else if (i < this.mapSpots.length){
-        this.mapSpots[i].directions = "<dl><dd>" + this.translate.instant("DuringRouteCalculation") + "</dd></dl>";
+
+        // ラベルに何か入っていないとアイコンのscaledSizeが効かなくなる
+        this.mapSpots[i].spotNameLangDisp = "　";
+
+        // 移動方法
+        if (this.mapSpots[i].transfer) {
+          if (this.isCar) {
+            const directions: Directions = JSON.parse(this.mapSpots[i].transfer);
+            this.mapSpots[i].directions =  directions.Distance + " " + (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
+            + directions.DurationMin + " " + this.translate.instant("Minute");
+          } else {
+            const dir = this.direction(
+              langpipe.transform(JSON.parse(this.mapSpots[i].transfer), this.lang)
+              , i);
+
+            let _dir = [];
+
+            for (let j = 0; j < dir.length; j++) {
+              _dir.push(dir[j]);
+            };
+
+            this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
+          }
+        // 移動方法設定なしかつ最終スポットではない場合
+        } else if (i < this.mapSpots.length){
+          this.mapSpots[i].directions = "<dl><dd>" + this.translate.instant("DuringRouteCalculation") + "</dd></dl>";
+        }
       }
     }
-
 
 
     // 全画面表示かつユーザ作成プランの場合、その他Remojuスポットを表示
@@ -492,38 +499,41 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(r => {
           if (r) {
-            // 同じスポットIDは除く
-            const result = r.filter(x => !this.mapSpots.map(m => m.spotId).includes(x.spot_id));
-            result.forEach(x => {
-              x.spot_name = this.commonService.isValidJson(x.spot_name, lang);
-              x.subheading = this.commonService.isValidJson(x.subheading, lang);
-            })
-            // スポットを別アイコンで追加
-            this.otherMapSpots = this.otherMapSpots.concat(result.map(function (spot, index): MapSpot {
-              const mapSpot = new MapSpot();
-              // console.log(mapSpot);
-              mapSpot.isStart = false;
-              mapSpot.isEnd = false;
-              mapSpot.spotId = spot.spot_id;
-              mapSpot.spotName = spot.spot_name;
-              mapSpot.subheading = spot.subheading;
-              mapSpot.spotNameLangDisp = spot.spot_name;
-              mapSpot.latitude = Number(spot.latitude);
-              mapSpot.longitude = Number(spot.longitude);
-              mapSpot.iconUrl = {
-                url: "../../../assets/img/" + spot.categoryIcon,
-                scaledSize: {
-                  width: $width,
-                  height: $height
-                },
-                anchor:$anchor
-              };
-              mapSpot.visible = false;
-              mapSpot.pictureUrl = spot.pictureUrl;
-              mapSpot.isFavorite = spot.isFavorite;
-              mapSpot.isOhterSpot = true;
-              return mapSpot;
-            }));
+            if (this.mapSpots) {
+              // 同じスポットIDは除く
+              const result = r.filter(x => !this.mapSpots.map(m => m.spotId).includes(x.spot_id));
+              result.forEach(x => {
+                x.spot_name = this.commonService.isValidJson(x.spot_name, lang);
+                x.subheading = this.commonService.isValidJson(x.subheading, lang);
+              })
+
+              // スポットを別アイコンで追加
+              this.otherMapSpots = this.otherMapSpots.concat(result.map(function (spot, index): MapSpot {
+                const mapSpot = new MapSpot();
+                // console.log(mapSpot);
+                mapSpot.isStart = false;
+                mapSpot.isEnd = false;
+                mapSpot.spotId = spot.spot_id;
+                mapSpot.spotName = spot.spot_name;
+                mapSpot.subheading = spot.subheading;
+                mapSpot.spotNameLangDisp = spot.spot_name;
+                mapSpot.latitude = Number(spot.latitude);
+                mapSpot.longitude = Number(spot.longitude);
+                mapSpot.iconUrl = {
+                  url: "../../../assets/img/" + spot.categoryIcon,
+                  scaledSize: {
+                    width: $width,
+                    height: $height
+                  },
+                  anchor:$anchor
+                };
+                mapSpot.visible = false;
+                mapSpot.pictureUrl = spot.pictureUrl;
+                mapSpot.isFavorite = spot.isFavorite;
+                mapSpot.isOhterSpot = true;
+                return mapSpot;
+              }));
+            }
             this.zoomChangeOtherSpot(this.map.zoom);
           }
         });
@@ -635,12 +645,14 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     // 移動経路を設定
     this.directions = this.mapSpots[this.spotIndex].directions;
     // 移動時間合計を計算
-    if (this.isCar) {
-      const directions: Directions = JSON.parse(this.mapSpots[this.spotIndex].transfer);
-      this.transtime = (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
-      + directions.DurationMin + " " + this.translate.instant("Minute");
-    } else {
-      this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer),this.lang));
+    if (this.mapSpots[this.spotIndex].transfer) {
+      if (this.isCar) {
+        const directions: Directions = JSON.parse(this.mapSpots[this.spotIndex].transfer);
+        this.transtime = (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
+        + directions.DurationMin + " " + this.translate.instant("Minute");
+      } else {
+        this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer),this.lang));
+      }
     }
     // スポット名From
     this.spotNameFrom = this.mapSpots[this.spotIndex].spotName;
