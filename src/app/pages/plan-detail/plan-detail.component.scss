@@ -180,15 +180,16 @@ div.plandtl {
 
   @media screen and (min-width: 1025px) {
     div.container {
-      height: calc(100vh - 278px);
+      height: calc(100vh - 96px);
       overflow-y: scroll;
+      overflow-x: hidden;
       position: relative;
 
       .scroll-to-top {
         position: fixed;
         margin: auto;
         right: 12px;
-        bottom: 123px;
+        bottom: 12px;
         z-index: 100;
         padding: 0;
         cursor: pointer;
