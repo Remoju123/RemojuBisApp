@@ -189,6 +189,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
                 this.end = this.rows.length;
               }
             } else {
+              this.planspots.mergeDetail(this.rows[idx], d);
               this.rows[idx] = d;
               this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
             }
@@ -346,6 +347,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
         this.planspots.fetchDetails(this.rows[this.end - 1], this.guid)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(d => {
+          this.planspots.mergeDetail(this.rows[this.end - 1], d);
           this.rows[this.end - 1] = d;
           this.rows[this.end - 1].userName = this.commonService.isValidJson(this.rows[this.end - 1].userName, this.lang);
           this.details$ = this.rows.slice(0,this.end);
