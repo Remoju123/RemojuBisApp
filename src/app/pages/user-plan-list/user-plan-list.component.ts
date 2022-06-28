@@ -112,6 +112,7 @@ export class UserPlanListComponent implements OnInit {
           .subscribe(d => {
             const idx = this.userPlanSpots.findIndex(v => v.id === d.id);
 
+            this.planspots.mergeDetail(this.userPlanSpots[idx], d);
             this.userPlanSpots[idx] = d;
             this.userPlanSpots.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
 

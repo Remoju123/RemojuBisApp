@@ -42,7 +42,12 @@ export class MypagePlanListService {
   ) {
     options.objectId = this.commonService.objectId;
     const url = this.host + "/api/MypagePlanList/SearchDetail";
-    return this.http.post<MypagePlanAppList>(url, options, httpOptions);
+    return this.http.get<MypagePlanAppList>(url, {
+      params: {
+        planUserId: options.planUserId,
+        objectId: this.commonService.objectId
+      }
+    });
   }
 
   // 公開・非公開登録

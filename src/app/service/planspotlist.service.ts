@@ -109,18 +109,43 @@ export class PlanSpotListService {
   }
 
   // プランスポット一覧、詳細データ
-  fetchDetails(options: PlanSpotList, guid: string){
-    const spot_url = this.host + "/api/PlanSpotList/SearchDetailSpot";
-    const plan_url = this.host + "/api/PlanSpotList/SearchDetailPlan";
-
-    options.objectId = this.commonService.objectId;
-    options.guid = guid;
-
-    if(options.isPlan){
-      return this.http.post<PlanSpotList>(plan_url,options,httpOptions);
+  fetchDetails(planSpotList: PlanSpotList, guid: string){
+    if(planSpotList.isPlan){
+      return this.http.get<PlanSpotList>(this.host + "/api/PlanSpotList/SearchDetailPlan",{
+        params: {
+          versionNo: planSpotList.versionNo,
+          planId: planSpotList.id,
+          isRemojuPlan: planSpotList.isRemojuPlan,
+          objectId: this.commonService.objectId,
+          guid: guid
+        }
+      });
     }else{
-      return this.http.post<PlanSpotList>(spot_url, options, httpOptions);
+      return this.http.get<PlanSpotList>(this.host + "/api/PlanSpotList/SearchDetailSpot", {
+        params: {
+          versionNo: planSpotList.versionNo,
+          spotId: planSpotList.id,
+          objectId: this.commonService.objectId,
+          guid: guid
+        }
+      });
     }
+  }
+
+  mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList) {
+    detail.areaId = planSpotList.areaId;
+    detail.areaId2 = planSpotList.areaId2;
+    detail.areaName = planSpotList.areaName;
+    detail.areaName2 = planSpotList.areaName2;
+    detail.isPlan = planSpotList.isPlan;
+    detail.keyword = planSpotList.keyword;
+    detail.pvQtyAll = planSpotList.pvQtyAll;
+    detail.reviewAvg = planSpotList.reviewAvg;
+    detail.planSpotQty = planSpotList.planSpotQty;
+    detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
+    detail.isFavorite = planSpotList.isFavorite;
+    detail.googleSpot = planSpotList.googleSpot;
+
   }
 
   // 検索条件絞り込み処理
