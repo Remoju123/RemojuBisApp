@@ -330,7 +330,11 @@ export class PlanSpotListService {
     _params.push("era=" + cond.areaId2.join(","));
     _params.push("cat=" + cond.searchCategories.join(","));
     _params.push("srt=" + cond.sortval);
-    _params.push("lst=" + cond.select);
+    if (_result.length === 0 && cond.keyword) {
+      _params.push("lst=google");
+    } else {
+      _params.push("lst=" + cond.select);
+    }
     _params.push("kwd=" + cond.keyword);
 
     this.result.list = _result;
