@@ -82,6 +82,8 @@ export class SearchParamsObj{
 
 export class CacheStore {
   data: PlanSpotList[];
+  spots: PlanSpotList[];
+  plans: PlanSpotList[];
   p:number;
   end:number;
   offset:number;
