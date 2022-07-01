@@ -46,7 +46,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   myPlanSpots: any;
 
-  p: number;
+  p: number = 1;
   limit: number;
   end: number;
   offset: number;
@@ -57,7 +57,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   googleSearchArea: string = '----';
 
   isList: boolean = true;
-  select: string;
 
   guid: string;
 
@@ -117,6 +116,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
       this.rows = cache.data;
+      this.spots = cache.spots;
+      this.plans = cache.plans;
       this.end = cache.end;
       this.offset = cache.offset;
       this.details$ = this.rows.slice(0, this.end);
@@ -156,12 +157,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.$mSort = r.mSort;
         this.isDetail();
       });
-
-      let condition: any = await this.indexedDBService.getListSearchCondition();
-      if (condition) {
-        this.condition = condition;
-      }
-      this.getPlanSpotDataSet();
+      this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        this.plans = r;
+        this.isDetail();
+      });
+      this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        this.spots = r;
+        this.isDetail();
+      });
     }
 
     this.myplanService.FetchMyplanSpots();
@@ -188,7 +191,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.condition = r;
       this.indexedDBService.registListSearchCondition(this.condition);
 
-      this.getPlanSpotDataSet();
+      this.isDetail();
     });
 
     this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
@@ -244,44 +247,24 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     })
   }
 
-  async getPlanSpotDataSet() {
-    if (this.condition.select === 'google') {
-      this.rows = [];
-      this.details$ = [];
-      this.prevkeyword = null;
-      this.token = null;
-      this.count = 0;
-      this.mergeNextDataSet();
-    } else {
-      this.p = 1;
-      this.spots = [];
-      this.plans = [];
-      this.rows = [];
-      //if (this.condition.select === 'all' || this.condition.select === 'plan') {
-      this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        this.plans = r;
-        this.isDetail();
-      });
-      //}
-      if (this.condition.select === 'all' || this.condition.select === 'spot') {
-        this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.spots = r;
-          this.isDetail();
-        });
-      }
-    }
-  }
-
   async isDetail() {
-    if (this.listSelectMaster
-      && (this.condition.select === 'plan' || this.spots.length > 0)
-      && (this.condition.select === 'spot' || this.plans.length > 0)) {
+    if (this.listSelectMaster && this.spots.length > 0 && this.plans.length > 0) {
       const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
-
+      this.offset = 0;
+      window.scrollTo(0, 0);
+      this.p = 1;
       this.rows = result.list;
+      if (this.rows.length === 0 && this.condition.keyword) {
+        setTimeout(() => {
+          this.condition.select = 'google';
+          this.indexedDBService.registListSearchCondition(this.condition);
+        }, 100);
+      }
       this.optionKeywords = result.searchTarm;
       this.historyReplace(result.searchParams);
-      this.count = result.list.length;
+      if (this.condition.select !== 'google') {
+        this.count = result.list.length;
+      }
       this.mergeNextDataSet();
     }
   }
@@ -331,7 +314,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.p++;
     } else {
       this.isList = false;
-      this.condition.select = 'google';
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
         this.details$ = [];
@@ -375,11 +357,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   keywordSearch(v: any) {
     setTimeout(() => {
       this.condition.keyword = v;
+      this.prevkeyword = null;
+      this.token = null;
       if (!v) {
-        this.condition.select = 'all'
+        this.condition.select = 'all';
       }
       this.indexedDBService.registListSearchCondition(this.condition);
-      this.getPlanSpotDataSet();
+      this.isDetail();
     }, 100);
   }
 
@@ -387,15 +371,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   sortChange(v: any) {
     this.condition.sortval = v;
     this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
+    this.isDetail();
   }
 
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
-    this.select = val;
     this.condition.select = val;
     this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
+    this.isDetail();
   }
 
   // プラン/スポット詳細リンク
@@ -420,6 +403,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
     const c = new CacheStore();
     c.data = this.rows;
+    c.spots = this.spots;
+    c.plans = this.plans;
     c.p = this.p;
     c.end = this.end;
     c.offset = _offset;
@@ -467,7 +452,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
           this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
         }
-        this.getPlanSpotDataSet();
+        this.isDetail();
       }
     });
   }
@@ -485,7 +470,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
     this.condition.keyword = "";
     this.indexedDBService.registListSearchCondition(this.condition);
-    this.getPlanSpotDataSet();
+    this.isDetail();
   }
 
   // プランに追加
