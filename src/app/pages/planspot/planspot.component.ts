@@ -250,8 +250,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async isDetail() {
     if (this.listSelectMaster && this.spots.length > 0 && this.plans.length > 0) {
       const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
-      this.offset = 0;
-      window.scrollTo(0, 0);
+      if(isPlatformBrowser(this.platformId)) {
+        this.offset = 0;
+        this.commonService.scrollToTop();
+      }
       this.p = 1;
       this.rows = result.list;
       if (this.rows.length === 0 && this.condition.keyword) {
@@ -305,7 +307,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
             }
             this.details$ = this.rows.slice(0, this.end);
-            if (i === this.end - 1 && isPlatformServer(this.platformId && this.p === 1)) {
+            if (i === this.end - 1 && isPlatformServer(this.platformId)) {
               this.setTransferState(false);
             }
             this.loading = false;
