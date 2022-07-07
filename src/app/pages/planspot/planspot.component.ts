@@ -221,7 +221,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   recoveryQueryParams() {
-    this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe((params: Params) => {
+    this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: Params) => {
       if ((params.aid && params.aid.length > 0)
         || (params.era && params.era.length > 0)
         || (params.cat && params.cat.length > 0)
@@ -243,7 +243,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         this.indexedDBService.registListSearchCondition(this.condition);
       }
-    })
+      else {
+        let condition: any = await this.indexedDBService.getListSearchCondition();
+        if (condition) {
+          this.condition = condition;
+        }
+      }
+    });
   }
 
   async isDetail() {
