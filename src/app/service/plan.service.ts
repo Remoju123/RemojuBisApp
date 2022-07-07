@@ -33,7 +33,7 @@ export class PlanService {
       params: {
         id: id,
         guid: guid,
-        objectId: this.commonService.objectId
+        objectId: this.commonService.objectId ?? ""
       }
     });
   }
