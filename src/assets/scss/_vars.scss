@@ -505,7 +505,7 @@ $color-grn01: #81C5B4;
 
             span.line {
               margin-left: 2em;
-              max-width:58vw;
+              max-width: 58vw;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -677,7 +677,7 @@ $color-grn01: #81C5B4;
     $preview_en: "Mycar";
     $height: 30px;
     $radius: 15px;
-    $color:#707070;
+    $color: #707070;
 
     line-height: $height;
     letter-spacing: 0;
@@ -1065,3 +1065,64 @@ $color-grn01: #81C5B4;
   }
 }
 
+@mixin add-to-bookmark {
+  .add-to-bookmark {
+    box-shadow: none;
+    min-width: auto;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    line-height: initial;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url("../../assets/img/icon_bookmark_d.svg");
+      background-repeat: no-repeat;
+    }
+
+    &.on {
+      &::before {
+        background: url("../../assets/img/icon_bookmark_d_on.svg");
+        background-repeat: no-repeat;
+      }
+    }
+
+    ::ng-deep.mat-button-ripple {
+      width: 0;
+      height: 0;
+    }
+  }
+}
+
+@mixin add-to-favorite {
+  .add-to-favorite {
+    box-shadow: none;
+    min-width: auto;
+    padding: 0;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 18px;
+      height: 18px;
+      background: url("../../../assets/img/icon_fav_b.svg");
+      background-repeat: no-repeat;
+    }
+
+    &.on {
+      &::before {
+        background: url("../../../assets/img/icon_fav_b_on.svg");
+        background-repeat: no-repeat;
+      }
+    }
+
+    ::ng-deep.mat-button-ripple {
+      width: 0;
+      height: 0;
+    }
+  }
+}

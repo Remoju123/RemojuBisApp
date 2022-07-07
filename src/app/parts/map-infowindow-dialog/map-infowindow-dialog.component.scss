@@ -7,30 +7,30 @@
 //   src: url(../../../assets/icons/material-icon.woff2) format("woff2");
 // }
 
-::ng-deep mat-dialog-container#mapinfo{
+::ng-deep mat-dialog-container#mapinfo {
   padding: 0;
 }
 
-.mat-card{
+.mat-card {
   padding: 0;
 
-  ::ng-deep.mat-card-content{
+  ::ng-deep.mat-card-content {
     margin-bottom: 0;
   }
 
-  .card-box{
+  .card-box {
     // border-radius: 10px;
     overflow: hidden;
     box-sizing: border-box;
 
-    .card-header{
+    .card-header {
       position: relative;
       height: 135px;
       overflow: hidden;
       display: flex;
 
-      .photo{
-        img{
+      .photo {
+        img {
           height: 135px;
           width: 135px;
           object-fit: cover;
@@ -38,32 +38,35 @@
         }
       }
 
-      .info{
+      .info {
         margin: 20px 15px;
-        .name{
+
+        .name {
           font-size: 17px;
         }
-        .sub{
+
+        .sub {
           font-size: 13px;
           margin-top: 18px;
         }
       }
     }
 
-    .card-bottom{
+    .card-bottom {
       height: 55px;
       background-color: #f3f3f3;
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-      .myplan-icon-btn{
+
+      .myplan-icon-btn {
         box-shadow: none;
         padding: 0;
-        border:none;
+        border: none;
         background: none;
         line-height: 1;
 
-        span.button{
+        span.button {
           display: inline-flex;
           justify-content: center;
           align-items: center;
@@ -71,13 +74,14 @@
           height: 32px;
           padding: 7px;
           box-sizing: border-box;
-          img{
+
+          img {
             width: 30px;
             height: auto;
           }
         }
-    
-        span.button-text{
+
+        span.button-text {
           color: #aaaaaa;
           display: block;
           font-size: 10px;
@@ -89,33 +93,20 @@
           padding: unset;
         }
       }
-      .add-to-favorite{
-        box-shadow: none;
-        padding: 0;
-        border:none;
-        background: none;
-        line-height: 1;
 
-        span.button{
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          /* border-radius: 50%; */
-          width: 32px;
-          height: 32px;
-          padding: 7px;
-          box-sizing: border-box;
-          img{
-            width: 30px;
-            height: auto;
-          }
-        }
-    
-        span.button-text{
+      @include add-to-bookmark();
+      .add-to-bookmark{
+        border: none;
+        line-height: 1;
+        width: auto;
+        height: auto;
+        margin-right: 0;
+        margin-top: 9px;
+        span.button-text {
           color: #aaaaaa;
           display: block;
           font-size: 10px;
-          margin-top: 2px;
+          margin-top: 5px;
           font-weight: bold;
           line-height: 1;
           width: auto;
@@ -123,7 +114,8 @@
           padding: unset;
         }
       }
-      .add-to-plan{
+      
+      .add-to-plan {
         background-color: #de7274;
         color: #fff;
         border-radius: 6px;
@@ -133,12 +125,12 @@
         width: 160px;
         vertical-align: -webkit-baseline-middle;
         margin-top: 2px;
-        border:none;
+        border: none;
       }
     }
   }
 
-  button.close{
+  button.close {
     position: absolute;
     top: 0px;
     right: 5px;
@@ -148,12 +140,13 @@
     height: 30px;
     padding: 0;
     min-width: initial;
-    ::ng-deep.mat-button-wrapper{
+
+    ::ng-deep.mat-button-wrapper {
       padding: 0;
-      .mat-icon{
+
+      .mat-icon {
         font-size: 20px;
       }
     }
   }
 }
-

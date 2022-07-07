@@ -956,37 +956,8 @@ div.plandtl {
             display: flex;
             align-items: center;
 
-            button.add-to-favorite {
-              box-shadow: none;
-              min-width: auto;
-              padding: 0;
-              width: 25px;
-              height: 25px;
-              line-height: initial;
-              margin-left: 6px;
-
-              &::before {
-                content: "";
-                display: inline-block;
-                width: 18px;
-                height: 18px;
-                background: url("../../../assets/img/icon_fav_b.svg");
-                background-repeat: no-repeat;
-              }
-
-              &.on {
-                &::before {
-                  background: url(../../../assets/img/icon_fav_b_on.svg);
-                  background-repeat: no-repeat;
-                }
-              }
-
-              ::ng-deep.mat-button-ripple {
-                width: 0;
-                height: 0;
-              }
-            }
-
+            @include add-to-bookmark();
+            
             button.link-to-spot {
               box-shadow: none;
               min-width: auto;
@@ -1670,37 +1641,8 @@ div.plandtl {
           margin: auto 8px;
         }
 
-        button.add-to-bookmark {
-          // @include ios-reset;
-          box-shadow: none;
-          min-width: auto;
-          padding: 0;
-          width: 20px;
-          height: 20px;
-          margin-right: 12px;
-          line-height: initial;
+        @include add-to-bookmark()
 
-          &::before {
-            content: "";
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background: url(../../../assets/img/icon_bookmark_d.svg);
-            background-repeat: no-repeat;
-          }
-
-          &.on {
-            &::before {
-              background: url(../../../assets/img/icon_bookmark_d_on.svg);
-              background-repeat: no-repeat;
-            }
-          }
-
-          ::ng-deep.mat-button-ripple {
-            width: 0;
-            height: 0;
-          }
-        }
       }
     }
   }
