@@ -201,8 +201,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
       }
       else {
-        spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
-        spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+        spotDetail = this.details$.find(planSpot => planSpot.isPlan === false && planSpot.googleSpot.google_spot_id === x.spotId);
       }
       if (spot) {
         spot.isFavorite = x.isFavorite;
@@ -321,7 +320,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.details$ = [];
       }
       if (keyword && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
-        (await this.planspots.getGoogleSpotList(keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
+        (await this.planspots.getGoogleSpotList(this.guid, keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
           this.count += g.planSpotList.length;

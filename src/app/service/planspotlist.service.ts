@@ -89,14 +89,14 @@ export class PlanSpotListService {
   }
 
   // Googleスポット検索
-  async getGoogleSpotList(keyword: string, googleAreaId: number[], token: string) {
+  async getGoogleSpotList(guid: string, keyword: string, googleAreaId: number[], token: string) {
     const url = this.host + "/api/PlanSpotList/GoogleSpot";
     return this.http.post<GoogleSearchResult>(url,
       {
         keyword: keyword,
         langCd: this.translate.currentLang,
-        guid: await this.commonService.getGuid(),
-        objectId: this.commonService.objectId,
+        guid: guid,
+        objectId: this.commonService.objectId ?? "",
         areaIds: googleAreaId,
         token: token
       }, httpOptions);
@@ -116,7 +116,7 @@ export class PlanSpotListService {
           versionNo: planSpotList.versionNo,
           planId: planSpotList.id,
           isRemojuPlan: planSpotList.isRemojuPlan,
-          objectId: this.commonService.objectId,
+          objectId: this.commonService.objectId ?? "",
           guid: guid
         }
       });
@@ -125,7 +125,7 @@ export class PlanSpotListService {
         params: {
           versionNo: planSpotList.versionNo,
           spotId: planSpotList.id,
-          objectId: this.commonService.objectId,
+          objectId: this.commonService.objectId ?? "",
           guid: guid
         }
       });
@@ -143,7 +143,6 @@ export class PlanSpotListService {
     detail.reviewAvg = planSpotList.reviewAvg;
     detail.planSpotQty = planSpotList.planSpotQty;
     detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
-    detail.isFavorite = planSpotList.isFavorite;
     detail.googleSpot = planSpotList.googleSpot;
 
   }
@@ -485,7 +484,7 @@ export class PlanSpotListService {
           plan_id: id,
           guid: guid,
           is_delete: !isFavorite,
-          objectId: this.commonService.objectId
+          objectId: this.commonService.objectId ?? ""
         };
         url = this.host + "/api/Plan/Favorite";
 
@@ -495,7 +494,7 @@ export class PlanSpotListService {
           plan_user_id: id,
           guid: guid,
           is_delete: !isFavorite,
-          objectId: this.commonService.objectId
+          objectId: this.commonService.objectId ?? ""
         };
         url = this.host + "/api/Plan/UserFavorite";
       }
@@ -504,10 +503,10 @@ export class PlanSpotListService {
       if (isGoogle) {
         param.spotFavorite = {
           spot_id: 0,
-          google_spot_id: id,
+          google_spot_id: googleSpot ? googleSpot.google_spot_id : id,
           guid: guid,
           is_delete: !isFavorite,
-          objectId: this.commonService.objectId
+          objectId: this.commonService.objectId ?? ""
         };
         param.googleSpot = googleSpot;
       } else {
@@ -516,7 +515,7 @@ export class PlanSpotListService {
           google_spot_id: 0,
           guid: guid,
           is_delete: !isFavorite,
-          objectId: this.commonService.objectId
+          objectId: this.commonService.objectId ?? ""
         };
       }
       url = this.host + "/api/Spot/Favorite";

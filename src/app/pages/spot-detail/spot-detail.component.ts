@@ -209,6 +209,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     param.type = 1
     param.isFavorite = this.data.isFavorite;
     this.myplanService.updateFavorite(param);
+    this.planspotListService.setTransferState(false, this.$spotId, this.data.isFavorite, false);
     this.planspotListService
       .registFavorite(
         this.$spotId,

@@ -55,7 +55,7 @@ export class SpotService {
       params: {
         id: id,
         guid: guid,
-        objectId: this.commonService.objectId
+        objectId: this.commonService.objectId ?? ""
       }
     });
   }

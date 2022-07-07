@@ -33,7 +33,7 @@ export class MapService {
         spotId: String(spotId),
         googleSpotId: String(googleSpotId),
         guid: guid,
-        objectId: this.commonService.objectId
+        objectId: this.commonService.objectId ?? ""
       }
     });
   }
@@ -44,7 +44,7 @@ export class MapService {
     return this.http.get<Spot[]>(url, {
       params: {
         guid: guid,
-        objectId: this.commonService.objectId
+        objectId: this.commonService.objectId ?? ""
       }
     });
   }
