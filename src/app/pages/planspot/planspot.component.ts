@@ -54,6 +54,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   $mSort: DataSelected[];
   sortval: number;
   optionKeywords: tarms;
+  searchParams: string;
   googleSearchArea: string = '----';
 
   isList: boolean = true;
@@ -111,61 +112,89 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
-    this.recoveryQueryParams();
+    this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: Params) => {
+      let regCondition: any;
+      if ((params.aid && params.aid.length > 0)
+        || (params.era && params.era.length > 0)
+        || (params.cat && params.cat.length > 0)
+        || (params.srt && params.srt.length > 0)
+        || (params.lst && params.lst.length > 0)
+        || (params.kwd && params.kwd.length > 0)
+      ) {
+        this.condition.areaId =
+          params.aid && params.aid.length > 0 ? params.aid.split(",").map(Number) : [];
+        this.condition.areaId2 =
+          params.era && params.era.length > 0 ? params.era.split(",").map(Number) : [];
+        this.condition.searchCategories =
+          params.cat && params.cat.length > 0 ? params.cat.split(",").map(Number) : [];
+        this.condition.searchOptions =
+          params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
+        this.condition.sortval = params.srt;
+        this.condition.select = params.lst;
+        this.condition.keyword = params.kwd;
 
-    if (this.transferState.hasKey(PLANSPOT_KEY)) {
-      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-      this.rows = cache.data;
-      this.spots = cache.spots;
-      this.plans = cache.plans;
-      this.end = cache.end;
-      this.offset = cache.offset;
-      this.details$ = this.rows.slice(0, this.end);
-      this.p = cache.p - 1;
-      this.condition.select = cache.select;
-      this.condition.sortval = cache.sortval;
-      this.condition.keyword = cache.keyword;
-      this.$mSort = cache.mSort;
-      this.count = cache.data.length;
-      this.isList = cache.isList; //change
-      this.listSelectMaster = cache.ListSelectMaster;
-      this.optionKeywords = cache.optionKeywords;
-      this.googleSearchArea = cache.googleSearchArea;
-      if (cache.planSpotList) {
-        this.onViewUserPost(cache.planSpotList);
+        this.indexedDBService.registListSearchCondition(this.condition);
       }
-
-      this.transferState.remove(PLANSPOT_KEY);
-      this.mergeNextDataSet(true);
-      if (!cache.isDetail && this.rows.length > 0) {
-        const details = this.rows.slice(0, this.end).filter(x => x.isDetail === true);
-        if (details && details.length > 0) {
-          this.details$[0].objectId = this.commonService.objectId;
-          this.planspots.getFavorite(details).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-            r.forEach(x => {
-              if (x.isDetail) {
-                this.rows.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
-                this.details$.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
-              }
-            });
-          });
+      else {
+        // パラメータなしの場合、保存されている条件を使用
+        regCondition = await this.indexedDBService.getListSearchCondition();
+        if (regCondition) {
+          this.condition = regCondition;
         }
       }
-    } else {
-      this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-        this.listSelectMaster = r;
-        this.$mSort = r.mSort;
-        this.isDetail();
-      });
-      this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        this.plans = r;
-        this.isDetail();
-      });
-      this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        this.spots = r;
-        this.isDetail();
-      });
-    }
+
+      if (this.transferState.hasKey(PLANSPOT_KEY)) {
+        const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+        this.rows = cache.data;
+        this.spots = cache.spots;
+        this.plans = cache.plans;
+        this.end = cache.end;
+        this.offset = cache.offset;
+        if (cache.isDetail) {
+          this.details$ = this.rows.slice(0, this.end);
+        }
+        this.p = cache.p - 1;
+        //this.condition.select = cache.select;
+        //this.condition.sortval = cache.sortval;
+        //this.condition.keyword = cache.keyword;
+        this.$mSort = cache.mSort;
+        this.count = cache.data.length;
+        this.isList = cache.isList; //change
+        this.listSelectMaster = cache.ListSelectMaster;
+        this.optionKeywords = cache.optionKeywords;
+        this.searchParams = cache.searchParams;
+        this.googleSearchArea = cache.googleSearchArea;
+        if (cache.planSpotList) {
+          this.onViewUserPost(cache.planSpotList);
+        }
+
+        this.transferState.remove(PLANSPOT_KEY);
+
+        if (!cache.isDetail) {
+          if (regCondition) {
+            this.isDetail(true);
+          } else {
+            this.mergeNextDataSet(true);
+          }
+        } else {
+          this.historyReplace(this.searchParams);
+        }
+      } else {
+        this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+          this.listSelectMaster = r;
+          this.$mSort = r.mSort;
+          this.isDetail();
+        });
+        this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.plans = r;
+          this.isDetail();
+        });
+        this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.spots = r;
+          this.isDetail();
+        });
+      }
+    });
 
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe(r => {
@@ -220,39 +249,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.mergeNextDataSet();
   }
 
-  recoveryQueryParams() {
-    this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: Params) => {
-      if ((params.aid && params.aid.length > 0)
-        || (params.era && params.era.length > 0)
-        || (params.cat && params.cat.length > 0)
-        || (params.srt && params.srt.length > 0)
-        || (params.lst && params.lst.length > 0)
-        || (params.kwd && params.kwd.length > 0)
-      ) {
-        this.condition.areaId =
-          params.aid && params.aid.length > 0 ? params.aid.split(",").map(Number) : [];
-        this.condition.areaId2 =
-          params.era && params.era.length > 0 ? params.era.split(",").map(Number) : [];
-        this.condition.searchCategories =
-          params.cat && params.cat.length > 0 ? params.cat.split(",").map(Number) : [];
-        this.condition.searchOptions =
-          params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
-        this.condition.sortval = params.srt;
-        this.condition.select = params.lst;
-        this.condition.keyword = params.kwd;
-
-        this.indexedDBService.registListSearchCondition(this.condition);
-      }
-      else {
-        let condition: any = await this.indexedDBService.getListSearchCondition();
-        if (condition) {
-          this.condition = condition;
-        }
-      }
-    });
-  }
-
-  async isDetail() {
+  async isDetail(isComplement: boolean = false) {
     if (this.listSelectMaster && this.spots.length > 0 && this.plans.length > 0) {
       const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
       if(isPlatformBrowser(this.platformId)) {
@@ -268,11 +265,27 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         }, 100);
       }
       this.optionKeywords = result.searchTarm;
+      this.searchParams = result.searchParams;
       this.historyReplace(result.searchParams);
       if (this.condition.select !== 'google') {
         this.count = result.list.length;
       }
-      this.mergeNextDataSet();
+      this.mergeNextDataSet(isComplement);
+      if (isComplement && this.rows.length > 0) {
+        const details = this.rows.slice(0, this.end).filter(x => x.isDetail === true);
+        if (details && details.length > 0) {
+          this.details$[0].objectId = this.commonService.objectId;
+          this.planspots.getFavorite(details).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            r.forEach(x => {
+              if (x.isDetail) {
+                this.rows.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
+                this.details$.find(y => y.isPlan === x.isPlan && y.id === x.id).isFavorite = x.isFavorite;
+              }
+            });
+          });
+        }
+      }
+
     }
   }
 
@@ -410,13 +423,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.p = this.p;
     c.end = this.end;
     c.offset = _offset;
-    c.select = this.condition.select;
-    c.sortval = this.condition.sortval;
-    c.mSort = this.$mSort;
-    c.keyword = this.condition.keyword;
+    //c.select = this.condition.select;
+    //c.sortval = this.condition.sortval;
+    //c.mSort = this.$mSort;
+    //c.keyword = this.condition.keyword;
     c.isList = this.isList;
     c.ListSelectMaster = this.listSelectMaster;
     c.optionKeywords = this.optionKeywords;
+    c.searchParams = this.searchParams;
     c.googleSearchArea = this.googleSearchArea;
     c.isDetail = isDetail;
     c.planSpotList = planSpotList;
