@@ -956,8 +956,37 @@ div.plandtl {
             display: flex;
             align-items: center;
 
-            @include add-to-bookmark();
-            
+            button.add-to-favorite {
+              box-shadow: none;
+              min-width: auto;
+              padding: 0;
+              width: 25px;
+              height: 25px;
+              line-height: initial;
+              margin-left: 6px;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 18px;
+                height: 18px;
+                background: url("../../../assets/img/icon_fav_b.svg");
+                background-repeat: no-repeat;
+              }
+
+              &.on {
+                &::before {
+                  background: url(../../../assets/img/icon_fav_b_on.svg);
+                  background-repeat: no-repeat;
+                }
+              }
+
+              ::ng-deep.mat-button-ripple {
+                width: 0;
+                height: 0;
+              }
+            }
+
             button.link-to-spot {
               box-shadow: none;
               min-width: auto;
@@ -1641,8 +1670,37 @@ div.plandtl {
           margin: auto 8px;
         }
 
-        @include add-to-bookmark()
+        button.add-to-bookmark {
+          // @include ios-reset;
+          box-shadow: none;
+          min-width: auto;
+          padding: 0;
+          width: 20px;
+          height: 20px;
+          margin-right: 12px;
+          line-height: initial;
 
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url(../../../assets/img/icon_bookmark_d.svg);
+            background-repeat: no-repeat;
+          }
+
+          &.on {
+            &::before {
+              background: url(../../../assets/img/icon_bookmark_d_on.svg);
+              background-repeat: no-repeat;
+            }
+          }
+
+          ::ng-deep.mat-button-ripple {
+            width: 0;
+            height: 0;
+          }
+        }
       }
     }
   }

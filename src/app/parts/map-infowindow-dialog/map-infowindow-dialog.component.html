@@ -42,10 +42,17 @@
             {{ "Directions3" | translate }}
           </span>
         </button>
-        <button class="add-to-bookmark" (click)="onClickFavorite()" [ngClass]="{'on':data.isFavorite}">
-          <span class="button-text">{{ "Favorite" | translate }}</span>
+        <button class="add-to-favorite" (click)="onClickFavorite()">
+          <span class="button" *ngIf="!data.isFavorite">
+            <img src="../../../assets/img/icon_fav_b.svg" alt="">
+          </span>
+          <span class="button" *ngIf="data.isFavorite">
+            <img src="../../../assets/img/icon_fav_b_on.svg" alt="">
+          </span>
+          <span class="button-text">
+            {{ "Favorite" | translate }}
+          </span>
         </button>
-
         <button class="add-to-plan" *ngIf="data.type !== 3 && (data.isDetail || data.isOhterSpot)" (click)="onClickAddToPlan()">
           {{ "AddToPlan" | translate }}
         </button>

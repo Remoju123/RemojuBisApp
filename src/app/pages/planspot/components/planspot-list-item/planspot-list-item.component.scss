@@ -469,12 +469,40 @@
           flex-basis: 90%;
         }
 
-        @include add-to-bookmark();
-        /*include add-to-bookmark override*/
-        .add-to-bookmark{
+        button.add-to-favorite {
+          box-shadow: none;
+          min-width: auto;
+          padding: 0;
+          width: 25px;
+          height: 25px;
+          // margin-right: 12px;
+          line-height: initial;
           margin-left: 6px;
           position: absolute;
           right: 6px;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: url("../../../../../assets/img/icon_fav_b.svg");
+            background-repeat: no-repeat;
+          }
+
+          &.on {
+
+            // background-color: $color-pnk04;
+            &::before {
+              background: url("../../../../../assets/img/icon_fav_b_on.svg");
+              background-repeat: no-repeat;
+            }
+          }
+
+          ::ng-deep.mat-button-ripple {
+            width: 0;
+            height: 0;
+          }
         }
       }
 

@@ -219,7 +219,7 @@
                     </div>
                   </div>
                   <div class="rt">
-                    <button *ngIf="item.type!==3" mat-button class="add-to-bookmark" (click)="onClickSpotFavorite(item)"
+                    <button *ngIf="item.type!==3" mat-button class="add-to-favorite" (click)="onClickSpotFavorite(item)"
                       [ngClass]="{'on':item.isFavorite}">
                     </button>
                     <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>

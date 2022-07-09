@@ -573,7 +573,34 @@ form {
               &:nth-child(3) {
                 flex-basis: 8%;
 
-                @include add-to-bookmark()
+                button.add-to-favorite {
+                  box-shadow: none;
+                  min-width: auto;
+                  padding: 0;
+
+                  &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 18px;
+                    height: 18px;
+                    background: url("../../../assets/img/icon_fav_b.svg");
+                    background-repeat: no-repeat;
+                  }
+
+                  &.on {
+
+                    // background-color: $color-pnk04;
+                    &::before {
+                      background: url("../../../assets/img/icon_fav_b_on.svg");
+                      background-repeat: no-repeat;
+                    }
+                  }
+
+                  ::ng-deep.mat-button-ripple {
+                    width: 0;
+                    height: 0;
+                  }
+                }
               }
 
               &:nth-child(4) {
