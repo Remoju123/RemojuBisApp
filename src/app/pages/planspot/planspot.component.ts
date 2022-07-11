@@ -113,7 +113,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
     this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: Params) => {
-      let regCondition: any;
       if ((params.aid && params.aid.length > 0)
         || (params.era && params.era.length > 0)
         || (params.cat && params.cat.length > 0)
@@ -137,9 +136,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       else {
         // パラメータなしの場合、保存されている条件を使用
-        regCondition = await this.indexedDBService.getListSearchCondition();
-        if (regCondition) {
-          this.condition = regCondition;
+        const condition: any = await this.indexedDBService.getListSearchCondition();
+        if (condition) {
+          this.condition = condition;
         }
       }
 
@@ -171,11 +170,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.transferState.remove(PLANSPOT_KEY);
 
         if (!cache.isDetail) {
-          if (regCondition) {
-            this.isDetail(true);
-          } else {
-            this.mergeNextDataSet(true);
-          }
+          this.isDetail(true);
         } else {
           this.historyReplace(this.searchParams);
         }
@@ -257,9 +252,15 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.commonService.scrollToTop();
       }
       this.p = 1;
+      this.prevkeyword = null;
+      this.token = null;
       this.rows = result.list;
       if (this.rows.length === 0 && this.condition.keyword) {
+        if (this.condition.areaId) {
+          this.condition.googleAreaId = this.condition.areaId;
+        }
         setTimeout(() => {
+
           this.condition.select = 'google';
           this.indexedDBService.registListSearchCondition(this.condition);
         }, 100);
@@ -272,9 +273,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.mergeNextDataSet(isComplement);
       if (isComplement && this.rows.length > 0) {
-        const details = this.rows.slice(0, this.end).filter(x => x.isDetail === true);
+        const details = this.rows.slice(0, this.end);
         if (details && details.length > 0) {
-          this.details$[0].objectId = this.commonService.objectId;
+          details[0].objectId = this.commonService.objectId;
           this.planspots.getFavorite(details).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             r.forEach(x => {
               if (x.isDetail) {
@@ -337,6 +338,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
         this.details$ = [];
+      }
+      if (isPlatformServer(this.platformId)) {
+        this.setTransferState(false);
       }
       if (keyword && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
         (await this.planspots.getGoogleSpotList(this.guid, keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
