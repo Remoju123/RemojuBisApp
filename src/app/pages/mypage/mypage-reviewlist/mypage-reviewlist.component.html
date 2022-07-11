@@ -36,7 +36,7 @@
                   </div>
                 </div>
               </div>
-              <div class='card-bottom'>
+              <!--<div class='card-bottom'>
                 <mat-list>
                   <mat-list-item class="bottom-view">
                     <div class='row'>
@@ -49,19 +49,19 @@
                     </div>
                   </mat-list-item>
                   <mat-list-item class="row">
-                      {{ item.title }}                    
+                      {{ item.title }}
                   </mat-list-item>
                   <mat-list-item class="row">
                     <p>
-                      {{ item.contents }}                    
+                      {{ item.contents }}
                     </p>
-                  </mat-list-item>                  
+                  </mat-list-item>
                   <mat-list-item class="row">
                     {{ "VisitDate" | translate }} :
                     <ng-container *ngIf="lang==='ja';else den">{{ item.visitDate | date:"yyyy/MM/dd" }}</ng-container>
                     <ng-template #den>{{ item.visitDate | date:"MM/dd/yyyy" }}</ng-template>
                   </mat-list-item>
-                    
+
                   <mat-list-item>
                     <div class='pic'>
                       <owl-carousel-o [options]="reviewOptions">
@@ -81,13 +81,13 @@
                       {{ "Edit" | translate }}
                     </button>
                   </mat-list-item>
-                  
+
                   <button class="deletePlan" (click)="onClickDelete(item)">
                     <i class="material-icons">clear</i>
                   </button>
-                
+
                 </mat-list>
-              </div>
+              </div>-->
               <div class='link-area' (click)="linktoDetail(item.id)"></div>
             </div>
           </mat-card-content>
@@ -101,4 +101,4 @@
         </mat-card-content>
       </mat-card>
     </ng-template>
-  
+

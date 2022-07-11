@@ -127,20 +127,20 @@
       <mat-card-content>
         <div class='comment'>
           <a pageScroll href="#review" [pageScrollOffset]="80" [pageScrollDuration]="500">
-            コメント
-            <span>{{ reviewQty }}</span>件
+            {{ "Review" | translate }}
+            <span>{{ reviewQty }}</span>{{ "Count" | translate }}
           </a>
         </div>
         <div class='favorite'>
           <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isThanks}" (click)="onClickThanks()">
           </button>
-          いいね
+            {{ "Thanks" | translate }}
           <span>{{ data.thanksQty }}</span>
         </div>
         <div class='bookmark'>
           <button mat-button class="add-to-bookmark" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
           </button>
-          お気に入り
+            {{ "Favorite" | translate }}
         </div>
       </mat-card-content>
     </mat-card>
