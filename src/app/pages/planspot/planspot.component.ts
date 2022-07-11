@@ -429,8 +429,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     c.offset = _offset;
     //c.select = this.condition.select;
     //c.sortval = this.condition.sortval;
-    //c.mSort = this.$mSort;
     //c.keyword = this.condition.keyword;
+    c.mSort = this.$mSort;
     c.isList = this.isList;
     c.ListSelectMaster = this.listSelectMaster;
     c.optionKeywords = this.optionKeywords;
