@@ -10,7 +10,7 @@
       <div id="swImg"></div>
     </div>
     <div class='mapview'>
-      <button (click)="onClickMap()">マップ表示</button>
+      <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
     </div>
   </div>
 
@@ -42,7 +42,7 @@
 
       <div class='transport' (click)="$event.stopPropagation()">
         <div class='lt'>
-          <span class="label">移動手段</span>
+          <span class="label">{{"TravelRoute"|translate}}</span>
           <div class="switchTran" [ngClass]="{'en':lang==='en'}">
             <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
             <label for="switch-tran"><span></span></label>
@@ -52,7 +52,7 @@
         <div class='rt'>
           <!-- 最短ルート -->
           <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
-            matTooltip="出発地から到着地までの最短ルートを計算します。" matTooltipPosition="above" matTooltipClass="toolExplanation">
+            matTooltip="{{'AutoTips'|translate }}" matTooltipPosition="above" matTooltipClass="toolExplanation">
             <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
               <img src="/assets/img/keiro.svg" alt="Auto">
             </span>
@@ -196,7 +196,8 @@
           </div>
           <ng-template #pcBlank>
             <div class='pcguide'>
-              <p>スポットはまだありません。<br>お好きなスポットを追加しよう。</p>
+              <p>{{ "NoSpot" | translate }}</p>
+              <p>{{ "NoSpot2" | translate }}</p>
             </div>
           </ng-template>
         </div>
@@ -257,7 +258,7 @@
 
     <div class='transport' (click)="$event.stopPropagation()">
       <div class='lt'>
-        <span class="label">移動手段</span>
+        <span class="label">{{"TravelRoute"|translate}}</span>
         <div class="switchTran" [ngClass]="{'en':lang==='en'}">
           <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
           <label for="switch-tran"><span></span></label>

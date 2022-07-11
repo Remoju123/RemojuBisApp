@@ -106,7 +106,7 @@
   "Directions": "現在地から",
   "Directions2": "への行き方",
   "Directions3": "行き方",
-  "TravelRoute": "移動経路",
+  "TravelRoute": "移動手段",
   "RemoveFromPlan": "プランから削除",
   "UserProfile": "プロフィール",
   "MyplanList": "プラン",
@@ -204,7 +204,8 @@
   "ShareYourPlanWithOtherUsers": "自分のプランを他のユーザーにも共有しよう",
   "PlanSave": "プランを保存しました。",
   "NoSpotName": "保存にはスポット名が必要です。スポット名を入力してください。",
-  "NoSpot": "住所を直接入力する",
+  "NoSpot": "スポットはまだありません。",
+  "NoSpot2": "お好きなスポットを追加しよう。",
   "RegisterSpot": "スポットを登録",
   "NoReview": "まだコメントがありません。",
   "VisitDate": "訪問日",
@@ -339,5 +340,8 @@
   "EditPlanRemoveConfirm": "編集中のプランも削除されます。よろしいですか？",
   "About":"アバウト",
   "Guide":"ガイド",
-  "Policy":"プライバシー"
+  "Policy":"プライバシー",
+  "MapDisp": "マップ表示",
+  "AutoTips": "出発地から到着地までの最短ルートを計算します。",
+  "Thanks": "いいね"
 }

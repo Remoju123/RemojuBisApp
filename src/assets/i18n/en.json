@@ -204,7 +204,8 @@
   "ShareYourPlanWithOtherUsers": "Share your plan with other users",
   "PlanSave": "プランを保存しました。",
   "NoSpotName": "Not all required fields are filled.Please enter the title.",
-  "NoSpot": "Manual input",
+  "NoSpot": "スポットはまだありません。",
+  "NoSpot2": "お好きなスポットを追加しよう。",
   "RegisterSpot": "Register spot",
   "NoReview": "There are no reviews yet.",
   "VisitDate": "Visit Date",
@@ -339,5 +340,8 @@
   "EditPlanRemoveConfirm": "編集中のプランも削除されます。よろしいですか？",
   "About":"アバウト",
   "Guide":"ガイド",
-  "Policy":"プライバシー"
+  "Policy":"プライバシー",
+  "MapDisp": "マップ表示",
+  "AutoTips": "出発地から到着地までの最短ルートを計算します。",
+  "Thanks": "いいね"
 }
