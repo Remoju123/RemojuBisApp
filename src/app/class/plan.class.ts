@@ -8,6 +8,7 @@ export class PlanApp {
   planName: string;
   planExplanation: string;
   areaId: number;
+  pvQty: number;
   isThanks: boolean;
   thanksQty: number;
   isFavorite: boolean;
