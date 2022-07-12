@@ -504,6 +504,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // Map
   onClickMap() {
+    const qty = this.getSpotQty();
+    if (qty === 0) {
+      return;
+    }
+
     console.log(this.row);
     const param = new MapFullScreenParam();
     param.isDetail = false;
@@ -907,16 +912,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   checkTransfer() {
-    let qty = 0;
-    if (this.row.startPlanSpot) {
-      qty++;
-    }
-    if (this.row.planSpots) {
-      qty += this.row.planSpots.length;
-    }
-    if (this.row.endPlanSpot) {
-      qty++;
-    }
+    const qty = this.getSpotQty();
 
     if (this.row.isCar && qty > 10) {
       this.isWarningCar = true;
@@ -930,6 +926,20 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (!this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       this.isEdit = true;
     }
+  }
+
+  getSpotQty(): number {
+    let qty = 0;
+    if (this.row.startPlanSpot) {
+      qty++;
+    }
+    if (this.row.planSpots) {
+      qty += this.row.planSpots.length;
+    }
+    if (this.row.endPlanSpot) {
+      qty++;
+    }
+    return qty;
   }
 
   linktoSpot(planSpot: PlanSpotCommon) {
