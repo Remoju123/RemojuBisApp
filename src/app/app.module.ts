@@ -79,8 +79,8 @@ import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
 // import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
-import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
-import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
+// import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
+// import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
 import { RatingCompComponent } from './parts/rating-comp/rating-comp.component';
 import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
 import { MapPanelComponent } from './parts/map-panel/map-panel.component';
@@ -174,8 +174,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     HeaderPlanPanelComponent,
     UserDialogComponent,
     ConfirmMessageDialogComponent,
-    ReviewListPanelComponent,
-    ReviewPostDialogComponent,
+    // ReviewListPanelComponent,
+    // ReviewPostDialogComponent,
     RatingCompComponent,
     TransferPanelComponent,
     MapDialogComponent,
@@ -286,8 +286,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ConfirmMessageDialogComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
-    ReviewListPanelComponent,
-    ReviewPostDialogComponent,
+    // ReviewListPanelComponent,
+    // ReviewPostDialogComponent,
     TransferPanelComponent,
     MapDialogComponent,
     ImageCropperDialogComponent,
