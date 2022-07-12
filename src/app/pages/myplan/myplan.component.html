@@ -68,7 +68,7 @@
       </mat-list> -->
 
       <div class="set depart">
-        <div class="lt" matTooltip="{{'StartEx'|translate }}" matTooltipPosition="above"
+        <div *ngIf="row && !row.isRelease" class="lt" matTooltip="{{'StartEx'|translate }}" matTooltipPosition="above"
           matTooltipClass="toolExplanation">
           <!-- 出発地を設定 -->
           <button id="dept" type="button" class="setting" mat-button (click)="onClickStartEndSelect(true)"
@@ -211,12 +211,12 @@
         </button>
       </div>
 
-      <div class='spacer'>
+      <div *ngIf="row && !row.isRelease" class='spacer'>
         <img src="../../../assets/img/allow_down_slv.svg" alt="">
       </div>
 
       <!-- 到着地を設定 -->
-      <div class="set arrival">
+      <div *ngIf="row && !row.isRelease" class="set arrival">
         <div class="lt" matTooltip="{{'EndEx'|translate }}" matTooltipPosition="above"
           matTooltipClass="toolExplanation">
           <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)"
@@ -431,7 +431,7 @@
     <div class='share'>
       <label class="time-label">{{"ReleaseDestination"|translate}}</label>
       <div class="container" *ngIf="row">
-        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="registPlan()">
+        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="changeRelease()">
           <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
             {{ commonService.isValidJson(destination.name, lang) }}
           </option>
