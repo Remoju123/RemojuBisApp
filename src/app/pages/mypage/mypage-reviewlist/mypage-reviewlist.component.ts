@@ -2,7 +2,7 @@ import { Component, OnInit,Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { MypagePlanListService } from 'src/app/service/mypageplanlist.service';
-import { ReviewPostDialogComponent } from '../../../parts/review-post-dialog/review-post-dialog.component';
+// import { ReviewPostDialogComponent } from '../../../parts/review-post-dialog/review-post-dialog.component';
 import { Review } from "../../../class/review.class";
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
@@ -48,7 +48,7 @@ export class MypageReviewlistComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
     this.getMyReview();
-    
+
   }
 
   getMyReview():void {
@@ -69,7 +69,7 @@ export class MypageReviewlistComponent implements OnInit {
       '../../../../assets/img/mark_spot.svg';
   }
 
-  onClickPosted(review?: Review){
+  /*onClickPosted(review?: Review){
 
     const dialog = this.dialog.open(ReviewPostDialogComponent, {
       maxWidth: "100%",
@@ -92,7 +92,7 @@ export class MypageReviewlistComponent implements OnInit {
         this.getMyReview();
       }
     });
-  }
+  }*/
 
   onClickDelete(review:Review){
     // 確認ダイアログの表示

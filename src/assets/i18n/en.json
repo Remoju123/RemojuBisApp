@@ -343,5 +343,6 @@
   "Policy":"プライバシー",
   "MapDisp": "マップ表示",
   "AutoTips": "出発地から到着地までの最短ルートを計算します。",
-  "Thanks": "いいね"
+  "Thanks": "いいね",
+  "StartEndSpotDeleteConfirm": "出発地と到着地を削除します。よろしいですか？"
 }

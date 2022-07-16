@@ -504,6 +504,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // Map
   onClickMap() {
+    const qty = this.getSpotQty();
+    if (qty === 0) {
+      return;
+    }
+
     console.log(this.row);
     const param = new MapFullScreenParam();
     param.isDetail = false;
@@ -607,6 +612,26 @@ export class MyplanComponent implements OnInit, OnDestroy {
         param.type = planSpot.googleSpot ? 2: 1;
         this.myplanService.updateFavorite(param);
       });
+  }
+
+  changeRelease(){
+    if (this.row.isRelease && (this.row.startPlanSpot || this.row.endPlanSpot)) {
+      const param = new ComfirmDialogParam();
+      param.title = "StartEndSpotDeleteConfirm";
+      const dialog = this.commonService.confirmMessageDialog(param);
+      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+        if (d === "ok") {
+          this.row.startPlanSpot = null;
+          this.row.endPlanSpot = null;
+          this.row.isTransferSearch = true;
+          this.registPlan();
+        } else {
+          this.row.isRelease = false;
+        }
+      });
+    } else {
+      this.registPlan();
+    }
   }
 
   // プランを保存する
@@ -718,6 +743,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         this.spotZero = r.myPlan.planSpots;
         this.initRow = JSON.parse(JSON.stringify(r.myPlan));
         this.initRow.planSpots = null;
+        this.initRow.isReleasePrev = false;
         for (let i = 0; i < this.spotZero.length; i++) {
           // 多言語項目の使用言語で設定
           this.commonService.setAddPlanLang(this.spotZero[i], this.lang);
@@ -907,16 +933,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   checkTransfer() {
-    let qty = 0;
-    if (this.row.startPlanSpot) {
-      qty++;
-    }
-    if (this.row.planSpots) {
-      qty += this.row.planSpots.length;
-    }
-    if (this.row.endPlanSpot) {
-      qty++;
-    }
+    const qty = this.getSpotQty();
 
     if (this.row.isCar && qty > 10) {
       this.isWarningCar = true;
@@ -930,6 +947,20 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (!this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       this.isEdit = true;
     }
+  }
+
+  getSpotQty(): number {
+    let qty = 0;
+    if (this.row.startPlanSpot) {
+      qty++;
+    }
+    if (this.row.planSpots) {
+      qty += this.row.planSpots.length;
+    }
+    if (this.row.endPlanSpot) {
+      qty++;
+    }
+    return qty;
   }
 
   linktoSpot(planSpot: PlanSpotCommon) {
