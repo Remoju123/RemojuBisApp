@@ -135,8 +135,6 @@ export class PlanSpotListService {
   mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList) {
     detail.areaId = planSpotList.areaId;
     detail.areaId2 = planSpotList.areaId2;
-    detail.areaName = planSpotList.areaName;
-    detail.areaName2 = planSpotList.areaName2;
     detail.isPlan = planSpotList.isPlan;
     detail.keyword = planSpotList.keyword;
     detail.pvQtyAll = planSpotList.pvQtyAll;
