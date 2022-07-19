@@ -43,13 +43,8 @@
   "TimeRequired": "所要時間",
   "RemojuRecommended": "モデルプラン",
   "UserSubmissionPlan": "みんなのプラン",
-<<<<<<< HEAD
-  "FindEveryoneRecommendations": "ベストな旅を探す、作る",
-  "BackEveryoneRecommendations": "一覧",
-=======
   "FindEveryoneRecommendations": "おすすめの旅プランを探す、作る",
-  "BackEveryoneRecommendations": "一覧へ戻る",
->>>>>>> origin/develop
+  "BackEveryoneRecommendations": "一覧",
   "EditPlan": "編集",
   "DeletePlan": "削除する",
   "Application": "公開申請中",
