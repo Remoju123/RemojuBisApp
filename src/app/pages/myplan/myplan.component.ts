@@ -318,7 +318,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // プラン編集ダイアログ
   onClickPlanEdit(row: MyPlanApp) {
-    console.log(row);
     const param = new EditPlanParam();
     param.mArea = this.listSelectedPlan.mArea;
     param.myPlanApp = this.row;
