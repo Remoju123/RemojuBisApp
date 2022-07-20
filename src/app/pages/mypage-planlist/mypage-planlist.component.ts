@@ -200,6 +200,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     if(!this.commonService.loggedIn){
       const param = new ComfirmDialogParam();
       param.title = "LoginConfirmTitle";
+      param.text = "LoginConfirmText";
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {
