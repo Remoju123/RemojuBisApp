@@ -813,8 +813,8 @@ $color-grn01: #81C5B4;
 // プロフィール編集・プレビュー切り替え
 @mixin switchViewProf {
   .switchViewProf {
-    $edit: "編集する";
-    $preview: "プレビュー表示";
+    $edit: "編集";
+    $preview: "プレビュー";
     $edit_en: "Edit";
     $preview_en: "Preview";
     $height: 23px;

@@ -11,6 +11,7 @@
   </mat-form-field>
   <!-- プラン概要 -->
   <mat-form-field appearance="outline">
+    <mat-label>{{ 'TravelBookmark' | translate }}</mat-label>
     <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
       placeholder="{{ 'PlanExplanationEx' | translate }}" #inputinfo="ngModel"
       [(ngModel)]="row.planExplanation" (change)="onChange(false)"></textarea>
@@ -20,6 +21,7 @@
   </mat-form-field>
   <!-- フリー文章 -->
   <mat-form-field appearance="outline" *ngIf="row.isRelease">
+    <mat-label>{{ 'Memo' | translate }}</mat-label>
     <textarea matInput #memo name="memo" maxlength="1000" rows="5"
       placeholder="{{ 'FreeMemoEx' | translate }}" #inputinfo="ngModel" [(ngModel)]="row.memo"
       (change)="onChange(false)"></textarea>
@@ -54,7 +56,7 @@
     </div>
     <label for="selectarea" class="time-label">{{"SelectAnAreaCategory"|translate}}</label>
   </div>
-  
+
   <!-- カテゴリー選択ボタン -->
   <!-- <button mat-stroked-button (click)="onClickAreaCategory()">
     {{ "SelectAnAreaCategory" | translate }}
