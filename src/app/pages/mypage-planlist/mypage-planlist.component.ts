@@ -217,11 +217,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
-    if (myPlanApp.planUserId === row.planUserId) {
-      param.title = "EditPlanRemoveConfirm";
-    } else {
-      param.title = "PlanRemoveConfirm";
-    }
+    param.title = "PlanRemoveConfirmTitle";
+    param.text = "PlanRemoveConfirmText";
     const dialog = this.commonService.confirmMessageDialog(param);
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
       // プランを削除する
@@ -460,7 +457,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
         r.isRelease = false;
         r.isShare = false;
         r.shareUrl = null;
-        r.planName = '[copy]' + r.planName;
+        r.planName = "(" + this.translate.instant("CopyPlan") + ")" + r.planName;
       }
 
       // プラン作成に反映
