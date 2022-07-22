@@ -10,6 +10,9 @@
     <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
   </mat-form-field>
   <!-- プラン概要 -->
+  <div class='sub item'>
+    Point
+  </div>
   <mat-form-field appearance="outline">
     <mat-label>{{ 'TravelBookmark' | translate }}</mat-label>
     <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
@@ -20,6 +23,9 @@
           class="material-icons">backspace</span></a></mat-hint>
   </mat-form-field>
   <!-- フリー文章 -->
+  <div class='sub item'>
+    memo / message
+  </div>
   <mat-form-field appearance="outline" *ngIf="row.isRelease">
     <mat-label>{{ 'Memo' | translate }}</mat-label>
     <textarea matInput #memo name="memo" maxlength="1000" rows="5"
