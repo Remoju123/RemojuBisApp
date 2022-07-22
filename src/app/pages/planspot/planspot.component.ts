@@ -258,6 +258,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (this.rows.length === 0 && this.condition.keyword) {
         if (this.condition.areaId) {
           this.condition.googleAreaId = this.condition.areaId;
+          this.setGoogleSearchArea();
         }
         setTimeout(() => {
 
@@ -465,16 +466,20 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.indexedDBService.registListSearchCondition(condition);
         this.condition = condition;
         if (this.condition.select === 'google') {
-          const langpipe = new LangFilterPipe();
-          const googleAreas: any[] = [];
-          this.condition.googleAreaId?.forEach(v => {
-            googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x => x.parentId === v).parentName, this.translate.currentLang));
-          });
-          this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
+          this.setGoogleSearchArea();
         }
         this.isDetail();
       }
     });
+  }
+
+  setGoogleSearchArea() {
+    const langpipe = new LangFilterPipe();
+    const googleAreas: any[] = [];
+    this.condition.googleAreaId?.forEach(v => {
+      googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x => x.parentId === v).parentName, this.translate.currentLang));
+    });
+    this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
   }
 
   // 検索条件リセット
@@ -482,12 +487,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.commonService.scrollToTop();
 
     if (this.condition.select === 'google') {
+      this.condition.select = 'all';
       this.condition.googleAreaId = [];
-    } else {
-      this.condition.areaId = [];
-      this.condition.areaId2 = [];
-      this.condition.searchCategories = [];
+      this.setGoogleSearchArea();
     }
+    this.condition.areaId = [];
+    this.condition.areaId2 = [];
+    this.condition.searchCategories = [];
     this.condition.keyword = "";
     this.indexedDBService.registListSearchCondition(this.condition);
     this.isDetail();

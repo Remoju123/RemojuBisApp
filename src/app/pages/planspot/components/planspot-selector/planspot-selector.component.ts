@@ -79,7 +79,11 @@ export class PlanspotSelectorComponent implements OnInit {
   }
 
   chkTarms():boolean{
-    return (this.searchTarms?.area !== "----" || this.searchTarms?.cate !== "----");
+    if (this.condition.select === 'google') {
+      return this.googleSearchArea !== "----";
+    } else {
+      return (this.searchTarms?.area !== "----" || this.searchTarms?.cate !== "----");
+    }
   }
 
   condReset(){
