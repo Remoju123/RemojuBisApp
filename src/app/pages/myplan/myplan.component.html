@@ -53,7 +53,7 @@
           <!-- 最短ルート -->
           <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
             matTooltip="{{'AutoTips'|translate }}" matTooltipPosition="above" matTooltipClass="toolExplanation">
-            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
               <img src="/assets/img/keiro.svg" alt="Auto">
             </span>
             <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
