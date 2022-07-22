@@ -250,13 +250,12 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     });
 
     if (this.data.isGoogle) {
+      this.condition.select = 'all';
       this.condition.googleAreaId = [];
-    } else {
-      this.condition.areaId = [];
-      this.condition.areaId2 = [];
-      this.condition.searchCategories = [];
     }
-
+    this.condition.areaId = [];
+    this.condition.areaId2 = [];
+    this.condition.searchCategories = [];
     this.dialogRef.close(this.condition);
   }
 
