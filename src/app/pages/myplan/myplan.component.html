@@ -56,7 +56,7 @@
             <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
               <img src="/assets/img/keiro.svg" alt="Auto">
             </span>
-            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
           </button>
         </div>
       </div>
@@ -268,10 +268,10 @@
       <div class='rt'>
         <!-- 最短ルート -->
         <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
-          <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-silver'">
+          <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
             <img src="/assets/img/keiro.svg" alt="Auto">
           </span>
-          <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-silver'">{{ "Auto" | translate }}</span>
+          <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
         </button>
       </div>
     </div>
@@ -294,7 +294,7 @@
       <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
     </div>
     <!-- スタート時間-->
-    <mat-list style="margin: 24px 16px 16px;">
+    <mat-list style="margin: 30px 16px 16px;">
       <mat-list-item class="endtime">
         <span class="sufix">{{ "StartTime" | translate  }}</span>{{ row.startTime }}
       </mat-list-item>

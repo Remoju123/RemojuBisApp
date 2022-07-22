@@ -971,13 +971,13 @@ div.plandtl {
                 display: inline-block;
                 width: 18px;
                 height: 18px;
-                background: url("../../../assets/img/icon_fav_b.svg");
+                background: url("../../../assets/img/icon_bookmark_d.svg");
                 background-repeat: no-repeat;
               }
 
               &.on {
                 &::before {
-                  background: url(../../../assets/img/icon_fav_b_on.svg);
+                  background: url("../../../assets/img/icon_bookmark_d_on.svg");
                   background-repeat: no-repeat;
                 }
               }
