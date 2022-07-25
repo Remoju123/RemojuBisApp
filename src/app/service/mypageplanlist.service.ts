@@ -54,16 +54,14 @@ export class MypagePlanListService {
   registIsRelease(
     planUserId: number,
     isRelease: boolean,
-    memo: string) {
-    if (!memo) {
-      memo = "";
-    }
+    isStartEnd: boolean) {
     const url = this.host + "/api/MypagePlanList/RegistIsRelease";
     return this.http.get<boolean>(url, {
       params: {
         planUserId: String(planUserId),
         isRelease: String(isRelease),
-        memo
+        isStartEnd: String(isStartEnd),
+        objectId: this.commonService.objectId
       }
     });
   }

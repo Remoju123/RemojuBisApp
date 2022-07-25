@@ -22,6 +22,7 @@ export class MypagePlanAppList {
   shareUrl: string;
   memo: string;
   spots: PlanSpotCommon[];
+  isStartEnd: boolean;
 }
 
 export class MyPlanAppListSelected{

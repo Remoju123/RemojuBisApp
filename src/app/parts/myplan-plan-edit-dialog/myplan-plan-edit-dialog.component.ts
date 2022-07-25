@@ -41,30 +41,6 @@ export class MyplanPlanEditDialogComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  // 変更時保存
-  onChange(value: boolean){
-    // 移動方法(一旦trueになったらfalseがきてもtrueのままにする)
-    if (!this.row.isTransferSearch){
-      this.row.isTransferSearch = value;
-    }
-    if (value) {
-      this.row.optimized = false;
-    }
-    // 保存
-    this.registPlan(false);
-  }
-
-  // プランをIndexedDBに保存
-  registPlan(isSaved: boolean){
-    // 未保存プランの場合、常にステータスは未保存
-    if(this.row.planUserId === 0){
-      this.row.isSaved = false;
-    } else {
-      this.row.isSaved = isSaved;
-    }
-    this.indexedDBService.registPlan(this.row);
-  }
-
   // プランメイン写真
   async onClickSelectPhotoPlan(e:any) {
     if (e.target.files && e.target.files[0]) {
@@ -72,7 +48,6 @@ export class MyplanPlanEditDialogComponent implements OnInit,OnDestroy {
       const img = await this.commonService.imageSize(file);
       this.row.picturePreviewUrl = img.previewUrl;
       this.row.pictureFile = img.file;
-      this.onChange(false);
     }
   }
 
@@ -83,7 +58,6 @@ export class MyplanPlanEditDialogComponent implements OnInit,OnDestroy {
     this.row.pictureUrl = null;
     this.row.imageCropped = null;
     this.row.cropperPosition = null;
-    this.onChange(false);
   }
 
   onClickCropPlan() {
@@ -110,7 +84,6 @@ export class MyplanPlanEditDialogComponent implements OnInit,OnDestroy {
         this.row.imageCropped = r.imageCropped;
         this.row.aspectRatio = r.aspectRatio;
         this.row.cropperPosition = r.cropperPosition;
-        this.onChange(false);
       }
     });
   }

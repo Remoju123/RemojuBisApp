@@ -142,9 +142,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
         if (d === "ok") {
-          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, row.memo).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, false).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
-              //row.isRelease = !row.isRelease;
               this.commonService.snackBarDisp("PrivateSaved");
             }
           });
@@ -161,27 +160,28 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
         return;
       }
 
-      const dialog = this.dialog.open(MemoDialogComponent, {
-        id:"urlShare",
-        maxWidth: "100%",
-        width: "92vw",
-        position: { top: "10px" },
-        data: row.memo,
-        autoFocus: false
-      });
+      const param = new ComfirmDialogParam();
+      param.title = "ReleaseConfirmTitle";
+      if (row.isStartEnd) {
+        param.text = "ReleaseStartEndSpotDeleteConfirmText";
+      } else {
+        param.text = "ReleaseConfirmText";
+      }
+      param.leftButton = "ReleaseButton";
+      const dialog = this.commonService.confirmMessageDialog(param);
       dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if (d === "cancel") {
-          row.isRelease = !row.isRelease;
-        } else {
-          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, d).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        if (d === "ok") {
+          this.mypagePlanListService.registIsRelease(row.planUserId, row.isRelease, row.isStartEnd).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
             if (r) {
-              //row.isRelease = !row.isRelease;
-              row.memo = d;
+              row.isStartEnd = false;
               this.commonService.snackBarDisp("ReleaseSaved");
             }
           });
+        } else {
+          row.isRelease = !row.isRelease;
         }
       });
+
     }
   }
 
@@ -391,6 +391,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       .getMypagePlanListDetail(this.rows[i])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(d => {
+          console.log(d.planUserId);
           const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
           this.rows[idx] = d;
           if (d.spots && d.spots.length > 0){

@@ -5,13 +5,13 @@
   <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" class="spotname">
     <mat-label>{{ 'SpotNameEx' | translate }}</mat-label>
     <textarea matInput #spotName name="spotName" maxlength="30" required #inputinfo="ngModel"
-      [(ngModel)]="p.item.spotName" (change)="onChange(false)"></textarea>
+      [(ngModel)]="p.item.spotName"></textarea>
     <mat-hint align="end">{{spotName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="memo">
     <textarea matInput #memo name="memo" maxlength="1000" rows="5" placeholder="{{ 'SpotExplanationEx' | translate }}"
-      #inputinfo="ngModel" rows="5" [(ngModel)]="p.item.memo" (change)="onChange(false)">
+      #inputinfo="ngModel" rows="5" [(ngModel)]="p.item.memo">
     </textarea>
     <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
         href="javascript:void(0);" class="aclear" (click)="p.item.memo='';"><span
@@ -33,7 +33,7 @@
       <mat-form-field appearance="outline">
         <textarea matInput #memo name="memo{{j}}" maxlength="1000" rows="3"
           placeholder="{{ 'PictureMemo' | translate }}" #inputinfo="ngModel" [(ngModel)]="picture.memo"
-          (change)="onChange(false)"></textarea>
+          ></textarea>
         <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
             href="javascript:void(0);" (click)="picture.memo='';"><span class="material-icons">backspace</span></a>
         </mat-hint>
@@ -53,7 +53,7 @@
   <div class="selectStay">
     <label>{{ "SuggestedTime" | translate }}</label>
     <div class="stayTime">
-      <select name="stayTime" [(ngModel)]="p.item.stayTime" (change)="onChange(true)">
+      <select name="stayTime" [(ngModel)]="p.item.stayTime" (change)="onChangeTransfer(true)">
         <option *ngFor="let sTime of p.stayTimes" [value]="sTime.id">
           {{ sTime.id }}{{ "Minute" | translate }}
         </option>
