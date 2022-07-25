@@ -6,7 +6,7 @@
   <mat-form-field appearance="outline">
     <mat-label>{{ 'PlanName' | translate }}</mat-label>
     <textarea matInput #planName name="planName" maxlength="30" required #inputinfo="ngModel"
-      [(ngModel)]="row.planName" (change)="onChange(false)"></textarea>
+      [(ngModel)]="row.planName"></textarea>
     <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
   </mat-form-field>
   <!-- プラン概要 -->
@@ -17,7 +17,7 @@
     <mat-label>{{ 'TravelBookmark' | translate }}</mat-label>
     <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
       placeholder="{{ 'PlanExplanationEx' | translate }}" #inputinfo="ngModel"
-      [(ngModel)]="row.planExplanation" (change)="onChange(false)"></textarea>
+      [(ngModel)]="row.planExplanation"></textarea>
     <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a
         href="javascript:void(0);" (click)="row.planExplanation='';"><span
           class="material-icons">backspace</span></a></mat-hint>
@@ -29,8 +29,7 @@
   <mat-form-field appearance="outline">
     <mat-label>{{ 'Memo' | translate }}</mat-label>
     <textarea matInput #memo name="memo" maxlength="1000" rows="5"
-      placeholder="{{ 'FreeMemoEx' | translate }}" #inputinfo="ngModel" [(ngModel)]="row.memo"
-      (change)="onChange(false)"></textarea>
+      placeholder="{{ 'FreeMemoEx' | translate }}" #inputinfo="ngModel" [(ngModel)]="row.memo"></textarea>
     <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
         href="javascript:void(0);" (click)="row.memo='';"><span class="material-icons">backspace</span></a>
     </mat-hint>
@@ -54,7 +53,7 @@
   <!-- 都道府県 -->
   <div class="area" *ngIf="row">
     <div class='container'>
-      <select id="selectarea" name="selectarea" [(ngModel)]="row.areaId" (change)="onChange(true)">
+      <select id="selectarea" name="selectarea" [(ngModel)]="row.areaId">
         <option *ngFor="let area of $area" [ngValue]="area.parentId">
           {{ commonService.isValidJson(area.parentName, lang) }}
         </option>

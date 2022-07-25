@@ -35,8 +35,9 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
   }
 
-  onChange(value: boolean) {
-
+  onChangeTransfer(value: boolean) {
+    this.row.isTransferSearch = true;
+    this.row.optimized = false;
   }
 
   // スポット写真
@@ -62,7 +63,6 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
           }
         }
       }
-      this.onChange(false);
     }
   }
 
@@ -78,7 +78,6 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
     planSpot.planUserpictures.forEach(picture => {
       picture.picture_display_order = i++;
     });
-    this.onChange(false);
   }
 
   onClickCropSpot(planSpot: PlanSpotCommon, picture: PlanUserPicture) {
@@ -112,7 +111,6 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
         this.row.planSpots[idx].planUserpictures[idxPic].imageCropped = r.imageCropped;
         this.row.planSpots[idx].aspectRatio = r.aspectRatio;
         this.row.planSpots[idx].planUserpictures[idxPic].cropperPosition = r.cropperPosition;
-        this.onChange(false);
       }
     });
   }
@@ -128,7 +126,6 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
     // 配列の入れ替え
     [pictures[index], pictures[index + 1]] = [pictures[index + 1], pictures[index]];
     // 保存
-    this.onChange(false);
   }
 
   myTrackBy(index: number): any {

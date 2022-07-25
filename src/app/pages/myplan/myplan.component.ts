@@ -329,7 +329,10 @@ export class MyplanComponent implements OnInit, OnDestroy {
       data: param,
       autoFocus: false,
       id: "editplan"
-    })
+    });
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+      this.registPlan();
+    });
   }
 
   // スポット編集ダイアログ
@@ -348,10 +351,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
       autoFocus: false,
       id: "editspot"
     });
-
-    // dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-    //   console.log(item);
-    // })
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
+      this.registPlan();
+    });
   }
 
   // スポット全削除
@@ -848,8 +850,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
     // 終了時間(出発時間＋所要時間)
     if (this.row.startTime && this.row.timeRequired) {
       // 所要時間を設定
-      const hour = Number(this.row.timeRequired.substring(0, 2));
-      const minute = Number(this.row.timeRequired.substring(3, 5));
+      const arr = this.row.timeRequired.split(":");
+      const hour = Number(arr[0]);
+      const minute = Number(arr[1]);
       this.row.timeRequiredDisp =
         (hour > 0 ? hour + " " + this.translate.instant("Hour") + " " : "") +
         minute + " " + this.translate.instant("Minute");
