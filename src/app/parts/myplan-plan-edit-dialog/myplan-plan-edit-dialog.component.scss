@@ -19,22 +19,14 @@
           margin-bottom: 0.5em;
 
           &::before {
-            content: '';
-            background-image: url('../../../assets/img/icon_bookmark_gld.svg');
-            background-repeat: no-repeat;
-            width: 17px;
-            height: 22px;
-            margin-right: 0.5em;
-          }
-
-          &.item {
-            &::before {
-              background-image: url('../../../assets/img/star-rating-off.svg');
-              background-repeat: no-repeat;
-              width: 17px;
-              height: 22px;
-              margin-right: 0;
-            }
+            content: "";
+            border-left: 6px solid #bfa060;
+            /* width: 17px; */
+            height: 20px;
+            line-height: 20px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+            margin-top: 4px;
           }
         }
 
