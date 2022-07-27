@@ -9,6 +9,9 @@
     <mat-hint align="end">{{spotName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
   </mat-form-field>
 
+  <div class='sub item'>
+    Point
+  </div>
   <mat-form-field appearance="outline" class="memo">
     <textarea matInput #memo name="memo" maxlength="1000" rows="5" placeholder="{{ 'SpotExplanationEx' | translate }}"
       #inputinfo="ngModel" rows="5" [(ngModel)]="p.item.memo">

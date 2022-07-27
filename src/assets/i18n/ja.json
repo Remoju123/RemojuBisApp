@@ -306,7 +306,7 @@
   "AgeAnnounced": "年代は公表されます。",
   "SetBirthday": "設定は編集の生年月日で行います。",
   "ImgSelected": "写真を選択する",
-  "TravelBookmark": "プラン概要",
+  "TravelBookmark": "プラン名（必須）",
   "PasteImg": "プランの表紙写真を選ぼう",
   "PasteImgSpot": "スポットの写真を追加します",
   "NotFound": "お探しのページは見つかりませんでした。",
@@ -329,7 +329,7 @@
   "PictureMemo": "写真のコメント",
   "Hedtitle": "はじめての方へ",
   "WhereToLook": "絞り込み",
-  "SpotOverview": "スポット概要",
+  "SpotOverview": "スポット名（必須）",
   "ErrorMsgSetTransferCar": "1つのプランに保存できるスポット数は、車の場合、最大10スポットです。(出発地・到着地を含む)",
   "ErrorMsgSetTransferEkitan": "1つのプランに保存できるスポット数は、公共交通機関の場合、最大8スポットです。(出発地・到着地を含む)",
   "ReleaseDestination": "公開先",
@@ -347,5 +347,6 @@
   "AutoTips": "出発地から到着地までの最短ルートを計算します。",
   "Thanks": "いいね",
   "StartEndSpotDeleteConfirm": "出発地と到着地を削除します。よろしいですか？",
-  "ReleaseStartEndSpotDeleteConfirmText": "出発地と到着地を削除します。公開する場合は、投稿内容にご注意いただき、利用規約の了承の上、公開を行ってください。自分のみが閲覧可能な状態で保存をする場合には、公開先を「自分のみ(非公開)」に変更し直してから保存ボタンを押してください。"
+  "ReleaseStartEndSpotDeleteConfirmText": "出発地と到着地を削除します。公開する場合は、投稿内容にご注意いただき、利用規約の了承の上、公開を行ってください。自分のみが閲覧可能な状態で保存をする場合には、公開先を「自分のみ(非公開)」に変更し直してから保存ボタンを押してください。",
+  "Roundtime":"周遊時間"
 }

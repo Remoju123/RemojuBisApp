@@ -391,7 +391,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       .getMypagePlanListDetail(this.rows[i])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(d => {
-          console.log(d.planUserId);
           const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
           this.rows[idx] = d;
           if (d.spots && d.spots.length > 0){

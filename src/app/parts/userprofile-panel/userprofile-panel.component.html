@@ -31,6 +31,7 @@
         <span *ngIf="user.gender==='male'">/{{ "Male" | translate }}</span>
       </div>
       <div class="about">
+        <label class="about-label">{{'AboutMe'|translate}}</label>
         <p [innerHTML]="user.aboutMe | replaceNewline"></p>
       </div>
     </div>

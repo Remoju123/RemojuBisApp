@@ -84,6 +84,7 @@
                 </div>
               </span>
               <span class="timerequired">
+                <label>{{'Roundtime'|translate}}</label>
                 <span *ngIf="item.timeRequiredHour !== null">{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span>
                 <span *ngIf="item.timeRequiredMin !== null">{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span>
               </span>

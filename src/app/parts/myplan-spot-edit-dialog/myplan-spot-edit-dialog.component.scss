@@ -3,7 +3,7 @@
   #editspot {
     //mat-dialog-container
     position: relative;
-
+    padding-bottom: 60px;
     .ng-star-inserted {
       .panel-content {
         position: relative;
@@ -67,11 +67,11 @@
           font-size: 16px !important;
 
           &.spotname{
-            margin-top: 1em;
+            //margin-top: 1em;
           }
 
           &.memo{
-            margin-top: 1em;
+            //margin-top: 1em;
           }
 
 

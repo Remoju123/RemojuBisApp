@@ -554,9 +554,17 @@ div.plandtl {
         padding-right: 3px;
         padding-left: 2px;
 
+        label{
+          background: #707070;
+          color: #fff;
+          padding: 1px 4px;
+          border-radius: 2px;
+          margin-right: 3px;
+        }
+
         &::before {
           display: inline-block;
-          content: url("../../../assets/img/av-timer.svg");
+          //content: url("../../../assets/img/av-timer.svg");
           width: 16px;
           height: 16px;
           padding-right: 3px;
