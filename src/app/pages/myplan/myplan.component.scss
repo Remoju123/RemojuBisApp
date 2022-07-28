@@ -37,18 +37,14 @@ form {
 
 .transport {
   display: flex;
-  
-  flex-direction: column;
-  
+
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
   padding: 0 12px;
   @include switchTran();
 
-  .row{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
 
   .lt {
     display: flex;
@@ -99,7 +95,8 @@ form {
         height: 14px;
       }
     }
-    .mat-slide-toggle-content{
+
+    .mat-slide-toggle-content {
       font-size: 11px;
     }
 
@@ -477,7 +474,7 @@ form {
       text-align: center;
 
       position: absolute;
-      right: 12px;
+      right: 16px;
       top: 2px;
 
       &:disabled {

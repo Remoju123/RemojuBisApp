@@ -9,7 +9,7 @@
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
-    
+
   </div>
 
   <!--*----------- 編集 -----------*-->
@@ -39,22 +39,15 @@
       </div>
 
       <div class='transport' (click)="$event.stopPropagation()">
-        <div class='row'>
-          <div class='lt'>
-            <span class="label">{{"TravelRoute"|translate}}</span>
-            <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-              <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
-              <label for="switch-tran"><span></span></label>
-              <div id="swImg"></div>
-            </div>
-          </div>
-          <div class='rt'>
-            <div class='mapview'>
-              <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
-            </div>
+        <div class='lt'>
+          <span class="label">{{"TravelRoute"|translate}}</span>
+          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
+            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+            <label for="switch-tran"><span></span></label>
+            <div id="swImg"></div>
           </div>
         </div>
-        <div class='row'>
+        <div class='rt'>
           <mat-slide-toggle (change)="onClickBus()">
             <span *ngIf="row.isBus">{{'UseBus'|translate}}</span>
             <span *ngIf="!row.isBus">{{'NoBus'|translate}}</span>
@@ -272,13 +265,18 @@
         </div>
       </div>
       <div class='rt'>
+        <div class='mapview'>
+          <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
+        </div>
         <!-- 最短ルート -->
+        <!--
         <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
           <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
             <img src="/assets/img/keiro.svg" alt="Auto">
           </span>
           <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
         </button>
+      -->
       </div>
     </div>
 
