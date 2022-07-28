@@ -70,7 +70,7 @@
   "RecommendedPlan": "Recommended plan",
   "TravelDate": "Scheduled travel date",
   "UseBus": "Inc.bus routes",
-  "Nobus": "Except bus",
+  "NoBus": "Except bus",
   "Auto": "Route optimization",
   "EnterPlanName": "Enter the plan title to save.",
   "SpotDeleted": "The spot has been deleted.",

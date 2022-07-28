@@ -9,9 +9,7 @@
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
-    <div class='mapview'>
-      <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
-    </div>
+    
   </div>
 
   <!--*----------- 編集 -----------*-->
@@ -41,23 +39,26 @@
       </div>
 
       <div class='transport' (click)="$event.stopPropagation()">
-        <div class='lt'>
-          <span class="label">{{"TravelRoute"|translate}}</span>
-          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
-            <label for="switch-tran"><span></span></label>
-            <div id="swImg"></div>
+        <div class='row'>
+          <div class='lt'>
+            <span class="label">{{"TravelRoute"|translate}}</span>
+            <div class="switchTran" [ngClass]="{'en':lang==='en'}">
+              <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+              <label for="switch-tran"><span></span></label>
+              <div id="swImg"></div>
+            </div>
+          </div>
+          <div class='rt'>
+            <div class='mapview'>
+              <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
+            </div>
           </div>
         </div>
-        <div class='rt'>
-          <!-- 最短ルート -->
-          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
-            matTooltip="{{'AutoTips'|translate }}" matTooltipPosition="above" matTooltipClass="toolExplanation">
-            <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
-              <img src="/assets/img/keiro.svg" alt="Auto">
-            </span>
-            <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
-          </button>
+        <div class='row'>
+          <mat-slide-toggle (change)="onClickBus()">
+            <span *ngIf="row.isBus">{{'UseBus'|translate}}</span>
+            <span *ngIf="!row.isBus">{{'NoBus'|translate}}</span>
+          </mat-slide-toggle>
         </div>
       </div>
 
@@ -119,6 +120,11 @@
 
       <div class='spacer'>
         <img src="../../../assets/img/allow_down_slv.svg" alt="">
+        <!-- 最短ルート -->
+        <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
+          matTooltip="{{'AutoTips'|translate }}" matTooltipPosition="above" matTooltipClass="toolExplanation">
+          {{ "Auto" | translate }}
+        </button>
       </div>
 
       <!-- スポットを表示 -->
@@ -244,9 +250,9 @@
           </ng-container>
           <ng-template #noplanName>
             <!-- <a (click)="onClickEdit()" style="cursor:pointer;"> -->
-              <span class='noName'>
-                {{"PlanName"|translate}}
-              </span>
+            <span class='noName'>
+              {{"PlanName"|translate}}
+            </span>
             <!-- </a> -->
           </ng-template>
         </div>

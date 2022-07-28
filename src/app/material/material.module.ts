@@ -19,6 +19,7 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatToolbarModule } from "@angular/material/toolbar";
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 @NgModule({
   exports: [
     DragDropModule,
@@ -42,6 +43,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
     MatSnackBarModule,
     MatTabsModule,
     MatToolbarModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule { }

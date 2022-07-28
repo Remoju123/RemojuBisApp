@@ -25,23 +25,6 @@ form {
 
   @include switchView();
 
-  .mapview {
-    button {
-      all: unset;
-      font-size: 10px;
-      font-weight: 700;
-      height: 32px;
-      width: 68px;
-      background-color: $color_grn01;
-      border-radius: 16px;
-      color: #fff;
-      text-align: center;
-
-      &:hover {
-        background-color: #898989;
-      }
-    }
-  }
 }
 
 .bottom {
@@ -54,10 +37,18 @@ form {
 
 .transport {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  
+  flex-direction: column;
+  
   padding: 0 12px;
   @include switchTran();
+
+  .row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 
   .lt {
     display: flex;
@@ -76,6 +67,58 @@ form {
   .rt {
     span.label {
       font-size: 10px;
+    }
+
+    .mapview {
+      button {
+        all: unset;
+        font-size: 10px;
+        font-weight: 700;
+        height: 32px;
+        width: 68px;
+        background-color: $color_grn01;
+        border-radius: 16px;
+        color: #fff;
+        text-align: center;
+
+        &:hover {
+          background-color: #898989;
+        }
+      }
+    }
+  }
+
+  ::ng-deep {
+    .mat-slide-toggle-thumb-container {
+      top: 0;
+      width: 14px;
+      height: 14px;
+
+      .mat-slide-toggle-thumb {
+        width: 14px;
+        height: 14px;
+      }
+    }
+    .mat-slide-toggle-content{
+      font-size: 11px;
+    }
+
+    .mat-slide-toggle-bar {
+      width: 30px;
+    }
+
+    .mat-slide-toggle.mat-checked {
+      .mat-slide-toggle-thumb {
+        background-color: #81C5B4 !important;
+      }
+
+      .mat-slide-toggle-bar {
+        background-color: #666666 !important;
+      }
+
+      .mat-ripple-element {
+        background-color: #666666 !important;
+      }
     }
   }
 
@@ -119,6 +162,8 @@ form {
       }
     }
   }
+
+
 }
 
 // edit-section style adjust!
@@ -298,6 +343,7 @@ form {
     justify-content: space-between;
     // margin-top: 5px;
     padding: 0 12px;
+
     button.setting {
 
       &.mat-button {
@@ -411,10 +457,32 @@ form {
   .spacer {
     display: flex;
     justify-content: center;
+    position: relative;
 
     img {
       width: 36px;
       margin: 6px;
+    }
+
+    button.option {
+      all: unset;
+      font-size: 11px;
+      font-weight: 700;
+      height: 26px;
+      width: auto;
+      padding: 0 12px;
+      background-color: #81C5B4;
+      border-radius: 16px;
+      color: #fff;
+      text-align: center;
+
+      position: absolute;
+      right: 12px;
+      top: 2px;
+
+      &:disabled {
+        background: #81C5B450;
+      }
     }
   }
 
@@ -614,8 +682,6 @@ form {
           }
         }
       }
-
-
     }
 
     #overlay {
@@ -910,7 +976,7 @@ form {
       position: absolute;
       right: 12px;
 
-      label{
+      label {
         background: #707070;
         color: #fff;
         padding: 1px 4px;
