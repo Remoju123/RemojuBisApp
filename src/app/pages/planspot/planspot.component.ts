@@ -247,7 +247,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async isDetail(isComplement: boolean = false) {
     if (this.listSelectMaster && this.spots.length > 0 && this.plans.length > 0) {
       const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
-      if(isPlatformBrowser(this.platformId)) {
+      if (isPlatformBrowser(this.platformId)) {
         this.offset = 0;
         this.commonService.scrollToTop();
       }
@@ -314,23 +314,25 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
-            const idx = this.rows.findIndex(v => v.id === d.id);
+            if(d){
+              const idx = this.rows.findIndex(v => v.id === d.id);
 
-            if (d.isEndOfPublication) {
-              this.rows.splice(idx, 1);
-              if (this.rows.length - startIndex < this.limit) {
-                this.end = this.rows.length;
+              if (d.isEndOfPublication) {
+                this.rows.splice(idx, 1);
+                if (this.rows.length - startIndex < this.limit) {
+                  this.end = this.rows.length;
+                }
+              } else {
+                this.planspots.mergeDetail(this.rows[idx], d);
+                this.rows[idx] = d;
+                this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
               }
-            } else {
-              this.planspots.mergeDetail(this.rows[idx], d);
-              this.rows[idx] = d;
-              this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
+              this.details$ = this.rows.slice(0, this.end);
+              if (i === this.end - 1 && isPlatformServer(this.platformId)) {
+                this.setTransferState(false);
+              }
+              this.loading = false;
             }
-            this.details$ = this.rows.slice(0, this.end);
-            if (i === this.end - 1 && isPlatformServer(this.platformId)) {
-              this.setTransferState(false);
-            }
-            this.loading = false;
           });
       }
       this.p++;

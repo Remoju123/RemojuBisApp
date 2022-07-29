@@ -49,8 +49,8 @@
         </div>
         <div class='rt'>
           <mat-slide-toggle (change)="onClickBus()" *ngIf="!row?.isCar">
-            <span *ngIf="row.isBus">{{'UseBus'|translate}}</span>
-            <span *ngIf="!row.isBus">{{'NoBus'|translate}}</span>
+            <span *ngIf="row?.isBus">{{'UseBus'|translate}}</span>
+            <span *ngIf="!row?.isBus">{{'NoBus'|translate}}</span>
           </mat-slide-toggle>
         </div>
       </div>
