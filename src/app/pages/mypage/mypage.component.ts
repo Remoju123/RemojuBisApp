@@ -89,19 +89,19 @@ export class MypageComponent implements OnInit, OnDestroy {
   tabChange($event: number){
     if ($event === 0){
       this.planlist = true;
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'})
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
     }
     if ($event === 1) {
       this.favorite = true;
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'})
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
     }
     if ($event === 2){
       this.profile = true;
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'profile'})
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'profile'});
     }
     if ($event === 3){
       this.review = true;
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'review'})
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'review'});
     }
   }
 

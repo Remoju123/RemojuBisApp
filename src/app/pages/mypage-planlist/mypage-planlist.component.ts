@@ -12,11 +12,7 @@ import { Router } from "@angular/router";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
-import { MemoDialogComponent } from "../../parts/memo-dialog/memo-dialog.component";
-import { isPlatformBrowser, isPlatformServer } from "@angular/common";
-import { makeStateKey, TransferState } from '@angular/platform-browser';
-
-export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-mypage-planlist",
@@ -32,7 +28,6 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
-    private transferState: TransferState,
     private translate: TranslateService,
     private router: Router,
     public dialog: MatDialog,
@@ -95,8 +90,12 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.$releaseDestination = r;
     });
 
-    if (this.transferState.hasKey(MYPLANLIST_KEY)) {
-      const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
+    let cache = new MyplanListCacheStore();
+    if (isPlatformBrowser(this.platformId)) {
+      cache = JSON.parse(sessionStorage.getItem(this.mypagePlanListService.listSessionKey));
+    }
+
+    if (isPlatformBrowser(this.platformId) && cache) {
       this.rows = cache.data;
       this.end = cache.end;
       this.offset = cache.offset;
@@ -104,7 +103,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.p = cache.p - 1;
       this.count = cache.data.length;
 
-      this.transferState.remove(MYPLANLIST_KEY);
+      sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
 
       this.getPlanListDetail(true);
     } else {
@@ -187,7 +186,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
   linktoSpot(planSpot: PlanSpotCommon){
     if (planSpot.type === 1) {
-      this.setTransferState();
+      this.setSessionStorage();
       this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
     } else {
       this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
@@ -280,6 +279,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   async onClickPreview(row: MypagePlanAppList) {
+    this.setSessionStorage();
     this.router.navigate(["/" + this.lang + "/plans/detail",row.planUserId]);
   }
 
@@ -359,34 +359,20 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   // マイページプラン一覧詳細取得
-  async getPlanListDetail(isFirst: boolean = false) {
+  async getPlanListDetail(isDetail: boolean = false) {
     let startIndex = (this.p - 1) * this.limit;
     this.end = startIndex + this.limit;
     if (this.rows.length - startIndex < this.limit) {
       this.end = this.rows.length;
     }
-    if (isFirst) {
+    if (isDetail) {
       startIndex = 0;
     }
-    const result = [];
     for (let i = startIndex; i < this.end; i++) {
       if (this.rows[i].isDetail) {
         this.details$ = this.rows.slice(0, this.end);
         continue;
       }
-      result.push(this.getDetail(i));
-    }
-    this.p++;
-
-    await Promise.all(result);
-
-    if (isPlatformServer(this.platformId)) {
-      this.setTransferState();
-    }
-  }
-
-  getDetail(i: number) {
-    return new Promise((resolve) => {
       this.mypagePlanListService
       .getMypagePlanListDetail(this.rows[i])
       .pipe(takeUntil(this.onDestroy$))
@@ -402,19 +388,19 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
             }, []);
           }
           this.details$ = this.rows.slice(0, this.end);
-          resolve(true);
       });
-    });
+    }
+    this.p++;
   }
 
-  setTransferState() {
+  setSessionStorage() {
     const c = new MyplanListCacheStore();
     c.data = this.rows;
     c.p = this.p;
     c.end = this.end;
     c.offset = window.pageYOffset;
 
-    this.transferState.set<MyplanListCacheStore>(MYPLANLIST_KEY, c);
+    sessionStorage.setItem(this.mypagePlanListService.listSessionKey, JSON.stringify(c));
   }
 
 /*

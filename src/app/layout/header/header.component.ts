@@ -11,8 +11,10 @@ import {
 import { NavigationExtras, Router } from "@angular/router";
 import { Overlay } from "@angular/cdk/overlay";
 import { CommonService } from "../../service/common.service";
+import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
+import { MypagePlanListService } from "../../service/mypageplanlist.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import { UserService } from "../../service/user.service";
-//import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { TranslateService } from "@ngx-translate/core";
 import { environment } from "../../../environments/environment";
 import { FormControl } from "@angular/forms";
@@ -78,7 +80,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     private commonService: CommonService,
-    //private mypageFavoriteListService: MypageFavoriteListService,
+    private planSpotListService: PlanSpotListService,
+    private mypageFavoriteListService: MypageFavoriteListService,
+    private mypagePlanListService: MypagePlanListService,
     private translate: TranslateService,
     private userService: UserService,
     public router: Router,
@@ -142,6 +146,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.favcount = v["spotCount"]+v["planCount"];
       }
     });*/
+  }
+
+  onNavgateRemoju() {
+    sessionStorage.removeItem(this.planSpotListService.conditionSessionKey);
+    sessionStorage.removeItem(this.planSpotListService.listSessionKey);
+    sessionStorage.removeItem(this.mypagePlanListService.conditionSessionKey);
+    sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
+    sessionStorage.removeItem(this.mypageFavoriteListService.conditionSessionKey);
+    sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+    this.router.navigate(['/' + this.currentLang + '/planspot/']);
   }
 
   linktoProfile() {

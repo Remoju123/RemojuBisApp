@@ -2,7 +2,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { Inject, Injectable, PLATFORM_ID } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { MyPlanApp, Recommended } from "../class/common.class";
-import { ListSearchCondition, MyPlan } from "../class/indexeddb.class";
+import { MyPlan } from "../class/indexeddb.class";
 
 @Injectable({
   providedIn: "root"
@@ -12,36 +12,19 @@ export class IndexedDBService {
 
   // DB
   dbName = "Remoju";
-  version = 7;
+  version = 8;
 
   // オブジェクトストア
+  // ↓本番ここから削除
   storeListSearchConditionMyfav = "ListSearchConditionMyfav";
   storeListSearchCondition = "ListSearchCondition";
   storeListSearchConditionSpot = "ListSearchConditionSpot";
   storeListSearchConditionPlan = "ListSearchConditionPlan";
+  // ↑ここまで削除
   storeMyplan = "Myplan";
   storeGuid = "Guid";
   storeHistorySpot = "HistorySpot";
   storeHistoryPlan = "HistoryPlan";
-
-  // マイページお気に入り一覧検索条件
-  async getListSearchConditionMyfav(){
-    return this.getStoreValue(this.storeListSearchConditionMyfav);
-  }
-
-  async getListSearchCondition(){
-    return this.getStoreValue(this.storeListSearchCondition);
-  }
-
-  // スポット一覧検索条件取得　
-  async getListSearchConditionSpot() {
-    return this.getStoreValue(this.storeListSearchConditionSpot);
-  }
-
-  // プラン一覧検索条件取得
-  async getListSearchConditionPlan() {
-    return this.getStoreValue(this.storeListSearchConditionPlan);
-  }
 
   // プラン取得
   async getEditPlan(isApi = false) {
@@ -89,24 +72,6 @@ export class IndexedDBService {
   // プラン閲覧履歴取得
   async getHistoryPlan(){
     return this.getStoreValue(this.storeHistoryPlan);
-  }
-
-  async registListSearchConditionMyfav(value: ListSearchCondition) {
-    return this.registStore(this.storeListSearchConditionMyfav, value);
-  }
-
-  async registListSearchCondition(value: ListSearchCondition) {
-    return this.registStore(this.storeListSearchCondition, value);
-  }
-
-  // スポット一覧検索条件保存
-  async registListSearchConditionSpot(value: ListSearchCondition) {
-    return this.registStore(this.storeListSearchConditionSpot, value);
-  }
-
-  // プラン一覧検索条件保存
-  async registListSearchConditionPlan(value: ListSearchCondition) {
-    return this.registStore(this.storeListSearchConditionPlan, value);
   }
 
   // プラン保存
@@ -203,21 +168,7 @@ export class IndexedDBService {
     // 保存
     return this.registStore(this.storeMyplan, myPlan);
   }
-/*
-  // ImageCropperEventがそのままだと保存できないので変換
-  getImageCropper(event: ImageCroppedEvent) : ImageCropped{
-    let imageCropped = new ImageCropped();
-    if (event) {
-      imageCropped.base64 = event.base64;
-      imageCropped.cropperPosition = event.cropperPosition;
-      imageCropped.height = event.height;
-      imageCropped.imagePosition = event.imagePosition;
-      imageCropped.offsetImagePosition = event.offsetImagePosition;
-      imageCropped.width = event.width;
-    }
-    return imageCropped;
-  }
-*/
+
   // GUID保存
   async registGuid(value: string) {
     return this.registStore(this.storeGuid, value);
@@ -268,10 +219,12 @@ export class IndexedDBService {
   // DBオープン、オブジェクトストア作成
   openDb(){
     const openRequest = indexedDB.open(this.dbName, this.version);
+    // ↓本番ここから削除
     const storeListSearchConditionMyfav = this.storeListSearchConditionMyfav;
     const storeListSearchCondition = this.storeListSearchCondition;
     const storeListSearchConditionSpot = this.storeListSearchConditionSpot;
     const storeListSearchConditionPlan = this.storeListSearchConditionPlan;
+    // ↑ここまで削除
     const storeMyplan = this.storeMyplan;
     const storeGuid = this.storeGuid;
     const storeHistorySpot = this.storeHistorySpot;
@@ -281,6 +234,7 @@ export class IndexedDBService {
     openRequest.onupgradeneeded = function(){
       let db = openRequest.result;
       // オブジェクトストアを削除
+      // ↓本番ここから削除
       if (db.objectStoreNames.contains(storeListSearchConditionMyfav)) {
         db.deleteObjectStore(storeListSearchConditionMyfav);
       }
@@ -293,6 +247,7 @@ export class IndexedDBService {
       if (db.objectStoreNames.contains(storeListSearchConditionPlan)) {
         db.deleteObjectStore(storeListSearchConditionPlan);
       }
+      // ↑ここまで削除
       if (db.objectStoreNames.contains(storeMyplan)) {
         db.deleteObjectStore(storeMyplan);
       }
@@ -307,18 +262,6 @@ export class IndexedDBService {
       }
 
       // オブジェクトストアを作成
-      if (!db.objectStoreNames.contains(storeListSearchConditionMyfav)){
-        db.createObjectStore(storeListSearchConditionMyfav);
-      }
-      if (!db.objectStoreNames.contains(storeListSearchCondition)){
-        db.createObjectStore(storeListSearchCondition);
-      }
-      if (!db.objectStoreNames.contains(storeListSearchConditionSpot)){
-        db.createObjectStore(storeListSearchConditionSpot);
-      }
-      if (!db.objectStoreNames.contains(storeListSearchConditionPlan)){
-        db.createObjectStore(storeListSearchConditionPlan);
-      }
       if (!db.objectStoreNames.contains(storeMyplan)){
         db.createObjectStore(storeMyplan);
       }

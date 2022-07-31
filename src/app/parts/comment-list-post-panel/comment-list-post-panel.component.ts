@@ -8,8 +8,6 @@ import { UserService } from "../../service/user.service";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
-import { reverse } from "dns";
-import { StringMap } from "@angular/compiler/src/compiler_facade_interface";
 
 @Component({
   selector: "app-comment-list-post-panel",

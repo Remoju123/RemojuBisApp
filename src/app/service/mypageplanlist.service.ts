@@ -16,6 +16,10 @@ const httpOptions = {
   providedIn: "root"
 })
 export class MypagePlanListService {
+
+  public conditionSessionKey = "MyplanSearchCondition";
+  public listSessionKey = "MyplanList";
+
   constructor(
     private http: HttpClient,
     private commonService: CommonService,
