@@ -80,9 +80,9 @@ export class PlanspotSelectorComponent implements OnInit {
 
   chkTarms():boolean{
     if (this.condition.select === 'google') {
-      return this.googleSearchArea !== "----";
+      return this.condition.googleAreaId.length > 0;
     } else {
-      return (this.searchTarms?.area !== "----" || this.searchTarms?.cate !== "----");
+      return this.condition.areaId.length > 0 || this.condition.areaId2.length > 0 || this.condition.searchCategories.length > 0;
     }
   }
 

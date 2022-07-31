@@ -6,7 +6,6 @@ import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
 import { LangFilterPipe } from 'src/app/utils/lang-filter.pipe';
 import { environment } from 'src/environments/environment';
-import { runInThisContext } from 'vm';
 
 
 @Component({

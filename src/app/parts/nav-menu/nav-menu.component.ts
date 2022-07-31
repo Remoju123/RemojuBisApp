@@ -1,6 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
 import { MenuItems } from "../../shared/menu-items/menu-items";
 import { CommonService } from "../../service/common.service";
+import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
+import { MypagePlanListService } from "../../service/mypageplanlist.service";
+import { PlanSpotListService } from "../../service/planspotlist.service";
 import { UserService } from "../../service/user.service";
 import { Router } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
@@ -35,6 +38,9 @@ export class NavMenuComponent implements OnInit, OnDestroy{
   constructor(
     private router: Router,
     public commonService: CommonService,
+    private planSpotListService: PlanSpotListService,
+    private mypageFavoriteListService: MypageFavoriteListService,
+    private mypagePlanListService: MypagePlanListService,
     public userService: UserService,
     public menuItems: MenuItems,
     private translate: TranslateService
@@ -69,8 +75,16 @@ export class NavMenuComponent implements OnInit, OnDestroy{
     this.onDestroy$.next();
   }
 
-  onNavgate(page: string, frag?: string) {
+  onNavgate(page: string, frag?: string, isSessionClear?: boolean) {
     console.log(page);
+    if (isSessionClear) {
+      sessionStorage.removeItem(this.planSpotListService.conditionSessionKey);
+      sessionStorage.removeItem(this.planSpotListService.listSessionKey);
+      sessionStorage.removeItem(this.mypagePlanListService.conditionSessionKey);
+      sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
+      sessionStorage.removeItem(this.mypageFavoriteListService.conditionSessionKey);
+      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+    }
     if (frag === '') {
       this.router.navigate(['/' + this.lang + '/' + page + '/']);
     } else {

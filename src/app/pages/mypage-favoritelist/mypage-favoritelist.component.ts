@@ -12,10 +12,7 @@ import { IndexedDBService } from "../../service/indexeddb.service";
 import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
 import { MyplanService } from "../../service/myplan.service";
-import { makeStateKey, TransferState } from "@angular/platform-browser";
-import { isPlatformServer } from "@angular/common";
-
-export const MYFAVORITELIST_KEY = makeStateKey<CacheStore>('MYFAVORITELIST_KEY');
+import { isPlatformBrowser } from "@angular/common";
 
 @Component({
   selector: "app-mypage-favoritelist",
@@ -33,7 +30,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
-    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 999;
@@ -47,7 +43,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   guid: string;
 
   condition: ListSearchCondition;
-  //listSelectMaster: ListSelectMaster;
   count: number = 0;
   rows: PlanSpotList[] = [];
   spots: PlanSpotList[] = [];
@@ -88,15 +83,34 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
-    if (this.transferState.hasKey(MYFAVORITELIST_KEY)) {
-      this.cacheRecoveryDataSet();
+
+    let cache = new CacheStore();
+    if (isPlatformBrowser(this.platformId)) {
+      cache = JSON.parse(sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey));
+    }
+
+    if (isPlatformBrowser(this.platformId) && cache) {
+      this.rows = cache.data;
+      this.end = cache.end;
+      this.offset = cache.offset;
+      this.details$ = this.rows.slice(0, this.end);
+      this.p = cache.p - 1;
+      this.condition.select = cache.select;
+      this.condition.sortval = cache.sortval;
+      this.condition.keyword = cache.keyword;
+      this.$mSort = cache.mSort;
+      this.count = cache.data.length;
+
+      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+
       this.mergeNextDataSet(true);
     } else {
-      let condition: any = await this.indexedDBService.getListSearchConditionMyfav();
-      if (condition){
-        this.condition = condition;
+      if (isPlatformBrowser(this.platformId)) {
+        const condition = JSON.parse(sessionStorage.getItem(this.mypageFavoriteListService.conditionSessionKey));
+        if (condition){
+          this.condition = condition;
+        }
       }
-      this.condition.sortval = "11";
 
       this.getPlanSpotDataSet();
     }
@@ -141,16 +155,16 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
       this.plans = r;
-      this.isDetail();
+      this.filteringData();
     });
     this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
       this.spots = r;
-      this.isDetail();
+      this.filteringData();
     });
   }
 
-  async isDetail() {
+  async filteringData() {
     if ((this.condition.select === 'plan' || this.spots.length > 0)
       && (this.condition.select === 'spot' || this.plans.length > 0)) {
         this.rows = (await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, null)).list;
@@ -159,14 +173,14 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       }
   }
 
-  async mergeNextDataSet(isComplement: boolean = false){
+  async mergeNextDataSet(isDetail: boolean = false){
     if(this.rows.length > 0){
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
       if(this.rows.length - startIndex < this.limit){
         this.end = this.rows.length;
       }
-      if (isComplement) {
+      if (isDetail) {
         startIndex = 0;
       }
 
@@ -179,47 +193,24 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
         this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(d => {
-            const idx = this.rows.findIndex(v => v.id === d.id);
-
             // 掲載終了の場合は削除
             if (d.isEndOfPublication) {
-              // this.temp.splice(this.temp.findIndex(x => x.id = this.rows[idx].id), 1);
-              this.rows.splice(idx, 1);
+              this.rows.splice(i, 1);
               if (this.rows.length - startIndex < this.limit) {
                 this.end = this.rows.length;
               }
             } else {
-              this.planspots.mergeDetail(this.rows[idx], d);
-              this.rows[idx] = d;
-              this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
+              this.planspots.mergeDetail(this.rows[i], d);
+              this.rows[i] = d;
+              this.rows[i].userName = this.commonService.isValidJson(this.rows[i].userName, this.lang);
             }
             this.details$ = this.rows.slice(0,this.end);
-            if (i === this.end -1 && isPlatformServer(this.platformId)) {
-              this.setTransferState();
-            }
           })
       }
       this.p++;
     }else{
       this.details$ = [];
     }
-  }
-
-  cacheRecoveryDataSet() {
-    const cache = this.transferState.get<CacheStore>(MYFAVORITELIST_KEY, null);
-    //console.log(this.transferState);
-    this.rows = cache.data;
-    this.end = cache.end;
-    this.offset = cache.offset;
-    this.details$ = this.rows.slice(0, this.end);
-    this.p = cache.p - 1;
-    this.condition.select = cache.select;
-    this.condition.sortval = cache.sortval;
-    this.condition.keyword = cache.keyword;
-    this.$mSort = cache.mSort;
-    this.count = cache.data.length;
-
-    this.transferState.remove(MYFAVORITELIST_KEY);
   }
 
   linktoDetail(item:PlanSpotList){
@@ -244,7 +235,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     c.sortval = this.condition.sortval;
     c.mSort = this.$mSort;
 
-    this.transferState.set<CacheStore>(MYFAVORITELIST_KEY, c);
+    sessionStorage.setItem(this.mypageFavoriteListService.listSessionKey, JSON.stringify(c));
   }
 
   // プランに追加
@@ -307,7 +298,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   // 表示順
   sortChange(v:any){
     this.condition.sortval = v;
-    this.indexedDBService.registListSearchConditionMyfav(this.condition);
+    sessionStorage.setItem(this.mypageFavoriteListService.conditionSessionKey, JSON.stringify(this.condition));
     this.getPlanSpotDataSet();
   }
 
@@ -315,7 +306,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   onPlanSpotChange(val:any){
     this.select = val;
     this.condition.select = val;
-    this.indexedDBService.registListSearchConditionMyfav(this.condition);
+    sessionStorage.setItem(this.mypageFavoriteListService.conditionSessionKey, JSON.stringify(this.condition));
     this.getPlanSpotDataSet();
   }
 

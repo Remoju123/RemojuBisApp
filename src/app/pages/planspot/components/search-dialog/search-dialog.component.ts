@@ -1,20 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Inject } from '@angular/core';
 import { FormArray, FormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Guid } from 'guid-typescript';
-import { FilterPipe } from 'ngx-filter-pipe';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { ListSelectMaster, NestDataSelected } from 'src/app/class/common.class';
 import { ListSearchCondition } from 'src/app/class/indexeddb.class';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
-import { IndexedDBService } from 'src/app/service/indexeddb.service';
 import { PlanSpotListService } from 'src/app/service/planspotlist.service';
 
-export const PLANSPOTLIST_KEY = makeStateKey<PlanSpotList[]>('PLANSPOTLIST_KEY');
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
@@ -59,11 +54,8 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     private translate: TranslateService,
     private planspots: PlanSpotListService,
     private cs: CommonService,
-    private idx: IndexedDBService,
-    private filterPipe: FilterPipe,
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     public fb: FormBuilder,
-    private transferState: TransferState,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectMaster
   ) {
     this.$mSearchCategory = this.data.mSearchCategoryPlan.concat(this.data.mSearchCategory);
@@ -90,7 +82,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   async initForm(){
     // 検索条件選択値を取得
-    let condition: any = await this.idx.getListSearchCondition();
+    const condition = JSON.parse(sessionStorage.getItem(this.planspots.conditionSessionKey));
     if (condition){
       this.condition = condition;
     } else {

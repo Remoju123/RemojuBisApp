@@ -96,8 +96,6 @@ export class CacheStore {
   ListSelectMaster:ListSelectMaster;
   optionKeywords: tarms;
   searchParams: string;
-  googleSearchArea: string;
-  isDetail: boolean;
   planSpotList: PlanSpotList;
 }
 

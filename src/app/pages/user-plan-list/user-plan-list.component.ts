@@ -14,7 +14,6 @@ import { IndexedDBService } from '../../service/indexeddb.service';
 import { UserService } from '../../service/user.service';
 import { MyplanService } from '../../service/myplan.service';
 import { PlanSpotListService } from '../../service/planspotlist.service';
-import { threadId } from 'worker_threads';
 import { PlanspotListComponent } from '../planspot/components/planspot-list/planspot-list.component';
 @Component({
   selector: 'app-user-plan-list',
@@ -171,7 +170,7 @@ export class UserPlanListComponent implements OnInit {
       param.isFavorite = item.isFavorite;
       this.myplanService.updateFavorite(param);
     }
-    this.planSpotListService.setTransferState(item.isPlan, item.id, item.isFavorite, item.googleSpot ? true : false);
+    this.planSpotListService.setSessionStorageFavorite(item.isPlan, item.id, item.isFavorite, item.googleSpot ? true : false);
     this.planspots.registFavorite(
       item.id,
       item.isPlan,

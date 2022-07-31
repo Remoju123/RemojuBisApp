@@ -12,6 +12,8 @@ import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { makeStateKey, Meta } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
+import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
+import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { PlanService } from "../../service/plan.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
@@ -40,6 +42,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
+    private mypageFavoriteListService: MypageFavoriteListService,
+    private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private planService: PlanService,
     private planSpotListService: PlanSpotListService,
@@ -177,7 +181,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     param.type = item.type
     param.isFavorite = item.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.planSpotListService.setTransferState(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
+    this.planSpotListService.setSessionStorageFavorite(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
+    if (item.isFavorite) {
+      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+    } else {
+      this.mypageFavoriteListService.setSessionStorageFavorite(false, item.spotId, item.isFavorite);
+    }
     this.planSpotListService
       .registFavorite(
         item.spotId,
@@ -197,7 +206,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @Catch()
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
-    this.planSpotListService.setTransferState(true, this.data.planId, this.data.isFavorite);
+    this.planSpotListService.setSessionStorageFavorite(true, this.data.planId, this.data.isFavorite);
+    if (this.data.isFavorite) {
+      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+    } else {
+      this.mypageFavoriteListService.setSessionStorageFavorite(false, this.data.planId, this.data.isFavorite);
+    }
     this.planSpotListService
       .registFavorite(
         this.data.planId,
@@ -254,7 +268,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     let condition = new ListSearchCondition();
     condition.areaId = [Number(this.data.areaId)];
     // 検索条件更新
-    this.indexedDBService.registListSearchConditionPlan(condition);
+    sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
     // スポット一覧へ遷移
     this.router.navigate(["/" + this.lang + "/plans"]);
   }
@@ -267,9 +281,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     }
     condition.searchCategories = [id];
     // 検索条件更新
-    this.indexedDBService.registListSearchConditionPlan(condition);
-    // 表示位置をクリア
-    sessionStorage.removeItem("cachep");
+    sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
     // スポット一覧へ遷移
     this.router.navigate(["/" + this.lang + "/plans"]);
   }
@@ -510,7 +522,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   }
 
   linktolist() {
-    this.router.navigate(["/" + this.lang + "/planspot"]);
+    if (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)) {
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
+    } else if (sessionStorage.getItem(this.mypagePlanListService.listSessionKey)) {
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
+    } else {
+      this.router.navigate(["/" + this.lang + "/planspot"]);
+    }
   }
 
   linktoSpot(planSpot: PlanSpotCommon) {

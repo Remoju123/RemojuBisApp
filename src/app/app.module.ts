@@ -77,10 +77,7 @@ import { AuthGuard } from './auth.guard';
 import { UrlcopyDialogComponent } from './parts/urlcopy-dialog/urlcopy-dialog.component';
 import { NavMenuComponent } from './parts/nav-menu/nav-menu.component';
 import { ConfirmMessageDialogComponent } from './parts/confirm-message-dialog/confirm-message-dialog.component';
-// import { SearchDialogFormPlanComponent } from './parts/search-dialog-form-plan/search-dialog-form-plan.component';
 import { SpotDetailComponent } from './pages/spot-detail/spot-detail.component';
-// import { ReviewListPanelComponent } from './parts/review-list-panel/review-list-panel.component';
-// import { ReviewPostDialogComponent } from './parts/review-post-dialog/review-post-dialog.component';
 import { RatingCompComponent } from './parts/rating-comp/rating-comp.component';
 import { PlanDetailComponent } from './pages/plan-detail/plan-detail.component';
 import { MapPanelComponent } from './parts/map-panel/map-panel.component';
@@ -88,7 +85,6 @@ import { TransferPanelComponent } from './parts/transfer-panel/transfer-panel.co
 import { UserprofilePanelComponent } from './parts/userprofile-panel/userprofile-panel.component';
 import { MapDialogComponent } from './parts/map-dialog/map-dialog.component';
 import { GoogleSpotDialogComponent } from './parts/google-spot-dialog/google-spot-dialog.component';
-import { MemoDialogComponent } from './parts/memo-dialog/memo-dialog.component';
 import { MapInfowindowDialogComponent } from './parts/map-infowindow-dialog/map-infowindow-dialog.component';
 import { MyplanComponent } from './pages/myplan/myplan.component';
 import { MessageDialogComponent } from './parts/message-dialog/message-dialog.component';
@@ -160,10 +156,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     MyplanComponent,
     MypagePlanListComponent,
     MypageFavoriteListComponent,
-    // SearchDialogFormPlanComponent,
     SystemErrorComponent,
     LanguageComponent,
-    MemoDialogComponent,
     UrlcopyDialogComponent,
     MessageDialogComponent,
     MapPanelComponent,
@@ -174,8 +168,6 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     HeaderPlanPanelComponent,
     UserDialogComponent,
     ConfirmMessageDialogComponent,
-    // ReviewListPanelComponent,
-    // ReviewPostDialogComponent,
     RatingCompComponent,
     TransferPanelComponent,
     MapDialogComponent,
@@ -274,8 +266,6 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   ],
   entryComponents: [
     MatSpinner,
-    // SearchDialogFormPlanComponent,
-    MemoDialogComponent,
     UrlcopyDialogComponent,
     MessageDialogComponent,
     SpotDetailComponent,
@@ -286,8 +276,6 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ConfirmMessageDialogComponent,
     GoogleSpotDialogComponent,
     UserprofilePanelComponent,
-    // ReviewListPanelComponent,
-    // ReviewPostDialogComponent,
     TransferPanelComponent,
     MapDialogComponent,
     ImageCropperDialogComponent,

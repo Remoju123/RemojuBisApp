@@ -2,6 +2,8 @@ import { Component, HostListener, Input, OnInit, OnDestroy, Inject, PLATFORM_ID,
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
+import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
+import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { SpotService } from "../../service/spot.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
@@ -40,6 +42,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
+    private mypageFavoriteListService: MypageFavoriteListService,
+    private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private spotService: SpotService,
     private planspotListService: PlanSpotListService,
@@ -209,7 +213,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     param.type = 1
     param.isFavorite = this.data.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.planspotListService.setTransferState(false, this.$spotId, this.data.isFavorite, false);
+    this.planspotListService.setSessionStorageFavorite(false, this.$spotId, this.data.isFavorite, false);
     this.planspotListService
       .registFavorite(
         this.$spotId,
@@ -242,9 +246,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       condition.areaId2 = [Number(this.data.area2)];
     }
     // 検索条件更新
-    this.indexedDBService.registListSearchConditionSpot(condition);
+    sessionStorage.setItem(this.planspotListService.conditionSessionKey, JSON.stringify(condition));
 
-    sessionStorage.removeItem("caches");
     // スポット一覧へ遷移
     this.router.navigate(["/" + this.lang + "/spots"]);
   }
@@ -261,9 +264,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
       condition.searchCategories = [category.search_category_id];
     }
     // 検索条件更新
-    this.indexedDBService.registListSearchConditionSpot(condition);
+    sessionStorage.setItem(this.planspotListService.conditionSessionKey, JSON.stringify(condition));
 
-    sessionStorage.removeItem("caches");
     // スポット一覧へ遷移
     this.router.navigate(["/" + this.lang + "/spots"]);
   }
@@ -454,7 +456,13 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   }
 
   linktolist() {
-    this.router.navigate(["/" + this.lang + "/planspot"]);
+    if (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)) {
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
+    } else if (sessionStorage.getItem(this.mypagePlanListService.listSessionKey)) {
+      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
+    }  else {
+      this.router.navigate(["/" + this.lang + "/planspot"]);
+    }
   }
 
   /*------------------------------
