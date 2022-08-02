@@ -128,17 +128,19 @@ export class PlanSpotListService {
     }
   }
 
-  mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList) {
-    detail.areaId = planSpotList.areaId;
-    detail.areaId2 = planSpotList.areaId2;
-    detail.isPlan = planSpotList.isPlan;
-    detail.keyword = planSpotList.keyword;
-    detail.pvQtyAll = planSpotList.pvQtyAll;
-    detail.reviewAvg = planSpotList.reviewAvg;
-    detail.planSpotQty = planSpotList.planSpotQty;
-    detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
-    detail.googleSpot = planSpotList.googleSpot;
-
+  mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList): Promise<PlanSpotList> {
+    return new Promise(resolve => {
+      detail.areaId = planSpotList.areaId;
+      detail.areaId2 = planSpotList.areaId2;
+      detail.isPlan = planSpotList.isPlan;
+      detail.keyword = planSpotList.keyword;
+      detail.pvQtyAll = planSpotList.pvQtyAll;
+      detail.reviewAvg = planSpotList.reviewAvg;
+      detail.planSpotQty = planSpotList.planSpotQty;
+      detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
+      detail.googleSpot = planSpotList.googleSpot;
+      resolve(detail);
+    });
   }
 
   // 検索条件絞り込み処理

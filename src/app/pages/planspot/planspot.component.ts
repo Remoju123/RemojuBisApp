@@ -197,11 +197,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (idx > -1) {
         this.planspots.fetchDetails(this.details$[idx], this.guid)
           .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            const rowIdx = this.rows.findIndex(v => v.isPlan === true && v.id === x.planUserId);
-            this.planspots.mergeDetail(this.rows[rowIdx], d);
-            this.rows[rowIdx] = d;
-            this.rows[rowIdx].userName = this.commonService.isValidJson(this.rows[rowIdx].userName, this.lang);
+          .subscribe(async d => {
+            this.rows[idx] = await this.planspots.mergeDetail(this.rows[idx], d);
+            this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
             this.details$ = this.rows.slice(0, this.end);
           });
       }
@@ -295,7 +293,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
         this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
+          .subscribe(async d => {
             if(d){
               if (d.isEndOfPublication) {
                 this.rows.splice(i, 1);
@@ -303,8 +301,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
                   this.end = this.rows.length;
                 }
               } else {
-                this.planspots.mergeDetail(this.rows[i], d);
-                this.rows[i] = d;
+                this.rows[i] = await this.planspots.mergeDetail(this.rows[i], d);
                 this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
               }
               this.details$ = this.rows.slice(0, this.end);

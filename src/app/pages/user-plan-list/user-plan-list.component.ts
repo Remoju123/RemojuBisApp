@@ -108,11 +108,8 @@ export class UserPlanListComponent implements OnInit {
         }
         this.planspots.fetchDetails(this.userPlanSpots[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
-          .subscribe(d => {
-            const idx = this.userPlanSpots.findIndex(v => v.id === d.id);
-
-            this.planspots.mergeDetail(this.userPlanSpots[idx], d);
-            this.userPlanSpots[idx] = d;
+          .subscribe(async d => {
+            this.userPlanSpots[i] = await this.planspots.mergeDetail(this.userPlanSpots[i], d);
             this.userPlanSpots.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
 
             this.details$ = this.userPlanSpots.slice(0, this.end);
