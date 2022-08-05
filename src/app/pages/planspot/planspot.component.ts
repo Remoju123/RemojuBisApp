@@ -139,6 +139,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.historyReplace(this.searchParams);
       this.mergeNextDataSet(true);
     } else {
+      let condition = new ListSearchCondition();
       this.activatedRoute.queryParams.pipe(takeUntil(this.onDestroy$)).subscribe(async (params: Params) => {
         if ((params.aid && params.aid.length > 0)
           || (params.era && params.era.length > 0)
@@ -147,43 +148,57 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           || (params.lst && params.lst.length > 0)
           || (params.kwd && params.kwd.length > 0)
         ) {
-          this.condition.areaId =
+          condition.areaId =
             params.aid && params.aid.length > 0 ? params.aid.split(",").map(Number) : [];
-          this.condition.areaId2 =
+          condition.areaId2 =
             params.era && params.era.length > 0 ? params.era.split(",").map(Number) : [];
-          this.condition.searchCategories =
+          condition.searchCategories =
             params.cat && params.cat.length > 0 ? params.cat.split(",").map(Number) : [];
-          this.condition.searchOptions =
+          condition.searchOptions =
             params.opt && params.opt.length > 0 ? params.opt.split(",").map(Number) : [];
-          this.condition.sortval = params.srt;
-          this.condition.select = params.lst;
-          this.condition.keyword = params.kwd;
+          condition.sortval = params.srt;
+          condition.select = params.lst;
+          condition.keyword = params.kwd;
 
           if (this.isBrowser) {
-            sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
+            sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
           }
         }
         else if (this.isBrowser) {
           // パラメータなしの場合、保存されている条件を使用
-          const condition = JSON.parse(sessionStorage.getItem(this.planspots.conditionSessionKey));
-          if (condition) {
-            this.condition = condition;
-          }
+          condition = JSON.parse(sessionStorage.getItem(this.planspots.conditionSessionKey));
         }
 
-        this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+        const result = [];
+        result.push(new Promise(resolve => {this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
           this.listSelectMaster = r;
           this.$mSort = r.mSort;
-          this.filteringData();
-        });
-        this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          resolve(true);
+        })}));
+        result.push(new Promise(resolve => {this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.plans = r;
-          this.filteringData();
-        });
-        this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          resolve(true);
+        })}));
+        result.push(new Promise(resolve => {this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
           this.spots = r;
-          this.filteringData();
-        });
+          resolve(true);
+        })}));
+
+        await Promise.all(result);
+
+        const filterResult = this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
+        if (filterResult.length === 0 && condition.keyword) {
+          if (condition.areaId) {
+            condition.googleAreaId = condition.areaId;
+            this.setGoogleSearchArea();
+          }
+          condition.select = 'google';
+          if(this.isBrowser) {
+            sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
+          }
+        }
+        this.condition = condition;
+        this.filteringData();
       });
     }
 
@@ -238,36 +253,23 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   async filteringData() {
-    if (this.listSelectMaster && this.spots.length > 0 && this.plans.length > 0) {
-      const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
-      if(this.isBrowser) {
-        this.offset = 0;
-        this.commonService.scrollToTop();
-      }
-      this.p = 1;
-      this.prevkeyword = null;
-      this.token = null;
-      this.rows = result.list;
-      if (this.rows.length === 0 && this.condition.keyword) {
-        if (this.condition.areaId) {
-          this.condition.googleAreaId = this.condition.areaId;
-          this.setGoogleSearchArea();
-        }
-        setTimeout(() => {
-          this.condition.select = 'google';
-          if(this.isBrowser) {
-            sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
-          }
-        }, 100);
-      }
-      this.optionKeywords = result.searchTarm;
-      this.searchParams = result.searchParams;
-      this.historyReplace(result.searchParams);
-      if (this.condition.select !== 'google') {
-        this.count = result.list.length;
-      }
-      this.mergeNextDataSet();
+    const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
+    if(this.isBrowser) {
+      this.offset = 0;
+      this.commonService.scrollToTop();
     }
+    this.p = 1;
+    this.prevkeyword = null;
+    this.token = null;
+    this.rows = result.list;
+    this.details$ = [];
+    this.optionKeywords = result.searchTarm;
+    this.searchParams = result.searchParams;
+    this.historyReplace(result.searchParams);
+    if (this.condition.select !== 'google') {
+      this.count = result.list.length;
+    }
+    this.mergeNextDataSet();
   }
 
   async mergeNextDataSet(isDetail: boolean = false) {
@@ -310,7 +312,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
       }
       this.p++;
-    } else {
+    } else if(this.condition.select === 'google') {
       this.isList = false;
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
@@ -355,12 +357,14 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (!v) {
         this.condition.select = 'all';
       // キーワードが変更された場合はALLで表示できるものがあるか確認して変更する
-      } else if (this.condition.select === 'google') {
+      } else {
         let condition = { ...this.condition };
         condition.select = 'all';
         const result = this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
         if (result.length > 0) {
           this.condition.select = 'all';
+        } else {
+          this.condition.select = 'google';
         }
       }
       sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
@@ -377,11 +381,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
-    setTimeout(() => {
-      this.condition.select = val;
-      sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
-      this.filteringData();
-    }, 100);
+    this.condition.select = val;
+    sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
+    this.filteringData();
   }
 
   // プラン/スポット詳細リンク
