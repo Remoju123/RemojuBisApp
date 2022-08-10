@@ -104,6 +104,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   myPlanSpots: any;
   planSpotids: number[] = new Array();
 
+  isMypage: boolean = false;
+
   loading:boolean = false;
 
   get lang() {
@@ -117,6 +119,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
+
+    if (isPlatformBrowser(this.platformId)
+    && (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)
+    || sessionStorage.getItem(this.mypagePlanListService.listSessionKey))) {
+      this.isMypage = true;
+    }
 
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
       const id = params.get("id");

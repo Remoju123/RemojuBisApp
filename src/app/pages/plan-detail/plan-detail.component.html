@@ -1,7 +1,8 @@
 <div class="plandtl" (swiperight)="onSwipeRight($event)">
   <mat-card id="plandtlheader" [ngClass]="{'onplan':match(planSpotids,myPlanSpots)}">
     <div class='link' (click)="linktolist()">
-      <span class="frame">{{"BackEveryoneRecommendations" | translate}}</span>
+      <span class="frame" *ngIf="!isMypage">{{"BackEveryoneRecommendations" | translate}}</span>
+      <span class="frame" *ngIf="isMypage">{{"BackEveryoneRecommendationsMyPage" | translate}}</span>
     </div>
     <mat-card-header>
       <div class='header'>
