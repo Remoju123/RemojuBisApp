@@ -69,7 +69,7 @@
             [disabled]="!row">
           </button>
           <label for="dept"
-            *ngIf="!row?.startPlanSpot?.spotName; else startSpot">{{ "SetDeparturePoint" | translate }}</label>
+            *ngIf="!row?.startPlanSpot; else startSpot">{{ "SetDeparturePoint" | translate }}</label>
           <ng-template #startSpot>
             <span>{{ row?.startPlanSpot.spotName }}</span>
             <button type="button" mat-button (click)="onClickStartEndDelete(true)"><i
@@ -160,7 +160,14 @@
                       <ng-container *ngIf="item.categoryText">
                         / {{ item.categoryText | langFilter: lang }}
                       </ng-container>
-                      / {{ "SuggestedTime" | translate }}{{ item.stayTime }}{{ "Minute" | translate }}
+                      / {{ "SuggestedTime" | translate }}
+                      <div class="stayTime">
+                        <select name="stayTime" [(ngModel)]="item.stayTime" (change)="onChangeTransfer()">
+                          <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
+                            {{ commonService.isValidJson(sTime.name, lang) }}
+                          </option>
+                        </select>
+                      </div>
                     </span>
                   </div>
                 </dt>
@@ -220,7 +227,7 @@
           matTooltipClass="toolExplanation">
           <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)"
             [disabled]="!row"></button>
-          <label for="arri" *ngIf="!row?.endPlanSpot?.spotName; else endSpot">{{ "SetDestination" | translate }}</label>
+          <label for="arri" *ngIf="!row?.endPlanSpot; else endSpot">{{ "SetDestination" | translate }}</label>
           <ng-template #endSpot>
             <span>{{ row?.endPlanSpot.spotName }}</span>
             <button type="button" mat-button (click)="onClickStartEndDelete(false)"><i
@@ -339,8 +346,14 @@
                     <div class='titleline'>
                       <div>
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
-                        <span class="sugtime">{{ "SuggestedTime" | translate }}
-                          {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                        <span class="sugtime">{{ "SuggestedTime" | translate }}</span>
+                          <div class="stayTime">
+                            <select name="stayTime" [(ngModel)]="item.stayTime" disabled="true">
+                              <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
+                                {{ commonService.isValidJson(sTime.name, lang) }}
+                              </option>
+                            </select>
+                          </div>
                       </div>
                       <div class="spotname">
                         {{ item.spotName  }}

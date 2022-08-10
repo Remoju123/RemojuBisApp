@@ -210,6 +210,7 @@ export class MapSpot {
   subheading: string;
   latitude: number;
   longitude: number;
+  longitudeOriginal: number;
   pictureUrl: string;
   stayTime: number;
   memo: string;
