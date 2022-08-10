@@ -164,7 +164,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
           }
         }
-        else if (this.isBrowser) {
+        else if (this.isBrowser && sessionStorage.getItem(this.planspots.conditionSessionKey)) {
           // パラメータなしの場合、保存されている条件を使用
           condition = JSON.parse(sessionStorage.getItem(this.planspots.conditionSessionKey));
         }
