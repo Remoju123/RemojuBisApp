@@ -56,9 +56,9 @@
   <div class="selectStay">
     <label>{{ "SuggestedTime" | translate }}</label>
     <div class="stayTime">
-      <select name="stayTime" [(ngModel)]="p.item.stayTime" (change)="onChangeTransfer(true)">
+      <select name="stayTime" [(ngModel)]="p.item.stayTime" (change)="onChangeTransfer()">
         <option *ngFor="let sTime of p.stayTimes" [value]="sTime.id">
-          {{ sTime.id }}{{ "Minute" | translate }}
+          {{ commonService.isValidJson(sTime.name, lang) }}
         </option>
       </select>
     </div>

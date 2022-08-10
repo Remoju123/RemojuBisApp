@@ -12,6 +12,7 @@ import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { MatDialog } from "@angular/material/dialog";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { BreakpointObserver } from "@angular/cdk/layout";
 
 declare const google: any;
 
@@ -185,6 +186,25 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       }
       // その他Remojuスポット表示切り替え
       this.zoomChangeOtherSpot(event);
+    }
+
+    // 経度調整
+    if (this.mapSpots.length > 1){
+      let base = 0.02;
+      if (event >= 11) {
+        for (let i = 11; i <= event; i++) {
+          const half = base / 2;
+          base = half + half / 4;
+        }
+      }
+
+      let addLongitude = base;
+      this.mapSpots.map(x => {
+        let spot = this.mapSpots.find(aa => aa.latitude === x.latitude && aa.longitudeOriginal === x.longitudeOriginal && aa.displayOrder > x.displayOrder);
+        if (spot) {
+          spot.longitude = x.longitudeOriginal + addLongitude;
+        }
+      });
     }
 
     if (!this.mapSpotsDisp) {
@@ -366,6 +386,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         }
         mapSpot.latitude = Number(planSpot.latitude);
         mapSpot.longitude = Number(planSpot.longitude);
+        mapSpot.longitudeOriginal = Number(planSpot.longitude);
         if (planSpot.pictures && planSpot.pictures.length > 0) {
           mapSpot.pictureUrl = planSpot.pictures[0];
         }
@@ -694,6 +715,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     mapSpot.spotName = planSpot.spotName;
     mapSpot.latitude = Number(planSpot.latitude);
     mapSpot.longitude = Number(planSpot.longitude);
+    mapSpot.longitudeOriginal = Number(planSpot.longitude);
     mapSpot.transfer = planSpot.transfer;
     return mapSpot;
   }

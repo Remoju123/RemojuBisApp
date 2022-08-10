@@ -2,6 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from "@ngx-translate/core";
 import { Editparams, ImageCropperParam, MyPlanApp, PlanSpotCommon, PlanUserPicture } from 'src/app/class/common.class';
 import { CommonService } from 'src/app/service/common.service';
 import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
@@ -15,7 +16,8 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
 
   constructor(
-    private commonService: CommonService,
+    public commonService: CommonService,
+    private translate: TranslateService,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<MyplanSpotEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public p: Editparams
@@ -28,6 +30,10 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
 
   step:number;
 
+  get lang() {
+    return this.translate.currentLang;
+  }
+
   ngOnInit(): void {
   }
 
@@ -35,7 +41,7 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
   }
 
-  onChangeTransfer(value: boolean) {
+  onChangeTransfer() {
     this.row.isTransferSearch = true;
     this.row.optimized = false;
   }
