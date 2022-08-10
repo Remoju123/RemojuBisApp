@@ -186,11 +186,11 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         await Promise.all(result);
 
-        const filterResult = this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
+        const filterResult = await this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
         if (filterResult.length === 0 && condition.keyword) {
           if (condition.areaId) {
             condition.googleAreaId = condition.areaId;
-            this.setGoogleSearchArea();
+            await this.setGoogleSearchArea();
           }
           condition.select = 'google';
           if(this.isBrowser) {
@@ -319,11 +319,11 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.details$ = [];
       }
       if (keyword && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
-        (await this.planspots.getGoogleSpotList(this.guid, keyword, this.condition.googleAreaId, this.token)).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
+        this.planspots.getGoogleSpotList(this.guid, keyword, this.condition.googleAreaId, this.token).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
           this.token = g.tokenGoogle;
-        })
+        });
       }
     }
   }
@@ -348,28 +348,26 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   // キーワード検索
-  keywordSearch(v: any) {
-    setTimeout(() => {
-      this.condition.keyword = v;
-      this.prevkeyword = null;
-      this.token = null;
-      // キーワードがクリアされた場合はAllにする
-      if (!v) {
+  async keywordSearch(v: any) {
+    this.condition.keyword = v;
+    this.prevkeyword = null;
+    this.token = null;
+    // キーワードがクリアされた場合はAllにする
+    if (!v) {
+      this.condition.select = 'all';
+    // キーワードが変更された場合はALLで表示できるものがあるか確認して変更する
+    } else {
+      let condition = { ...this.condition };
+      condition.select = 'all';
+      const result = await this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
+      if (result.length > 0) {
         this.condition.select = 'all';
-      // キーワードが変更された場合はALLで表示できるものがあるか確認して変更する
       } else {
-        let condition = { ...this.condition };
-        condition.select = 'all';
-        const result = this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
-        if (result.length > 0) {
-          this.condition.select = 'all';
-        } else {
-          this.condition.select = 'google';
-        }
+        this.condition.select = 'google';
       }
-      sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
-      this.filteringData();
-    }, 100);
+    }
+    sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
+    this.filteringData();
   }
 
   // 表示順
@@ -438,7 +436,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       id: "searchDialog"
     });
 
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(condition => {
+    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(async condition => {
       if (condition !== 'cancel') {
         // ローカル変数配列の重複除外
         condition.areaId = Array.from(new Set(condition.areaId));
@@ -446,30 +444,33 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.condition = condition;
         sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
         if (this.condition.select === 'google') {
-          this.setGoogleSearchArea();
+          await this.setGoogleSearchArea();
         }
         this.filteringData();
       }
     });
   }
 
-  setGoogleSearchArea() {
-    const langpipe = new LangFilterPipe();
-    const googleAreas: any[] = [];
-    this.condition.googleAreaId?.forEach(v => {
-      googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x => x.parentId === v).parentName, this.translate.currentLang));
+  setGoogleSearchArea(): Promise<void> {
+    return new Promise(async resolve => {
+      const langpipe = new LangFilterPipe();
+      const googleAreas: any[] = [];
+      this.condition.googleAreaId?.forEach(v => {
+        googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x => x.parentId === v).parentName, this.translate.currentLang));
+      });
+      this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
+      resolve();
     });
-    this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
   }
 
   // 検索条件リセット
-  conditionReset() {
+  async conditionReset() {
     this.commonService.scrollToTop();
 
     if (this.condition.select === 'google') {
       this.condition.select = 'all';
       this.condition.googleAreaId = [];
-      this.setGoogleSearchArea();
+      await this.setGoogleSearchArea();
     }
     this.condition.areaId = [];
     this.condition.areaId2 = [];
