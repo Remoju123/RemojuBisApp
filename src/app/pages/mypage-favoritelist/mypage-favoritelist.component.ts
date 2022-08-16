@@ -148,29 +148,30 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
    * メソッド
    *
    * -----------------------------*/
-  getPlanSpotDataSet() {
+  async getPlanSpotDataSet() {
     this.p = 1;
     this.spots = [];
     this.plans = [];
-    this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
+    const result = [];
+    result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
       this.plans = r;
-      this.filteringData();
-    });
-    this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
+      resolve(true);
+    })}));
+    result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
       this.spots = r;
-      this.filteringData();
-    });
+      resolve(true);
+    })}));
+
+    await Promise.all(result);
+    this.filteringData();
   }
 
   async filteringData() {
-    if ((this.condition.select === 'plan' || this.spots.length > 0)
-      && (this.condition.select === 'spot' || this.plans.length > 0)) {
-        this.rows = (await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, null)).list;
-        this.count = this.rows.length;
-        this.mergeNextDataSet();
-      }
+    this.rows = (await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, null)).list;
+    this.count = this.rows.length;
+    this.mergeNextDataSet();
   }
 
   async mergeNextDataSet(isDetail: boolean = false){
@@ -201,7 +202,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
               }
             } else {
               this.rows[i] = await this.planspots.mergeDetail(this.rows[i], d);
-              this.rows[i].userName = this.commonService.isValidJson(this.rows[i].userName, this.lang);
             }
             this.details$ = this.rows.slice(0,this.end);
           })
@@ -338,7 +338,6 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(async d => {
           this.rows[this.end - 1] = await this.planspots.mergeDetail(this.rows[this.end - 1], d);
-          this.rows[this.end - 1].userName = this.commonService.isValidJson(this.rows[this.end - 1].userName, this.lang);
           this.details$ = this.rows.slice(0,this.end);
         });
       } else {

@@ -110,8 +110,6 @@ export class UserPlanListComponent implements OnInit {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(async d => {
             this.userPlanSpots[i] = await this.planspots.mergeDetail(this.userPlanSpots[i], d);
-            this.userPlanSpots.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
-
             this.details$ = this.userPlanSpots.slice(0, this.end);
           })
       }

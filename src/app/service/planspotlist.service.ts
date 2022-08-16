@@ -139,6 +139,7 @@ export class PlanSpotListService {
       detail.planSpotQty = planSpotList.planSpotQty;
       detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
       detail.googleSpot = planSpotList.googleSpot;
+      detail.userName = this.commonService.isValidJson(detail.userName, this.translate.currentLang);
       resolve(detail);
     });
   }
@@ -257,95 +258,93 @@ export class PlanSpotListService {
 
       if (!master) {
         this.result.list = _result;
-        resolve(this.result);
-      }
-
-      /*-----------------------------------------
-      * 2.検索条件文字列結合
-      -----------------------------------------*/
-      const _areaNams: string[] = [];
-      const _areaId2Nams: string[] = [];
-      const _category: string[] = [];
-      const areas:any[] = [];
-      const cates:any[] = [];
-
-      let Categories = [];
-
-      if(master.mSearchCategoryPlan){
-        const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
-
-        Categories = [
-          ...$master[0].dataSelecteds,
-          ...$master[1].dataSelecteds,
-          ...$master[2].dataSelecteds,
-          ...$master[3].dataSelecteds,
-          ...$master[4].dataSelecteds,
-          ...$master[5].dataSelecteds,
-          ...$master[6].dataSelecteds,
-          ...$master[7].dataSelecteds,
-          ...$master[8].dataSelecteds,
-          ...$master[9].dataSelecteds,
-        ]
-      }
-
-      const langpipe = new LangFilterPipe();
-
-      cond.areaId?.forEach(v=>{
-        _areaNams.push(master.mArea.find(x=>x.parentId === v).parentName)
-      });
-
-      cond.areaId2?.forEach(e=>{
-        const _areas = master.mArea.find(
-          v => v.parentId === Number(e.toString().slice(0, -2))
-        );
-        _areaId2Nams.push(_areas.dataSelecteds.find(x => x.id === e).name);
-      })
-
-      let _areas = [..._areaNams,..._areaId2Nams];
-      _areas.map(v => {
-        areas.push(langpipe.transform(v,this.translate.currentLang));
-      })
-
-      if(cond.searchCategories?.length){
-        cond.searchCategories.forEach(v=>{
-          _category.push(Categories.find(x => x.id === v).name);
-        })
-      }
-
-      if(cond.keyword !== ""){
-        cates.push(cond.keyword);
-      }
-
-      _category.map(v => {
-        cates.push(langpipe.transform(v,this.translate.currentLang));
-      })
-
-      /*-----------------------------------------
-      * 3.検索パラメータ結合
-      -----------------------------------------*/
-      const _params = [];
-      _params.push("aid=" + cond.areaId.join(","));
-      _params.push("era=" + cond.areaId2.join(","));
-      _params.push("cat=" + cond.searchCategories.join(","));
-      _params.push("srt=" + cond.sortval);
-      if (_result.length === 0 && cond.keyword) {
-        _params.push("lst=google");
       } else {
-        _params.push("lst=" + cond.select);
+        /*-----------------------------------------
+        * 2.検索条件文字列結合
+        -----------------------------------------*/
+        const _areaNams: string[] = [];
+        const _areaId2Nams: string[] = [];
+        const _category: string[] = [];
+        const areas:any[] = [];
+        const cates:any[] = [];
+
+        let Categories = [];
+
+        if(master.mSearchCategoryPlan){
+          const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
+
+          Categories = [
+            ...$master[0].dataSelecteds,
+            ...$master[1].dataSelecteds,
+            ...$master[2].dataSelecteds,
+            ...$master[3].dataSelecteds,
+            ...$master[4].dataSelecteds,
+            ...$master[5].dataSelecteds,
+            ...$master[6].dataSelecteds,
+            ...$master[7].dataSelecteds,
+            ...$master[8].dataSelecteds,
+            ...$master[9].dataSelecteds,
+          ]
+        }
+
+        const langpipe = new LangFilterPipe();
+
+        cond.areaId?.forEach(v=>{
+          _areaNams.push(master.mArea.find(x=>x.parentId === v).parentName)
+        });
+
+        cond.areaId2?.forEach(e=>{
+          const _areas = master.mArea.find(
+            v => v.parentId === Number(e.toString().slice(0, -2))
+          );
+          _areaId2Nams.push(_areas.dataSelecteds.find(x => x.id === e).name);
+        })
+
+        let _areas = [..._areaNams,..._areaId2Nams];
+        _areas.map(v => {
+          areas.push(langpipe.transform(v,this.translate.currentLang));
+        })
+
+        if(cond.searchCategories?.length){
+          cond.searchCategories.forEach(v=>{
+            _category.push(Categories.find(x => x.id === v).name);
+          })
+        }
+
+        if(cond.keyword !== ""){
+          cates.push(cond.keyword);
+        }
+
+        _category.map(v => {
+          cates.push(langpipe.transform(v,this.translate.currentLang));
+        })
+
+        /*-----------------------------------------
+        * 3.検索パラメータ結合
+        -----------------------------------------*/
+        const _params = [];
+        _params.push("aid=" + cond.areaId.join(","));
+        _params.push("era=" + cond.areaId2.join(","));
+        _params.push("cat=" + cond.searchCategories.join(","));
+        _params.push("srt=" + cond.sortval);
+        if (_result.length === 0 && cond.keyword) {
+          _params.push("lst=google");
+        } else {
+          _params.push("lst=" + cond.select);
+        }
+        _params.push("kwd=" + cond.keyword);
+
+        this.result.list = _result;
+        this.result.searchTarm = {area : areas.length > 0 ? areas.join(' 、'):'----',cate : cates.length > 0 ? cates.join('、'):'----'};
+        this.result.searchParams = _params.join("&");
+        this.result.searchParamsObj = new SearchParamsObj;
+        this.result.searchParamsObj.aid = cond.areaId.join(",");
+        this.result.searchParamsObj.era = cond.areaId2.join(",");
+        this.result.searchParamsObj.cat = cond.searchCategories.join(",");
+        this.result.searchParamsObj.srt = cond.sortval;
+        this.result.searchParamsObj.lst = cond.select;
+        this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
       }
-      _params.push("kwd=" + cond.keyword);
-
-      this.result.list = _result;
-      this.result.searchTarm = {area : areas.length > 0 ? areas.join(' 、'):'----',cate : cates.length > 0 ? cates.join('、'):'----'};
-      this.result.searchParams = _params.join("&");
-      this.result.searchParamsObj = new SearchParamsObj;
-      this.result.searchParamsObj.aid = cond.areaId.join(",");
-      this.result.searchParamsObj.era = cond.areaId2.join(",");
-      this.result.searchParamsObj.cat = cond.searchCategories.join(",");
-      this.result.searchParamsObj.srt = cond.sortval;
-      this.result.searchParamsObj.lst = cond.select;
-      this.result.searchParamsObj.kwd = this.codec.encodeValue(cond.keyword);
-
       resolve(this.result);
     });
   }
