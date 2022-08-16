@@ -398,27 +398,32 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setSessionStorage(planSpotList: PlanSpotList = null) {
-    let _offset: number;
-    if (this.list.isMobile) {
-      _offset = window.pageYOffset;
-    } else {
-      _offset = this.list.scrollPos
+    try{
+      let _offset: number;
+      if (this.list.isMobile) {
+        _offset = window.pageYOffset;
+      } else {
+        _offset = this.list.scrollPos
+      }
+      const c = new CacheStore();
+      c.data = this.rows;
+      c.spots = this.spots;
+      c.plans = this.plans;
+      c.p = this.p;
+      c.end = this.end;
+      c.offset = _offset;
+      c.mSort = this.$mSort;
+      c.isList = this.isList;
+      c.ListSelectMaster = this.listSelectMaster;
+      c.optionKeywords = this.optionKeywords;
+      c.searchParams = this.searchParams;
+      c.planSpotList = planSpotList;
+  
+      sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
+    }catch{
+      //
     }
-    const c = new CacheStore();
-    c.data = this.rows;
-    c.spots = this.spots;
-    c.plans = this.plans;
-    c.p = this.p;
-    c.end = this.end;
-    c.offset = _offset;
-    c.mSort = this.$mSort;
-    c.isList = this.isList;
-    c.ListSelectMaster = this.listSelectMaster;
-    c.optionKeywords = this.optionKeywords;
-    c.searchParams = this.searchParams;
-    c.planSpotList = planSpotList;
-
-    sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
+    
   }
 
   // 検索パネル(エリア・カテゴリー選択)
