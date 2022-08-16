@@ -161,13 +161,13 @@
                         / {{ item.categoryText | langFilter: lang }}
                       </ng-container>
                       / {{ "SuggestedTime" | translate }}
-                      <div class="stayTime">
+                      <span class="stayTime">
                         <select name="stayTime" [(ngModel)]="item.stayTime" (change)="onChangeTransfer()">
                           <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
                             {{ commonService.isValidJson(sTime.name, lang) }}
                           </option>
                         </select>
-                      </div>
+                      </span>
                     </span>
                   </div>
                 </dt>
@@ -347,13 +347,13 @@
                       <div>
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
                         <span class="sugtime">{{ "SuggestedTime" | translate }}</span>
-                          <div class="stayTime">
-                            <select name="stayTime" [(ngModel)]="item.stayTime" disabled="true">
+                          <span class="stayTime">
+                            <select name="stayTime" [(ngModel)]="item.stayTime" >
                               <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
                                 {{ commonService.isValidJson(sTime.name, lang) }}
                               </option>
                             </select>
-                          </div>
+                          </span>
                       </div>
                       <div class="spotname">
                         {{ item.spotName  }}
