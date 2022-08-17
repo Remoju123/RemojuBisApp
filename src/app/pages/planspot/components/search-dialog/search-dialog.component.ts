@@ -252,7 +252,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   }
 
   // 更新処理
-  update() {
+  async update() {
     // エリア検索用パラメータを整形
     //const areaIds = [];
     this.condition.areaId = [];
@@ -273,7 +273,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     });
 
     // 検索結果を再取得
-    this.result = this.planspots.getFilterbyCondition(this.list,this.condition);
+    this.result = await this.planspots.getFilterbyCondition(this.list,this.condition);
 
     // エリアオブジェクトを更新
     // const $mArea = this.planspots.reduceAreaCount(

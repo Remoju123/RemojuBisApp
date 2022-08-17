@@ -214,7 +214,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(async d => {
             this.rows[idx] = await this.planspots.mergeDetail(this.rows[idx], d);
-            this.rows[idx].userName = this.commonService.isValidJson(this.rows[idx].userName, this.lang);
             this.details$ = this.rows.slice(0, this.end);
           });
       }
@@ -304,7 +303,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
                 }
               } else {
                 this.rows[i] = await this.planspots.mergeDetail(this.rows[i], d);
-                this.rows.forEach(x => x.userName = this.commonService.isValidJson(x.userName, this.lang));
               }
               this.details$ = this.rows.slice(0, this.end);
               this.loading = false;
@@ -418,12 +416,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.optionKeywords = this.optionKeywords;
       c.searchParams = this.searchParams;
       c.planSpotList = planSpotList;
-  
+
       sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
     }catch{
       //
     }
-    
+
   }
 
   // 検索パネル(エリア・カテゴリー選択)
