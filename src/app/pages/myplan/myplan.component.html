@@ -93,7 +93,7 @@
           <!-- 出発時間 -->
           <label class="time-label">{{"StartTime"|translate}}</label>
           <div class="startTime" *ngIf="row;else blankstart">
-            <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChangeTransfer()">
+            <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChangeTransfer($event)">
               <option *ngFor="let time of $startTime" [value]="time">
                 {{time}}
               </option>
@@ -141,7 +141,8 @@
                   <button (click)="onClickSpotDelete($event,item)" class="remove">
                   </button>
                 </dt>
-                <dt (click)="onClickSpotEdit(item)">
+                <dt>
+                  <div class='clickable' (click)="onClickSpotEdit(item)"></div>
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
                     <ng-container *ngIf="item.planUserpictures && item.planUserpictures.length > 0; else spotPicture">
@@ -162,7 +163,7 @@
                       </ng-container>
                       / {{ "SuggestedTime" | translate }}
                       <span class="stayTime">
-                        <select name="stayTime" [(ngModel)]="item.stayTime" (change)="onChangeTransfer()">
+                        <select name="stayTime" [(ngModel)]="item.stayTime" (change)="onChangeTransfer($event)">
                           <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
                             {{ commonService.isValidJson(sTime.name, lang) }}
                           </option>
@@ -348,7 +349,7 @@
                         <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
                         <span class="sugtime">{{ "SuggestedTime" | translate }}</span>
                           <span class="stayTime">
-                            <select name="stayTime" [(ngModel)]="item.stayTime" >
+                            <select name="stayTime" [(ngModel)]="item.stayTime" disabled="true" >
                               <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
                                 {{ commonService.isValidJson(sTime.name, lang) }}
                               </option>

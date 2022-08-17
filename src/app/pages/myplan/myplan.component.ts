@@ -373,7 +373,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   onClickBus() {
     this.row.isBus = !this.row.isBus;
     // 保存
-    this.onChangeTransfer();
+    this.onChangeTransfer(event);
   }
 
   // 経路最適化
@@ -418,7 +418,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       } else {
         // 最適化OFF
         this.row.isAuto = false;
-        this.onChangeTransfer();
+        this.onChangeTransfer(event);
       }
     });
   }
@@ -443,7 +443,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
           this.row.endPlanSpot = result;
         }
         // 保存
-        this.onChangeTransfer();
+        this.onChangeTransfer(event);
       }
     });
   }
@@ -456,7 +456,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.endPlanSpot = null;
     }
     // 保存
-    this.onChangeTransfer();
+    this.onChangeTransfer(event);
   }
 
   onClickTran() {
@@ -482,7 +482,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   // 変更時保存
-  onChangeTransfer() {
+  onChangeTransfer(e: any) {
+    e.stopPropagation();
+
     this.row.isTransferSearch = true;
     this.row.optimized = false;
     // 保存
@@ -519,7 +521,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     param.endPlanSpot = this.row.endPlanSpot;
     param.isCar = this.row.isCar;
     param.overviewPolyline = this.row.overviewPolyline;
-    if(this.isMobile){
+    if (this.isMobile) {
       this.dialog.open(MapDialogComponent, {
         maxWidth: "100%",
         width: "100vw",
@@ -529,7 +531,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         autoFocus: false,
         id: "fullmap"
       });
-    }else{
+    } else {
       this.dialog.open(MapDialogComponent, {
         maxWidth: "60%",
         width: "60vw",
@@ -560,7 +562,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.areaId = this.row.planSpots[0].areaId;
     }
     // 保存
-    this.onChangeTransfer();
+    this.onChangeTransfer(event);
   }
 
   // スポット削除
@@ -588,7 +590,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.row.planSpots.forEach(x => x.displayOrder = i++);
     }
     // 保存
-    this.onChangeTransfer();
+    this.onChangeTransfer(event);
     // subject更新
     this.myplanService.FetchMyplanSpots();
   }
@@ -610,12 +612,12 @@ export class MyplanComponent implements OnInit, OnDestroy {
         const param = new UpdFavorite();
         param.isFavorite = planSpot.isFavorite;
         param.spotId = planSpot.spotId;
-        param.type = planSpot.googleSpot ? 2: 1;
+        param.type = planSpot.googleSpot ? 2 : 1;
         this.myplanService.updateFavorite(param);
       });
   }
 
-  changeRelease(){
+  changeRelease() {
     if (this.row.isRelease && (this.row.startPlanSpot || this.row.endPlanSpot)) {
       const param = new ComfirmDialogParam();
       param.title = "StartEndSpotDeleteConfirm";
