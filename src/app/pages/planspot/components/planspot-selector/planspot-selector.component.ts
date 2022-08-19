@@ -28,6 +28,7 @@ export class PlanspotSelectorComponent implements OnInit {
 
   isVal:boolean = false;
   isChk:boolean = false;
+  val: string;
 
   get lang() {
     return this.translate.currentLang;
@@ -48,9 +49,14 @@ export class PlanspotSelectorComponent implements OnInit {
   }
 
   onKeywordSearch(e){
-    const val = e.target.value.toLowerCase();
-    val!==""?this.isVal=true:false;
-    this.keyword.emit(val);
+    const enterVal = e.target.value.toLowerCase();
+    if (enterVal === this.val) {
+      return;
+    }
+    this.val = enterVal;
+    enterVal!==""?this.isVal=true:false;
+    console.log("Search" + enterVal);
+    this.keyword.emit(enterVal);
   }
 
   openDialog(e){
