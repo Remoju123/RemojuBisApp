@@ -1,11 +1,13 @@
 import { Inject, Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { AddPlan, AddSpot, ListSelectMaster, MyPlanApp, NestDataSelected, RegistFavorite } from "../class/common.class";
-import { PlanSpotList,searchResult,
+import {
+  PlanSpotList, searchResult,
   SearchParamsObj,
   GoogleSearchResult,
   GoogleSpot,
-  CacheStore} from "../class/planspotlist.class";
+  CacheStore
+} from "../class/planspotlist.class";
 import { CommonService } from "./common.service";
 import { Subject } from "rxjs";
 import { ListSearchCondition } from "../class/indexeddb.class";
@@ -52,7 +54,7 @@ export class PlanSpotListService {
     this.result = new searchResult();
   }
 
-  public updSearchCondition(condition: ListSearchCondition){
+  public updSearchCondition(condition: ListSearchCondition) {
     this.searchSubject.next(condition);
   }
 
@@ -75,11 +77,11 @@ export class PlanSpotListService {
   }
 
   // ユーザープランスポット一覧を取得
-  getUserPlanSpotList(planUserId:any) {
+  getUserPlanSpotList(planUserId: any) {
     const url = this.host + "/api/PlanSpotList/SearchMyPlan";
-    return this.http.get<PlanSpotList[]>(url,{
+    return this.http.get<PlanSpotList[]>(url, {
       params: {
-        planUserId:planUserId
+        planUserId: planUserId
       }
     });
   }
@@ -105,9 +107,9 @@ export class PlanSpotListService {
   }
 
   // プランスポット一覧、詳細データ
-  fetchDetails(planSpotList: PlanSpotList, guid: string){
-    if(planSpotList.isPlan){
-      return this.http.get<PlanSpotList>(this.host + "/api/PlanSpotList/SearchDetailPlan",{
+  fetchDetails(planSpotList: PlanSpotList, guid: string) {
+    if (planSpotList.isPlan) {
+      return this.http.get<PlanSpotList>(this.host + "/api/PlanSpotList/SearchDetailPlan", {
         params: {
           versionNo: planSpotList.versionNo,
           planId: planSpotList.id,
@@ -116,7 +118,7 @@ export class PlanSpotListService {
           guid: guid
         }
       });
-    }else{
+    } else {
       return this.http.get<PlanSpotList>(this.host + "/api/PlanSpotList/SearchDetailSpot", {
         params: {
           versionNo: planSpotList.versionNo,
@@ -130,12 +132,12 @@ export class PlanSpotListService {
 
   mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList): Promise<PlanSpotList> {
     return new Promise(resolve => {
-      detail.areaId = planSpotList.areaId;
-      detail.areaId2 = planSpotList.areaId2;
-      detail.isPlan = planSpotList.isPlan;
-      detail.keyword = planSpotList.keyword;
-      detail.pvQtyAll = planSpotList.pvQtyAll;
-      detail.reviewAvg = planSpotList.reviewAvg;
+      detail.areaId = planSpotList.areaId ? planSpotList.areaId : null;
+      detail.areaId2 = planSpotList.areaId2 ? planSpotList.areaId2 : null;
+      detail.isPlan = planSpotList.isPlan ? planSpotList.isPlan : null;
+      detail.keyword = planSpotList.keyword ? planSpotList.keyword : null;
+      detail.pvQtyAll = planSpotList.pvQtyAll ? planSpotList.pvQtyAll : null;
+      detail.reviewAvg = planSpotList.reviewAvg ? planSpotList.reviewAvg : null;
       detail.planSpotQty = planSpotList.planSpotQty;
       detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
       detail.googleSpot = planSpotList.googleSpot;
@@ -145,9 +147,9 @@ export class PlanSpotListService {
   }
 
   // 検索条件絞り込み処理
-  getFilterbyCondition(data:PlanSpotList[], cond:ListSearchCondition): Promise<PlanSpotList[]>{
+  getFilterbyCondition(data: PlanSpotList[], cond: ListSearchCondition): Promise<PlanSpotList[]> {
     return new Promise(resolve => {
-      const areas:any = [];
+      const areas: any = [];
       cond.areaId?.forEach(x => {
         areas.push({ areaId: x });
       });
@@ -177,11 +179,11 @@ export class PlanSpotListService {
       _result = _result.filter((item: { isRemojuPlan: boolean; }) => {
         // isRemojuPlan true:Remojuプラン false:ユーザ投稿プラン
         return item.isRemojuPlan ? item.isRemojuPlan === cond.isRemojuRecommended
-        : !item.isRemojuPlan === cond.isUserPost;
+          : !item.isRemojuPlan === cond.isUserPost;
       });
 
       // プラン・スポット選択
-      switch(cond.select){
+      switch (cond.select) {
         case 'plan':
           _result = _result.filter(d => d.isPlan && d.spotQty > 1);
           break;
@@ -194,12 +196,12 @@ export class PlanSpotListService {
       }
 
       // キーワード検索
-      if(cond.keyword !== ""){
+      if (cond.keyword !== "") {
         const keywords = cond.keyword.replace('　', ' ').split(' ');
         if (keywords.length > 0) {
           _result = _result.filter(d => keywords.every(x => d.keyword && d.keyword.toLowerCase().indexOf(x) !== -1));
           //'京都'の場合'東京都'は除外す処理MM 2022.1.7
-          if(keywords.indexOf('京都') !== -1){
+          if (keywords.indexOf('京都') !== -1) {
             _result = _result.filter(d => d.keyword.indexOf('東京都') === -1);
           }
         }
@@ -210,20 +212,20 @@ export class PlanSpotListService {
   }
 
   // データセット作成（メイン）
-  async filteringData(data:any,cond:ListSearchCondition,master:ListSelectMaster): Promise<searchResult>{
+  async filteringData(data: any, cond: ListSearchCondition, master: ListSelectMaster): Promise<searchResult> {
     return new Promise(async resolve => {
       /*-----------------------------------------
       * 1.絞り込み処理
       -----------------------------------------*/
-      let _result = await this.getFilterbyCondition(data,cond);
+      let _result = await this.getFilterbyCondition(data, cond);
 
       // ソート処理
       if (cond.keyword) {
         _result = _result.sort((a, b) => {
-          let aIndex: number, bIndex : number;
+          let aIndex: number, bIndex: number;
           aIndex = a.keyword.indexOf(cond.keyword);
           bIndex = b.keyword.indexOf(cond.keyword);
-          if (aIndex === -1 || aIndex === null){
+          if (aIndex === -1 || aIndex === null) {
             aIndex = 999999;
           }
           if (bIndex === -1 || bIndex === null) {
@@ -232,25 +234,25 @@ export class PlanSpotListService {
           return aIndex > bIndex ? 1 : -1;
         });
       } else {
-        switch(parseInt(cond.sortval)){
+        switch (parseInt(cond.sortval)) {
           case 7: // 閲覧順
-            _result = _result.sort((a,b) => {
+            _result = _result.sort((a, b) => {
               return a.pvQtyAll < b.pvQtyAll ? 1 : -1
             })
             break;
           case 10: // レビュー評価
-            _result = _result.sort((a,b) => {
+            _result = _result.sort((a, b) => {
               return a.reviewAvg < b.reviewAvg ? 1 : -1
             })
             break;
           case 11: // 新着純
-            _result = _result.sort((a,b) => {
+            _result = _result.sort((a, b) => {
               return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1
             })
             break;
           case 9: // プランに追加された件数
-            _result = _result.sort((a,b) => {
-              return a.planSpotQty < b.planSpotQty ? 1: -1
+            _result = _result.sort((a, b) => {
+              return a.planSpotQty < b.planSpotQty ? 1 : -1
             })
             break;
         }
@@ -265,12 +267,12 @@ export class PlanSpotListService {
         const _areaNams: string[] = [];
         const _areaId2Nams: string[] = [];
         const _category: string[] = [];
-        const areas:any[] = [];
-        const cates:any[] = [];
+        const areas: any[] = [];
+        const cates: any[] = [];
 
         let Categories = [];
 
-        if(master.mSearchCategoryPlan){
+        if (master.mSearchCategoryPlan) {
           const $master = master.mSearchCategoryPlan.concat(master.mSearchCategory);
 
           Categories = [
@@ -289,34 +291,34 @@ export class PlanSpotListService {
 
         const langpipe = new LangFilterPipe();
 
-        cond.areaId?.forEach(v=>{
-          _areaNams.push(master.mArea.find(x=>x.parentId === v).parentName)
+        cond.areaId?.forEach(v => {
+          _areaNams.push(master.mArea.find(x => x.parentId === v).parentName)
         });
 
-        cond.areaId2?.forEach(e=>{
+        cond.areaId2?.forEach(e => {
           const _areas = master.mArea.find(
             v => v.parentId === Number(e.toString().slice(0, -2))
           );
           _areaId2Nams.push(_areas.dataSelecteds.find(x => x.id === e).name);
         })
 
-        let _areas = [..._areaNams,..._areaId2Nams];
+        let _areas = [..._areaNams, ..._areaId2Nams];
         _areas.map(v => {
-          areas.push(langpipe.transform(v,this.translate.currentLang));
+          areas.push(langpipe.transform(v, this.translate.currentLang));
         })
 
-        if(cond.searchCategories?.length){
-          cond.searchCategories.forEach(v=>{
+        if (cond.searchCategories?.length) {
+          cond.searchCategories.forEach(v => {
             _category.push(Categories.find(x => x.id === v).name);
           })
         }
 
-        if(cond.keyword !== ""){
+        if (cond.keyword !== "") {
           cates.push(cond.keyword);
         }
 
         _category.map(v => {
-          cates.push(langpipe.transform(v,this.translate.currentLang));
+          cates.push(langpipe.transform(v, this.translate.currentLang));
         })
 
         /*-----------------------------------------
@@ -335,7 +337,7 @@ export class PlanSpotListService {
         _params.push("kwd=" + cond.keyword);
 
         this.result.list = _result;
-        this.result.searchTarm = {area : areas.length > 0 ? areas.join(' 、'):'----',cate : cates.length > 0 ? cates.join('、'):'----'};
+        this.result.searchTarm = { area: areas.length > 0 ? areas.join(' 、') : '----', cate: cates.length > 0 ? cates.join('、') : '----' };
         this.result.searchParams = _params.join("&");
         this.result.searchParamsObj = new SearchParamsObj;
         this.result.searchParamsObj.aid = cond.areaId.join(",");
@@ -350,7 +352,7 @@ export class PlanSpotListService {
   }
 
   // プラン一覧(詳細)を整形
-  dataFormat(row: PlanSpotList){
+  dataFormat(row: PlanSpotList) {
     row.planName = this.commonService.isValidJson(row.planName, this.translate.currentLang);
   }
 
@@ -368,7 +370,7 @@ export class PlanSpotListService {
       x.push({
         parentId: c["parentId"],
         parentName: c["parentName"],
-        isHighlight:c["isHighlight"],
+        isHighlight: c["isHighlight"],
         qty: list.filter(i => i.areaId === c["parentId"]).length,
         selected: areaId.includes(c["parentId"]), //  false,
         dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
@@ -392,12 +394,12 @@ export class PlanSpotListService {
     list: any[],
     areaId: any[],
     areaId2: any[]
-  ){
+  ) {
     const data = mArea.reduce((x, c) => {
       x.push({
         parentId: c["parentId"],
         parentName: c["parentName"],
-        isHighlight:c["isHighlight"],
+        isHighlight: c["isHighlight"],
         qty: list.filter(i => i.areaId === c["parentId"]).length,
         selected: false,//areaId.includes(c["parentId"]), //  false,
         dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
@@ -430,9 +432,9 @@ export class PlanSpotListService {
         parentId: c["parentId"],
         parentName: c["parentName"],
         qty: list.filter(x =>
-        x.searchCategoryIds !== null ? x.searchCategoryIds.some(
-          (s: { toString: () => string; }) => s.toString().slice(0, 3) === c["parentId"].toString()) : []
-          ).length,
+          x.searchCategoryIds !== null ? x.searchCategoryIds.some(
+            (s: { toString: () => string; }) => s.toString().slice(0, 3) === c["parentId"].toString()) : []
+        ).length,
         selected: true,
         dataSelecteds: c["dataSelecteds"].reduce((y, d) => {
           y.push({
@@ -469,15 +471,15 @@ export class PlanSpotListService {
     isPlan: boolean,
     isFavorite: boolean,
     isRemojuPlan: boolean,
-    guid:string,
+    guid: string,
     isGoogle: boolean = false,
     googleSpot?: GoogleSpot,
   ) {
     // お気に入り登録データ作成
     let url: string;
     let param: any;
-    if (isPlan){
-      if(isRemojuPlan){
+    if (isPlan) {
+      if (isRemojuPlan) {
         param = new PlanFavorite();
         param = {
           plan_id: id,
@@ -487,7 +489,7 @@ export class PlanSpotListService {
         };
         url = this.host + "/api/Plan/Favorite";
 
-      }else{
+      } else {
         param = new PlanUserFavorite();
         param = {
           plan_user_id: id,
@@ -497,7 +499,7 @@ export class PlanSpotListService {
         };
         url = this.host + "/api/Plan/UserFavorite";
       }
-    }else{
+    } else {
       param = new RegistFavorite();
       if (isGoogle) {
         param.spotFavorite = {
@@ -525,14 +527,14 @@ export class PlanSpotListService {
   // プランに追加
   async addPlan(id: number, isPlan: boolean, guid: string, isRemojuPlan: boolean = false, isGoogle: boolean = false, googleSpot?: GoogleSpot, basePlanId: number = null) {
     let myPlan: any = await this.indexedDBService.getEditPlan(true);
-    if (!myPlan){
+    if (!myPlan) {
       myPlan = new MyPlanApp();
     }
-    myPlan.languageCd1 = [ this.translate.currentLang ];
+    myPlan.languageCd1 = [this.translate.currentLang];
     myPlan.guid = guid;
     myPlan.objectId = this.commonService.objectId;
 
-    if(isPlan){
+    if (isPlan) {
       let addPlan: AddPlan = new AddPlan();
       addPlan = {
         MyPlan: myPlan,
@@ -542,7 +544,7 @@ export class PlanSpotListService {
       };
       const url = this.host + "/api/Plan/Addplan";
       return this.http.post<MyPlanApp>(url, addPlan, httpOptions);
-    }else{
+    } else {
       let addSpot: AddSpot = new AddSpot();
       addSpot = {
         MyPlan: myPlan,
@@ -558,7 +560,7 @@ export class PlanSpotListService {
   }
 
   // プランデータセット一括マージ
-  async mergeBulkDataSet(rows:PlanSpotList[], guid: string){
+  async mergeBulkDataSet(rows: PlanSpotList[], guid: string) {
     const result = [];
     rows.map(async row => {
       if (!row.isDetail) {
@@ -568,7 +570,7 @@ export class PlanSpotListService {
     await Promise.all(result);
     return rows;
   }
-  promiseGetDetail(row:PlanSpotList, guid: string){
+  promiseGetDetail(row: PlanSpotList, guid: string) {
     return new Promise(async (resolve) => {
       (await this.fetchDetails(row, guid)).subscribe(_row => {
         resolve(_row);
@@ -576,7 +578,7 @@ export class PlanSpotListService {
     });
   }
 
-  getMasterCategoryNames(ids:any,$master:NestDataSelected[]){
+  getMasterCategoryNames(ids: any, $master: NestDataSelected[]) {
 
     const Categories = [
       ...$master[0].dataSelecteds,
@@ -584,7 +586,7 @@ export class PlanSpotListService {
       ...$master[2].dataSelecteds
     ]
     const _category: string[] = [];
-    ids.forEach(v=>{
+    ids.forEach(v => {
       _category.push(Categories.find(x => x.id === v).name);
     })
 

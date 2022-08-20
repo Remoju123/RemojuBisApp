@@ -58,7 +58,7 @@
               </mat-list-item>
             </mat-list>
 
-            <owl-carousel-o class="pics" [options]="customOptions">
+            <owl-carousel-o class="pics" [options]="customOptions" #owlElement>
               <ng-container *ngFor="let item of row.spots; index as i">
                 <ng-template carouselSlide id="i+1">
                   <div class="thumbspots" (click)="linktoSpot(item)">

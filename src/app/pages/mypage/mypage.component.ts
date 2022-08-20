@@ -90,18 +90,22 @@ export class MypageComponent implements OnInit, OnDestroy {
     if ($event === 0){
       this.planlist = true;
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
+      window.scrollTo(0,0);
     }
     if ($event === 1) {
       this.favorite = true;
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
+      window.scrollTo(0,0);
     }
     if ($event === 2){
       this.profile = true;
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'profile'});
+      window.scrollTo(0,0);
     }
     if ($event === 3){
       this.review = true;
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'review'});
+      window.scrollTo(0,0);
     }
   }
 

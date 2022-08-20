@@ -13,6 +13,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
 import { isPlatformBrowser } from "@angular/common";
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: "app-mypage-planlist",
@@ -43,7 +44,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
   }
 
   @ViewChild('box') box:ElementRef;
-
+  @ViewChild('owlElement') owlElement:OwlOptions;
+  
   isMobile:boolean;
 
   $releaseDestination: DataSelected[];
@@ -106,6 +108,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
 
       this.getPlanListDetail(true);
+      
     } else {
       this.getPlanList();
     }
@@ -481,6 +484,9 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     pullDrag: false,
     dots: false,
     navSpeed: 700,
+    //skip_validateItems:true,
+    //lazyLoad:true,
+    //autoWidth:true,
     navText: [
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
