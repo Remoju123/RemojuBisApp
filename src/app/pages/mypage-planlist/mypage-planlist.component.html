@@ -58,15 +58,18 @@
               </mat-list-item>
             </mat-list>
 
-            <owl-carousel-o class="pics" [options]="customOptions" #owlElement>
+
+            <div class="picgrid">
               <ng-container *ngFor="let item of row.spots; index as i">
-                <ng-template carouselSlide id="i+1">
+                <div class='container'>
                   <div class="thumbspots" (click)="linktoSpot(item)">
                     <div class="thumbnum">
                       <span>{{ i + 1 }}</span>
                     </div>
-                    <img *ngIf="item.pictures && item.pictures.length > 0" [src]="item.pictures[0]" [alt]="item.spotId"
+                    <div class='pic'>
+                      <img *ngIf="item.pictures && item.pictures.length > 0" [src]="item.pictures[0]" [alt]="item.spotId"
                       [title]="item.spotId" />
+                    </div>
                   </div>
                   <div class="thumbname" (click)="linktoSpot(item)">
                     <!-- 掲載OK -->
@@ -76,9 +79,9 @@
                     <!-- 掲載終了スポットの場合 -->
                     <span *ngIf="item.isEndOfPublication">{{ "EndOfPublication" | translate }}</span>
                   </div>
-                </ng-template>
+                </div>
               </ng-container>
-            </owl-carousel-o>
+            </div> 
             <mat-list>
               <mat-list-item class="row bottom">
                 <!-- URL共有 -->

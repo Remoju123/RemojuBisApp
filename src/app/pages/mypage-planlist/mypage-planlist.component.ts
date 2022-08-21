@@ -74,13 +74,15 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
    * -----------------------------*/
 
   ngAfterViewChecked(): void {
-    if (this.offset) {
-      if (this.offset > 0) {
-        window.scrollTo(0, this.offset);
-      }
-
-      if (this.offset === window.pageYOffset) {
-        this.offset = 0;
+    if (typeof this.offset !== "undefined") {
+      if (this.offset) {
+        if (this.offset > 0) {
+          window.scrollTo(0, this.offset);
+        }
+  
+        if (this.offset === window.pageYOffset) {
+          this.offset = 0;
+        }
       }
     }
   }
@@ -379,17 +381,29 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.mypagePlanListService
       .getMypagePlanListDetail(this.rows[i])
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(d => {
-          const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
+      .subscribe(async d => {
+        
+          let idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
           this.rows[idx] = d;
           if (d.spots && d.spots.length > 0){
-            this.rows[idx].spots = d.spots.map((x, i) => {
+            this.rows[idx].spots = await d.spots.map((x, i) => {
               if (x.type === 1){
                 x.spotName = this.commonService.isValidJson(x.spotName, this.lang);
               }
               return x;
             }, []);
           }
+        
+          // const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
+          // this.rows[idx] = d;
+          // if (d.spots && d.spots.length > 0){
+          //   this.rows[idx].spots = d.spots.map((x, i) => {
+          //     if (x.type === 1){
+          //       x.spotName = this.commonService.isValidJson(x.spotName, this.lang);
+          //     }
+          //     return x;
+          //   }, []);
+          // }
           this.details$ = this.rows.slice(0, this.end);
       });
     }
