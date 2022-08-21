@@ -55,7 +55,7 @@ export class PlanspotSelectorComponent implements OnInit {
     }
     this.val = enterVal;
     enterVal!==""?this.isVal=true:false;
-    console.log("Search" + enterVal);
+    //console.log("Search" + enterVal);
     this.keyword.emit(enterVal);
   }
 

@@ -30,8 +30,13 @@
           border-radius: 17px;
           padding: 0 40px 0 27px;
           font-size: 16px;
+          font-weight: 700;
           -webkit-appearance: none;
           text-overflow: ellipsis;
+          color: #666;
+          &::placeholder{
+            font-weight: normal;
+          }
         }
 
         img.prefix {

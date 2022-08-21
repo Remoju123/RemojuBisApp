@@ -67,4 +67,21 @@
     font-size: 12px;
     text-align: center;
   }
+
+  .alert{
+    border: 1px solid $color-pnk02;
+    margin: 1rem 1.2rem;
+    p{
+      text-align: center;
+      span{
+        font-size: 120%;
+        color: $color-pnk02;
+      }
+    }
+    .sm{
+      color: #999;
+      font-size: 11px;
+      margin-bottom: 1em;
+    }
+  }
 }

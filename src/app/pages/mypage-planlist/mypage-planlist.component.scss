@@ -760,6 +760,18 @@ span.sortlink {
             color: #baa169;
           }
         }
+
+        @media screen and (min-width: 1025px) {
+          grid-template-columns: repeat(4,24%);
+          column-gap: 8px;
+          .thumbspots{
+            
+              .pic{
+                height: 142px;
+              }
+            
+          }
+        }
       }
 
       .mat-list {
