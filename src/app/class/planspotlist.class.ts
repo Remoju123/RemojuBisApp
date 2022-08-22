@@ -114,6 +114,7 @@ export class GoogleSpot {
   formatAddress: string;
   isFavorite: boolean;
   compoundCode: string;
+  photoReference: string;
 }
 
 export class MArea {
