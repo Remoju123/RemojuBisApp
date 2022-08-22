@@ -332,6 +332,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
           this.token = g.tokenGoogle;
+          this.loading = false;
         });
       }
     }
