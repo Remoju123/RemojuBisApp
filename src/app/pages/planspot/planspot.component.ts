@@ -295,7 +295,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
       for (let i = startIndex; i < this.end; i++) {
-        console.log(startIndex);
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
           this.loading = false;
