@@ -285,6 +285,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.end = startIndex + this.limit;
       if(startIndex===0){
         this.loading = true;
+      }else{
+        this.loading = false;
       }
       if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
