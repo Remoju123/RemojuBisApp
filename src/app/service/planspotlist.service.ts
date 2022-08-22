@@ -132,17 +132,21 @@ export class PlanSpotListService {
 
   mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList): Promise<PlanSpotList> {
     return new Promise(resolve => {
-      detail.areaId = planSpotList.areaId ? planSpotList.areaId : null;
-      detail.areaId2 = planSpotList.areaId2 ? planSpotList.areaId2 : null;
-      detail.isPlan = planSpotList.isPlan ? planSpotList.isPlan : null;
-      detail.keyword = planSpotList.keyword ? planSpotList.keyword : null;
-      detail.pvQtyAll = planSpotList.pvQtyAll ? planSpotList.pvQtyAll : null;
-      detail.reviewAvg = planSpotList.reviewAvg ? planSpotList.reviewAvg : null;
-      detail.planSpotQty = planSpotList.planSpotQty;
-      detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
-      detail.googleSpot = planSpotList.googleSpot;
-      detail.userName = this.commonService.isValidJson(detail.userName, this.translate.currentLang);
-      resolve(detail);
+      try {
+        detail.areaId = planSpotList.areaId ? planSpotList.areaId : null;
+        detail.areaId2 = planSpotList.areaId2 ? planSpotList.areaId2 : null;
+        detail.isPlan = planSpotList.isPlan ? planSpotList.isPlan : null;
+        detail.keyword = planSpotList.keyword ? planSpotList.keyword : null;
+        detail.pvQtyAll = planSpotList.pvQtyAll ? planSpotList.pvQtyAll : null;
+        detail.reviewAvg = planSpotList.reviewAvg ? planSpotList.reviewAvg : null;
+        detail.planSpotQty = planSpotList.planSpotQty;
+        detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
+        detail.googleSpot = planSpotList.googleSpot;
+        detail.userName = this.commonService.isValidJson(detail.userName, this.translate.currentLang);
+        resolve(detail);
+      } catch {
+
+      }
     });
   }
 
