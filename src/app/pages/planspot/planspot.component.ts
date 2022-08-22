@@ -415,7 +415,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       _offset = this.list.scrollPos
     }
     const c = new CacheStore();
-    c.data = this.rows;
+    c.data = null;//this.rows;
     c.spots = null;//this.spots;
     c.plans = null;//this.plans;
     c.p = this.p;
