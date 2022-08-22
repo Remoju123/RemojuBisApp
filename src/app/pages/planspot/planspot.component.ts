@@ -170,19 +170,25 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
 
         const result = [];
-        result.push(new Promise(resolve => {this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
-          this.listSelectMaster = r;
-          this.$mSort = r.mSort;
-          resolve(true);
-        })}));
-        result.push(new Promise(resolve => {this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.plans = r;
-          resolve(true);
-        })}));
-        result.push(new Promise(resolve => {this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.spots = r;
-          resolve(true);
-        })}));
+        result.push(new Promise(resolve => {
+          this.planspots.getPlanSpotListSearchCondition().pipe(takeUntil(this.onDestroy$)).subscribe(async r => {
+            this.listSelectMaster = r;
+            this.$mSort = r.mSort;
+            resolve(true);
+          })
+        }));
+        result.push(new Promise(resolve => {
+          this.planspots.getPlanList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            this.plans = r;
+            resolve(true);
+          })
+        }));
+        result.push(new Promise(resolve => {
+          this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+            this.spots = r;
+            resolve(true);
+          })
+        }));
 
         await Promise.all(result);
 
@@ -193,7 +199,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             await this.setGoogleSearchArea();
           }
           condition.select = 'google';
-          if(this.isBrowser) {
+          if (this.isBrowser) {
             sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
           }
         }
@@ -253,7 +259,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async filteringData() {
     const result = await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, this.listSelectMaster);
-    if(this.isBrowser) {
+    if (this.isBrowser) {
       this.offset = 0;
       this.commonService.scrollToTop();
     }
@@ -274,10 +280,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async mergeNextDataSet(isDetail: boolean = false) {
     if (this.rows.length > 0) {
       this.isList = true;
-      this.loading = true;
-
+      
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
+      if(startIndex===0){
+        this.loading = true;
+      }
       if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
       }
@@ -287,6 +295,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
       for (let i = startIndex; i < this.end; i++) {
+        console.log(startIndex);
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
           this.loading = false;
@@ -295,7 +304,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.planspots.fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(async d => {
-            if(d){
+            if (d) {
               if (d.isEndOfPublication) {
                 this.rows.splice(i, 1);
                 if (this.rows.length - startIndex < this.limit) {
@@ -310,7 +319,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           });
       }
       this.p++;
-    } else if(this.condition.select === 'google') {
+    } else if (this.condition.select === 'google') {
       this.isList = false;
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
@@ -353,7 +362,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     // キーワードがクリアされた場合はAllにする
     if (!v) {
       this.condition.select = 'all';
-    // キーワードが変更された場合はALLで表示できるものがあるか確認して変更する
+      // キーワードが変更された場合はALLで表示できるものがあるか確認して変更する
     } else {
       let condition = { ...this.condition };
       condition.select = 'all';
@@ -396,7 +405,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setSessionStorage(planSpotList: PlanSpotList = null) {
-    try{
+    try {
       let _offset: number;
       if (this.list.isMobile) {
         _offset = window.pageYOffset;
@@ -418,7 +427,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.planSpotList = planSpotList;
 
       sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
-    }catch{
+    } catch {
       //
     }
 
