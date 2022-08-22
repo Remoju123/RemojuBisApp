@@ -160,6 +160,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           condition.select = params.lst;
           condition.keyword = params.kwd;
 
+
           if (this.isBrowser) {
             sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
           }
@@ -280,12 +281,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async mergeNextDataSet(isDetail: boolean = false) {
     if (this.rows.length > 0) {
       this.isList = true;
-      
+
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      if(startIndex===0){
+      if (startIndex === 0) {
         this.loading = true;
-      }else{
+      } else {
         this.loading = false;
       }
       if (this.rows.length - startIndex < this.limit) {
@@ -406,31 +407,28 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setSessionStorage(planSpotList: PlanSpotList = null) {
-    try {
-      let _offset: number;
-      if (this.list.isMobile) {
-        _offset = window.pageYOffset;
-      } else {
-        _offset = this.list.scrollPos
-      }
-      const c = new CacheStore();
-      c.data = this.rows;
-      c.spots = this.spots;
-      c.plans = this.plans;
-      c.p = this.p;
-      c.end = this.end;
-      c.offset = _offset;
-      c.mSort = this.$mSort;
-      c.isList = this.isList;
-      c.ListSelectMaster = this.listSelectMaster;
-      c.optionKeywords = this.optionKeywords;
-      c.searchParams = this.searchParams;
-      c.planSpotList = planSpotList;
 
-      sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
-    } catch {
-      //
+    let _offset: number;
+    if (this.list.isMobile) {
+      _offset = window.pageYOffset;
+    } else {
+      _offset = this.list.scrollPos
     }
+    const c = new CacheStore();
+    c.data = this.rows;
+    c.spots = null;//this.spots;
+    c.plans = null;//this.plans;
+    c.p = this.p;
+    c.end = this.end;
+    c.offset = _offset;
+    c.mSort = this.$mSort;
+    c.isList = this.isList;
+    c.ListSelectMaster = this.listSelectMaster;
+    c.optionKeywords = this.optionKeywords;
+    c.searchParams = this.searchParams;
+    c.planSpotList = planSpotList;
+
+    sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
 
   }
 
