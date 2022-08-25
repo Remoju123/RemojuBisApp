@@ -612,7 +612,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     dots: false,
     navSpeed: 700,
     stagePadding: 20,
-    margin: 10,
+    //margin: 10,
     responsive: {
       0: {
         items: 2

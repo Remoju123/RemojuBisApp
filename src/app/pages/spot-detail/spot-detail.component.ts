@@ -477,18 +477,14 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: [
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
-    ],
     stagePadding: 20,
-    margin: 10,
+    //margin: 10,
     responsive: {
       0: {
         items: 2
       },
       400: {
-        items: 2
+        items: 3
       },
       740: {
         items: 4
