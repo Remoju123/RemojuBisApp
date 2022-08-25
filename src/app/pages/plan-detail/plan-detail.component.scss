@@ -1291,6 +1291,20 @@ div.plandtl {
         text-align: center;
         font-weight: 800;
         line-height: 28px;
+        position: relative;
+        z-index: 1;
+
+        &.on{
+          &::after {
+            content: "";
+            background: url("../../../assets/img/icon_onplan.svg") no-repeat;
+            width: 24px;
+            height: 28px;
+            position: absolute;
+            right: 0px;
+            bottom: 18px;
+          }
+        }
       }
     }
 

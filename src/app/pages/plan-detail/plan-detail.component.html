@@ -263,7 +263,7 @@
             </ng-container>
 
             <div class='addToPlan'>
-              <button class="btn" (click)="onClickAddToPlan(item)">{{"AddToPlanOnly"|translate}}</button>
+              <button class="btn" (click)="onClickAddToPlan(item)" [ngClass]="{'on':chkInMyPlanspot(item)}">{{"AddToPlanOnly"|translate}}</button>
             </div>
 
             <mat-list>

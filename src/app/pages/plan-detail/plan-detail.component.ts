@@ -271,6 +271,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  chkInMyPlanspot(item:any){
+    return this.myPlanSpots.includes(item.spotId);
+  }
+
   // エリア
   onClickArea() {
     let condition = new ListSearchCondition();
@@ -699,5 +703,15 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  // 比較関数（同じ配列同士で重複する値があるか否か）
+  getIsDuplicate(arr1, arr2) {
+    if(arr2){
+      return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
+    }else{
+      return false;
+    }
+
   }
 }
