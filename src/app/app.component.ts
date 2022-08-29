@@ -3,11 +3,12 @@ import { OAuthService, OAuthErrorEvent } from 'angular-oauth2-oidc';
 import { OAuthErrorEventParams } from './class/common.class';
 import { authConfig } from './auth.config';
 import { CommonService } from "./service/common.service";
+import { GaService } from './service/ga.service';
 import { UserService } from "./service/user.service";
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 
 import {
@@ -66,12 +67,18 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private oauthService: OAuthService,
     private commonService: CommonService,
+    private gaService: GaService,
     private userService: UserService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if (isPlatformBrowser(platformId)) {
       this.show = true;
+      // tracking
+      this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((params: any) => {
+        this.gaService.sendPageView(params.url);
+      });
     }
   }
 

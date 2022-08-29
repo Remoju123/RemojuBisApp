@@ -155,12 +155,16 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     const result = [];
     result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      this.plans = r;
+      if (r) {
+        this.plans = r;
+      }
       resolve(true);
     })}));
     result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
     .subscribe(async (r) => {
-      this.spots = r;
+      if (r) {
+        this.spots = r;
+      }
       resolve(true);
     })}));
 

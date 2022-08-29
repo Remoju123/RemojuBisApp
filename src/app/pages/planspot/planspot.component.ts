@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CommonService } from '../../service/common.service';
+import { GaService } from '../../service/ga.service';
 import { IndexedDBService } from "../../service/indexeddb.service";
 import { PlanSpotListService } from '../../service/planspotlist.service';
 import { MyplanService } from '../../service/myplan.service';
@@ -77,6 +78,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private planspots: PlanSpotListService,
     private activatedRoute: ActivatedRoute,
     private indexedDBService: IndexedDBService,
+    private gaService: GaService,
     private myplanService: MyplanService,
     private router: Router,
     public dialog: MatDialog,
@@ -359,6 +361,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // キーワード検索
   async keywordSearch(v: any) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'search', v);
+
     this.condition.keyword = v;
     this.prevkeyword = null;
     this.token = null;
@@ -382,6 +386,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // 表示順
   sortChange(v: any) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'sort', v);
+
     this.condition.sortval = v;
     sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
     this.filteringData();
@@ -389,6 +395,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
+    this.gaService.sendEvent('planspotlist', val, 'tab', null);
+
     this.condition.select = val;
     sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
     this.filteringData();
@@ -396,6 +404,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プラン/スポット詳細リンク
   linktoDetail(item: PlanSpotList) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'detail', item.id);
+
     this.setSessionStorage();
 
     if (item.isPlan) {
@@ -408,7 +418,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   setSessionStorage(planSpotList: PlanSpotList = null) {
-
     try {
       let _offset: number;
       if (this.list.isMobile) {
@@ -435,12 +444,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     } catch (error) {
       //
     }
-
-
   }
 
   // 検索パネル(エリア・カテゴリー選択)
   openDialog(e: number) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'search_dialog', e);
+
     this.listSelectMaster.tabIndex = e;
     this.listSelectMaster.isGoogle = this.condition.select === 'google';
     this.listSelectMaster.planSpotList = this.spots.concat(this.plans);
@@ -500,6 +509,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランに追加
   async addMyPlan(item: PlanSpotList) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'add_to_cart', item.id);
+
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if (await this.commonService.checkAddPlan(tempqty) === false) {
       const param = new ComfirmDialogParam();
@@ -537,6 +548,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // お気に入り登録・除外
   setFavorite(item: PlanSpotList) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, item.isFavorite ? 'favorite_off' : 'favorite_on', item.id);
+
     item.isFavorite = !item.isFavorite;
     if (!item.isPlan) {
       const param = new UpdFavorite();
@@ -562,6 +575,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onViewUserPost(item: PlanSpotList) {
+    this.gaService.sendEvent('planspotlist', this.condition.select, 'view_user', item.user.objectId);
+
     this.setSessionStorage(item);
 
     const param = new UserPlanData();
