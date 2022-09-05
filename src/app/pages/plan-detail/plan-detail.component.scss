@@ -376,6 +376,7 @@ div.plandtl {
     padding: 0;
 
     ::ng-deep.owl-carousel {
+      touch-action: none;
       .owl-item {
         position: relative;
         display: flex;

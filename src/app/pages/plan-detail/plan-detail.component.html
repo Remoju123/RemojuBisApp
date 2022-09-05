@@ -167,7 +167,7 @@
                 <span>{{ i + 1 }}</span>
               </div>
               <div class="thumbspots">
-                <a (click)="setMapCenter(item.latitude, item.longitude)">
+                <a (click)="setMapCenter(item.latitude, item.longitude)" class="noswip">
                   <img [src]="item.pictureUrl?item.pictureUrl:noPic" />
                 </a>
               </div>
@@ -231,7 +231,7 @@
                   <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
                     <ng-container *ngFor="let pict of item.pictures;index as i">
                       <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain">
+                        <div class="thumbmain noswip">
                           <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
                           <div class="memo" *ngIf="item.pictureMemos && item.pictureMemos[i]">
                             {{item.pictureMemos[i]}}
@@ -243,7 +243,7 @@
 
                   <ng-template #singlePict>
                     <ng-container *ngFor="let pict of item.pictures">
-                      <div class="thumbmain" (click)="linktoSpot(item)">
+                      <div class="thumbmain noswip" (click)="linktoSpot(item)">
                         <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
                       </div>
                     </ng-container>
