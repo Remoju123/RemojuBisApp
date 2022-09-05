@@ -686,7 +686,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   // スワイプで一覧に戻る
   onSwipeRight(event) {
-    console.log(event.target);
+    //console.log(event.target);
     if(!event.target.classList.contains('noswip')){
       this.linktolist();
     }
