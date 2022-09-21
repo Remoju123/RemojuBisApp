@@ -102,6 +102,8 @@ export class RootComponent implements OnInit, OnDestroy {
     this.isMobile = this.detectIsMobile(window.innerWidth);
 
     this.commonService.curlang$.pipe(takeUntil(this.onDestroy$)).subscribe(lang => {
+      sessionStorage.setItem('gml',lang);
+      this.currentLang = lang;
       let suffix = lang==="en"?"_en":"";
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg";

@@ -41,8 +41,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   languages = environment.languages;
 
-  currentLang: string = environment.defaultLang;
-
+  //currentLang: string = environment.defaultLang;
+  currentLang: string = sessionStorage.getItem('gml');
+  
   // サイドナビバインドプロパティ
   @Output() event = new EventEmitter<boolean>();
   @Input()

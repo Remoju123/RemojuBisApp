@@ -7,8 +7,8 @@
     </div>
     <div class="nav-wrap">
       <mat-nav-list class="language">
-        <div class="switchViewLang" [ngClass]="{'en':lang==='en'}">
-          <input type="checkbox" id="switch-view3" (click)="onClickSwitchLang($event)">
+        <div class="switchViewLang" [ngClass]="lang==='en'?'en':''">
+          <input type="checkbox" id="switch-view3" (click)="onClickSwitchLang($event)" [checked]="lang==='en'">
           <label for="switch-view3"><span></span></label>
           <div id="swImg"></div>
         </div>
