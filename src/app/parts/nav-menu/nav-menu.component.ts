@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
+import { Location } from '@angular/common';
 import { MenuItems } from "../../shared/menu-items/menu-items";
 import { CommonService } from "../../service/common.service";
 import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
 import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
 import { UserService } from "../../service/user.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
@@ -15,7 +16,7 @@ import { takeUntil } from "rxjs/operators";
   templateUrl: "./nav-menu.component.html",
   styleUrls: ["./nav-menu.component.scss"],
 })
-export class NavMenuComponent implements OnInit, OnDestroy{
+export class NavMenuComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
 
   isAuthenticated = false;
@@ -37,14 +38,15 @@ export class NavMenuComponent implements OnInit, OnDestroy{
 
   constructor(
     private router: Router,
+    private location: Location,
     public commonService: CommonService,
     private planSpotListService: PlanSpotListService,
     private mypageFavoriteListService: MypageFavoriteListService,
     private mypagePlanListService: MypagePlanListService,
     public userService: UserService,
     public menuItems: MenuItems,
-    private translate: TranslateService
-  ) {}
+    private translate: TranslateService,
+  ) { }
 
   collapse() {
     this.isExpanded = false;
@@ -61,9 +63,9 @@ export class NavMenuComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.userName = this.commonService.name;
 
-    this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+    this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       // ユーザー情報
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r=>{
+      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
         if (r) {
           this.userName = r.displayName;
         }
@@ -71,7 +73,7 @@ export class NavMenuComponent implements OnInit, OnDestroy{
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
@@ -104,17 +106,23 @@ export class NavMenuComponent implements OnInit, OnDestroy{
     *checked:true ==> 'en'
     *checked:false ==> 'ja'
     -----------------------*/
+    let currentLang = 'ja';
     if (e.target.checked) {
       this.translate.use('en');
-      this.translate.currentLang = 'en';
+      currentLang = 'en';
     } else {
       this.translate.use('ja');
-      this.translate.currentLang = 'ja';
+      currentLang = 'ja';
     }
+    this.translate.currentLang = currentLang;
     this.commonService.onNotifyChangeLang(this.translate.currentLang);
+
+    let $url = this.router.url.replace(/.../, currentLang);
+    this.location.replaceState($url);
+
   }
 
-  onClose(){
+  onClose() {
     this.sideClose.emit();
   }
 }
