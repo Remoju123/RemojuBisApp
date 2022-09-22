@@ -63,8 +63,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userName = this.commonService.name;
 
-    console.log(this.lang)
-
     this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
       // ユーザー情報
       this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r => {

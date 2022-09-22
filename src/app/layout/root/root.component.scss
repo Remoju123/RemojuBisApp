@@ -119,13 +119,21 @@ button {
 }
 // https://stackoverflow.com/questions/52441095/sticky-table-header-doesnt-work-in-angular-materials-mat-sidenav-container
 // sticky-table-header-doesnt-work
+mat-sidenav-container{
+  &.mat-drawer-container-has-open{
+    position: fixed!important;
+    top:0;
+    width: 100%;
+  }
+}
+
+
 mat-sidenav-container,
 mat-sidenav-content {
   overflow: initial;
-  
   @include mobile-xsmall {
     .wrapper {
-      // padding-top: 110px;
+      //padding-top: 110px;
       // padding-top: 44px;
       // padding-top: 189px;
       &.on{
@@ -156,6 +164,8 @@ mat-sidenav-content {
 
 .mat-sidenav.cartnav{
   width: 100%;
+  height: calc(100vh - 45px);
+  margin-top: 45px;
 
   button.close-my-plan{
     position: fixed;

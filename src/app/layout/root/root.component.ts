@@ -4,7 +4,9 @@ import {
   OnInit,
   ChangeDetectorRef,
   OnDestroy,
-  ViewChild} from "@angular/core";
+  ViewChild,
+  ElementRef
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { DataService } from "../../service/data.service";
 import { CommonService } from "../../service/common.service";
@@ -17,7 +19,6 @@ import { takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from "../header/header.component";
 import { MatSidenav } from "@angular/material/sidenav";
 import { MyPlanApp } from "../../class/common.class";
-
 @Component({
   selector: "app-root",
   templateUrl: "./root.component.html",
@@ -51,8 +52,8 @@ export class RootComponent implements OnInit, OnDestroy {
   toTop_src = "../../../assets/img/toTop4.svg";
 
   isMobile: boolean;
-  userPic:string;
-  userName:string;
+  userPic: string;
+  userName: string;
 
   reloadRequestCount$ = new BehaviorSubject<number>(this.reloadRequestCount);
 
@@ -61,6 +62,8 @@ export class RootComponent implements OnInit, OnDestroy {
   @ViewChild(HeaderComponent) protected header: HeaderComponent;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
+
+  //@ViewChild('contentBody') contentBody: ElementRef;
 
   constructor(
     public router: Router,
@@ -102,9 +105,9 @@ export class RootComponent implements OnInit, OnDestroy {
     this.isMobile = this.detectIsMobile(window.innerWidth);
 
     this.commonService.curlang$.pipe(takeUntil(this.onDestroy$)).subscribe(lang => {
-      sessionStorage.setItem('gml',lang);
+      sessionStorage.setItem('gml', lang);
       this.currentLang = lang;
-      let suffix = lang==="en"?"_en":"";
+      let suffix = lang === "en" ? "_en" : "";
       this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
       this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg";
       this.toTop_src = "../../../assets/img/toTop4" + suffix + ".svg";
