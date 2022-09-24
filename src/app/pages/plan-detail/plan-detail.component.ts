@@ -3,17 +3,15 @@ import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
-import { UpdFavorite } from "../../class/mypageplanlist.class";
+import { MyplanListCacheStore, UpdFavorite } from "../../class/mypageplanlist.class";
 import { CacheStore, PlanSpotList } from "../../class/planspotlist.class";
 import { ReviewResult } from "../../class/review.class";
 import { Catch } from "../../class/log.class";
 import { TranslateService } from "@ngx-translate/core";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { makeStateKey, Meta } from "@angular/platform-browser";
+import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
-import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { PlanService } from "../../service/plan.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
@@ -24,6 +22,8 @@ import { isPlatformBrowser } from "@angular/common";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
+export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-plan-detail",
@@ -42,14 +42,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
-    private mypageFavoriteListService: MypageFavoriteListService,
-    private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private planService: PlanService,
     private planSpotListService: PlanSpotListService,
     // private deviceService: DeviceDetectorService,
     private meta: Meta,
     private translate: TranslateService,
+    private transferState: TransferState,
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -120,9 +119,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     // GUID取得
     this.guid = await this.commonService.getGuid();
 
-    if (isPlatformBrowser(this.platformId)
-    && (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)
-    || sessionStorage.getItem(this.mypagePlanListService.listSessionKey))) {
+    if (this.transferState.hasKey(MYPLANLIST_KEY)
+    || this.transferState.hasKey(FAVORITE_KEY)) {
       this.isMypage = true;
     }
 
@@ -189,11 +187,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     param.type = item.type
     param.isFavorite = item.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.planSpotListService.setSessionStorageFavorite(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
-    if (item.isFavorite) {
-      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
-    } else {
-      this.mypageFavoriteListService.setSessionStorageFavorite(false, item.spotId, item.isFavorite);
+    this.planSpotListService.setTransferStateFavorite(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+        this.transferState.remove(FAVORITE_KEY);
     }
     this.planSpotListService
       .registFavorite(
@@ -214,11 +210,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @Catch()
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
-    this.planSpotListService.setSessionStorageFavorite(true, this.data.planId, this.data.isFavorite);
-    if (this.data.isFavorite) {
-      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
-    } else {
-      this.mypageFavoriteListService.setSessionStorageFavorite(false, this.data.planId, this.data.isFavorite);
+    this.planSpotListService.setTransferStateFavorite(true, this.data.planId, this.data.isFavorite);
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+        this.transferState.remove(FAVORITE_KEY);
     }
     this.planSpotListService
       .registFavorite(
@@ -534,9 +528,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   }
 
   linktolist() {
-    if (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)) {
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
-    } else if (sessionStorage.getItem(this.mypagePlanListService.listSessionKey)) {
+    } else if (this.transferState.hasKey(MYPLANLIST_KEY)) {
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
     } else {
       this.router.navigate(["/" + this.lang + "/planspot"]);

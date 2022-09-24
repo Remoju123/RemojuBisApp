@@ -165,7 +165,7 @@ export class UserPlanListComponent implements OnInit {
       param.isFavorite = item.isFavorite;
       this.myplanService.updateFavorite(param);
     }
-    this.planSpotListService.setSessionStorageFavorite(item.isPlan, item.id, item.isFavorite, item.googleSpot ? true : false);
+    this.planSpotListService.setTransferStateFavorite(item.isPlan, item.id, item.isFavorite, item.googleSpot ? true : false);
     this.planspots.registFavorite(
       item.id,
       item.isPlan,

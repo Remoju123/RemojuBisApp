@@ -4,7 +4,7 @@ import { FavoriteCount } from '../class/common.class';
 import { CommonService } from "./common.service";
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CacheStore, PlanSpotList } from "../class/planspotlist.class";
+import { PlanSpotList } from "../class/planspotlist.class";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -19,7 +19,6 @@ const httpOptions = {
 export class MypageFavoriteListService implements OnDestroy {
 
   public conditionSessionKey = "MyfavoriteSearchCondition";
-  public listSessionKey = "MyfavoriteList";
 
   private myfavCount = new Subject<any>();
   public myfavCount$ = this.myfavCount.asObservable();
@@ -57,17 +56,6 @@ export class MypageFavoriteListService implements OnDestroy {
       .subscribe((v)=>{
         this.myfavCount.next(v);
       });
-    }
-  }
-
-  setSessionStorageFavorite(isPlan: boolean, id: number, isFavorite: boolean) {
-    const cache: CacheStore = JSON.parse(sessionStorage.getItem(this.listSessionKey));
-    if (cache) {
-      let row = cache.data.find(x => x.isPlan === isPlan && x.id === id);
-      if (row) {
-        row.isFavorite = isFavorite;
-        sessionStorage.setItem(this.listSessionKey, JSON.stringify(cache));
-      }
     }
   }
 

@@ -10,6 +10,13 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+import { CacheStore } from "../../class/planspotlist.class";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { MyplanListCacheStore } from "../../class/mypageplanlist.class";
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
+export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-nav-menu",
@@ -43,6 +50,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
     private planSpotListService: PlanSpotListService,
     private mypageFavoriteListService: MypageFavoriteListService,
     private mypagePlanListService: MypagePlanListService,
+    private transferState: TransferState,
     public userService: UserService,
     public menuItems: MenuItems,
     private translate: TranslateService,
@@ -81,11 +89,11 @@ export class NavMenuComponent implements OnInit, OnDestroy {
     console.log(page);
     if (isSessionClear) {
       sessionStorage.removeItem(this.planSpotListService.conditionSessionKey);
-      sessionStorage.removeItem(this.planSpotListService.listSessionKey);
+      this.transferState.remove(PLANSPOT_KEY);
       sessionStorage.removeItem(this.mypagePlanListService.conditionSessionKey);
-      sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
+      this.transferState.remove(MYPLANLIST_KEY);
       sessionStorage.removeItem(this.mypageFavoriteListService.conditionSessionKey);
-      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+      this.transferState.remove(FAVORITE_KEY);
     }
     if (frag === '') {
       this.router.navigate(['/' + this.lang + '/' + page + '/']);

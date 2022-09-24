@@ -2,8 +2,6 @@ import { Component, HostListener, Input, OnInit, OnDestroy, Inject, PLATFORM_ID,
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { CommonService } from "../../service/common.service";
 import { IndexedDBService } from "../../service/indexeddb.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
-import { MypagePlanListService } from "../../service/mypageplanlist.service";
 import { MyplanService } from '../../service/myplan.service';
 import { SpotService } from "../../service/spot.service";
 import { PlanSpotListService } from "../../service/planspotlist.service";
@@ -27,6 +25,13 @@ import { HubConnection, HubConnectionBuilder } from "@aspnet/signalr";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from "@angular/common";
+import { CacheStore } from "../../class/planspotlist.class";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { MyplanListCacheStore } from "../../class/mypageplanlist.class";
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
+export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-spot-detail",
@@ -42,13 +47,12 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
-    private mypageFavoriteListService: MypageFavoriteListService,
-    private mypagePlanListService: MypagePlanListService,
     private myplanService: MyplanService,
     private spotService: SpotService,
     private planspotListService: PlanSpotListService,
     private meta: Meta,
     private translate: TranslateService,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -213,7 +217,10 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     param.type = 1
     param.isFavorite = this.data.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.planspotListService.setSessionStorageFavorite(false, this.$spotId, this.data.isFavorite, false);
+    this.planspotListService.setTransferStateFavorite(false, this.$spotId, this.data.isFavorite, false);
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      this.transferState.remove(FAVORITE_KEY);
+    }
     this.planspotListService
       .registFavorite(
         this.$spotId,
@@ -456,9 +463,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
   }
 
   linktolist() {
-    if (sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey)) {
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
-    } else if (sessionStorage.getItem(this.mypagePlanListService.listSessionKey)) {
+    } else if (this.transferState.hasKey(MYPLANLIST_KEY)) {
       this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
     }  else {
       this.router.navigate(["/" + this.lang + "/planspot"]);

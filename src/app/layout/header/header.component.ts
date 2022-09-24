@@ -25,6 +25,13 @@ import { takeUntil } from 'rxjs/operators';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { MatSpinner } from '@angular/material/progress-spinner';
 import { isPlatformBrowser } from "@angular/common";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { MyplanListCacheStore } from "../../class/mypageplanlist.class";
+import { CacheStore } from "../../class/planspotlist.class";
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
+export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-header",
@@ -42,8 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   languages = environment.languages;
 
   //currentLang: string = environment.defaultLang;
-  currentLang: string = sessionStorage.getItem('gml');
-  
+  currentLang: string = isPlatformBrowser(this.platformId) ? sessionStorage.getItem('gml') : "ja";
+
   // サイドナビバインドプロパティ
   @Output() event = new EventEmitter<boolean>();
   @Input()
@@ -89,6 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public router: Router,
     public dialog: MatDialog,
     private overlay: Overlay,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object) {
     if (isPlatformBrowser(this.platformId)) {
       this.shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h =>
@@ -151,11 +159,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onNavgateRemoju() {
     sessionStorage.removeItem(this.planSpotListService.conditionSessionKey);
-    sessionStorage.removeItem(this.planSpotListService.listSessionKey);
+    this.transferState.remove(PLANSPOT_KEY);
     sessionStorage.removeItem(this.mypagePlanListService.conditionSessionKey);
-    sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
+    this.transferState.remove(MYPLANLIST_KEY);
     sessionStorage.removeItem(this.mypageFavoriteListService.conditionSessionKey);
-    sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+    this.transferState.remove(FAVORITE_KEY);
     this.router.navigate(['/' + this.currentLang + '/planspot/']);
   }
 
