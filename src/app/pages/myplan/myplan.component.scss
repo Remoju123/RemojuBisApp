@@ -380,7 +380,7 @@ form {
 
       span {
         white-space: nowrap;
-        width: 118px;
+        width: 86px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -1215,6 +1215,13 @@ form {
                     border-radius: 9px;
                     background-color: #707070;
                     color: #fff;
+
+                    &:disabled {
+                      -webkit-appearance: none;
+                      -moz-appearance: none;
+                      appearance: none;
+                      padding: 0 8px;
+                    }
                   }
                 }
               }
@@ -1732,6 +1739,30 @@ form {
 
         }
       }
+    }
+  }
+
+  .rec-memo {
+    position: relative;
+    margin: 24px 16px 0;
+
+    p {
+      font-size: 14px;
+      background-color: #f6f5ef;
+      padding: 0.3em 0.5em;
+      border-radius: 0.5em;
+    }
+
+    label {
+      position: absolute;
+      top: -15px;
+      left: 0px;
+      font-size: 12px;
+      background: #707070;
+      color: #fff;
+      padding: 3px;
+      border-radius: 3px;
+      transform: rotate(-10deg);
     }
   }
 }
