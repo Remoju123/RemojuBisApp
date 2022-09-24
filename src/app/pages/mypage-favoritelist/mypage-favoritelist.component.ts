@@ -13,6 +13,9 @@ import { MypageFavoriteListService } from "../../service/mypagefavoritelist.serv
 import { PlanSpotListService } from "../../service/planspotlist.service";
 import { MyplanService } from "../../service/myplan.service";
 import { isPlatformBrowser } from "@angular/common";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
 
 @Component({
   selector: "app-mypage-favoritelist",
@@ -30,6 +33,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     private planspots: PlanSpotListService,
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
+    private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 999;
@@ -84,12 +88,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     // GUID取得
     this.guid = await this.commonService.getGuid();
 
-    let cache = new CacheStore();
-    if (isPlatformBrowser(this.platformId)) {
-      cache = JSON.parse(sessionStorage.getItem(this.mypageFavoriteListService.listSessionKey));
-    }
-
-    if (isPlatformBrowser(this.platformId) && cache) {
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      const cache = this.transferState.get<CacheStore>(FAVORITE_KEY, null);
       this.rows = cache.data;
       this.end = cache.end;
       this.offset = cache.offset;
@@ -101,7 +101,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       this.$mSort = cache.mSort;
       this.count = cache.data.length;
 
-      sessionStorage.removeItem(this.mypageFavoriteListService.listSessionKey);
+      this.transferState.remove(FAVORITE_KEY);
 
       this.mergeNextDataSet(true);
     } else {
@@ -238,7 +238,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     c.sortval = this.condition.sortval;
     c.mSort = this.$mSort;
 
-    sessionStorage.setItem(this.mypageFavoriteListService.listSessionKey, JSON.stringify(c));
+    this.transferState.set<CacheStore>(FAVORITE_KEY, c);
   }
 
   // プランに追加

@@ -14,6 +14,9 @@ import { takeUntil } from 'rxjs/operators';
 import { UrlcopyDialogComponent } from "../../parts/urlcopy-dialog/urlcopy-dialog.component";
 import { isPlatformBrowser } from "@angular/common";
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
   selector: "app-mypage-planlist",
@@ -30,6 +33,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     private myplanService: MyplanService,
     private indexedDBService: IndexedDBService,
     private translate: TranslateService,
+    private transferState: TransferState,
     private router: Router,
     public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -45,7 +49,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
 
   @ViewChild('box') box:ElementRef;
   @ViewChild('owlElement') owlElement:OwlOptions;
-  
+
   isMobile:boolean;
 
   $releaseDestination: DataSelected[];
@@ -79,7 +83,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
         if (this.offset > 0) {
           window.scrollTo(0, this.offset);
         }
-  
+
         if (this.offset === window.pageYOffset) {
           this.offset = 0;
         }
@@ -94,12 +98,8 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.$releaseDestination = r;
     });
 
-    let cache = new MyplanListCacheStore();
-    if (isPlatformBrowser(this.platformId)) {
-      cache = JSON.parse(sessionStorage.getItem(this.mypagePlanListService.listSessionKey));
-    }
-
-    if (isPlatformBrowser(this.platformId) && cache) {
+    if (this.transferState.hasKey(MYPLANLIST_KEY)) {
+      const cache = this.transferState.get<MyplanListCacheStore>(MYPLANLIST_KEY, null);
       this.rows = cache.data;
       this.end = cache.end;
       this.offset = cache.offset;
@@ -107,10 +107,10 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.p = cache.p - 1;
       this.count = cache.data.length;
 
-      sessionStorage.removeItem(this.mypagePlanListService.listSessionKey);
+      this.transferState.remove(MYPLANLIST_KEY);
 
       this.getPlanListDetail(true);
-      
+
     } else {
       this.getPlanList();
     }
@@ -382,7 +382,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       .getMypagePlanListDetail(this.rows[i])
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(async d => {
-        
+
           let idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
           this.rows[idx] = d;
           if (d.spots && d.spots.length > 0){
@@ -393,7 +393,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
               return x;
             }, []);
           }
-        
+
           // const idx = this.rows.findIndex(v => v.planUserId === d.planUserId);
           // this.rows[idx] = d;
           // if (d.spots && d.spots.length > 0){
@@ -417,7 +417,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
     c.end = this.end;
     c.offset = window.pageYOffset;
 
-    sessionStorage.setItem(this.mypagePlanListService.listSessionKey, JSON.stringify(c));
+    this.transferState.set<MyplanListCacheStore>(MYPLANLIST_KEY, c);
   }
 
 /*
