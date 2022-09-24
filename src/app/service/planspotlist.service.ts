@@ -17,6 +17,9 @@ import { TranslateService } from "@ngx-translate/core";
 import { IndexedDBService } from "./indexeddb.service";
 import { PlanFavorite, PlanUserFavorite } from "../class/plan.class";
 import { HttpUrlEncodingCodec } from "@angular/common/http";
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -49,6 +52,7 @@ export class PlanSpotListService {
     private indexedDBService: IndexedDBService,
     private filterPipe: FilterPipe,
     private translate: TranslateService,
+    private transferState: TransferState,
     @Inject("BASE_API_URL") private host: string
   ) {
     this.result = new searchResult();
@@ -133,10 +137,10 @@ export class PlanSpotListService {
   mergeDetail(planSpotList: PlanSpotList, detail: PlanSpotList): Promise<PlanSpotList> {
     return new Promise(resolve => {
       try {
-        detail.isPlan = planSpotList.isPlan ? planSpotList.isPlan : null;
-        detail.keyword = planSpotList.keyword ? planSpotList.keyword : null;
-        detail.pvQtyAll = planSpotList.pvQtyAll ? planSpotList.pvQtyAll : null;
-        detail.reviewAvg = planSpotList.reviewAvg ? planSpotList.reviewAvg : null;
+        detail.isPlan = planSpotList.isPlan;
+        detail.keyword = planSpotList.keyword;
+        detail.pvQtyAll = planSpotList.pvQtyAll;
+        detail.reviewAvg = planSpotList.reviewAvg;
         detail.planSpotQty = planSpotList.planSpotQty;
         detail.releaseCreateDatetime = planSpotList.releaseCreateDatetime;
         detail.googleSpot = planSpotList.googleSpot;
@@ -455,14 +459,14 @@ export class PlanSpotListService {
     }, []);
   }
 
-  setSessionStorageFavorite(isPlan: boolean, id: number, isFavorite: boolean, isGoogle = false) {
-    const cache: CacheStore = JSON.parse(sessionStorage.getItem(this.listSessionKey));
-    if (cache) {
+  setTransferStateFavorite(isPlan: boolean, id: number, isFavorite: boolean, isGoogle = false) {
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
       let row = cache.data.find(x => x.isPlan === isPlan && x.id === id
         && ((x.googleSpot && isGoogle) || (!x.googleSpot && !isGoogle)))
       if (row) {
         row.isFavorite = isFavorite;
-        sessionStorage.setItem(this.listSessionKey, JSON.stringify(cache));
+        this.transferState.set<CacheStore>(PLANSPOT_KEY, cache);
       }
     }
   }

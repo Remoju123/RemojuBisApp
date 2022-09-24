@@ -22,6 +22,9 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserDialogComponent } from 'src/app/parts/user-dialog/user-dialog.component';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
 @Component({
   selector: 'app-planspot',
@@ -80,6 +83,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private indexedDBService: IndexedDBService,
     private gaService: GaService,
     private myplanService: MyplanService,
+    private transferState: TransferState,
     private router: Router,
     public dialog: MatDialog,
     public animationDialog: NgDialogAnimationService,
@@ -112,12 +116,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
 
-    let cache = new CacheStore();
-    if (this.isBrowser) {
-      cache = JSON.parse(sessionStorage.getItem(this.planspots.listSessionKey));
-    }
-
-    if (this.isBrowser && cache) {
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
       this.rows = cache.data;
       this.spots = cache.spots;
       this.plans = cache.plans;
@@ -135,7 +135,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.onViewUserPost(cache.planSpotList);
       }
 
-      sessionStorage.removeItem(this.planspots.listSessionKey);
+      this.transferState.remove(PLANSPOT_KEY);
 
       this.condition = JSON.parse(sessionStorage.getItem(this.planspots.conditionSessionKey));
       this.historyReplace(this.searchParams);
@@ -440,7 +440,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.searchParams = this.searchParams;
       c.planSpotList = planSpotList;
 
-      sessionStorage.setItem(this.planspots.listSessionKey, JSON.stringify(c));
+      this.transferState.set<CacheStore>(PLANSPOT_KEY, c);
     } catch (error) {
       //
     }
