@@ -70,7 +70,7 @@ export class GoogleSpotDialogComponent implements OnInit, OnDestroy {
     } else {
       // ユーザの居場所を設定
       const location = await this.commonService.getGeoLocation();
-      if (location.errorCd === null &&
+      if (location.errorCd === 0 &&
         location.latitude !== null &&
         location.longitude !== null){
           this.place = {
