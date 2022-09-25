@@ -61,7 +61,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   private baseUrl: string;
   private currentlang: string;
   codec = new HttpUrlEncodingCodec;
-
+  
   constructor(
     public commonService: CommonService,
     private myplanService: MyplanService,

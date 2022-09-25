@@ -246,6 +246,20 @@
         cursor: pointer;
       }
 
+      button.abscloseb {
+        all: unset;
+        position: absolute;
+        bottom: -24px;
+        right: 0;
+        font-size: 12px;
+        padding: 3px;
+        background-color: #4A4A4A;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+
     }
 
 
