@@ -61,7 +61,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   private baseUrl: string;
   private currentlang: string;
   codec = new HttpUrlEncodingCodec;
-  
+
   constructor(
     public commonService: CommonService,
     private myplanService: MyplanService,
@@ -483,8 +483,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // 変更時保存
   onChangeTransfer(e: any) {
-    e.stopPropagation();
-
     this.row.isTransferSearch = true;
     this.row.optimized = false;
     // 保存
@@ -567,8 +565,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // スポット削除
   onClickSpotDelete(event: any, planSpot: PlanSpotCommon) {
-    event.stopPropagation();
-
     // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if (this.row.planSpots.length === 1) {
       this.spotAllRemove();
