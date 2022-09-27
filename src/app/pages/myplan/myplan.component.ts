@@ -275,6 +275,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
                 // 最適化OFF
                 this.row.isAuto = false;
                 ref.close();
+                if (!r.isCar && r.ekitanStatus !== "0") {
+                  this.commonService.messageDialog("ErrorMsgEkitan");
+                }
               }
             });
           });
@@ -475,6 +478,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
             // 変更を保存
             this.registPlan();
             ref.close();
+            if (!r.isCar && r.ekitanStatus !== "0") {
+              this.commonService.messageDialog("ErrorMsgEkitan");
+            }
           }
         });
       });
