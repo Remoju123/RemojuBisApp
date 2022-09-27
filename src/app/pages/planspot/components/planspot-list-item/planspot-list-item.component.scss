@@ -445,6 +445,7 @@
         // height: 26px;
         align-items: center;
         position: relative;
+        white-space: nowrap;
 
         ::ng-deep .mat-list-item-content {
           flex-direction: column;
