@@ -349,5 +349,6 @@
   "StartEndSpotDeleteConfirm": "出発地と到着地を削除します。よろしいですか？",
   "ReleaseStartEndSpotDeleteConfirmText": "出発地と到着地を削除します。公開する場合は、投稿内容にご注意いただき、利用規約の了承の上、公開を行ってください。自分のみが閲覧可能な状態で保存をする場合には、公開先を「自分のみ(非公開)」に変更し直してから保存ボタンを押してください。",
   "Roundtime":"周遊時間",
-  "ErrorMsgEkitan":"経路　公共手段がありませんでした。"
+  "ErrorMsgEkitan":"経路　公共手段がありませんでした。",
+  "View": "閲覧数"
 }
