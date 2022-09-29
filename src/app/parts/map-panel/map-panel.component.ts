@@ -628,7 +628,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
     // マーカーを表示
     if (
-      location.errorCd === null &&
+      location.errorCd === 0 &&
       location.latitude !== null &&
       location.longitude !== null
     ) {
