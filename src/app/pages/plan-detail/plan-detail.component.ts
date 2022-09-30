@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
-import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam } from "../../class/common.class";
+import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam, MyPlanApp } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { MyplanListCacheStore, UpdFavorite } from "../../class/mypageplanlist.class";
 import { CacheStore, PlanSpotList } from "../../class/planspotlist.class";
@@ -58,6 +58,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   $isRemojuPlan: boolean;
   $versionNo: number;
   $planId: number;
+
+  id;
 
   spots: PlanSpotCommon[];
   transfers: Trans[];
@@ -125,9 +127,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     }
 
     this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
-      const id = params.get("id");
-      if (id) {
-        this.setPlanDetail(id);
+      this.id = params.get("id");
+      if (this.id) {
+        this.setPlanDetail(this.id);
       } else {
         this.router.navigate(["/" + this.lang + "/404"]);
       }
@@ -230,38 +232,66 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   // プランに追加する
   async onClickAddToPlan(spot?: PlanSpotCommon) {
-    // スポット数チェック
-    if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
-      const param = new ComfirmDialogParam();
-      param.text = "ErrorMsgAddSpot";
-      param.leftButton = "EditPlanProgress";
-      const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if (d === "ok") {
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        }
-      });
-      return;
-    }
+    // プラン共有ではないまたはスポット追加
+    if (!isNaN(this.id) || spot){
+      // スポット数チェック
+      if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
+        const param = new ComfirmDialogParam();
+        param.text = "ErrorMsgAddSpot";
+        param.leftButton = "EditPlanProgress";
+        const dialog = this.commonService.confirmMessageDialog(param);
+        dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
+          if (d === "ok") {
+            // 編集中のプランを表示
+            this.commonService.onNotifyIsShowCart(true);
+          }
+        });
+        return;
+      }
 
-    // プランに追加
-    if (spot) {
-      this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false, null, this.$planId).then(result => {
-        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-          if (myPlanApp) {
-            this.addToPlanAfter(myPlanApp);
-          }
+      // プランに追加
+      if (spot) {
+        this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false, null, this.$planId).then(result => {
+          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+            if (myPlanApp) {
+              this.addToPlanAfter(myPlanApp);
+            }
+          });
         });
-      });
+      } else {
+        this.planSpotListService.addPlan(this.$planId, true, this.guid, this.$isRemojuPlan).then(result => {
+          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
+            if (myPlanApp) {
+              this.addToPlanAfter(myPlanApp);
+            }
+          });
+        });
+      }
+    // プラン共有のプラン追加
     } else {
-      this.planSpotListService.addPlan(this.$planId, true, this.guid, this.$isRemojuPlan).then(result => {
-        result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-          if (myPlanApp) {
-            this.addToPlanAfter(myPlanApp);
+      // 編集中のプランを取得
+      let myPlan: any = await this.indexedDBService.getEditPlan();
+      const myPlanApp: MyPlanApp = myPlan;
+
+      // 未保存の場合
+      if(myPlanApp && !myPlanApp.isSaved){
+        // 確認ダイアログの表示
+        const param = new ComfirmDialogParam();
+        param.title = "EditPlanConfirmTitle";
+        param.text = "EditPlanConfirmText";
+        const dialog = this.commonService.confirmMessageDialog(param);
+        dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
+          if (r === "ok") {
+            // プランを取得してプラン作成に反映
+            this.getPlan();
+          } else {
+            // 編集中のプランを表示
+            this.commonService.onNotifyIsShowCart(true);
           }
         });
-      });
+      } else {
+        this.getPlan();
+      }
     }
   }
 
@@ -558,6 +588,24 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     // subject更新
     this.myplanService.FetchMyplanSpots();
   }
+
+    // プラン取得
+    getPlan(){
+      // DBから取得
+      this.myplanService.getPlanUser(this.id).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        r.isShare = false;
+        r.shareUrl = null;
+
+        // プラン作成に反映
+        this.myplanService.onPlanUserEdit(r);
+        // プラン保存
+        this.indexedDBService.registPlan(r);
+        // subject更新
+        this.myplanService.FetchMyplanSpots();
+        // マイプランパネルを開く
+        this.commonService.onNotifyIsShowCart(true);
+      });
+    }
 
   /*------------------------------
    *
