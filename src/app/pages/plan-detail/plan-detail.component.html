@@ -126,12 +126,12 @@
 
     <mat-card id="util">
       <mat-card-content>
-        <div class='comment'>
+        <!--<div class='comment'>
           <a pageScroll href="#review" [pageScrollOffset]="80" [pageScrollDuration]="500">
             {{ "Review" | translate }}
             <span>{{ reviewQty }}</span>{{ "Count" | translate }}
           </a>
-        </div>
+        </div>-->
         <div class='favorite'>
           <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isThanks}" (click)="onClickThanks()">
           </button>
@@ -303,9 +303,9 @@
       </div>
     </div>
 
-    <!-- コメント投稿 -->
-    <app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
-      [id]="data.planId" (onCommentUpd)="onCommentUpd($event)"></app-comment-list-post-panel>
+    <!-- コメント投稿 phase1では廃止 -->
+    <!--<app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
+      [id]="data.planId" (onCommentUpd)="onCommentUpd($event)"></app-comment-list-post-panel>--?
 
     <!-- 投稿者のプロフィール-->
     <mat-card id="writer" *ngIf="data.user || data.userStaff">
