@@ -44,7 +44,7 @@
         </mat-select>
       </mat-form-field>
       <div class='buttons' *ngIf="!myFavorite">
-        <button mat-button class="spot-search" (click)="openDialog(0)" [ngClass]="{'on':this.chkTarms()}">
+        <button mat-button class="spot-search" (click)="openDialog(0)" [ngClass]="{'on':this.chkTarms()}" [disabled]="condition.select==='google'">
           {{ 'AreaAndCommitment' | translate }}
         </button>
       </div>
@@ -68,7 +68,7 @@
         <span>{{count}}{{ "Count" | translate }}</span>
       </button>
       <button *ngIf="!myFavorite" class='popupItem are' (click)="openDialog(0)">
-        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
+        <span>{{condition.select === 'google' ? "" : searchTarms?.area}}</span>
       </button>
       <button *ngIf="!myFavorite" class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
         <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>

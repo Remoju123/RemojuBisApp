@@ -90,7 +90,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     }
     // マスタエリアカウント取得
     let $mArea: NestDataSelected[];
-    if (this.data.isGoogle) {
+    /*if (this.data.isGoogle) {
       // 都道府県順にソート
       let temp = [...this.data.mArea];
       temp.sort((a, b) => Number(a.parentId) - Number(b.parentId));
@@ -101,14 +101,14 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
         this.condition.googleAreaId,
         []
       );
-    } else {
+    } else {*/
       $mArea = this.planspots.reduceMasterArea(
         this.data.mArea,
         this.list,
         this.condition.areaId,
         this.condition.areaId2
       );
-    }
+    //}
 
     this.temparea = [...$mArea];
 
@@ -130,7 +130,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   }
 
   // Google検索のエリアクリック時
-  onClickGoogleArea(i: number) {
+  /*onClickGoogleArea(i: number) {
     const selected = this.areas.controls[i].get("selected");
     this.areas.controls[i].get("selected").patchValue(!selected.value);
     this.condition.googleAreaId = [];
@@ -140,7 +140,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       }
     });
     this.update();
-  }
+  }*/
 
   // エリア-エクスパンションOpen
   onAreaCollapseOpen(i: number, id: number) {
@@ -241,10 +241,10 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       });
     });
 
-    if (this.data.isGoogle) {
+    /*if (this.data.isGoogle) {
       this.condition.select = 'all';
       this.condition.googleAreaId = [];
-    }
+    }*/
     this.condition.areaId = [];
     this.condition.areaId2 = [];
     this.condition.searchCategories = [];

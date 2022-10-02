@@ -91,7 +91,7 @@ export class PlanSpotListService {
   }
 
   // Googleスポット検索
-  getGoogleSpotList(guid: string, keyword: string, googleAreaId: number[], token: string) {
+  getGoogleSpotList(guid: string, keyword: string, token: string) {
     const url = this.host + "/api/PlanSpotList/GoogleSpot";
     return this.http.post<GoogleSearchResult>(url,
       {
@@ -99,7 +99,6 @@ export class PlanSpotListService {
         langCd: this.translate.currentLang,
         guid: guid,
         objectId: this.commonService.objectId ?? "",
-        areaIds: googleAreaId,
         token: token
       }, httpOptions);
   }

@@ -61,7 +61,6 @@ export class searchResult{
   searchTarm: tarms;
   searchParams: string;
   searchParamsObj: SearchParamsObj;
-  googleSearchArea: string;
 }
 
 export class tarms{
