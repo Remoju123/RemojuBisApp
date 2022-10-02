@@ -471,6 +471,7 @@ export class MypagePlanListComponent implements OnInit, OnDestroy, AfterViewChec
       this.myplanService.FetchMyplanSpots();
       // マイプランパネルを開く
       this.commonService.onNotifyIsShowCart(true);
+      this.commonService.snackBarDisp("InPlanBox");
     });
   }
 
