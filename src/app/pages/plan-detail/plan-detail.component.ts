@@ -305,8 +305,14 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     condition.areaId = [Number(this.data.areaId)];
     // 検索条件更新
     sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      this.transferState.remove(PLANSPOT_KEY);
+    }
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      this.transferState.remove(FAVORITE_KEY);
+    }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/plans"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
   // カテゴリ
@@ -318,8 +324,14 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     condition.searchCategories = [id];
     // 検索条件更新
     sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      this.transferState.remove(PLANSPOT_KEY);
+    }
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      this.transferState.remove(FAVORITE_KEY);
+    }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/plans"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
   // 違反報告

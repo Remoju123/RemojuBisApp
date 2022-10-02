@@ -16,7 +16,6 @@ export class PlanspotSelectorComponent implements OnInit {
   @Input() condition:ListSearchCondition;
   @Input() mSort:DataSelected[];
   @Input() searchTarms:tarms;
-  @Input() googleSearchArea: string;
   @Input() myFavorite: boolean;
   @Output() event = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
@@ -86,7 +85,7 @@ export class PlanspotSelectorComponent implements OnInit {
 
   chkTarms():boolean{
     if (this.condition.select === 'google') {
-      return this.condition.googleAreaId.length > 0;
+      return false;
     } else {
       return this.condition.areaId.length > 0 || this.condition.areaId2.length > 0 || this.condition.searchCategories.length > 0;
     }

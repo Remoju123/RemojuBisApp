@@ -5,7 +5,6 @@ export class ListSearchCondition {
   constructor() {
     this.areaId = [];
     this.areaId2 = [];
-    this.googleAreaId = [];
     this.searchCategories = [];
     this.searchOptions = [];
     this.select = 'all';
@@ -16,7 +15,6 @@ export class ListSearchCondition {
   }
   areaId: number[];
   areaId2: number[];
-  googleAreaId: number[];
   searchCategories: any[];
   searchOptions: any[];
   select:string;

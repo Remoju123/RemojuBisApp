@@ -254,9 +254,14 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     }
     // 検索条件更新
     sessionStorage.setItem(this.planspotListService.conditionSessionKey, JSON.stringify(condition));
-
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      this.transferState.remove(PLANSPOT_KEY);
+    }
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      this.transferState.remove(FAVORITE_KEY);
+    }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/spots"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
   // カテゴリ
@@ -265,16 +270,17 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     if (this.data.area1) {
       condition.areaId = [Number(this.data.area1)];
     }
-    if (category.parentId >= 300) {
-      condition.searchOptions = [category.search_category_id];
-    } else {
-      condition.searchCategories = [category.search_category_id];
-    }
+    condition.searchCategories = [category.search_category_id];
     // 検索条件更新
     sessionStorage.setItem(this.planspotListService.conditionSessionKey, JSON.stringify(condition));
-
+    if (this.transferState.hasKey(PLANSPOT_KEY)) {
+      this.transferState.remove(PLANSPOT_KEY);
+    }
+    if (this.transferState.hasKey(FAVORITE_KEY)) {
+      this.transferState.remove(FAVORITE_KEY);
+    }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/spots"]);
+    this.router.navigate(["/" + this.lang + "/planspot"]);
   }
 
   onCommentUpd(qty: number) {

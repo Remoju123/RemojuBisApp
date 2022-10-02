@@ -57,7 +57,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   sortval: number;
   optionKeywords: tarms;
   searchParams: string;
-  googleSearchArea: string = '----';
 
   isList: boolean = true;
 
@@ -197,10 +196,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
         const filterResult = await this.planspots.getFilterbyCondition(this.spots.concat(this.plans), condition);
         if (filterResult.length === 0 && condition.keyword) {
-          if (condition.areaId) {
-            condition.googleAreaId = condition.areaId;
-            await this.setGoogleSearchArea();
-          }
           condition.select = 'google';
           if (this.isBrowser) {
             sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(condition));
@@ -330,7 +325,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.details$ = [];
       }
       if (keyword && ((this.prevkeyword === keyword && this.token) || (this.prevkeyword !== keyword))) {
-        this.planspots.getGoogleSpotList(this.guid, keyword, this.condition.googleAreaId, this.token).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
+        this.planspots.getGoogleSpotList(this.guid, keyword, this.token).pipe(takeUntil(this.onDestroy$)).subscribe(g => {
           this.prevkeyword = keyword;
           this.details$ = this.details$.concat(g.planSpotList);
           this.token = g.tokenGoogle;
@@ -470,23 +465,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         condition.areaId2 = Array.from(new Set(condition.areaId2));
         this.condition = condition;
         sessionStorage.setItem(this.planspots.conditionSessionKey, JSON.stringify(this.condition));
-        if (this.condition.select === 'google') {
-          await this.setGoogleSearchArea();
-        }
         this.filteringData();
       }
-    });
-  }
-
-  setGoogleSearchArea(): Promise<void> {
-    return new Promise(async resolve => {
-      const langpipe = new LangFilterPipe();
-      const googleAreas: any[] = [];
-      this.condition.googleAreaId?.forEach(v => {
-        googleAreas.push(langpipe.transform(this.listSelectMaster.mArea.find(x => x.parentId === v).parentName, this.translate.currentLang));
-      });
-      this.googleSearchArea = googleAreas.length > 0 ? googleAreas.join(' 、') : '----';
-      resolve();
     });
   }
 
@@ -496,8 +476,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (this.condition.select === 'google') {
       this.condition.select = 'all';
-      this.condition.googleAreaId = [];
-      await this.setGoogleSearchArea();
     }
     this.condition.areaId = [];
     this.condition.areaId2 = [];
