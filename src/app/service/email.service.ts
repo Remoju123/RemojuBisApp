@@ -65,8 +65,6 @@ export class EmailService {
     <p style='font-size:14px;'>
     このメールは、配信専用アドレスからの連絡です。<br/>
     このメールにお心当たりない場合は下記までご連絡ください。<br/><br/>
-    〒358-0014 埼玉県入間市宮寺1903-1-2<br/>
-    TEL / 04-2001-0501　FAX / 04-2001-0501<br/><a href='mailto:info@nesttools.co.jp'>info@nesttools.co.jp</a><br/>https://www.nesttools.co.jp
     </p>
     `
     return header + body + footer;
