@@ -12,3 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 });
+
+ // google analytics
+ gtag('js', new Date());
+ gtag('config', environment.analytics.id);

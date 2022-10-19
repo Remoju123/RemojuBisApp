@@ -69,4 +69,6 @@ export class EmailService {
     `
     return header + body + footer;
   }
+
+  
 }

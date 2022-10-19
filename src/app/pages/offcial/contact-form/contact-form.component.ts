@@ -7,9 +7,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   styleUrls: ['./contact-form.component.scss']
 })
 export class ContactFormComponent implements OnInit {
-onSubmit(arg0: any) {
-throw new Error('Method not implemented.');
-}
+  onSubmit(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
 
   FormData: FormGroup;
 
@@ -21,10 +21,12 @@ throw new Error('Method not implemented.');
     this.FormData = this.builder.group({
       Fullname: new FormControl('', [Validators.required]),
       Email: new FormControl('', [Validators.compose([Validators.required, Validators.email])]),
+      confirmEmail:new FormControl('',[Validators.required]),
+      title:new FormControl('',[Validators.required]),
       Comment: new FormControl('', [Validators.required])
     })
   }
 
-  
+
 
 }
