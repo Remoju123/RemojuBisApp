@@ -29,6 +29,7 @@
       border: 1px solid #B7B7B7;
       padding: 1px 8px;
       border-radius: 12px;
+
       &::before {
         content: "keyboard_arrow_left";
         font-family: "Material Icons";
@@ -58,7 +59,7 @@
       .mat-tab-label {
         height: 55px;
         padding: 0;
-        width: 25vw;
+        width: calc(100vw/3);
 
         //margin-top: 8px;
         .mat-tab-label-content {
