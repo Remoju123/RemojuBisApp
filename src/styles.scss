@@ -36,3 +36,18 @@
   right: 0;
   left: 0;
 }
+
+table.dlgtbl {
+  all: unset;
+
+  tr {
+    display: grid;
+    td{
+      &:first-child{
+        font-weight: bolder;
+      }
+    }
+  }
+
+  margin-bottom: 1em;
+}

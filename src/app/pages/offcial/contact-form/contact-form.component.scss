@@ -1,0 +1,72 @@
+.container {
+  padding: 16px;
+
+  h1 {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 12px;
+  }
+
+  .attention {
+    padding: 4px;
+    background: #f8f7f7;
+    border: 1px solid #8f7848;
+
+    p {
+      margin: unset;
+    }
+  }
+
+  ::ng-deep {
+    .mat-card {
+      padding: unset;
+
+      .mat-list-item {
+        height: unset;
+
+        ol {
+          font-size: 12px;
+          padding-inline-start: 12px;
+          margin-block-start: 0;
+        }
+
+        .mat-list-item-content {
+          padding: unset;
+        }
+
+        &.check {
+          .mat-list-item-content {
+            justify-content: center;
+            background-color: #f8f7f7;
+            line-height: 2em;
+          }
+        }
+
+        &.button{
+          margin-top: 1em;
+          button{
+            background-color: #bfa060;
+            color: #fff;
+            font-size: 20px;
+            width: 100%;
+            &:disabled{
+              background-color: #ccc;
+            }
+          }
+        }
+      }
+
+      .mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+
+}

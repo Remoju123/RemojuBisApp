@@ -31,6 +31,7 @@
     "@angular/router": "~13.0.2",
     "@angular/service-worker": "~13.0.2",
     "@aspnet/signalr": "^1.0.27",
+    "@azure/communication-email": "^1.0.0-beta.1",
     "@crystalui/angular-lightbox": "^1.1.8",
     "@egjs/hammerjs": "^2.0.17",
     "@fortawesome/fontawesome-free": "^5.15.3",

@@ -61,6 +61,7 @@
         padding: 0;
         width: calc(100vw/3);
 
+
         //margin-top: 8px;
         .mat-tab-label-content {
           font-size: 12px;
@@ -146,7 +147,8 @@
     ::ng-deep.mat-tab-header {
       .mat-tab-labels {
         .mat-tab-label {
-          width: auto;
+          //width: auto;
+          width: calc(100%/3)
         }
       }
     }
