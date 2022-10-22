@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ComfirmDialogParam } from 'src/app/class/common.class';
 import { CommonService } from "../../../service/common.service";
 import { EmailService } from 'src/app/service/email.service';
+import { CustomValidator } from 'src/app/shared/custom-validator';
 
 @Component({
   selector: 'app-contact-form',
@@ -29,12 +30,14 @@ export class ContactFormComponent implements OnInit {
     this.contactForm = this.builder.group({
       fullName: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      confirmEmail: ['', Validators.required],
+      confirmEmail: ['', [Validators.required]],
       title: ['', Validators.required],
       message: ['', Validators.required],
       agree: [false, Validators.requiredTrue],
       createDate: [''],
       ipAddress: ['']
+    }, {
+      validator: CustomValidator.matchEmail
     })
   }
 
@@ -71,7 +74,7 @@ export class ContactFormComponent implements OnInit {
       if (d === "ok") {
         const msg = this.emailService.createMailBody(this.contactForm)
         //console.log(msg)
-        this.emailService.sendMailCallable(this.email.value, this.title.value, msg).then(()=>{
+        this.emailService.sendMailCallable(this.email.value, this.title.value, msg).then(() => {
           this.commonService.snackBarDisp("送信しました。");
         });
       }

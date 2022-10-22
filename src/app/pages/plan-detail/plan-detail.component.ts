@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef } from "@angular/core";
+import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef, Input, HostBinding } from "@angular/core";
 import { ActivatedRoute, ParamMap, Router } from "@angular/router";
 import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
 import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam, MyPlanApp } from "../../class/common.class";
@@ -377,6 +377,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     ) {
       this.showScroll = false;
     }
+  }
+
+  @Input() default: string;
+  @HostBinding('attr.src') @Input() src;
+  @HostListener('error') updateSrc() {
+    this.src = this.default;
+    console.log(this.default)
   }
 
   // Map表示

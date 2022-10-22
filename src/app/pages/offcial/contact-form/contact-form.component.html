@@ -23,6 +23,8 @@
             <mat-form-field appearance="outline">
               <mat-label>メールアドレス(確認用)</mat-label>
               <input matInput formControlName="confirmEmail" />
+              <mat-error *ngIf="contactForm.controls.confirmEmail.errors?.notMatchEmail">メールアドレスが一致しません
+              </mat-error>
             </mat-form-field>
           </mat-list-item>
 
