@@ -21,7 +21,7 @@ declare const google: any;
   templateUrl: "./map-panel.component.html",
   styleUrls: ["./map-panel.component.scss"]
 })
-export class MapPanelComponent implements OnInit,OnDestroy {
+export class MapPanelComponent implements OnInit, OnDestroy {
 
   @Input() planSpots: PlanSpotCommon[];
   @Input() startPlanSpot: PlanSpotCommon;
@@ -29,7 +29,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   @Input() isFull: boolean;
   @Input() planId: number;
   @Input() isDetail: boolean;
-  @Input() isCar : boolean;
+  @Input() isCar: boolean;
   @Input() overviewPolyline: string;
 
   // @ViewChild("AgmMap", { static: false }) agmMap: AgmMap;
@@ -79,11 +79,11 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   nextDisabled: boolean;
 
   directions: string;
-  transtime:any;
-  spotNameFrom:string;
-  spotNameTo:string;
-  spotSrcFrom:string;
-  spotSrcTo:string;
+  transtime: any;
+  spotNameFrom: string;
+  spotNameTo: string;
+  spotSrcFrom: string;
+  spotSrcTo: string;
 
   get lang() {
     return this.translate.currentLang;
@@ -115,12 +115,12 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     if (this.isCar) {
       var decodedPath = google.maps.geometry.encoding.decodePath(this.overviewPolyline);
       var poly = new google.maps.Polyline({
-                    path: decodedPath,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 3,
-                    map: this.map
-            });
+        path: decodedPath,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.6,
+        strokeWeight: 6,
+        map: this.map
+      });
     }
 
     // 地図の中心を設定
@@ -129,8 +129,10 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     if (this.isFull) {
       // this.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(document.getElementById("routeDiv"));
       // 拡大縮小ボタンを右上に移動
-      this.map.zoomControlOptions = { position: google.maps.ControlPosition.TOP_RIGHT ,
-        style:google.maps.ZoomControlStyle.SMALL};
+      this.map.zoomControlOptions = {
+        position: google.maps.ControlPosition.TOP_RIGHT,
+        style: google.maps.ZoomControlStyle.SMALL
+      };
     } else {
       this.map.controls[google.maps.ControlPosition.RIGHT_TOP].push(document.getElementById("fullScreenButton"));
     }
@@ -178,7 +180,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         }
       } else {
         if (this.mapSpots.length > 0 && this.mapSpots[0].spotNameLangDisp !== "　") {
-            for (let i = 0; i < this.mapSpots.length; i++) {
+          for (let i = 0; i < this.mapSpots.length; i++) {
             this.mapSpots[i].spotNameLangDisp = "　";
           }
           this.mapSpotsDisp = [...this.mapSpots];
@@ -189,7 +191,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     }
 
     // 経度調整
-    if (this.mapSpots.length > 1){
+    if (this.mapSpots.length > 1) {
       let base = 0.02;
       if (event >= 11) {
         for (let i = 11; i <= event; i++) {
@@ -223,19 +225,21 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       return;
     }
 
+    const isMobile = this.detectIsMobile(window.innerWidth);
+    
     const dialog = this.dialog.open(MapInfowindowDialogComponent, {
-      id:"mapinfo",
+      id: "mapinfo",
       maxWidth: "100%",
-      width: "92vw",
+      width: isMobile ? "92vw" : "420px",
       maxHeight: "90vh",
-      position: { top: "30vh" },
+      position: { top: "25vh" },
       data: mapSpot,
       autoFocus: false
     });
 
     dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
       // スポット詳細へ遷移する
-      if (!isNaN(result)){
+      if (!isNaN(result)) {
         this.mapService.closeDialog();
         this.router.navigate(["/" + this.lang + "/spots/detail/" + result]);
         return;
@@ -257,7 +261,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         this.mapSpots.forEach(x => {
           if (!x.isStart && !x.isEnd) {
             // 削除された前のスポット移動経度をクリア
-            if (x.displayOrder === mapSpot.displayOrder - 1){
+            if (x.displayOrder === mapSpot.displayOrder - 1) {
               x.directions = "";
               x.transfer = "";
             }
@@ -298,11 +302,11 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     this.dialog.open(MapDialogComponent, {
       maxWidth: "100%",
       width: "100vw",
-      height:"100vh",//
+      height: "100vh",//
       position: { top: "0" },
       data: param,
       autoFocus: false,
-      id:"fullmap"
+      id: "fullmap"
     });
   }
 
@@ -319,10 +323,10 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   // 移動経路を表示　＜
   onClickPrevSpot() {
     this.spotIndex--;
-    if(this.spotIndex < 0){
+    if (this.spotIndex < 0) {
       this.spotIndex = 0;
       return;
-    }else{
+    } else {
       this.setPlanMarker();
       this.setMapFitBoundsTwoSpot();
     }
@@ -331,10 +335,10 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   // 移動経路を表示　＞
   onClickNextSpot() {
     this.spotIndex++;
-    if(this.spotIndex > (this.mapSpots.length - 2)){
+    if (this.spotIndex > (this.mapSpots.length - 2)) {
       this.spotIndex = this.mapSpots.length - 2;
       return
-    }else{
+    } else {
       this.setPlanMarker();
       this.setMapFitBoundsTwoSpot();
     }
@@ -342,9 +346,9 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
   // スポット詳細に遷移
   onClickSpotDetail(isFrom: boolean) {
-    if(isFrom){
+    if (isFrom) {
       this.onClickMarker(this.mapSpotsDisp[this.spotIndex]);
-    } else if(this.mapSpots.length > 1) {
+    } else if (this.mapSpots.length > 1) {
       this.onClickMarker(this.mapSpotsDisp[this.spotIndex + 1]);
     }
   }
@@ -401,7 +405,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     }
 
     // 出発地がある場合、追加
-    if (this.startPlanSpot){
+    if (this.startPlanSpot) {
       if (this.mapSpots) {
         this.mapSpots.unshift(this.convMapSpot(true));
       } else {
@@ -410,7 +414,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       }
     }
     // 到着地がある場合、追加
-    if (this.endPlanSpot){
+    if (this.endPlanSpot) {
       if (!this.mapSpots) {
         this.mapSpots = [];
       }
@@ -419,11 +423,11 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
     let $width = 30;
     let $height = 38;
-    let $anchor = {x:15,y:33};
-    if(this.isFull){
+    let $anchor = { x: 15, y: 33 };
+    if (this.isFull) {
       $width = 47;
       $height = 59.53333;
-      $anchor = {x:23.5,y:51.7};
+      $anchor = { x: 23.5, y: 51.7 };
     }
 
     if (this.mapSpots) {
@@ -438,15 +442,15 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         this.mapSpots[i].polylineColor = this.polylineColor;
 
         // 出発地と到着地のアイコンURL
-        if (this.mapSpots[i].isStart){
+        if (this.mapSpots[i].isStart) {
           this.mapSpots[i].iconUrl = {
             url: this.markerStartIcon,
             scaledSize: {
               width: $width,
               height: $height
             },
-            anchor:$anchor,
-            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+            anchor: $anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y + 12 }
           };
         } else if (this.mapSpots[i].isEnd) {
           this.mapSpots[i].iconUrl = {
@@ -455,8 +459,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
               width: $width,
               height: $height
             },
-            anchor:$anchor,
-            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+            anchor: $anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y + 12 }
           };
         } else if (!this.mapSpots[i].isEndOfPublication) {
           // アイコンURL
@@ -466,8 +470,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
               width: $width,
               height: $height
             },
-            anchor:$anchor,
-            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+            anchor: $anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y + 12 }
           };
         } else {
           // 掲載終了アイコンURL
@@ -477,8 +481,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
               width: $width,
               height: $height
             },
-            anchor:$anchor,
-            labelOrigin: { x: $anchor.x, y: $anchor.y+12 }
+            anchor: $anchor,
+            labelOrigin: { x: $anchor.x, y: $anchor.y + 12 }
           };
         }
 
@@ -489,8 +493,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
         if (this.mapSpots[i].transfer) {
           if (this.isCar) {
             const directions: Directions = JSON.parse(this.mapSpots[i].transfer);
-            this.mapSpots[i].directions =  directions.Distance + " " + (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
-            + directions.DurationMin + " " + this.translate.instant("Minute");
+            this.mapSpots[i].directions = directions.Distance + " " + (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
+              + directions.DurationMin + " " + this.translate.instant("Minute");
           } else {
             const dir = this.direction(
               langpipe.transform(JSON.parse(this.mapSpots[i].transfer), this.lang)
@@ -504,8 +508,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
 
             this.mapSpots[i].directions = "<dl><dd>" + _dir.join("</dd><dd>") + "</dd></dl>";
           }
-        // 移動方法設定なしかつ最終スポットではない場合
-        } else if (i < this.mapSpots.length){
+          // 移動方法設定なしかつ最終スポットではない場合
+        } else if (i < this.mapSpots.length) {
           this.mapSpots[i].directions = "<dl><dd>" + this.translate.instant("DuringRouteCalculation") + "</dd></dl>";
         }
       }
@@ -546,7 +550,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
                     width: $width,
                     height: $height
                   },
-                  anchor:$anchor
+                  anchor: $anchor
                 };
                 mapSpot.visible = false;
                 mapSpot.pictureUrl = spot.pictureUrl;
@@ -572,8 +576,8 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       if (this.mapSpots.length === 1) {
         const adjust = 0.001;
         bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude, this.mapSpots[0].longitude));
-        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude-adjust, this.mapSpots[0].longitude-adjust));
-        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude+adjust, this.mapSpots[0].longitude+adjust));
+        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude - adjust, this.mapSpots[0].longitude - adjust));
+        bounds.extend(new google.maps.LatLng(this.mapSpots[0].latitude + adjust, this.mapSpots[0].longitude + adjust));
         this.map.fitBounds(bounds);
       } else {
         for (let i = 0; i < this.mapSpots.length; i++) {
@@ -646,17 +650,17 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   setPlanMarker() {
     const langpipe = new LangFilterPipe();
     // アイコンを変更
-    if(this.mapSpots[this.spotIndex].isStart || this.mapSpots[this.spotIndex].isEnd) {
+    if (this.mapSpots[this.spotIndex].isStart || this.mapSpots[this.spotIndex].isEnd) {
       this.spotMarkerFrom = this.markerStartIcon;
-    } else if (this.mapSpots[this.spotIndex].isEndOfPublication){
+    } else if (this.mapSpots[this.spotIndex].isEndOfPublication) {
       this.spotMarkerFrom = this.markerNoDispIcon;
     } else {
       this.spotMarkerFrom = this.markerSubIcon.replace("{0}", (this.mapSpots[this.spotIndex].displayOrder).toString());
     }
-    if (this.mapSpots.length > 1){
-      if(this.mapSpots[this.spotIndex + 1].isEnd) {
+    if (this.mapSpots.length > 1) {
+      if (this.mapSpots[this.spotIndex + 1].isEnd) {
         this.spotMarkerTo = this.markerEndIcon;
-      } else if (this.mapSpots[this.spotIndex + 1].isEndOfPublication){
+      } else if (this.mapSpots[this.spotIndex + 1].isEndOfPublication) {
         this.spotMarkerTo = this.markerNoDispIcon;
       } else {
         this.spotMarkerTo = this.markerSubIcon.replace("{0}", (this.mapSpots[this.spotIndex + 1].displayOrder).toString());
@@ -670,20 +674,20 @@ export class MapPanelComponent implements OnInit,OnDestroy {
       if (this.isCar) {
         const directions: Directions = JSON.parse(this.mapSpots[this.spotIndex].transfer);
         this.transtime = (directions.DurationHour > 0 ? directions.DurationHour + " " + this.translate.instant("Hour") + " " : "")
-        + directions.DurationMin + " " + this.translate.instant("Minute");
+          + directions.DurationMin + " " + this.translate.instant("Minute");
       } else {
-        this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer),this.lang));
+        this.transtime = this.planService.transtimes(langpipe.transform(JSON.parse(this.mapSpots[this.spotIndex].transfer), this.lang));
       }
     }
     // スポット名From
     this.spotNameFrom = this.mapSpots[this.spotIndex].spotName;
     // スポット写真From
     this.spotSrcFrom = this.mapSpots[this.spotIndex].pictureUrl;
-    if (this.mapSpots.length > 1){
+    if (this.mapSpots.length > 1) {
       // スポット名To
-      this.spotNameTo = this.mapSpots[this.spotIndex+1].spotName;
+      this.spotNameTo = this.mapSpots[this.spotIndex + 1].spotName;
       // スポット写真To
-      this.spotSrcTo = this.mapSpots[this.spotIndex+1].pictureUrl;
+      this.spotSrcTo = this.mapSpots[this.spotIndex + 1].pictureUrl;
     }
     // 線の色を設定
     for (let i = 0; i < this.mapSpots.length; i++) {
@@ -695,7 +699,7 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     }
 
     // 現在地からスポットへの行き方の制御
-    if (this.mapSpots.length === 1){
+    if (this.mapSpots.length === 1) {
       this.locationDisabled = true;
     } else {
       this.locationDisabled = false;
@@ -703,9 +707,9 @@ export class MapPanelComponent implements OnInit,OnDestroy {
   }
 
   // 出発地到着地をMapSpotに変換
-  convMapSpot(isStart: boolean){
+  convMapSpot(isStart: boolean) {
     let planSpot = this.startPlanSpot;
-    if (!isStart){
+    if (!isStart) {
       planSpot = this.endPlanSpot;
     }
     const mapSpot = new MapSpot();
@@ -732,7 +736,15 @@ export class MapPanelComponent implements OnInit,OnDestroy {
     this.map.setCenter({ lat: Number(latitude), lng: Number(longitude) });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
+  }
+
+  detectIsMobile(w: any) {
+    if (w < 1024) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

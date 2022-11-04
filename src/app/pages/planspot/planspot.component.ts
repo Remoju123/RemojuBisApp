@@ -185,12 +185,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             resolve(true);
           })
         }));
-        result.push(new Promise(resolve => {
-          this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-            this.spots = r;
-            resolve(true);
-          })
-        }));
+        // result.push(new Promise(resolve => {
+        //   this.planspots.getSpotList().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+        //     this.spots = r;
+        //     resolve(true);
+        //   })
+        // }));
 
         await Promise.all(result);
 

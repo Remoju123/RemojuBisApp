@@ -25,7 +25,7 @@ export function Catch(isAutoCatch?: boolean) {
         try {
           // ログ
           const nowString = new Date().toLocaleTimeString();
-          console.log("%s call:%s(%s)", nowString, location, args.join(","));
+          //console.log("%s call:%s(%s)", nowString, location, args.join(","));
           // --------------------------------
 
           // オリジナルのメソッド
@@ -46,13 +46,13 @@ export function Catch(isAutoCatch?: boolean) {
             });
           }
           // ログ
-          console.log(
-            "%s return:%s %s %s ",
-            nowString,
-            location,
-            isAutoCatch ? "isPromise" : "",
-            result || ""
-          );
+          // console.log(
+          //   "%s return:%s %s %s ",
+          //   nowString,
+          //   location,
+          //   isAutoCatch ? "isPromise" : "",
+          //   result || ""
+          // );
           // --------------------------------
 
           return result;

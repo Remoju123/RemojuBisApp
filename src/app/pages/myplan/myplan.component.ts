@@ -516,7 +516,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log(this.row);
+    //console.log(this.row);
     const param = new MapFullScreenParam();
     param.isDetail = false;
     param.planId = this.row.planUserId;
@@ -669,6 +669,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
       }
       return;
     }
+
+    //TODO(20221103):画像正規チェック（画像がない場合は保存できない）
+
 
     if (this.row.planSpots) {
       for (let i = 0; i < this.row.planSpots.length; i++) {
