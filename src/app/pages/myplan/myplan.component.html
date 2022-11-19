@@ -38,23 +38,6 @@
         </div>
       </div>
 
-      <div class='transport'>
-        <div class='lt'>
-          <span class="label">{{"TravelRoute"|translate}}</span>
-          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
-            <label for="switch-tran"><span></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <div class='rt'>
-          <mat-slide-toggle [checked]="row.isBus" (change)="onClickBus()" *ngIf="row && !row.isCar">
-            <span *ngIf="row?.isBus">{{'UseBus'|translate}}</span>
-            <span *ngIf="!row?.isBus">{{'NoBus'|translate}}</span>
-          </mat-slide-toggle>
-        </div>
-      </div>
-
       <!-- <mat-list class="planex" *ngIf="row?.planExplanation">
         <mat-list-item>
           <p>{{ row.planExplanation }}</p>
@@ -235,6 +218,23 @@
             <button type="button" mat-button (click)="onClickStartEndDelete(false)"><i
                 class="material-icons">close</i></button>
           </ng-template>
+        </div>
+      </div>
+
+      <div class='transport' style="margin-top:1em ;">
+        <div class='lt'>
+          <span class="label">{{"TravelRoute"|translate}}</span>
+          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
+            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+            <label for="switch-tran"><span></span></label>
+            <div id="swImg"></div>
+          </div>
+        </div>
+        <div class='rt'>
+          <mat-slide-toggle [checked]="row.isBus" (change)="onClickBus()" *ngIf="row && !row.isCar">
+            <span *ngIf="row?.isBus">{{'UseBus'|translate}}</span>
+            <span *ngIf="!row?.isBus">{{'NoBus'|translate}}</span>
+          </mat-slide-toggle>
         </div>
       </div>
     </mat-card-content>

@@ -20,7 +20,7 @@ form {
   background-color: #fff;
 
   .title {
-    font-size: 17px;
+    font-size: 18px;
   }
 
   @include switchView();
@@ -222,7 +222,7 @@ form {
       font-weight: 700;
 
       &.noName {
-        font-size: 15px;
+        font-size: 18px;
         font-weight: normal;
         color: #f44336;
       }
