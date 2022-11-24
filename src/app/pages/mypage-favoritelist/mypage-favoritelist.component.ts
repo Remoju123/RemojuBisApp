@@ -1,26 +1,37 @@
-import { Component, OnInit, OnDestroy, Input, Inject, PLATFORM_ID } from "@angular/core";
-import { ComfirmDialogParam, DataSelected } from "../../class/common.class";
-import { TranslateService } from "@ngx-translate/core";
-import { Router } from "@angular/router";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Inject,
+  PLATFORM_ID,
+} from '@angular/core';
+import { ComfirmDialogParam, DataSelected } from '../../class/common.class';
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CacheStore, PlanSpotList, tarms } from "../../class/planspotlist.class";
-import { ListSearchCondition } from "../../class/indexeddb.class";
-import { UpdFavorite } from "../../class/mypageplanlist.class";
-import { CommonService } from "../../service/common.service";
-import { IndexedDBService } from "../../service/indexeddb.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
-import { PlanSpotListService } from "../../service/planspotlist.service";
-import { MyplanService } from "../../service/myplan.service";
-import { isPlatformBrowser } from "@angular/common";
+import {
+  CacheStore,
+  PlanSpotList,
+  tarms,
+} from '../../class/planspotlist.class';
+import { ListSearchCondition } from '../../class/indexeddb.class';
+import { UpdFavorite } from '../../class/mypageplanlist.class';
+import { CommonService } from '../../service/common.service';
+import { IndexedDBService } from '../../service/indexeddb.service';
+import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
+import { PlanSpotListService } from '../../service/planspotlist.service';
+import { MyplanService } from '../../service/myplan.service';
+import { isPlatformBrowser } from '@angular/common';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
 
 @Component({
-  selector: "app-mypage-favoritelist",
-  templateUrl: "./mypage-favoritelist.component.html",
-  styleUrls: ["./mypage-favoritelist.component.scss"]
+  selector: 'app-mypage-favoritelist',
+  templateUrl: './mypage-favoritelist.component.html',
+  styleUrls: ['./mypage-favoritelist.component.scss'],
 })
 export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
@@ -41,7 +52,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.condition = new ListSearchCondition();
   }
 
-  @Input() myFavorite:Boolean;
+  @Input() myFavorite: Boolean;
 
   // 初回表示制御
   guid: string;
@@ -54,9 +65,9 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   details$: PlanSpotList[] = [];
   $mSort: DataSelected[];
   optionKeywords: tarms;
-  select:string;
+  select: string;
 
-  myPlanSpots:any;
+  myPlanSpots: any;
 
   p: number;
   limit: number;
@@ -106,8 +117,12 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       this.mergeNextDataSet(true);
     } else {
       if (isPlatformBrowser(this.platformId)) {
-        const condition = JSON.parse(sessionStorage.getItem(this.mypageFavoriteListService.conditionSessionKey));
-        if (condition){
+        const condition = JSON.parse(
+          sessionStorage.getItem(
+            this.mypageFavoriteListService.conditionSessionKey
+          )
+        );
+        if (condition) {
           this.condition = condition;
         }
       }
@@ -116,23 +131,35 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     }
 
     this.myplanService.FetchMyplanSpots();
-    this.myplanService.MySpots$.subscribe(r=>{
+    this.myplanService.MySpots$.subscribe((r) => {
       this.myPlanSpots = r;
     });
 
-    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      if (x.isFavorite) {
-        this.getPlanSpotDataSet();
-      } else {
-        let spot: PlanSpotList;
-        if (x.type === 1) {
-          spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && !planSpot.googleSpot);
+    this.myplanService.updFavirute$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((x) => {
+        if (x.isFavorite) {
+          this.getPlanSpotDataSet();
         } else {
-          spot = this.rows.find(planSpot => planSpot.isPlan === false && planSpot.id === x.spotId && planSpot.googleSpot);
+          let spot: PlanSpotList;
+          if (x.type === 1) {
+            spot = this.rows.find(
+              (planSpot) =>
+                planSpot.isPlan === false &&
+                planSpot.id === x.spotId &&
+                !planSpot.googleSpot
+            );
+          } else {
+            spot = this.rows.find(
+              (planSpot) =>
+                planSpot.isPlan === false &&
+                planSpot.id === x.spotId &&
+                planSpot.googleSpot
+            );
+          }
+          this.delFavorite(spot, false);
         }
-        this.delFavorite(spot, false);
-      }
-    });
+      });
   }
 
   ngOnDestroy() {
@@ -153,51 +180,70 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
     this.spots = [];
     this.plans = [];
     const result = [];
-    result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoritePlanList().pipe(takeUntil(this.onDestroy$))
-    .subscribe(async (r) => {
-      if (r) {
-        this.plans = r;
-      }
-      resolve(true);
-    })}));
-    result.push(new Promise(resolve => {this.mypageFavoriteListService.getMypageFavoriteSpotList().pipe(takeUntil(this.onDestroy$))
-    .subscribe(async (r) => {
-      if (r) {
-        this.spots = r;
-      }
-      resolve(true);
-    })}));
+    result.push(
+      new Promise((resolve) => {
+        this.mypageFavoriteListService
+          .getMypageFavoritePlanList()
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(async (r) => {
+            if (r) {
+              this.plans = r;
+            }
+            resolve(true);
+          });
+      })
+    );
+    result.push(
+      new Promise((resolve) => {
+        this.mypageFavoriteListService
+          .getMypageFavoriteSpotList()
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(async (r) => {
+            if (r) {
+              this.spots = r;
+            }
+            resolve(true);
+          });
+      })
+    );
 
     await Promise.all(result);
     this.filteringData();
   }
 
   async filteringData() {
-    this.rows = (await this.planspots.filteringData(this.spots.concat(this.plans), this.condition, null)).list;
+    this.rows = (
+      await this.planspots.filteringData(
+        this.spots.concat(this.plans),
+        this.condition,
+        null
+      )
+    ).list;
     this.count = this.rows.length;
     this.mergeNextDataSet();
   }
 
-  async mergeNextDataSet(isDetail: boolean = false){
-    if(this.rows.length > 0){
+  async mergeNextDataSet(isDetail: boolean = false) {
+    if (this.rows.length > 0) {
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      if(this.rows.length - startIndex < this.limit){
+      if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
       }
       if (isDetail) {
         startIndex = 0;
       }
 
-      for (let i = startIndex; i < this.end; i++){
+      for (let i = startIndex; i < this.end; i++) {
         if (this.rows[i].isDetail || this.rows[i].googleSpot) {
-          this.details$ = this.rows.slice(0,this.end);
+          this.details$ = this.rows.slice(0, this.end);
           continue;
         }
 
-        this.planspots.fetchDetails(this.rows[i], this.guid)
+        this.planspots
+          .fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
-          .subscribe(async d => {
+          .subscribe(async (d) => {
             // 掲載終了の場合は削除
             if (d.isEndOfPublication) {
               this.rows.splice(i, 1);
@@ -207,24 +253,29 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
             } else {
               this.rows[i] = await this.planspots.mergeDetail(this.rows[i], d);
             }
-            this.details$ = this.rows.slice(0,this.end);
-          })
+            this.details$ = this.rows.slice(0, this.end);
+          });
       }
       this.p++;
-    }else{
+    } else {
       this.details$ = [];
     }
   }
 
-  linktoDetail(item:PlanSpotList){
-    if (item.isPlan){
+  linktoDetail(item: PlanSpotList) {
+    if (item.isPlan) {
       this.setTransferState();
-      this.router.navigate(["/" + this.lang + "/plans/detail",item.id]);
+      this.router.navigate(['/' + this.lang + '/plans/detail', item.id]);
     } else if (item.googleSpot) {
-      this.commonService.locationPlaceIdGoogleMap(this.lang, item.googleSpot.latitude, item.googleSpot.longitude, item.googleSpot.place_id);
+      this.commonService.locationPlaceIdGoogleMap(
+        this.lang,
+        item.googleSpot.latitude,
+        item.googleSpot.longitude,
+        item.googleSpot.place_id
+      );
     } else {
       this.setTransferState();
-      this.router.navigate(["/" + this.lang + "/spots/detail",item.id]);
+      this.router.navigate(['/' + this.lang + '/spots/detail', item.id]);
     }
   }
 
@@ -242,111 +293,137 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   }
 
   // プランに追加
-  async addMyPlan(item:PlanSpotList){
-    const tempqty:number = item.isPlan ? item.spotQty : 1;
-    if(await this.commonService.checkAddPlan(tempqty) === false) {
+  async addMyPlan(item: PlanSpotList) {
+    const tempqty: number = item.isPlan ? item.spotQty : 1;
+    if ((await this.commonService.checkAddPlan(tempqty)) === false) {
       const param = new ComfirmDialogParam();
-      param.text = "ErrorMsgAddSpot";
-      param.leftButton = "EditPlanProgress";
+      param.text = 'ErrorMsgAddSpot';
+      param.leftButton = 'EditPlanProgress';
       const dialog = this.commonService.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-        if(d === "ok"){
-          // 編集中のプランを表示
-          this.commonService.onNotifyIsShowCart(true);
-        }
-      });
+      dialog
+        .afterClosed()
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((d: any) => {
+          if (d === 'ok') {
+            // 編集中のプランを表示
+            this.commonService.onNotifyIsShowCart(true);
+          }
+        });
       return;
     }
 
-    this.planspots.addPlan(
-      item.id,
-      item.isPlan,
-      this.guid,
-      item.isRemojuPlan,
-      item.googleSpot ? true : false
-    ).then(result => {
-      result.pipe(takeUntil(this.onDestroy$)).subscribe(
-        async myPlanApp => {
+    this.planspots
+      .addPlan(
+        item.id,
+        item.isPlan,
+        this.guid,
+        item.isRemojuPlan,
+        item.googleSpot ? true : false
+      )
+      .then((result) => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async (myPlanApp) => {
           if (myPlanApp) {
             this.myplanService.onPlanUserChanged(myPlanApp);
             this.indexedDBService.registPlan(myPlanApp);
             this.myplanService.FetchMyplanSpots();
           }
-        }
-      )
-    })
+        });
+      });
   }
 
   // お気に入り削除
-  deleteFavorite(item:PlanSpotList) {
+  deleteFavorite(item: PlanSpotList) {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
-    param.title = "FavoriteRemoveConfirm";
+    param.title = 'FavoriteRemoveConfirm';
     const dialog = this.commonService.confirmMessageDialog(param);
-    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-      // お気に入りを削除する
-      if (d === "ok") {
-        if (!item.isPlan) {
-          const param = new UpdFavorite();
-          param.spotId =  item.id;
-          param.type = item.googleSpot ? 2: 1
-          param.isFavorite = false;
-          this.myplanService.updateFavorite(param);
+    dialog
+      .afterClosed()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((d: any) => {
+        // お気に入りを削除する
+        if (d === 'ok') {
+          if (!item.isPlan) {
+            const param = new UpdFavorite();
+            param.spotId = item.id;
+            param.type = item.googleSpot ? 2 : 1;
+            param.isFavorite = false;
+            this.myplanService.updateFavorite(param);
+          }
+          this.delFavorite(item, true);
         }
-        this.delFavorite(item, true);
-      }
-    });
+      });
   }
 
   // 表示順
-  sortChange(v:any){
+  sortChange(v: any) {
     this.condition.sortval = v;
-    sessionStorage.setItem(this.mypageFavoriteListService.conditionSessionKey, JSON.stringify(this.condition));
+    sessionStorage.setItem(
+      this.mypageFavoriteListService.conditionSessionKey,
+      JSON.stringify(this.condition)
+    );
     this.getPlanSpotDataSet();
   }
 
   // プランスポット切り替え
-  onPlanSpotChange(val:any){
+  onPlanSpotChange(val: any) {
     this.select = val;
     this.condition.select = val;
-    sessionStorage.setItem(this.mypageFavoriteListService.conditionSessionKey, JSON.stringify(this.condition));
+    sessionStorage.setItem(
+      this.mypageFavoriteListService.conditionSessionKey,
+      JSON.stringify(this.condition)
+    );
     this.getPlanSpotDataSet();
   }
 
-
-  delFavorite(item:PlanSpotList, isMessage: boolean) {
-    this.planspots.registFavorite(
-      item.id,
-      item.isPlan,
-      false,
-      item.isRemojuPlan,
-      this.guid,
-      item.googleSpot ? true: false
-    )
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe(async ()=>{
-      this.rows.splice(
-        this.rows.findIndex(v => v.id === item.id && v.isPlan === item.isPlan && v.googleSpot === item.googleSpot),1
+  delFavorite(item: PlanSpotList, isMessage: boolean) {
+    this.planspots
+      .registFavorite(
+        item.id,
+        item.isPlan,
+        false,
+        item.isRemojuPlan,
+        this.guid,
+        item.googleSpot ? true : false
       )
-      this.count = this.rows.length;
-      if(this.rows.length < this.end){
-        this.end = this.rows.length;
-      }
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(async () => {
+        this.rows.splice(
+          this.rows.findIndex(
+            (v) =>
+              v.id === item.id &&
+              v.isPlan === item.isPlan &&
+              v.googleSpot === item.googleSpot
+          ),
+          1
+        );
+        this.count = this.rows.length;
+        if (this.rows.length < this.end) {
+          this.end = this.rows.length;
+        }
 
-      if (isMessage) {
-        this.commonService.snackBarDisp("FavoriteRemoved");
-      }
+        if (isMessage) {
+          this.commonService.snackBarDisp('FavoriteRemoved');
+        }
 
-      if(!this.rows[this.end - 1].isDetail && !this.rows[this.end - 1].googleSpot){
-        this.planspots.fetchDetails(this.rows[this.end - 1], this.guid)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(async d => {
-          this.rows[this.end - 1] = await this.planspots.mergeDetail(this.rows[this.end - 1], d);
-          this.details$ = this.rows.slice(0,this.end);
-        });
-      } else {
-        this.details$ = this.rows.slice(0,this.end);
-      }
-    });
+        if (
+          this.rows.length > 0 &&
+          !this.rows[this.end - 1].isDetail &&
+          !this.rows[this.end - 1].googleSpot
+        ) {
+          this.planspots
+            .fetchDetails(this.rows[this.end - 1], this.guid)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(async (d) => {
+              this.rows[this.end - 1] = await this.planspots.mergeDetail(
+                this.rows[this.end - 1],
+                d
+              );
+              this.details$ = this.rows.slice(0, this.end);
+            });
+        } else {
+          this.details$ = this.rows.slice(0, this.end);
+        }
+      });
   }
 }

@@ -1,16 +1,18 @@
-<ng-container *ngIf="details$?.length>0; else noPlan">
+<ng-container *ngIf="details$?.length > 0; else noPlan">
   <!-- マイページプラン一覧 -->
-  <div class="box"
+  <div
+    class="box"
     infinite-scroll
     [infiniteScrollDistance]="5"
     [infiniteScrollUpDistance]="1.5"
     [infiniteScrollThrottle]="100"
-    [infiniteScrollContainer]="isMobile?null:box"
-    [scrollWindow]="isMobile?true:false"
-    [fromRoot]="isMobile?false:true"
+    [infiniteScrollContainer]="isMobile ? null : box"
+    [scrollWindow]="isMobile ? true : false"
+    [fromRoot]="isMobile ? false : true"
     (scrolled)="onScrollDown()"
     (scroll)="onScroll($event)"
-    #box>
+    #box
+  >
     <ng-container *ngFor="let row of details$">
       <mat-card>
         <mat-card-content>
@@ -23,8 +25,12 @@
             <mat-list>
               <mat-list-item class="top">
                 <div class="lt">
-                  <div class="areaName">{{ row.areaName | langFilter: lang }}</div>
-                  <div class='update'>{{ "LastUpdated" | translate }} : {{ row.updateDatetime | date:"yyyy/MM/dd" }}
+                  <div class="areaName">
+                    {{ row.areaName | langFilter: lang }}
+                  </div>
+                  <div class="update">
+                    {{ "LastUpdated" | translate }} :
+                    {{ row.updateDatetime | date: "yyyy/MM/dd" }}
                   </div>
                 </div>
                 <div class="rt">
@@ -33,12 +39,27 @@
                     <img *ngIf="!row.isRelease" src="../../../assets/img/sw_release_off.svg" alt="">
                   </div>-->
                   <!-- 共有先 -->
-                  <div class='share'>
-                    <label class="time-label">{{"ReleaseDestination"|translate}}</label>
-                    <div class="container" *ngIf="row" [ngClass]="{'all':row.isRelease}">
-                      <select name="isRelease" [(ngModel)]="row.isRelease" (change)="onClickRelease(row)">
-                        <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
-                          {{ commonService.isValidJson(destination.name, lang) }}
+                  <div class="share">
+                    <label class="time-label">{{
+                      "ReleaseDestination" | translate
+                    }}</label>
+                    <div
+                      class="container"
+                      *ngIf="row"
+                      [ngClass]="{ all: row.isRelease }"
+                    >
+                      <select
+                        name="isRelease"
+                        [(ngModel)]="row.isRelease"
+                        (change)="onClickRelease(row)"
+                      >
+                        <option
+                          *ngFor="let destination of $releaseDestination"
+                          [ngValue]="destination.id === 0 ? false : true"
+                        >
+                          {{
+                            commonService.isValidJson(destination.name, lang)
+                          }}
                         </option>
                       </select>
                     </div>
@@ -49,26 +70,33 @@
                 <span>{{ row.planName }}</span>
               </mat-list-item>
               <mat-list-item class="timereq">
-                <span
-                  *ngIf="row.timeRequiredHour !== '0'">{{ "TimeRequired" | translate }}：{{ row.timeRequiredHour }}{{ "Hour" | translate }}</span>
-                <span *ngIf="row.timeRequiredMin !== '0'">{{ row.timeRequiredMin }}{{ "Minute" | translate }}</span>
+                <span *ngIf="row.timeRequiredHour !== '0'"
+                  >{{ "TimeRequired" | translate }}：{{ row.timeRequiredHour
+                  }}{{ "Hour" | translate }}</span
+                >
+                <span *ngIf="row.timeRequiredMin !== '0'"
+                  >{{ row.timeRequiredMin }}{{ "Minute" | translate }}</span
+                >
                 <span class="spotqty">
                   {{ "NumberOfSpots" | translate }} : {{ row.spots?.length }}
                 </span>
               </mat-list-item>
             </mat-list>
 
-
             <div class="picgrid">
               <ng-container *ngFor="let item of row.spots; index as i">
-                <div class='container'>
+                <div class="container">
                   <div class="thumbspots" (click)="linktoSpot(item)">
                     <div class="thumbnum">
                       <span>{{ i + 1 }}</span>
                     </div>
-                    <div class='pic'>
-                      <img *ngIf="item.pictures && item.pictures.length > 0" [src]="item.pictures[0]" [alt]="item.spotId"
-                      [title]="item.spotId" />
+                    <div class="pic">
+                      <img
+                        *ngIf="item.pictures && item.pictures.length > 0"
+                        [src]="item.pictures[0]"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
                     </div>
                   </div>
                   <div class="thumbname" (click)="linktoSpot(item)">
@@ -77,32 +105,50 @@
                       {{ item.spotName }}
                     </span>
                     <!-- 掲載終了スポットの場合 -->
-                    <span *ngIf="item.isEndOfPublication">{{ "EndOfPublication" | translate }}</span>
+                    <span *ngIf="item.isEndOfPublication">{{
+                      "EndOfPublication" | translate
+                    }}</span>
                   </div>
                 </div>
               </ng-container>
-            </div> 
+            </div>
             <mat-list>
               <mat-list-item class="row bottom">
                 <!-- URL共有 -->
                 <div class="share">
-                  <button mat-flat-button class="share" id="planshare" (click)="onClickSharePlan(row)">
+                  <button
+                    mat-flat-button
+                    class="share"
+                    id="planshare"
+                    (click)="onClickSharePlan(row)"
+                  >
                     <mat-icon>share</mat-icon>
                     {{ "SharePlan" | translate }}
                   </button>
                 </div>
-                <button mat-flat-button class="edit-to-plan" (click)="onClickEditPlan(row)">
+                <button
+                  mat-flat-button
+                  class="edit-to-plan"
+                  (click)="onClickEditPlan(row)"
+                >
                   {{ "EditPlan" | translate }}
                 </button>
-                <button mat-flat-button class="edit-to-plan" (click)="onClickPlanCopy(row)">
+                <button
+                  mat-flat-button
+                  class="edit-to-plan"
+                  (click)="onClickPlanCopy(row)"
+                >
                   {{ "CopyPlan" | translate }}
                 </button>
-                <button mat-flat-button class="edit-to-plan" (click)="onClickPreview(row)">
+                <button
+                  mat-flat-button
+                  class="edit-to-plan"
+                  (click)="onClickPreview(row)"
+                >
                   {{ "Preview" | translate }}
                 </button>
               </mat-list-item>
             </mat-list>
-
           </div>
         </mat-card-content>
       </mat-card>
@@ -112,7 +158,7 @@
 <ng-template #noPlan>
   <mat-card id="noPlan">
     <mat-card-content>
-      <p>{{"NoPlanMsg"|translate}}</p>
+      <p>{{ "NoPlanMsg" | translate }}</p>
     </mat-card-content>
   </mat-card>
 </ng-template>

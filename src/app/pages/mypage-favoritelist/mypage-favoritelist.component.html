@@ -4,17 +4,19 @@
   [condition]="condition"
   [mSort]="$mSort"
   [searchTarms]="optionKeywords"
-  [myFavorite]=true
+  [myFavorite]="true"
   (event)="onPlanSpotChange($event)"
   (sort)="sortChange($event)"
 >
 </app-planspot-selector>
-<div class='rows'
+<div
+  class="rows"
   infinite-scroll
   [infiniteScrollDistance]="5"
   [infiniteScrollUpDistance]="1.5"
   [infiniteScrollThrottle]="150"
-  (scrolled)="onScrollDown()">
+  (scrolled)="onScrollDown()"
+>
   <app-planspot-list-item
     *ngFor="let item of details$"
     [item]="item"
@@ -23,6 +25,12 @@
     [myPlanSpots]="myPlanSpots"
     (linked)="linktoDetail($event)"
     (addMyPlan)="addMyPlan($event)"
-    (delFav)="deleteFavorite($event)">
+    (delFav)="deleteFavorite($event)"
+  >
   </app-planspot-list-item>
 </div>
+
+<!-- <div *ngFor="let item of details$">
+  <p>{{ item.planName }}</p>
+  <div>{{ item.pictures[0] }}</div>
+</div> -->

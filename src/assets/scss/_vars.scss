@@ -12,9 +12,9 @@ $color-gld01: #bfa060;
 $color-gld02: #6f4b00;
 $color-gld03: #8f7848;
 $color-gld04: #9a721e;
-$color-gld04cf:#9a721ecf;
-$color-gld05: #BF9F60;
-$color-gld06: #B19F7B;
+$color-gld04cf: #9a721ecf;
+$color-gld05: #bf9f60;
+$color-gld06: #b19f7b;
 
 $color-gry00: #f6f6f6;
 $color-gry01: #eaeaea;
@@ -23,13 +23,13 @@ $color-gry03: #949494;
 $color-gry04: #807e7d;
 $color-gry05: #757575;
 $color-gry06: #696969;
-$color-gry07: #A8A8A8;
+$color-gry07: #a8a8a8;
 
 $color-pnk00: #e58e90;
 $color-pnk02: #f3787e;
 $color-pnk04: #de7274;
 
-$color-grn01: #81C5B4;
+$color-grn01: #81c5b4;
 
 /* iOSでのデフォルトスタイルをリセット */
 @mixin ios-reset {
@@ -106,7 +106,7 @@ $color-grn01: #81C5B4;
     opacity: 0;
   }
 
-  input[type="checkbox"]:checked+label::after {
+  input[type="checkbox"]:checked + label::after {
     transform: rotate(45deg);
     top: 0;
     opacity: 1;
@@ -132,7 +132,7 @@ $color-grn01: #81C5B4;
     margin: 0;
     z-index: 10;
 
-    &:checked+label {
+    &:checked + label {
       background-color: #fff;
       color: $color-gld04;
       border: 1px solid $color-gld04;
@@ -142,7 +142,7 @@ $color-grn01: #81C5B4;
   label {
     cursor: pointer;
     padding: 2px 8px;
-    border: 1px solid #EDEAE8;
+    border: 1px solid #edeae8;
     border-radius: 3px;
     font-size: 12px;
     white-space: nowrap;
@@ -304,7 +304,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -332,7 +332,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -360,7 +360,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -388,7 +388,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -416,7 +416,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -444,7 +444,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -472,7 +472,7 @@ $color-grn01: #81C5B4;
             border-right: $dl-border-right;
           }
 
-          >dd:last-of-type::before {
+          > dd:last-of-type::before {
             position: absolute;
             top: $dd-top;
             left: $dd-left;
@@ -505,7 +505,7 @@ $color-grn01: #81C5B4;
 
             span.line {
               margin-left: 2em;
-              max-width:58vw;
+              max-width: 58vw;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
@@ -587,13 +587,13 @@ $color-grn01: #81C5B4;
 
     &.en {
       input[type="checkbox"] {
-        &:checked+label {
+        &:checked + label {
           span::after {
             content: $preview_en;
           }
         }
 
-        &:checked~#swImg {
+        &:checked ~ #swImg {
           &::before {
             content: $edit_en;
           }
@@ -616,7 +616,7 @@ $color-grn01: #81C5B4;
     input[type="checkbox"] {
       display: none;
 
-      &:checked+label {
+      &:checked + label {
         border-color: $color-pnk02;
 
         span::after {
@@ -626,7 +626,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      &:checked~#swImg {
+      &:checked ~ #swImg {
         transform: translateX(60px);
         background: $color-pnk02;
 
@@ -659,7 +659,7 @@ $color-grn01: #81C5B4;
       top: 0px;
       left: 0px;
       border-radius: $radius;
-      transition: .2s;
+      transition: 0.2s;
 
       &::before {
         content: $edit; //$preview;
@@ -677,7 +677,7 @@ $color-grn01: #81C5B4;
     $preview_en: "Mycar";
     $height: 30px;
     $radius: 15px;
-    $color:#707070;
+    $color: #707070;
 
     line-height: $height;
     letter-spacing: 0;
@@ -691,13 +691,13 @@ $color-grn01: #81C5B4;
 
     &.en {
       input[type="checkbox"] {
-        &:checked+label {
+        &:checked + label {
           span::after {
             content: $preview_en;
           }
         }
 
-        &:checked~#swImg {
+        &:checked ~ #swImg {
           &::before {
             content: $edit_en;
           }
@@ -720,7 +720,7 @@ $color-grn01: #81C5B4;
     input[type="checkbox"] {
       display: none;
 
-      &:checked+label {
+      &:checked + label {
         border-color: $color;
 
         span::after {
@@ -730,7 +730,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      &:checked~#swImg {
+      &:checked ~ #swImg {
         transform: translateX(73px);
         background: $color;
 
@@ -763,7 +763,7 @@ $color-grn01: #81C5B4;
       top: 0px;
       left: 0px;
       border-radius: $radius;
-      transition: .2s;
+      transition: 0.2s;
 
       &::before {
         content: $edit; //$preview;
@@ -788,7 +788,7 @@ $color-grn01: #81C5B4;
   }
 
   &::before {
-    content: '...more';
+    content: "...more";
     top: $font-size * $line-height * ($line - 1) + px;
     right: 0;
     width: 3.3em;
@@ -796,7 +796,7 @@ $color-grn01: #81C5B4;
   }
 
   &::after {
-    content: '';
+    content: "";
     width: 100%;
     height: 100%;
   }
@@ -832,13 +832,13 @@ $color-grn01: #81C5B4;
 
     &.en {
       input[type="checkbox"] {
-        &:checked+label {
+        &:checked + label {
           span::after {
             content: $edit_en;
           }
         }
 
-        &:checked~#swImg {
+        &:checked ~ #swImg {
           &::before {
             content: $preview_en;
           }
@@ -861,7 +861,7 @@ $color-grn01: #81C5B4;
     input[type="checkbox"] {
       display: none;
 
-      &:checked+label {
+      &:checked + label {
         border-color: $color-pnk02;
 
         span::after {
@@ -871,7 +871,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      &:checked~#swImg {
+      &:checked ~ #swImg {
         transform: translateX(92px);
         background: $color-pnk02;
 
@@ -904,7 +904,7 @@ $color-grn01: #81C5B4;
       top: 0px;
       left: 0px;
       border-radius: $radius;
-      transition: .2s;
+      transition: 0.2s;
 
       &::before {
         content: $edit;
@@ -936,13 +936,13 @@ $color-grn01: #81C5B4;
 
     &.en {
       input[type="checkbox"] {
-        &:checked+label {
+        &:checked + label {
           span::after {
             content: $preview_en;
           }
         }
 
-        &:checked~#swImg {
+        &:checked ~ #swImg {
           &::before {
             content: $edit_en;
           }
@@ -965,7 +965,7 @@ $color-grn01: #81C5B4;
     input[type="checkbox"] {
       display: none;
 
-      &:checked+label {
+      &:checked + label {
         border-color: $color-pnk02;
 
         span::after {
@@ -975,7 +975,7 @@ $color-grn01: #81C5B4;
         }
       }
 
-      &:checked~#swImg {
+      &:checked ~ #swImg {
         transform: translateX(60px);
         background: $color-pnk02;
 
@@ -1008,7 +1008,7 @@ $color-grn01: #81C5B4;
       top: 0px;
       left: 0px;
       border-radius: $radius;
-      transition: .2s;
+      transition: 0.2s;
 
       &::before {
         content: $preview;
@@ -1032,7 +1032,7 @@ $color-grn01: #81C5B4;
       height: 28px;
       width: 52px;
       border-radius: 14px;
-      background: #FDB750;
+      background: #fdb750;
       position: relative;
 
       &::before {
@@ -1064,4 +1064,3 @@ $color-grn01: #81C5B4;
     }
   }
 }
-

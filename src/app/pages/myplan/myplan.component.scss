@@ -24,7 +24,6 @@ form {
   }
 
   @include switchView();
-
 }
 
 .bottom {
@@ -41,14 +40,13 @@ form {
   flex-direction: row;
   align-items: center;
 
-  padding: 0 12px;
+  //padding: 0 12px;
   @include switchTran();
-
 
   .lt {
     display: flex;
     align-items: center;
-    background: #F8F7F7;
+    background: #f8f7f7;
     border-radius: 20px;
     padding: 0 5px 0 15px;
     height: 40px;
@@ -57,7 +55,6 @@ form {
       margin-right: 15px;
       white-space: nowrap;
     }
-
   }
 
   .rt {
@@ -106,7 +103,7 @@ form {
 
     .mat-slide-toggle.mat-checked {
       .mat-slide-toggle-thumb {
-        background-color: #81C5B4 !important;
+        background-color: #81c5b4 !important;
       }
 
       .mat-slide-toggle-bar {
@@ -153,14 +150,12 @@ form {
         background-color: $color-grn01;
       }
 
-      >img {
+      > img {
         width: 100%;
         height: auto;
       }
     }
   }
-
-
 }
 
 // edit-section style adjust!
@@ -222,7 +217,7 @@ form {
       font-weight: 700;
 
       &.noName {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: normal;
         color: #f44336;
       }
@@ -232,7 +227,6 @@ form {
   #edit {
     box-shadow: none;
     border-radius: 0;
-
 
     height: 65px;
     padding: initial;
@@ -248,11 +242,11 @@ form {
       align-items: center;
       width: 100%;
 
-      >* {
+      > * {
         min-width: 0;
       }
 
-      >* .label {
+      > * .label {
         display: block;
         font-size: 10px;
         font-weight: bold;
@@ -296,7 +290,7 @@ form {
             margin-top: 8px;
           }
 
-          span>span.required {
+          span > span.required {
             color: red;
           }
 
@@ -327,7 +321,6 @@ form {
       //   display: flex;
       //   flex-basis: 26%;
 
-
       // }
     }
   }
@@ -342,7 +335,6 @@ form {
     padding: 0 12px;
 
     button.setting {
-
       &.mat-button {
         min-width: initial;
         padding-right: 8px;
@@ -468,7 +460,7 @@ form {
       height: 26px;
       width: auto;
       padding: 0 12px;
-      background-color: #81C5B4;
+      background-color: #81c5b4;
       border-radius: 16px;
       color: #fff;
       text-align: center;
@@ -478,7 +470,7 @@ form {
       top: 2px;
 
       &:disabled {
-        background: #81C5B450;
+        background: #81c5b450;
       }
     }
   }
@@ -593,7 +585,8 @@ form {
 
                   span.order {
                     position: absolute;
-                    background: url("../../../assets/img/pin_gold-s.svg") no-repeat;
+                    background: url("../../../assets/img/pin_gold-s.svg")
+                      no-repeat;
                     display: inline-block;
                     width: 25px;
                     height: 30px;
@@ -673,7 +666,6 @@ form {
                   }
 
                   &.on {
-
                     // background-color: $color-pnk04;
                     &::before {
                       background: url("../../../assets/img/icon_bookmark_d_on.svg");
@@ -703,7 +695,7 @@ form {
       top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(100, 100, 100, .8);
+      background: rgba(100, 100, 100, 0.8);
       z-index: 18;
       display: flex;
       align-items: center;
@@ -792,14 +784,16 @@ form {
           background-color: $color-gld06;
           color: #fff;
           font-size: 16px;
+          line-height: normal;
         }
-      }
 
-      .pcguide {
-        p {
-          color: #fff;
-          font-size: 16px;
-          text-align: center;
+        &.pcguide {
+          p {
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            line-height: 2;
+          }
         }
       }
     }
@@ -873,20 +867,18 @@ form {
       width: 85px;
       height: 26px;
       border-radius: 13px;
-      background-color: #4A4A4A;
+      background-color: #4a4a4a;
       color: #fff;
       text-align: center;
     }
   }
-
 }
-
 
 // end of myplan-edit
 
 // myplan-preview
 .myplan-preview {
-  >* {
+  > * {
     padding: 0;
   }
 
@@ -894,8 +886,8 @@ form {
 
   .mat-card-header.myplan-header {
     height: 63px;
-    border-top: #B19F7B 1px solid;
-    border-bottom: #B19F7B 1px solid;
+    border-top: #b19f7b 1px solid;
+    border-bottom: #b19f7b 1px solid;
     font-family: Roboto, "Helvetica Neue", sans-self;
     display: flex;
     justify-content: space-between;
@@ -943,9 +935,9 @@ form {
     }
   }
 
-  $img_height:270px;
-  $img_height_m:54vw;
-  $img_height_s:69vw;
+  $img_height: 270px;
+  $img_height_m: 54vw;
+  $img_height_s: 69vw;
 
   .planhead {
     .picpreview {
@@ -953,7 +945,7 @@ form {
       position: relative;
       margin: 0.5em 16px;
 
-      @media screen and (max-width:428px) {
+      @media screen and (max-width: 428px) {
         height: $img_height_s;
       }
 
@@ -1199,11 +1191,11 @@ form {
 
               div {
                 span.starttime {
-                  border: 1px solid #DE7274;
+                  border: 1px solid #de7274;
                   padding: 1px 6px;
                   margin-right: 0.2em;
                   font-size: 12px;
-                  color: #DE7274;
+                  color: #de7274;
                   border-radius: 0.2em;
                 }
 
@@ -1258,7 +1250,7 @@ form {
           position: relative;
           height: $img_height;
 
-          @media screen and (max-width:428px) {
+          @media screen and (max-width: 428px) {
             height: $img_height_s;
           }
 
@@ -1270,7 +1262,6 @@ form {
           margin: 0.5em 16px 0;
 
           ::ng-deep .owl-carousel {
-
             .owl-prev,
             .owl-next {
               position: absolute;
@@ -1320,7 +1311,7 @@ form {
               background: $color-gry06;
               height: $img_height;
 
-              @media screen and (max-width:428px) {
+              @media screen and (max-width: 428px) {
                 height: $img_height_s;
               }
 
@@ -1352,7 +1343,7 @@ form {
             background: $color-gry06;
             height: $img_height;
 
-            @media screen and (max-width:428px) {
+            @media screen and (max-width: 428px) {
               height: $img_height_s;
             }
 
@@ -1366,7 +1357,6 @@ form {
               @include copy-protect;
             }
           }
-
 
           .info {
             position: absolute;
@@ -1556,7 +1546,6 @@ form {
         }
       }
 
-
       .card-box {
         // border-radius: 10px;
         overflow: hidden;
@@ -1592,7 +1581,7 @@ form {
             z-index: 2;
           }
 
-          >img {
+          > img {
             width: 100%;
             height: 62.6vw;
             object-fit: cover;
@@ -1737,7 +1726,6 @@ form {
             border-radius: 6px;
             width: 34px;
           }
-
         }
       }
     }
@@ -1773,116 +1761,121 @@ form {
   $mtop: 30px;
 
   padding: 0 30px;
-  height: 165px;
+  height: 178px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   //justify-content: center;
-  justify-content: space-evenly;
+  //justify-content: space-evenly;
   background-color: #fff;
   position: sticky;
   bottom: 0;
   z-index: 20;
 
-  label {
-    font-size: 10px;
-    color: $color-gld01;
-    width: 51px;
-    text-align: center;
-    line-height: 1.2;
-
-    &.caption {
-      font-size: 12px;
-      position: absolute;
-      top: 9px;
-      width: max-content;
-      left: 96px;
-    }
-  }
-
-  ::ng-deep .mat-button-ripple {
-    border-radius: 50%;
-  }
-
-  .clear {
-    margin: $mtop;
+  .row1 {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
+    label {
+      font-size: 10px;
+      color: $color-gld01;
+      width: 51px;
+      text-align: center;
+      line-height: 1.2;
 
-    button {
-      background: url('../../../assets/img/btn_alldelete.svg') no-repeat;
-      border: 0;
-      width: 40px;
-      height: 40px;
-      min-width: initial;
-
-      &:disabled {
-        opacity: 0.5;
+      &.caption {
+        font-size: 12px;
+        position: absolute;
+        top: 9px;
+        width: max-content;
+        left: 96px;
       }
     }
-  }
 
-  .share {
-    display: flex;
-    //align-items: center;
-    flex-direction: column;
-    margin: 30px 0;
-    position: relative;
+    ::ng-deep .mat-button-ripple {
+      border-radius: 50%;
+    }
 
-    .container {
-      select {
-        all: unset;
-        font-size: 11px;
-        font-weight: 700;
+    .clear {
+      margin: $mtop;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-      }
+      button {
+        background: url("../../../assets/img/btn_alldelete.svg") no-repeat;
+        border: 0;
+        width: 40px;
+        height: 40px;
+        min-width: initial;
 
-      background-color: #eee;
-      padding: 6px;
-      border-radius: 6px;
-
-      &::after {
-        content: "▼";
-        font-size: 9px;
-        color: #999;
+        &:disabled {
+          opacity: 0.5;
+        }
       }
     }
-  }
 
-  .save {
-    margin: $mtop 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .share {
+      display: flex;
+      //align-items: center;
+      flex-direction: column;
+      margin: 10px 0;
+      position: relative;
 
-    button {
-      background: url("../../../assets/img/btn_save.svg") no-repeat;
-      border: 0;
-      width: 40px;
-      height: 40px;
-      min-width: initial;
+      .container {
+        select {
+          all: unset;
+          font-size: 11px;
+          font-weight: 700;
+        }
 
-      &:disabled {
-        opacity: 0.5;
+        background-color: #eee;
+        padding: 6px;
+        border-radius: 6px;
+
+        &::after {
+          content: "▼";
+          font-size: 9px;
+          color: #999;
+        }
       }
     }
-  }
 
-  .newplan {
-    margin: $mtop 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .save {
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-    button {
-      background: url("../../../assets/img/btn_new.svg") no-repeat;
-      border: 0;
-      width: 40px;
-      height: 40px;
-      min-width: initial;
+      button {
+        background: url("../../../assets/img/btn_save.svg") no-repeat;
+        border: 0;
+        width: 40px;
+        height: 40px;
+        min-width: initial;
 
-      &:disabled {
-        opacity: 0.5;
+        &:disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .newplan {
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      button {
+        background: url("../../../assets/img/btn_new.svg") no-repeat;
+        border: 0;
+        width: 40px;
+        height: 40px;
+        min-width: initial;
+
+        &:disabled {
+          opacity: 0.5;
+        }
       }
     }
   }
@@ -1998,7 +1991,8 @@ form {
 
                 span.order {
                   position: absolute;
-                  background: url("../../../assets/img/pin_gold-s.svg") no-repeat;
+                  background: url("../../../assets/img/pin_gold-s.svg")
+                    no-repeat;
                   display: inline-block;
                   width: 25px;
                   height: 30px;
@@ -2043,7 +2037,6 @@ form {
 
             &:nth-child(3) {
               flex-basis: 12%;
-
             }
           }
         }
@@ -2051,7 +2044,6 @@ form {
     }
   }
 }
-
 
 @media screen and (min-width: 429px) and (max-width: 1024px) {
   form#myplan {
@@ -2089,7 +2081,6 @@ form {
           height: 100%;
           //object-fit: cover;
         }
-
       }
 
       ::ng-deep {

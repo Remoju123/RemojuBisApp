@@ -35,10 +35,9 @@ div.spotdtl {
       cursor: pointer;
 
       .frame {
-        border: 1px solid #B7B7B7;
+        border: 1px solid #b7b7b7;
         padding: 1px 16px;
         border-radius: 12px;
-
 
         &::before {
           content: "keyboard_arrow_left";
@@ -79,7 +78,6 @@ div.spotdtl {
             text-align: center;
           }
         }
-
       }
 
       .rt {
@@ -169,12 +167,38 @@ div.spotdtl {
         position: absolute;
         right: 10px;
         bottom: 37px;
+        animation: 0.7s ease-in 0s 1 jump;
+      }
+      @keyframes jump {
+        0% {
+          transform: translateY(0px) rotateZ(0deg);
+        }
+        30% {
+          transform: translateY(-30px) rotateZ(10deg);
+        }
+        35% {
+          transform: translateY(-30px) rotateZ(-30deg);
+        }
+        45% {
+          transform: translateY(-30px) rotateZ(30deg);
+        }
+        55% {
+          transform: translateY(-30px) rotateZ(-30deg);
+        }
+        65% {
+          transform: translateY(-30px) rotateZ(30deg);
+        }
+        70% {
+          transform: translateY(-30px) rotateZ(10deg);
+        }
+        100% {
+          transform: translateY(0px) rotateZ(0deg);
+        }
       }
     }
   }
 
   .pics {
-
     ::ng-deep .owl-prev,
     ::ng-deep .owl-next {
       position: absolute;
@@ -223,7 +247,6 @@ div.spotdtl {
       @media screen and (min-width: 429px) and (max-width: 1024px) {
         height: auto;
       }
-
 
       a {
         text-decoration: none;
@@ -424,7 +447,7 @@ div.spotdtl {
       display: inline-flex !important;
       width: 100%;
 
-      >img {
+      > img {
         width: 100%;
         height: 66.6vw;
         object-fit: cover;
@@ -460,13 +483,12 @@ div.spotdtl {
         }
 
         .category {
-          background-color: #B6C2A6;
+          background-color: #b6c2a6;
           padding: 0 6px;
           line-height: 26px;
           margin-left: 7px;
           border-radius: 3px;
-          color: rgba(0, 0, 0, .87);
-          ;
+          color: rgba(0, 0, 0, 0.87);
           white-space: nowrap;
           max-width: 34vw;
           overflow: hidden;
@@ -494,7 +516,6 @@ div.spotdtl {
         }
       }
     }
-
   }
 
   .thumbmain {
@@ -547,7 +568,6 @@ div.spotdtl {
     border-bottom: 1px solid #dccda9;
 
     .mat-card-content {
-
       position: relative;
       //background-color: #fff;
 
@@ -648,7 +668,6 @@ div.spotdtl {
             font-size: 16px;
             vertical-align: sub;
           }
-
         }
       }
     }
@@ -727,7 +746,6 @@ div.spotdtl {
         vertical-align: sub;
       }
     }
-
   }
 
   #content {
@@ -786,15 +804,18 @@ div.spotdtl {
             line-height: unset;
 
             &.facebook {
-              background: url("../../../assets/img/facebook_Circle.svg") no-repeat;
+              background: url("../../../assets/img/facebook_Circle.svg")
+                no-repeat;
             }
 
             &.twitter {
-              background: url("../../../assets/img/twitter_Circle.svg") no-repeat;
+              background: url("../../../assets/img/twitter_Circle.svg")
+                no-repeat;
             }
 
             &.line {
-              background: url("../../../assets/img/LINE_SOCIAL_Circle.svg") no-repeat;
+              background: url("../../../assets/img/LINE_SOCIAL_Circle.svg")
+                no-repeat;
             }
           }
         }
@@ -996,8 +1017,6 @@ div.spotdtl {
     padding-bottom: 8px;
     border-bottom: 1px solid #5e5e5e;
 
-
-
     &::before {
       content: "keyboard_arrow_right";
       font-family: "Material Icons";
@@ -1152,7 +1171,7 @@ div.spotdtl {
 
           .about {
             font-size: 14px;
-            background-color: #F7F5EC;
+            background-color: #f7f5ec;
             border-radius: 10px;
 
             p {
@@ -1190,9 +1209,9 @@ div.spotdtl {
         all: unset;
         width: 188px;
         height: 26px;
-        border: 1px solid #F3787F;
+        border: 1px solid #f3787f;
         border-radius: 13px;
-        color: #F3787F;
+        color: #f3787f;
         font-size: 14px;
         text-align: center;
       }
@@ -1200,7 +1219,8 @@ div.spotdtl {
   }
 }
 
-@media screen and (min-width: 1025px) {}
+@media screen and (min-width: 1025px) {
+}
 
 #util {
   padding: 12px 16px;
@@ -1218,7 +1238,7 @@ div.spotdtl {
           display: flex;
           align-items: center;
           text-decoration: none;
-          color: rgba(0, 0, 0, .87);
+          color: rgba(0, 0, 0, 0.87);
           span {
             margin: auto 4px;
           }
@@ -1234,7 +1254,6 @@ div.spotdtl {
             margin-right: 12px;
           }
         }
-
       }
 
       .favorite {
@@ -1278,7 +1297,7 @@ div.spotdtl {
         }
       }
 
-      .bookmark{
+      .bookmark {
         display: flex;
         align-items: center;
 
@@ -1320,6 +1339,4 @@ div.spotdtl {
       }
     }
   }
-
-
 }

@@ -3,32 +3,41 @@
     <div class="title">
       {{ "ArragePlan" | translate }}
     </div>
-    <div class="switchView" [ngClass]="{'en':lang==='en'}">
-      <input type="checkbox" id="switch-view1" (change)="onClickEdit()" [checked]="!isEdit" [value]="isEdit"
-        [disabled]="!row" #switch>
+    <div class="switchView" [ngClass]="{ en: lang === 'en' }">
+      <input
+        type="checkbox"
+        id="switch-view1"
+        (change)="onClickEdit()"
+        [checked]="!isEdit"
+        [value]="isEdit"
+        [disabled]="!row"
+        #switch
+      />
       <label for="switch-view1"><span></span></label>
       <div id="swImg"></div>
     </div>
-
   </div>
 
   <!--*----------- 編集 -----------*-->
   <mat-card *ngIf="isEdit" class="myplan-edit">
     <mat-card-content>
-      <div id='edit'>
+      <div id="edit">
         <div class="myplan-edit-box">
           <div class="lt">
             <div class="container">
               <ng-container *ngIf="row">
-                <mat-card-header class="myplan-header" (click)="onClickPlanEdit(row)">
+                <mat-card-header
+                  class="myplan-header"
+                  (click)="onClickPlanEdit(row)"
+                >
                   <ng-container *ngIf="row.planName; else noplanName">
                     <span>
                       {{ row.planName }}
                     </span>
                   </ng-container>
                   <ng-template #noplanName>
-                    <span class='noName'>
-                      {{"PlanName"|translate}}
+                    <span class="noName">
+                      {{ "PlanName" | translate }}
                     </span>
                   </ng-template>
                 </mat-card-header>
@@ -45,69 +54,110 @@
       </mat-list> -->
 
       <div class="set depart">
-        <div *ngIf="row && !row.isRelease" class="lt" matTooltip="{{'StartEx'|translate }}" matTooltipPosition="above"
-          matTooltipClass="toolExplanation">
+        <div
+          *ngIf="row && !row.isRelease"
+          class="lt"
+          matTooltip="{{ 'StartEx' | translate }}"
+          matTooltipPosition="above"
+          matTooltipClass="toolExplanation"
+        >
           <!-- 出発地を設定 -->
-          <button id="dept" type="button" class="setting" mat-button (click)="onClickStartEndSelect(true)"
-            [disabled]="!row">
-          </button>
-          <label for="dept"
-            *ngIf="!row?.startPlanSpot; else startSpot">{{ "SetDeparturePoint" | translate }}</label>
+          <button
+            id="dept"
+            type="button"
+            class="setting"
+            mat-button
+            (click)="onClickStartEndSelect(true)"
+            [disabled]="!row"
+          ></button>
+          <label for="dept" *ngIf="!row?.startPlanSpot; else startSpot">{{
+            "SetDeparturePoint" | translate
+          }}</label>
           <ng-template #startSpot>
             <span>{{ row?.startPlanSpot.spotName }}</span>
-            <button type="button" mat-button (click)="onClickStartEndDelete(true)"><i
-                class="material-icons">close</i></button>
+            <button
+              type="button"
+              mat-button
+              (click)="onClickStartEndDelete(true)"
+            >
+              <i class="material-icons">close</i>
+            </button>
           </ng-template>
         </div>
         <div class="rt">
           <!-- 旅行予定日 -->
-          <ng-container *ngIf="row;else blanktravel">
+          <ng-container *ngIf="row; else blanktravel">
             <mat-form-field class="traveldate">
-              <input matInput [matDatepicker]="picker" [(ngModel)]="row.travelDate" name="travelDate"
-                (dateChange)="registPlan()">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [(ngModel)]="row.travelDate"
+                name="travelDate"
+                (dateChange)="registPlan()"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="picker"
+              ></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-            <a href="javascript:void(0);" class="picker" (click)="picker.open()"></a>
+            <a
+              href="javascript:void(0);"
+              class="picker"
+              (click)="picker.open()"
+            ></a>
           </ng-container>
           <ng-template #blanktravel>
             <a href="javascript:void(0);" class="picker"></a>
           </ng-template>
           <!-- 出発時間 -->
-          <label class="time-label">{{"StartTime"|translate}}</label>
-          <div class="startTime" *ngIf="row;else blankstart">
-            <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChangeTransfer($event)">
+          <label class="time-label">{{ "StartTime" | translate }}</label>
+          <div class="startTime" *ngIf="row; else blankstart">
+            <select
+              name="startTiem"
+              [(ngModel)]="row.startTime"
+              (change)="onChangeTransfer($event)"
+            >
               <option *ngFor="let time of $startTime" [value]="time">
-                {{time}}
+                {{ time }}
               </option>
             </select>
           </div>
           <ng-template #blankstart>
             <div class="startTime">
-              <select name="startTiem" [disabled]=true>
-                <option>
-                  09:00
-                </option>
+              <select name="startTiem" [disabled]="true">
+                <option>09:00</option>
               </select>
             </div>
           </ng-template>
         </div>
       </div>
 
-      <div class='spacer'>
-        <img src="../../../assets/img/allow_down_slv.svg" alt="">
+      <div class="spacer">
+        <img src="../../../assets/img/allow_down_slv.svg" alt="" />
         <!-- 最短ルート -->
-        <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots"
-          matTooltip="{{'AutoTips'|translate }}" matTooltipPosition="above" matTooltipClass="toolExplanation">
+        <button
+          class="option"
+          (click)="onClickAuto()"
+          [disabled]="!row?.planSpots"
+          matTooltip="{{ 'AutoTips' | translate }}"
+          matTooltipPosition="above"
+          matTooltipClass="toolExplanation"
+        >
           {{ "Auto" | translate }}
         </button>
       </div>
 
       <!-- スポットを表示 -->
-      <div class="spots" *ngIf="row?.planSpots || spotZero" cdkDropList [cdkDropListData]="row?.planSpots ?? spotZero"
-        (cdkDropListDropped)="cdkDropListDroppedSpot($event)">
-        <div class='title'>
-          {{"Roundspot"|translate}}
+      <div
+        class="spots"
+        *ngIf="row?.planSpots || spotZero"
+        cdkDropList
+        [cdkDropListData]="row?.planSpots ?? spotZero"
+        (cdkDropListDropped)="cdkDropListDroppedSpot($event)"
+      >
+        <div class="title">
+          {{ "Roundspot" | translate }}
         </div>
         <dl class="th">
           <dt>{{ "Remove" | translate }}</dt>
@@ -115,39 +165,77 @@
           <dt>{{ "Movement" | translate }}</dt>
         </dl>
 
-        <div *ngFor="let item of row?.planSpots ?? spotZero; index as i;trackBy: myTrackBy" cdkDrag
-          (cdkDragMoved)="setStep(999)">
-          <div class='transfer' [ngClass]="{'zero':!row?.planSpots}">
-            <div class='row'>
+        <div
+          *ngFor="
+            let item of row?.planSpots ?? spotZero;
+            index as i;
+            trackBy: myTrackBy
+          "
+          cdkDrag
+          (cdkDragMoved)="setStep(999)"
+        >
+          <div class="transfer" [ngClass]="{ zero: !row?.planSpots }">
+            <div class="row">
               <dl class="td">
                 <dt>
-                  <button (click)="onClickSpotDelete($event,item)" class="remove">
-                  </button>
+                  <button
+                    (click)="onClickSpotDelete($event, item)"
+                    class="remove"
+                  ></button>
                 </dt>
                 <dt>
-                  <div class='clickable' (click)="onClickSpotEdit(item)"ï></div>
+                  <div
+                    class="clickable"
+                    (click)="onClickSpotEdit(item)"
+                    ï
+                  ></div>
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
-                    <ng-container *ngIf="item.planUserpictures && item.planUserpictures.length > 0; else spotPicture">
+                    <ng-container
+                      *ngIf="
+                        item.planUserpictures &&
+                          item.planUserpictures.length > 0;
+                        else spotPicture
+                      "
+                    >
                       <img
-                        [src]="item.planUserpictures[0].imageCropped ?? item.planUserpictures[0].picturePreviewUrl ?? item.planUserpictures[0].picture_url"
-                        [alt]="item.spotId" [title]="item.spotId" />
+                        [src]="
+                          item.planUserpictures[0].imageCropped ??
+                          item.planUserpictures[0].picturePreviewUrl ??
+                          item.planUserpictures[0].picture_url
+                        "
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
                     </ng-container>
                     <ng-template #spotPicture>
-                      <img [src]="item.pictures[0]" [alt]="item.spotId" [title]="item.spotId" />
+                      <img
+                        [src]="item.pictures[0]"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
                     </ng-template>
                   </div>
                   <div class="rt">
                     <span class="spotName" [innerHTML]="item.spotName"></span>
                     <span class="areaName">
-                      <ng-container *ngIf="item.areaName">{{ item.areaName | langFilter: lang }}</ng-container>
+                      <ng-container *ngIf="item.areaName">{{
+                        item.areaName | langFilter: lang
+                      }}</ng-container>
                       <ng-container *ngIf="item.categoryText">
                         / {{ item.categoryText | langFilter: lang }}
                       </ng-container>
                       / {{ "SuggestedTime" | translate }}
                       <span class="stayTime">
-                        <select name="stayTime{{i}}" [(ngModel)]="item.stayTime" (change)="onChangeTransfer($event)">
-                          <option *ngFor="let sTime of $stayTime" [ngValue]="sTime.id">
+                        <select
+                          name="stayTime{{ i }}"
+                          [(ngModel)]="item.stayTime"
+                          (change)="onChangeTransfer($event)"
+                        >
+                          <option
+                            *ngFor="let sTime of $stayTime"
+                            [ngValue]="sTime.id"
+                          >
                             {{ commonService.isValidJson(sTime.name, lang) }}
                           </option>
                         </select>
@@ -156,9 +244,12 @@
                   </div>
                 </dt>
                 <dt>
-                  <button mat-button class="add-to-favorite" [ngClass]="{'on':item.isFavorite}"
-                    (click)="onClickFavorite(item)">
-                  </button>
+                  <button
+                    mat-button
+                    class="add-to-favorite"
+                    [ngClass]="{ on: item.isFavorite }"
+                    (click)="onClickFavorite(item)"
+                  ></button>
                 </dt>
                 <dt cdkDragHandle>
                   <img src="../../../assets/img/icon_swap.svg" width="16px" />
@@ -169,72 +260,99 @@
         </div>
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
-          <div class="guide" *ngIf="isMobile;else pcBlank">
-            <p class='under'>{{ "MyPlan#Sec3" | translate }}</p>
+          <div class="guide" *ngIf="isMobile; else pcBlank">
+            <p class="under">{{ "MyPlan#Sec3" | translate }}</p>
             <div class="inputWrapper">
-              <input placeholder="{{'SearchGuide'| translate}}" class="keyword" #keywordInput
-                (keyup.enter)="onKeywordSearch($event)" (blur)="onKeywordSearch($event)" />
+              <input
+                placeholder="{{ 'SearchGuide' | translate }}"
+                class="keyword"
+                #keywordInput
+                (keyup.enter)="onKeywordSearch($event)"
+                (blur)="onKeywordSearch($event)"
+              />
 
-              <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="">
+              <img
+                class="prefix"
+                src="../../../../../assets/img/keyword-search.svg"
+                alt=""
+              />
               <button mat-button class="reset" (click)="inputClear()">
-                <img src="../../../../../assets/img/reset_btn.svg" alt="reset">
+                <img
+                  src="../../../../../assets/img/reset_btn.svg"
+                  alt="reset"
+                />
               </button>
             </div>
             <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
-            <button mat-button class="search" (click)="onClickAddSpot()">{{"MyPlan#Sec5"|translate}}</button>
-            
+            <button mat-button class="search" (click)="onClickAddSpot()">
+              {{ "MyPlan#Sec5" | translate }}
+            </button>
           </div>
           <ng-template #pcBlank>
-            <div class='pcguide'>
+            <div class="pcguide guide">
               <p>{{ "NoSpot" | translate }}</p>
               <p>{{ "NoSpot1" | translate }}</p>
               <p>{{ "NoSpot2" | translate }}</p>
+              <button mat-button class="search" (click)="onClickAddSpot()">
+                {{ "MyPlan#Sec5" | translate }}
+              </button>
             </div>
           </ng-template>
         </div>
       </div>
       <!-- スポットを追加する -->
       <div *ngIf="row?.planSpots" class="myplan-box">
-        <button mat-button class="del-spot" [disabled]="!row?.planSpots" 
-          (click)="onClickClearAllSpot()">{{"labelClear"|translate}}</button>
-        <button mat-button class="add-spot" (click)="onClickAddSpot()" [ngClass]="{'blank':!isMobile}">
-          <span class='label'>{{ "AddSpot" | translate }}</span>
+        <button
+          mat-button
+          class="del-spot"
+          [disabled]="!row?.planSpots"
+          (click)="onClickClearAllSpot()"
+        >
+          {{ "labelClear" | translate }}
+        </button>
+        <button
+          mat-button
+          class="add-spot"
+          (click)="onClickAddSpot()"
+          [ngClass]="{ blank: !isMobile }"
+        >
+          <span class="label">{{ "AddSpot" | translate }}</span>
         </button>
       </div>
 
-      <div *ngIf="row && !row.isRelease" class='spacer'>
-        <img src="../../../assets/img/allow_down_slv.svg" alt="">
+      <div *ngIf="row && !row.isRelease" class="spacer">
+        <img src="../../../assets/img/allow_down_slv.svg" alt="" />
       </div>
 
       <!-- 到着地を設定 -->
       <div *ngIf="row && !row.isRelease" class="set arrival">
-        <div class="lt" matTooltip="{{'EndEx'|translate }}" matTooltipPosition="above"
-          matTooltipClass="toolExplanation">
-          <button id="arri" class="setting" type="button" mat-button (click)="onClickStartEndSelect(false)"
-            [disabled]="!row"></button>
-          <label for="arri" *ngIf="!row?.endPlanSpot; else endSpot">{{ "SetDestination" | translate }}</label>
+        <div
+          class="lt"
+          matTooltip="{{ 'EndEx' | translate }}"
+          matTooltipPosition="above"
+          matTooltipClass="toolExplanation"
+        >
+          <button
+            id="arri"
+            class="setting"
+            type="button"
+            mat-button
+            (click)="onClickStartEndSelect(false)"
+            [disabled]="!row"
+          ></button>
+          <label for="arri" *ngIf="!row?.endPlanSpot; else endSpot">{{
+            "SetDestination" | translate
+          }}</label>
           <ng-template #endSpot>
             <span>{{ row?.endPlanSpot.spotName }}</span>
-            <button type="button" mat-button (click)="onClickStartEndDelete(false)"><i
-                class="material-icons">close</i></button>
+            <button
+              type="button"
+              mat-button
+              (click)="onClickStartEndDelete(false)"
+            >
+              <i class="material-icons">close</i>
+            </button>
           </ng-template>
-        </div>
-      </div>
-
-      <div class='transport' style="margin-top:1em ;">
-        <div class='lt'>
-          <span class="label">{{"TravelRoute"|translate}}</span>
-          <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-            <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
-            <label for="switch-tran"><span></span></label>
-            <div id="swImg"></div>
-          </div>
-        </div>
-        <div class='rt'>
-          <mat-slide-toggle [checked]="row.isBus" (change)="onClickBus()" *ngIf="row && !row.isCar">
-            <span *ngIf="row?.isBus">{{'UseBus'|translate}}</span>
-            <span *ngIf="!row?.isBus">{{'NoBus'|translate}}</span>
-          </mat-slide-toggle>
         </div>
       </div>
     </mat-card-content>
@@ -244,7 +362,7 @@
   <div class="myplan-preview" *ngIf="!isEdit">
     <mat-card>
       <mat-card-header class="myplan-header" (click)="onClickPlanEdit(row)">
-        <div class='lt'>
+        <div class="lt">
           <ng-container *ngIf="row.planName; else noplanName">
             <span>
               {{ row.planName }}
@@ -252,8 +370,8 @@
           </ng-container>
           <ng-template #noplanName>
             <!-- <a (click)="onClickEdit()" style="cursor:pointer;"> -->
-            <span class='noName'>
-              {{"PlanName"|translate}}
+            <span class="noName">
+              {{ "PlanName" | translate }}
             </span>
             <!-- </a> -->
           </ng-template>
@@ -264,18 +382,25 @@
       </mat-card-header>
     </mat-card>
 
-    <div class='transport'>
-      <div class='lt'>
-        <span class="label">{{"TravelRoute"|translate}}</span>
-        <div class="switchTran" [ngClass]="{'en':lang==='en'}">
-          <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="row?.isCar" [disabled]="!row">
+    <div class="transport">
+      <div class="lt">
+        <span class="label">{{ "TravelRoute" | translate }}</span>
+        <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
+          <input
+            type="checkbox"
+            id="switch-tran"
+            (click)="onClickTran()"
+            x
+            [checked]="row?.isCar"
+            [disabled]="!row"
+          />
           <label for="switch-tran"><span></span></label>
           <div id="swImg"></div>
         </div>
       </div>
-      <div class='rt'>
-        <div class='mapview'>
-          <button (click)="onClickMap()">{{"MapDisp"|translate}}</button>
+      <div class="rt">
+        <div class="mapview">
+          <button (click)="onClickMap()">{{ "MapDisp" | translate }}</button>
         </div>
         <!-- 最短ルート -->
         <!--
@@ -285,14 +410,24 @@
           </span>
           <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
         </button>
-      -->
-      </div>
+      --></div>
     </div>
 
-    <div class='planhead'>
-      <div *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl" class="picpreview">
-        <img width="100%" height="100%"
-          [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl ?? row.refPictureUrl" />
+    <div class="planhead">
+      <div
+        *ngIf="row.picturePreviewUrl || row.pictureUrl || row.refPictureUrl"
+        class="picpreview"
+      >
+        <img
+          width="100%"
+          height="100%"
+          [src]="
+            row.imageCropped ??
+            row.picturePreviewUrl ??
+            row.pictureUrl ??
+            row.refPictureUrl
+          "
+        />
         <!-- <div class='areaName'>
           <span>
             {{optionKeywords[0]}}
@@ -304,12 +439,16 @@
           <p>{{ row.planExplanation }}</p>
         </mat-list-item>
       </mat-list>
-      <div class="timerequired"><label>{{'Roundtime'|translate}}</label>{{ row.timeRequiredDisp  }}</div>
+      <div class="timerequired">
+        <label>{{ "Roundtime" | translate }}</label
+        >{{ row.timeRequiredDisp }}
+      </div>
     </div>
     <!-- スタート時間-->
-    <mat-list style="margin: 30px 16px 16px;">
+    <mat-list style="margin: 30px 16px 16px">
       <mat-list-item class="endtime">
-        <span class="sufix">{{ "StartTime" | translate  }}</span>{{ row.startTime }}
+        <span class="sufix">{{ "StartTime" | translate }}</span
+        >{{ row.startTime }}
       </mat-list-item>
     </mat-list>
 
@@ -325,13 +464,17 @@
         </div>
         <span class="label">{{ "PointOfDeparture" | translate }}</span>
       </div>
-      <div class='down_fill'>
-        <img src='../../../assets/img/allow_down_fill.svg' alt=''>
+      <div class="down_fill">
+        <img src="../../../assets/img/allow_down_fill.svg" alt="" />
       </div>
     </ng-container>
 
-    <app-transfer-panel *ngIf="row.startPlanSpot && row.startPlanSpot.transfer" [isCar]="row.isCar"
-      [item]="row.startPlanSpot" [nextItem]="row.planSpots[0]">
+    <app-transfer-panel
+      *ngIf="row.startPlanSpot && row.startPlanSpot.transfer"
+      [isCar]="row.isCar"
+      [item]="row.startPlanSpot"
+      [nextItem]="row.planSpots[0]"
+    >
     </app-transfer-panel>
 
     <div class="box" *ngIf="row.planSpots">
@@ -339,43 +482,70 @@
         <mat-card class="spotinfo">
           <!-- 掲載OK -->
           <mat-card-content>
-            <ng-container *ngIf="!item.isEndOfPublication;">
-              <div class='card-box'>
+            <ng-container *ngIf="!item.isEndOfPublication">
+              <div class="card-box">
                 <div class="spot-title">
                   <div class="lt">
                     <!--到着時間-->
-                    <span class="mark">{{i+1}}</span>
-                    <div class='titleline'>
+                    <span class="mark">{{ i + 1 }}</span>
+                    <div class="titleline">
                       <div>
-                        <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
-                        <span class="sugtime">{{ "SuggestedTime" | translate }}</span>
-                          <span class="stayTime">
-                            <select name="stayTime{{i}}" [(ngModel)]="item.stayTime" disabled="true" >
-                              <option *ngFor="let sTime of $stayTime" [value]="sTime.id">
-                                {{ commonService.isValidJson(sTime.name, lang) }}
-                              </option>
-                            </select>
-                          </span>
+                        <span class="starttime">{{
+                          item.startTime ? item.startTime : "--:--"
+                        }}</span>
+                        <span class="sugtime">{{
+                          "SuggestedTime" | translate
+                        }}</span>
+                        <span class="stayTime">
+                          <select
+                            name="stayTime{{ i }}"
+                            [(ngModel)]="item.stayTime"
+                            disabled="true"
+                          >
+                            <option
+                              *ngFor="let sTime of $stayTime"
+                              [value]="sTime.id"
+                            >
+                              {{ commonService.isValidJson(sTime.name, lang) }}
+                            </option>
+                          </select>
+                        </span>
                       </div>
                       <div class="spotname">
-                        {{ item.spotName  }}
+                        {{ item.spotName }}
                       </div>
                     </div>
                   </div>
                   <div class="rt">
-                    <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>
+                    <button
+                      mat-button
+                      class="link-to-spot"
+                      (click)="linktoSpot(item)"
+                    ></button>
                   </div>
                 </div>
 
                 <div class="spot-image">
                   <!-- 写真(複数枚) -->
-                  <owl-carousel-o *ngIf="item.previewPictures?.length > 1; else singlePict" [options]="mainOptions">
-                    <ng-container *ngFor="let pic of item.previewPictures; index as j">
+                  <owl-carousel-o
+                    *ngIf="item.previewPictures?.length > 1; else singlePict"
+                    [options]="mainOptions"
+                  >
+                    <ng-container
+                      *ngFor="let pic of item.previewPictures; index as j"
+                    >
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain covered">
-                          <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.previewMemos && item.previewMemos[j]">
-                            {{item.previewMemos[j]}}
+                          <img
+                            [src]="pic"
+                            [alt]="item.spotId"
+                            [title]="item.spotId"
+                          />
+                          <div
+                            class="memo"
+                            *ngIf="item.previewMemos && item.previewMemos[j]"
+                          >
+                            {{ item.previewMemos[j] }}
                           </div>
                         </div>
                       </ng-template>
@@ -383,9 +553,15 @@
                   </owl-carousel-o>
                   <!-- 写真(1枚) -->
                   <ng-template #singlePict>
-                    <ng-container *ngFor="let pic of item.previewPictures; index as i">
+                    <ng-container
+                      *ngFor="let pic of item.previewPictures; index as i"
+                    >
                       <div class="thumbmain">
-                        <img [src]="pic" [alt]="item.spotId" [title]="item.spotId" />
+                        <img
+                          [src]="pic"
+                          [alt]="item.spotId"
+                          [title]="item.spotId"
+                        />
                       </div>
                     </ng-container>
                   </ng-template>
@@ -406,17 +582,25 @@
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel *ngIf="item.transfer" [isCar]="row.isCar" [item]="item" [nextItem]="row.planSpots[i+1]">
+            <app-transfer-panel
+              *ngIf="item.transfer"
+              [isCar]="row.isCar"
+              [item]="item"
+              [nextItem]="row.planSpots[i + 1]"
+            >
             </app-transfer-panel>
           </mat-card-content>
           <!-- 掲載終了スポットの場合 -->
           <mat-card-content *ngIf="item.isEndOfPublication">
             <div class="myplan-line-header">
               <div class="right">
-                <span class="subspot mk{{i+1}}"></span>
+                <span class="subspot mk{{ i + 1 }}"></span>
               </div>
               <div class="myplan-card-box">
-                <button class="deleteSpot" (click)="onClickSpotDelete($event,item)">
+                <button
+                  class="deleteSpot"
+                  (click)="onClickSpotDelete($event, item)"
+                >
                   <i class="material-icons">clear</i>
                 </button>
               </div>
@@ -439,42 +623,91 @@
       <span class="label">{{ "ArrivalPlace" | translate }}</span>
     </div>
     <!--終了時間-->
-    <mat-list style="margin: auto 16px;">
+    <mat-list style="margin: auto 16px">
       <mat-list-item class="endtime">
-        <span class="sufix">{{ "EndTime" | translate  }}</span>{{ endTime }}
+        <span class="sufix">{{ "EndTime" | translate }}</span
+        >{{ endTime }}
       </mat-list-item>
     </mat-list>
     <div class="rec-memo" *ngIf="row.memo">
-      <p>{{row.memo}}</p>
+      <p>{{ row.memo }}</p>
       <label>memo</label>
     </div>
   </div>
   <div class="footer">
-    <!-- 共有先 -->
-    <div class='share'>
-      <label class="time-label">{{"ReleaseDestination"|translate}}</label>
-      <div class="container" *ngIf="row">
-        <select name="isRelease" [(ngModel)]="row.isRelease" (change)="changeRelease()">
-          <option *ngFor="let destination of $releaseDestination" [ngValue]="destination.id === 0 ? false : true">
-            {{ commonService.isValidJson(destination.name, lang) }}
-          </option>
-        </select>
+    <div class="row1">
+      <!-- 共有先 -->
+      <div class="share">
+        <label class="time-label">{{ "ReleaseDestination" | translate }}</label>
+        <div class="container" *ngIf="row">
+          <select
+            name="isRelease"
+            [(ngModel)]="row.isRelease"
+            (change)="changeRelease()"
+          >
+            <option
+              *ngFor="let destination of $releaseDestination"
+              [ngValue]="destination.id === 0 ? false : true"
+            >
+              {{ commonService.isValidJson(destination.name, lang) }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <!-- 保存 -->
+      <div class="save">
+        <button
+          mat-button
+          type="button"
+          id="plansave"
+          (click)="onClickSavePlan()"
+        ></button>
+        <label for="plansave">{{ "Save" | translate }}</label>
+      </div>
+      <!-- 新規プラン作成 -->
+      <div class="newplan">
+        <button
+          mat-button
+          type="button"
+          id="plannew"
+          (click)="onClickNewPlan()"
+        ></button>
+        <label for="plannew">{{ "CreatingNewPlan" | translate }}</label>
       </div>
     </div>
-    <!-- 保存 -->
-    <div class="save">
-      <button mat-button type="button" id="plansave" (click)="onClickSavePlan()">
-      </button>
-      <label for="plansave">{{ "Save" | translate }}</label>
-    </div>
-    <!-- 新規プラン作成 -->
-    <div class="newplan">
-      <button mat-button type="button" id="plannew" (click)="onClickNewPlan()">
-      </button>
-      <label for="plannew">{{"CreatingNewPlan" | translate}}</label>
+
+    <div class="transport">
+      <div class="lt">
+        <span class="label">{{ "TravelRoute" | translate }}</span>
+        <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
+          <input
+            type="checkbox"
+            id="switch-tran"
+            (click)="onClickTran()"
+            [checked]="row?.isCar"
+            [disabled]="!row"
+          />
+          <label for="switch-tran"><span></span></label>
+          <div id="swImg"></div>
+        </div>
+      </div>
+      <div class="rt">
+        <mat-slide-toggle
+          [checked]="row.isBus"
+          (change)="onClickBus()"
+          *ngIf="row && !row.isCar"
+        >
+          <span *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
+          <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
+        </mat-slide-toggle>
+      </div>
     </div>
   </div>
 
-  <div class="alert" *ngIf="isWarningCar">{{ "ErrorMsgSetTransferCar" | translate }}</div>
-  <div class="alert" *ngIf="isWarningEkitan">{{ "ErrorMsgSetTransferEkitan" | translate }}</div>
+  <div class="alert" *ngIf="isWarningCar">
+    {{ "ErrorMsgSetTransferCar" | translate }}
+  </div>
+  <div class="alert" *ngIf="isWarningEkitan">
+    {{ "ErrorMsgSetTransferEkitan" | translate }}
+  </div>
 </form>

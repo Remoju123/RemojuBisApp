@@ -1,21 +1,27 @@
-import { Inject, Injectable, OnDestroy, PLATFORM_ID } from "@angular/core";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { ComfirmDialogParam, MyPlanApp, PlanSpotCommon, ImageSize, Location } from "../class/common.class";
-import { IndexedDBService } from "./indexeddb.service";
-import { Guid } from "guid-typescript";
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { MatDialog } from "@angular/material/dialog";
-import { ConfirmMessageDialogComponent } from "../parts/confirm-message-dialog/confirm-message-dialog.component";
-import { MessageDialogComponent } from "../parts/message-dialog/message-dialog.component";
-import { LangFilterPipe } from "../utils/lang-filter.pipe";
+import { Inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import {
+  ComfirmDialogParam,
+  MyPlanApp,
+  PlanSpotCommon,
+  ImageSize,
+  Location,
+} from '../class/common.class';
+import { IndexedDBService } from './indexeddb.service';
+import { Guid } from 'guid-typescript';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmMessageDialogComponent } from '../parts/confirm-message-dialog/confirm-message-dialog.component';
+import { MessageDialogComponent } from '../parts/message-dialog/message-dialog.component';
+import { LangFilterPipe } from '../utils/lang-filter.pipe';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Router } from '@angular/router';
-import { TranslateService } from "@ngx-translate/core";
-import { isPlatformBrowser } from "@angular/common";
+import { TranslateService } from '@ngx-translate/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class CommonService implements OnDestroy {
   private isshowHeader = new Subject<boolean>();
@@ -51,7 +57,7 @@ export class CommonService implements OnDestroy {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {}
 
   /*----------------------------
    *
@@ -67,11 +73,11 @@ export class CommonService implements OnDestroy {
   }
 
   public onNotifyIsShowCart(state: boolean) {
-    this.isshowcart.next(state)
+    this.isshowcart.next(state);
   }
 
   public onNotifyIsShowMenu(state: boolean) {
-    this.isshowmenu.next(state)
+    this.isshowmenu.next(state);
   }
 
   public onNotifyIsLoadingFinish(state: boolean) {
@@ -82,7 +88,7 @@ export class CommonService implements OnDestroy {
     this.isMobile.next(state);
   }
 
-  public onNotifyChangeLang(state:string){
+  public onNotifyChangeLang(state: string) {
     this.curlang.next(state);
   }
 
@@ -102,36 +108,38 @@ export class CommonService implements OnDestroy {
     const myPlanApp: MyPlanApp = myPlan;
     if (myPlanApp && !myPlanApp.isSaved) {
       const param = new ComfirmDialogParam();
-      param.title = "LogoutConfirmTitle";
-      param.text = "LogoutConfirmText";
+      param.title = 'LogoutConfirmTitle';
+      param.text = 'LogoutConfirmText';
       const dialog = this.confirmMessageDialog(param);
-      dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(result => {
-        if (result === "ok") {
-          this.indexedDBService.clearMyPlan();
-          localStorage.removeItem("iskeep");
-          this.oauthService.logOut();
-        } else {
-          this.onNotifyIsShowMenu(false);
-          this.onNotifyIsShowCart(true);
-          return;
-        }
-      });
+      dialog
+        .afterClosed()
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((result) => {
+          if (result === 'ok') {
+            this.indexedDBService.clearMyPlan();
+            localStorage.removeItem('iskeep');
+            this.oauthService.logOut();
+          } else {
+            this.onNotifyIsShowMenu(false);
+            this.onNotifyIsShowCart(true);
+            return;
+          }
+        });
       return;
     } else {
       this.indexedDBService.clearMyPlan();
-      localStorage.removeItem("iskeep");
+      localStorage.removeItem('iskeep');
       this.oauthService.logOut();
     }
   }
 
   public getToken() {
     if (!this.oauthService.hasValidAccessToken()) {
-      console.log("Refreshing the token")
+      console.log('Refreshing the token');
       this.oauthService.silentRefresh();
+    } else {
+      console.log('Token is still valid');
     }
-    else {
-      console.log("Token is still valid")
-    };
   }
 
   public get name() {
@@ -224,21 +232,33 @@ export class CommonService implements OnDestroy {
   }
 
   isSome(ary: any) {
-    return ary.controls.some((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === true;
-    });
+    return ary.controls.some(
+      (x: {
+        get: (arg0: string) => { (): any; new (): any; value: boolean };
+      }) => {
+        return x.get('selected').value === true;
+      }
+    );
   }
 
   isEvery(ary: any) {
-    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === true;
-    });
+    return ary.controls.every(
+      (x: {
+        get: (arg0: string) => { (): any; new (): any; value: boolean };
+      }) => {
+        return x.get('selected').value === true;
+      }
+    );
   }
 
   isNotEvery(ary: any) {
-    return ary.controls.every((x: { get: (arg0: string) => { (): any; new(): any; value: boolean; }; }) => {
-      return x.get("selected").value === false;
-    });
+    return ary.controls.every(
+      (x: {
+        get: (arg0: string) => { (): any; new (): any; value: boolean };
+      }) => {
+        return x.get('selected').value === false;
+      }
+    );
   }
 
   async getGuid() {
@@ -274,7 +294,7 @@ export class CommonService implements OnDestroy {
     const langpipe = new LangFilterPipe();
 
     try {
-      JSON.parse(value)
+      JSON.parse(value);
     } catch (e) {
       return value;
     }
@@ -283,9 +303,9 @@ export class CommonService implements OnDestroy {
 
   reportComplete(result: boolean) {
     if (result) {
-      this.snackBarDisp("ReportReviewComplete");
+      this.snackBarDisp('ReportReviewComplete');
     } else {
-      this.snackBarDisp("ReportedReviewComplete");
+      this.snackBarDisp('ReportedReviewComplete');
     }
   }
 
@@ -303,10 +323,12 @@ export class CommonService implements OnDestroy {
       const m1 = (today.getMonth() + 1).toString().padStart(2, '0');
       const d1 = today.getDate().toString().padStart(2, '0');
 
-      let age = Math.floor((Number(y1 + m1 + d1) - Number(y2 + m2 + d2)) / 10000);
+      let age = Math.floor(
+        (Number(y1 + m1 + d1) - Number(y2 + m2 + d2)) / 10000
+      );
 
       if (age % 10 != 0) {
-        age = age - age % 10;
+        age = age - (age % 10);
       }
       return age;
     }
@@ -317,17 +339,17 @@ export class CommonService implements OnDestroy {
     return new Promise<Location>((resolve, reject) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          position => {
+          (position) => {
             const data = position.coords;
             let location: Location = new Location();
             location = {
               latitude: data.latitude,
               longitude: data.longitude,
-              errorCd: 0
+              errorCd: 0,
             };
             resolve(location);
           },
-          error => {
+          (error) => {
             const location: Location = new Location();
             location.errorCd = error.code;
 
@@ -354,12 +376,20 @@ export class CommonService implements OnDestroy {
           location.href = `comgooglemaps://?saddr=&daddr=${latitude},${longitude}&z=16`;
         }
       } else {*/
-      window.open(`https://www.google.co.jp/maps/dir/?api=1&hl=${currentlang}&destination=${latitude},${longitude}&z=16`, "_blank");
+      window.open(
+        `https://www.google.co.jp/maps/dir/?api=1&hl=${currentlang}&destination=${latitude},${longitude}&z=16`,
+        '_blank'
+      );
       //}
     }
   }
 
-  locationPlaceIdGoogleMap(currentlang: any, latitude: string, longitude: string, placeId: string) {
+  locationPlaceIdGoogleMap(
+    currentlang: any,
+    latitude: string,
+    longitude: string,
+    placeId: string
+  ) {
     if (isPlatformBrowser(this.platformId)) {
       /*if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         if (navigator.userAgent === "Android") {
@@ -368,13 +398,16 @@ export class CommonService implements OnDestroy {
           location.href = `comgooglemapsurl://maps.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`;
         }
       } else {*/
-      window.open(`https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`, "_blank");
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}&query_place_id=${placeId}`,
+        '_blank'
+      );
       //}
     }
   }
 
   directionGoogleMap(item: PlanSpotCommon, nextItem: PlanSpotCommon) {
-    let url =`https://www.google.com/maps/dir/?api=1&origin=`;
+    let url = `https://www.google.com/maps/dir/?api=1&origin=`;
     let fromSpotName: string, toSpotName: string;
     let fromPlaceId: string, toPlaceId: string;
     if (item.googleSpot) {
@@ -382,16 +415,19 @@ export class CommonService implements OnDestroy {
       fromPlaceId = item.googleSpot.place_id;
     } else {
       fromSpotName = item.spotName;
-      fromPlaceId = item.latitude + "," + item.longitude;
+      fromPlaceId = item.latitude + ',' + item.longitude;
     }
     if (nextItem.googleSpot) {
       toSpotName = nextItem.googleSpot.spot_name;
       toPlaceId = nextItem.googleSpot.place_id;
     } else {
       toSpotName = nextItem.spotName;
-      toPlaceId = nextItem.latitude + "," + nextItem.longitude;
+      toPlaceId = nextItem.latitude + ',' + nextItem.longitude;
     }
-    window.open(`https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&origin=${fromSpotName}&origin_place_id=${fromPlaceId}&destination=${toSpotName}&destination_place_id=${toPlaceId}`, "_blank");
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&origin=${fromSpotName}&origin_place_id=${fromPlaceId}&destination=${toSpotName}&destination_place_id=${toPlaceId}`,
+      '_blank'
+    );
     //window.open(`https://www.google.com/maps/dir/?api=1&mode=driving&origin=${fromPlaceId}&destination_place_id=${toPlaceId}`, "_blank");
   }
 
@@ -399,11 +435,11 @@ export class CommonService implements OnDestroy {
     // カンマで分割して以下のようにデータを分ける
     // tmp[0] : データ形式（data:image/png;base64）
     // tmp[1] : base64データ（iVBORw0k～）
-    var tmp = base64.split(",");
+    var tmp = base64.split(',');
     // base64データの文字列をデコード
     var data = atob(tmp[1]);
     // tmp[0]の文字列（data:image/png;base64）からコンテンツタイプ（image/png）部分を取得
-    var mime = tmp[0].split(":")[1].split(";")[0];
+    var mime = tmp[0].split(':')[1].split(';')[0];
     //  1文字ごとにUTF-16コードを表す 0から65535 の整数を取得
     var buf = new Uint8Array(data.length);
     for (var i = 0; i < data.length; i++) {
@@ -437,13 +473,13 @@ export class CommonService implements OnDestroy {
         const scale = dstWidth / width;
         const dstHeight = height * scale;
         // Canvas オブジェクトを使い、縮小後の画像を描画
-        const canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = dstWidth;
         canvas.height = dstHeight;
-        const ctx: any = canvas.getContext("2d");
+        const ctx: any = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, dstWidth, dstHeight);
         // Canvas オブジェクトから Data URL を取得
-        const resized = canvas.toDataURL("image/webp", 0.75);
+        const resized = canvas.toDataURL('image/webp', 0.75);
         result.previewUrl = resized;
         // blobに再変換
         var blob = this.base64toBlob(resized);
@@ -454,39 +490,37 @@ export class CommonService implements OnDestroy {
     });
   }
 
-  snackBarDisp(message: string, duration: number = 2000) {
-    this.snackBar.open(
-      this.translate.instant(message), "", {
+  snackBarDisp(message: string, duration: number = 1000) {
+    this.snackBar.open(this.translate.instant(message), '', {
       duration: duration,
-      verticalPosition: "bottom",
-      panelClass: "custom-snackbar"
+      verticalPosition: 'bottom',
+      panelClass: 'custom-snackbar',
     });
   }
 
   messageDialog(message: string) {
     return this.dialog.open(MessageDialogComponent, {
-      maxWidth: "100%",
-      width: "92vw",
-      position: { top: "10px" },
+      maxWidth: '100%',
+      width: '92vw',
+      position: { top: '10px' },
       data: message,
       autoFocus: false,
-      id: "mesdlg"
+      id: 'mesdlg',
     });
   }
 
   confirmMessageDialog(param: ComfirmDialogParam) {
     return this.dialog.open(ConfirmMessageDialogComponent, {
-      maxWidth: "100%",
-      width: "92vw",
-      position: { top: "10px" },
+      maxWidth: '100%',
+      width: '92vw',
+      position: { top: '10px' },
       data: param,
       autoFocus: false,
-      id: "cmd"
+      id: 'cmd',
     });
   }
 
   ngOnDestroy() {
     this.onDestroy$.next();
   }
-
 }

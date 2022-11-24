@@ -37,10 +37,9 @@ div.plandtl {
       cursor: pointer;
 
       .frame {
-        border: 1px solid #B7B7B7;
+        border: 1px solid #b7b7b7;
         padding: 1px 16px;
         border-radius: 12px;
-
 
         &::before {
           content: "keyboard_arrow_left";
@@ -83,7 +82,6 @@ div.plandtl {
             min-height: 13px;
           }
         }
-
       }
 
       .rt {
@@ -172,8 +170,34 @@ div.plandtl {
         height: 28px;
         position: absolute;
         right: 10px;
-        //top:0;
         bottom: 37px;
+        animation: 0.7s ease-in 0s 1 jump;
+      }
+      @keyframes jump {
+        0% {
+          transform: translateY(0px) rotateZ(0deg);
+        }
+        30% {
+          transform: translateY(-30px) rotateZ(10deg);
+        }
+        35% {
+          transform: translateY(-30px) rotateZ(-30deg);
+        }
+        45% {
+          transform: translateY(-30px) rotateZ(30deg);
+        }
+        55% {
+          transform: translateY(-30px) rotateZ(-30deg);
+        }
+        65% {
+          transform: translateY(-30px) rotateZ(30deg);
+        }
+        70% {
+          transform: translateY(-30px) rotateZ(10deg);
+        }
+        100% {
+          transform: translateY(0px) rotateZ(0deg);
+        }
       }
     }
   }
@@ -207,7 +231,6 @@ div.plandtl {
       }
     }
   }
-
 
   #mainPictures {
     padding: 0;
@@ -291,9 +314,8 @@ div.plandtl {
     }
 
     .thumb {
-
       //height: 252px;
-      @media screen and (max-width:428px) {
+      @media screen and (max-width: 428px) {
         height: 252px;
       }
 
@@ -301,7 +323,7 @@ div.plandtl {
         height: 425px;
       }
 
-      >img {
+      > img {
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -334,13 +356,12 @@ div.plandtl {
         }
 
         .category {
-          background-color: #B6C2A6;
+          background-color: #b6c2a6;
           padding: 0 6px;
           line-height: 26px;
           margin-left: 7px;
           border-radius: 3px;
-          color: rgba(0, 0, 0, .87);
-          ;
+          color: rgba(0, 0, 0, 0.87);
           white-space: nowrap;
           max-width: 34vw;
           overflow: hidden;
@@ -544,7 +565,7 @@ div.plandtl {
 
             &:last-child {
               &::after {
-                content: '';
+                content: "";
               }
             }
           }
@@ -555,7 +576,7 @@ div.plandtl {
         padding-right: 3px;
         padding-left: 2px;
 
-        label{
+        label {
           background: #707070;
           color: #fff;
           padding: 1px 4px;
@@ -627,7 +648,6 @@ div.plandtl {
           display: inline-block;
         }
       }
-
     }
   }
 
@@ -704,7 +724,6 @@ div.plandtl {
       ::ng-deep .mat-icon-button {
         position: absolute;
         right: 0;
-
       }
     }
 
@@ -782,7 +801,6 @@ div.plandtl {
         margin-top: 2px;
         border-top: 1px dotted $color-gold;
         padding-top: 8px;
-
 
         span.feature {
           background-color: #fff;
@@ -945,17 +963,15 @@ div.plandtl {
 
               div {
                 span {
-                  border: 1px solid #DE7274;
+                  border: 1px solid #de7274;
                   padding: 1px 6px;
                   margin-right: 0.2em;
                   font-size: 12px;
-                  color: #DE7274;
+                  color: #de7274;
                   border-radius: 0.2em;
                 }
               }
             }
-
-
 
             p {
               margin: 5px;
@@ -1018,15 +1034,15 @@ div.plandtl {
           }
         }
 
-        $img_height:440px;
-        $img_height_m:54vw;
-        $img_height_s:69vw;
+        $img_height: 440px;
+        $img_height_m: 54vw;
+        $img_height_s: 69vw;
 
         .spot-image {
           position: relative;
           height: $img_height;
 
-          @media screen and (max-width:428px) {
+          @media screen and (max-width: 428px) {
             height: $img_height_s;
           }
 
@@ -1038,7 +1054,6 @@ div.plandtl {
           margin: 0.5em 16px 0;
 
           ::ng-deep .owl-carousel {
-
             .owl-prev,
             .owl-next {
               position: absolute;
@@ -1088,7 +1103,7 @@ div.plandtl {
               background: $color-gry06;
               height: $img_height;
 
-              @media screen and (max-width:428px) {
+              @media screen and (max-width: 428px) {
                 height: $img_height_s;
               }
 
@@ -1120,7 +1135,7 @@ div.plandtl {
             background: $color-gry06;
             height: $img_height;
 
-            @media screen and (max-width:428px) {
+            @media screen and (max-width: 428px) {
               height: $img_height_s;
             }
 
@@ -1134,7 +1149,6 @@ div.plandtl {
               @include copy-protect;
             }
           }
-
 
           .info {
             position: absolute;
@@ -1205,9 +1219,7 @@ div.plandtl {
                 width: 34px;
               }
             }
-
           }
-
         }
 
         .spot-overview {
@@ -1250,7 +1262,7 @@ div.plandtl {
               padding-right: 5px;
 
               &::after {
-                content: '';
+                content: "";
                 width: 5px;
                 height: 5px;
                 border: 0px;
@@ -1286,7 +1298,7 @@ div.plandtl {
         all: unset;
         width: 181px;
         height: 28px;
-        background-color: #DE7274;
+        background-color: #de7274;
         color: #fff;
         border-radius: 4px;
         text-align: center;
@@ -1295,7 +1307,7 @@ div.plandtl {
         position: relative;
         z-index: 1;
 
-        &.on{
+        &.on {
           &::after {
             content: "";
             background: url("../../../assets/img/icon_onplan.svg") no-repeat;
@@ -1304,6 +1316,33 @@ div.plandtl {
             position: absolute;
             right: 0px;
             bottom: 18px;
+            animation: 0.7s ease-in 0s 1 jump;
+          }
+          @keyframes jump {
+            0% {
+              transform: translateY(0px) rotateZ(0deg);
+            }
+            30% {
+              transform: translateY(-30px) rotateZ(10deg);
+            }
+            35% {
+              transform: translateY(-30px) rotateZ(-30deg);
+            }
+            45% {
+              transform: translateY(-30px) rotateZ(30deg);
+            }
+            55% {
+              transform: translateY(-30px) rotateZ(-30deg);
+            }
+            65% {
+              transform: translateY(-30px) rotateZ(30deg);
+            }
+            70% {
+              transform: translateY(-30px) rotateZ(10deg);
+            }
+            100% {
+              transform: translateY(0px) rotateZ(0deg);
+            }
           }
         }
       }
@@ -1350,7 +1389,7 @@ div.plandtl {
 
       p {
         padding: 8px;
-        background-color: #F6F5EF;
+        background-color: #f6f5ef;
         border-radius: 10px;
         margin-block-start: 0;
       }
@@ -1389,14 +1428,12 @@ div.plandtl {
             padding: 3px 10px;
             height: initial;
           }
-
         }
       }
     }
   }
 
   .pics {
-
     ::ng-deep .owl-prev,
     ::ng-deep .owl-next {
       position: absolute;
@@ -1577,7 +1614,7 @@ div.plandtl {
 
         .about {
           font-size: 14px;
-          background-color: #F7F5EC;
+          background-color: #f7f5ec;
           border-radius: 10px;
 
           p {
@@ -1599,9 +1636,9 @@ div.plandtl {
         all: unset;
         width: 188px;
         height: 26px;
-        border: 1px solid #F3787F;
+        border: 1px solid #f3787f;
         border-radius: 13px;
-        color: #F3787F;
+        color: #f3787f;
         font-size: 14px;
         text-align: center;
       }
@@ -1625,7 +1662,7 @@ div.plandtl {
           display: flex;
           align-items: center;
           text-decoration: none;
-          color: rgba(0, 0, 0, .87);
+          color: rgba(0, 0, 0, 0.87);
 
           span {
             margin: auto 4px;
@@ -1642,7 +1679,6 @@ div.plandtl {
             margin-right: 12px;
           }
         }
-
       }
 
       .favorite {
@@ -1686,7 +1722,7 @@ div.plandtl {
         }
       }
 
-      .bookmark{
+      .bookmark {
         display: flex;
         align-items: center;
 
