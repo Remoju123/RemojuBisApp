@@ -29,7 +29,6 @@
 @media screen and (min-width: 768px) {
   .outletArea {
     min-height: calc(100vh - 170px);
-    
   }
 }
 
@@ -52,7 +51,7 @@ button {
 .scroll-to-top {
   position: fixed;
   margin: auto;
-  left:0;
+  left: 0;
   right: 0;
   bottom: 19px;
   z-index: 100;
@@ -66,12 +65,12 @@ button {
     //width: 49px;
   }
 
-  &.up{
+  &.up {
     //bottom: 198px;
   }
 }
 
-.view-my-plan{
+.view-my-plan {
   position: fixed;
   right: 8px;
   bottom: 8px;
@@ -87,14 +86,14 @@ button {
     height: 63px;
   }
 
-  ::ng-deep .mat-button-ripple{
+  ::ng-deep .mat-button-ripple {
     all: unset;
   }
 
-  ::ng-deep .mat-badge-content{
+  ::ng-deep .mat-badge-content {
     position: absolute;
-    right: 0!important;
-    top:-6px;
+    right: 0 !important;
+    top: -6px;
     // background-color: #000;
     color: #fff;
     background: url("../../../assets/img/icon_badge.svg") no-repeat;
@@ -103,13 +102,33 @@ button {
     line-height: 28px;
   }
 
-  &.on{
-    ::ng-deep .mat-badge-content{
+  &.on {
+    animation: bounce_frame 1s ease 1s;
+    ::ng-deep .mat-badge-content {
       background-image: url("../../../assets/img/icon_badge.svg");
     }
   }
 
-  &.up{
+  @keyframes bounce_frame {
+    30% {
+      transform: scale(1.2);
+    }
+    40%,
+    60% {
+      transform: rotate(-20deg) scale(1.2);
+    }
+    50% {
+      transform: rotate(20deg) scale(1.2);
+    }
+    70% {
+      transform: rotate(0deg) scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  &.up {
     //bottom:116px;
   }
 }
@@ -119,14 +138,13 @@ button {
 }
 // https://stackoverflow.com/questions/52441095/sticky-table-header-doesnt-work-in-angular-materials-mat-sidenav-container
 // sticky-table-header-doesnt-work
-mat-sidenav-container{
-  &.mat-drawer-container-has-open{
-    position: fixed!important;
-    top:0;
+mat-sidenav-container {
+  &.mat-drawer-container-has-open {
+    position: fixed !important;
+    top: 0;
     width: 100%;
   }
 }
-
 
 mat-sidenav-container,
 mat-sidenav-content {
@@ -136,11 +154,11 @@ mat-sidenav-content {
       //padding-top: 110px;
       // padding-top: 44px;
       // padding-top: 189px;
-      &.on{
+      &.on {
         // padding-top: 50px;
       }
 
-      &.off{
+      &.off {
         padding-top: 50px;
       }
     }
@@ -162,12 +180,12 @@ mat-sidenav-content {
   width: 22px;
 }
 
-.mat-sidenav.cartnav{
+.mat-sidenav.cartnav {
   width: 100%;
   height: calc(100vh - 45px);
   margin-top: 45px;
 
-  button.close-my-plan{
+  button.close-my-plan {
     position: fixed;
     right: 8px;
     bottom: 8px;
@@ -185,20 +203,20 @@ mat-sidenav-content {
   }
 }
 
-@media screen and (min-width: 1025px) { 
+@media screen and (min-width: 1025px) {
   mat-sidenav-container,
   mat-sidenav-content {
-    background-color: #F0F2F5;
-  } 
+    background-color: #f0f2f5;
+  }
 }
 
-$body_margin:60px; //138px
-#pc{
+$body_margin: 60px; //138px
+#pc {
   width: 1024px;
   display: flex;
   //justify-content: center;
   margin: auto;
-  .left{
+  .left {
     overflow-y: scroll;
     height: calc(100vh - $body_margin);
     width: 380px;
@@ -229,33 +247,31 @@ $body_margin:60px; //138px
       padding: 0;
       //opacity: 0;
       transition: all 0.2s ease-in-out;
-    
+
       @include ios-reset();
-    
+
       img {
         //width: 49px;
       }
-    
-      &.up{
+
+      &.up {
         bottom: 198px;
       }
     }
   }
 }
-#pc-f{
+#pc-f {
   height: $body_margin;
-  ::ng-deep{
-    footer{
+  ::ng-deep {
+    footer {
       padding-bottom: 0;
-      .row.public{
+      .row.public {
         padding-top: 10px;
       }
-      p{
+      p {
         margin: unset;
         margin-top: 0.3em;
       }
     }
-    
   }
-  
 }

@@ -353,5 +353,6 @@
   "ErrorMsgEkitan":"There was no public transportation.",
   "View": "View",
   "InPlanBox": "Entered the plan box.",
-  "Contact":"Contact"
+  "Contact":"Contact",
+  "PlanboxChange":"Plan BOX has been updated."
 }

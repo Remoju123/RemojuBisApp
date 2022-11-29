@@ -353,5 +353,6 @@
   "ErrorMsgEkitan":"経路　公共手段がありませんでした。",
   "View": "閲覧数",
   "InPlanBox": "プランBoxに入りました。",
-  "Contact":"お問い合わせ"
+  "Contact":"お問い合わせ",
+  "PlanboxChange":"プランBOXが更新されました。"
 }

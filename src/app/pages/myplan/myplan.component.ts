@@ -9,6 +9,7 @@ import {
   PLATFORM_ID,
   QueryList,
   Input,
+  IterableDiffers,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from '../../service/common.service';
@@ -45,6 +46,7 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { MyplanSpotEditDialogComponent } from '../../parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component';
 import { MyplanPlanEditDialogComponent } from '../../parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component';
 import { MyplanAutoDialogComponent } from 'src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -67,6 +69,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
   private baseUrl: string;
   private currentlang: string;
+  private iterableDiffer: any;
+  myPlanSpots: any;
   codec = new HttpUrlEncodingCodec();
 
   constructor(
@@ -81,11 +85,25 @@ export class MyplanComponent implements OnInit, OnDestroy {
     private router: Router,
     private loading: LoadingIndicatorService,
     private dateAdapter: DateAdapter<NativeDateAdapter>,
+    private _iterableDiffers: IterableDiffers,
+    private snackBar: MatSnackBar,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if (isPlatformBrowser(this.platformId)) {
       this.baseUrl = document.getElementsByTagName('base')[0].href;
       this.currentlang = localStorage.getItem('gml');
+    }
+    this.iterableDiffer = this._iterableDiffers.find([]).create(null);
+  }
+
+  ngDoCheck() {
+    let changes = this.iterableDiffer.diff(this.myPlanSpots);
+    if (changes) {
+      this.snackBar.open(this.translate.instant('PlanboxChange'), null, {
+        // horizontalPosition: 'center',
+        // verticalPosition: 'bottom',
+        duration: 2000,
+      });
     }
   }
 
@@ -244,6 +262,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
       if (x === this.row.planUserId) {
         this.planRemove();
       }
+    });
+
+    // マイプラン（バスケット）通知
+    this.myplanService.MySpots$.subscribe((r) => {
+      this.myPlanSpots = r;
     });
 
     // お気に入り更新通知
@@ -1049,6 +1072,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.indexedDBService.registPlan(this.row);
   }
 
+  _qty: number = 0;
+
   checkTransfer() {
     const qty = this.getSpotQty();
 
@@ -1063,6 +1088,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (!this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       this.isEdit = true;
     }
+
+    // if (this._qty < qty) {
+    //   alert('added!');
+    //   this._qty = qty;
+    // }
   }
 
   getSpotQty(): number {
