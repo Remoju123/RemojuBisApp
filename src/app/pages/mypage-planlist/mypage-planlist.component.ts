@@ -118,7 +118,7 @@ export class MypagePlanListComponent
       .getDataSelected()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((r) => {
-        console.log(r);
+        //console.log(r);
         this.$releaseDestination = r;
       });
 
