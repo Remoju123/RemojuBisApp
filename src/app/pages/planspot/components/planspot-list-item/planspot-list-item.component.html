@@ -21,7 +21,7 @@
         (click)="onClickDeleteFavorite(item)"
       ></button>
     </div>
-    <div class="card-box">
+    <div class="card-box" [ngClass]="{ on: chkInMyPlanspot(item) }">
       <div class="card-header">
         <div class="picture">
           <owl-carousel-o
@@ -64,19 +64,19 @@
               {{ item.isPlan && item.spotQty > 1 ? "Plan" : "Spot" }}
             </span>
             <span class="areaName" *ngIf="item.areaName">
-              {{ item.areaName | langFilter: lang }}
+              {{ item.areaName | langFilter : lang }}
             </span>
           </div>
         </div>
       </div>
 
-      <div class="card-bottom" [ngClass]="{ on: chkInMyPlanspot(item) }">
+      <div class="card-bottom">
         <mat-list>
           <mat-list-item class="bottom-view">
             <div class="row">
               <span class="view">
                 {{ "PostedDate" | translate }}：{{
-                  item.releaseCreateDatetime | date: "yyyy/MM/dd"
+                  item.releaseCreateDatetime | date : "yyyy/MM/dd"
                 }}
               </span>
               <span class="view">
@@ -131,7 +131,7 @@
 
           <ng-template #isSpot>
             <mat-list-item class="row">
-              <p>{{ item.overview | langFilter: lang }}</p>
+              <p>{{ item.overview | langFilter : lang }}</p>
             </mat-list-item>
             <mat-list-item class="row">
               <span class="directions">
@@ -151,7 +151,7 @@
             <mat-card-content class="badge">
               <dl>
                 <dd *ngFor="let item of item.searchCategories">
-                  {{ item.name | langFilter: lang }}
+                  {{ item.name | langFilter : lang }}
                 </dd>
               </dl>
             </mat-card-content>
@@ -218,7 +218,7 @@
         <div class="info">
           <div class="lt">
             <span class="areaName" *ngIf="item.googleSpot.mArea?.area_name_1">
-              {{ item.googleSpot.mArea.area_name_1 | langFilter: lang }}
+              {{ item.googleSpot.mArea.area_name_1 | langFilter : lang }}
             </span>
           </div>
         </div>

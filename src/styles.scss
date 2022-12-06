@@ -42,12 +42,31 @@ table.dlgtbl {
 
   tr {
     display: grid;
-    td{
-      &:first-child{
+    td {
+      &:first-child {
         font-weight: bolder;
       }
     }
   }
 
   margin-bottom: 1em;
+}
+
+.myplanSnackBar {
+  background-color: $color-pnk04;
+  font-weight: 800;
+
+  margin: auto !important;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70% !important;
+  height: 70px;
+  right: 0;
+  left: 0;
+
+  .mat-simple-snackbar {
+    justify-content: center !important;
+    line-height: 45px;
+  }
 }

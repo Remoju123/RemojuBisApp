@@ -226,7 +226,7 @@
   "VideoSizeError": "Video files larger than 100MB cannot be uploaded.",
   "FreeMemoEx": "Message for everyone",
   "MakeMyPlan": "Make my plan",
-  "ArragePlan": "Plan creation screen",
+  "ArragePlan": "Plan Box",
   "SetDeparturePoint": "Set point of departure",
   "SetDestination": "Set destination",
   "PointOfDeparture": "Point of departure",
@@ -354,5 +354,6 @@
   "View": "View",
   "InPlanBox": "Entered the plan box.",
   "Contact":"Contact",
-  "PlanboxChange":"Plan BOX has been updated."
+  "PlanboxChange":"Plan BOX has been added.",
+  "PlanSpotList":"Recommended Planlist"
 }

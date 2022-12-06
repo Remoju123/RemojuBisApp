@@ -38,8 +38,11 @@ div.plandtl {
 
       .frame {
         border: 1px solid #b7b7b7;
-        padding: 1px 16px;
-        border-radius: 12px;
+        padding: 4px 16px;
+        border-radius: 16px;
+        background-color: #00000080;
+        color: #fff;
+        font-weight: 800;
 
         &::before {
           content: "keyboard_arrow_left";

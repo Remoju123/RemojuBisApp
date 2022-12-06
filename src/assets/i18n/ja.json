@@ -293,7 +293,7 @@
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
-  "SearchGuide": "「東京タワー」「インスタ映え」...",
+  "SearchGuide": "キーワードで検索",
   "CreateNew": "新規作成する",
   "LoginConfirmTitle": "保存にはログインが必要です。",
   "LoginConfirmText": "ログイン画面 又は ユーザー登録画面に移動しますか？",
@@ -354,5 +354,6 @@
   "View": "閲覧数",
   "InPlanBox": "プランBoxに入りました。",
   "Contact":"お問い合わせ",
-  "PlanboxChange":"プランBOXが更新されました。"
+  "PlanboxChange":"プランBOXに入りました。",
+  "PlanSpotList":"みんなのおすすめプラン一覧"
 }

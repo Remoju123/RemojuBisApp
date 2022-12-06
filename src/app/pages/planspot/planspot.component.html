@@ -1,4 +1,5 @@
-<app-planspot-selector id="psheader"
+<app-planspot-selector
+  id="psheader"
   [count]="count"
   [condition]="condition"
   [mSort]="$mSort"
@@ -7,9 +8,16 @@
   (sort)="sortChange($event)"
   (keyword)="keywordSearch($event)"
   (open)="openDialog($event)"
-  (reset)="conditionReset()">
+  (reset)="conditionReset()"
+>
 </app-planspot-selector>
-<app-planspot-list (scrolled)="onScrollDown()" (glink)="onPlanSpotChange($event)" [isList]="isList" [condition]="condition">
+<div class="list-header">{{ "PlanSpotList" | translate }}</div>
+<app-planspot-list
+  (scrolled)="onScrollDown()"
+  (glink)="onPlanSpotChange($event)"
+  [isList]="isList"
+  [condition]="condition"
+>
   <app-planspot-list-item
     *ngFor="let item of details$"
     [item]="item"

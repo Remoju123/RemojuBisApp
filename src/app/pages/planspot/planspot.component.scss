@@ -1,26 +1,27 @@
+@import "vars";
 @media screen and (min-width: 1025px) {
-  #psheader{
+  #psheader {
     position: sticky;
     top: 0;
     display: block;
     z-index: 11;
-  }  
+  }
 }
 
-::ng-deep{
-  #userpost{
+::ng-deep {
+  #userpost {
     .buttons {
       position: relative;
       display: inline-block;
       margin-top: 12px;
-  
+
       button {
         all: unset;
         width: 188px;
         height: 26px;
-        border: 1px solid #F3787F;
+        border: 1px solid #f3787f;
         border-radius: 13px;
-        color: #F3787F;
+        color: #f3787f;
         font-size: 14px;
         text-align: center;
       }
@@ -28,3 +29,15 @@
   }
 }
 
+.list-header {
+  position: sticky;
+  height: 21px;
+  line-height: 21px;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  background-color: $color-gld10;
+  color: #fff;
+}

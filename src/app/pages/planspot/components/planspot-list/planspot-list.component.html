@@ -1,42 +1,45 @@
-
-<div class="box"
-infinite-scroll
-[infiniteScrollDistance]="isList ? 5 : 5"
-[infiniteScrollUpDistance]="1.5"
-[infiniteScrollThrottle]="150"
-[infiniteScrollContainer]="isMobile?null:box"
-[scrollWindow]="isMobile?true:false"
-[fromRoot]="isMobile?false:true"
-(scrolled)="scrolledEmit()"
-(scroll)="onScroll($event)"
-#box>
-  <mat-card id="nolist" *ngIf="!isList && condition.select!=='google'">
+<div
+  class="box"
+  infinite-scroll
+  [infiniteScrollDistance]="isList ? 5 : 5"
+  [infiniteScrollUpDistance]="1.5"
+  [infiniteScrollThrottle]="150"
+  [infiniteScrollContainer]="isMobile ? null : box"
+  [scrollWindow]="isMobile ? true : false"
+  [fromRoot]="isMobile ? false : true"
+  (scrolled)="scrolledEmit()"
+  (scroll)="onScroll($event)"
+  #box
+>
+  <mat-card id="nolist" *ngIf="!isList && condition.select !== 'google'">
     <mat-card-content>
-      {{ 'NotFindRecommendations' | translate }}<br>
-      {{ 'Instead' | translate }}<a href="javascript:void(0);" class="glink" (click)="googleLink('google')">{{ 'GoogleSearch' | translate }}</a>{{ 'SearchSpot' | translate }}
+      {{ "NotFindRecommendations" | translate }}<br />
+      {{ "Instead" | translate
+      }}<a
+        href="javascript:void(0);"
+        class="glink"
+        (click)="googleLink('google')"
+        >{{ "GoogleSearch" | translate }}</a
+      >{{ "SearchSpot" | translate }}
     </mat-card-content>
   </mat-card>
-  <mat-card id="nolist" *ngIf="!isList && condition.select==='google'">
+  <mat-card id="nolist" *ngIf="!isList && condition.select === 'google'">
     <mat-card-content>
-      {{ 'GoogleSearchAny' | translate }}<br>
-      {{ 'ReplaceKeyword' | translate }}<br>
-      {{ 'includedPlan' | translate }}
+      {{ "GoogleSearchAny" | translate }}<br />
+      {{ "ReplaceKeyword" | translate }}<br />
+      {{ "includedPlan" | translate }}
 
-      <div class='alert' *ngIf="condition.keyword">
-        <p>フリーキーワード<span>{{condition.keyword}}</span>で検索中です。</p>
-        
-      </div>
-
-      
+      <!-- <div class='alert' *ngIf="condition.keyword">
+        <p>フリーキーワード<span>{{condition.keyword}}</span>で検索中です。</p>        
+      </div> -->
     </mat-card-content>
   </mat-card>
-  <mat-card id="nolist" *ngIf="!isList && condition.select==='user'">
+  <mat-card id="nolist" *ngIf="!isList && condition.select === 'user'">
     <mat-card-content>
-      {{ 'UserPlan' | translate }}
+      {{ "UserPlan" | translate }}
     </mat-card-content>
   </mat-card>
-  <ng-content>
-  </ng-content>
+  <ng-content> </ng-content>
   <button *ngIf="!isMobile" class="scroll-to-top" (click)="scrollToTop()">
     <img src="../../../../../assets/img/toTop3.svg" alt="toTop" />
   </button>
