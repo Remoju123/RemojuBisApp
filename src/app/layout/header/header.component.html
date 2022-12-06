@@ -3,8 +3,12 @@
     <mat-toolbar-row>
       <span class="logo">
         <!-- Remoju -->
-        <a (click)="onNavgateRemoju()" style="min-height:54px;">
-          <img src="../../../assets/img/remoju-logo-b.svg" class="imgsp" alt="remoju-app" />
+        <a (click)="onNavgateRemoju()" style="min-height: 54px">
+          <img
+            src="../../../assets/img/remoju-logo-b.svg"
+            class="imgsp"
+            alt="remoju-app"
+          />
         </a>
       </span>
 
@@ -18,20 +22,26 @@
         </a> -->
 
         <a routerLink="mypage" fragment="list" class="user">
-          <img src="{{pictureUrl}}" alt="user">
+          <img src="{{ pictureUrl }}" alt="user" />
         </a>
 
         <!-- <button mat-icon-button class="user" aria-label="user" (click)="linktoMyplan()">
           <img src="{{pictureUrl}}" alt="user">
         </button> -->
 
-        <button mat-icon-button class="menu" color="primary" aria-label="menu" (click)="toggleactive()">
+        <button
+          mat-icon-button
+          class="menu"
+          color="primary"
+          aria-label="menu"
+          (click)="toggleactive()"
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
       </span>
 
-      <div class='guide'>
-        {{"Hedtitle"|translate}}
+      <div class="guide" (click)="linktoGuide()">
+        {{ "Hedtitle" | translate }}
       </div>
     </mat-toolbar-row>
   </mat-toolbar>
