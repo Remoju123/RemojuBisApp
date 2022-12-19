@@ -1,4 +1,20 @@
-h1{
+h1 {
   text-align: center;
   font-size: 24px;
+}
+
+ul {
+  list-style: none;
+  padding: 20px;
+  //border-bottom: 1px solid #ccc;
+  li {
+    line-height: 1.5;
+    //border-top: 1px solid #ccc;
+    padding: 1em 0;
+    span {
+      display: block;
+      width: 86px;
+      font-weight: 800;
+    }
+  }
 }
