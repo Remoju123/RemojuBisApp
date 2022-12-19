@@ -1,27 +1,35 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+} from '@angular/core';
 import { Location } from '@angular/common';
-import { MenuItems } from "../../shared/menu-items/menu-items";
-import { CommonService } from "../../service/common.service";
-import { MypageFavoriteListService } from "../../service/mypagefavoritelist.service";
-import { MypagePlanListService } from "../../service/mypageplanlist.service";
-import { PlanSpotListService } from "../../service/planspotlist.service";
-import { UserService } from "../../service/user.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { CacheStore } from "../../class/planspotlist.class";
+import { MenuItems } from '../../shared/menu-items/menu-items';
+import { CommonService } from '../../service/common.service';
+import { MypageFavoriteListService } from '../../service/mypagefavoritelist.service';
+import { MypagePlanListService } from '../../service/mypageplanlist.service';
+import { PlanSpotListService } from '../../service/planspotlist.service';
+import { UserService } from '../../service/user.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { CacheStore } from '../../class/planspotlist.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
-import { MyplanListCacheStore } from "../../class/mypageplanlist.class";
+import { MyplanListCacheStore } from '../../class/mypageplanlist.class';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
-export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
+export const MYPLANLIST_KEY =
+  makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
-  selector: "app-nav-menu",
-  templateUrl: "./nav-menu.component.html",
-  styleUrls: ["./nav-menu.component.scss"],
+  selector: 'app-nav-menu',
+  templateUrl: './nav-menu.component.html',
+  styleUrls: ['./nav-menu.component.scss'],
 })
 export class NavMenuComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
@@ -53,8 +61,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
     private transferState: TransferState,
     public userService: UserService,
     public menuItems: MenuItems,
-    private translate: TranslateService,
-  ) { }
+    private translate: TranslateService
+  ) {}
 
   collapse() {
     this.isExpanded = false;
@@ -71,14 +79,19 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userName = this.commonService.name;
 
-    this.userService.isupdUserName$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
-      // ユーザー情報
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-        if (r) {
-          this.userName = r.displayName;
-        }
+    this.userService.isupdUserName$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((v) => {
+        // ユーザー情報
+        this.userService
+          .getUser()
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe((r) => {
+            if (r) {
+              this.userName = r.displayName;
+            }
+          });
       });
-    });
   }
 
   ngOnDestroy() {
@@ -92,7 +105,9 @@ export class NavMenuComponent implements OnInit, OnDestroy {
       this.transferState.remove(PLANSPOT_KEY);
       sessionStorage.removeItem(this.mypagePlanListService.conditionSessionKey);
       this.transferState.remove(MYPLANLIST_KEY);
-      sessionStorage.removeItem(this.mypageFavoriteListService.conditionSessionKey);
+      sessionStorage.removeItem(
+        this.mypageFavoriteListService.conditionSessionKey
+      );
       this.transferState.remove(FAVORITE_KEY);
     }
     if (frag === '') {
@@ -106,7 +121,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   onNavgateFeature(page: string) {
-    location.href = `${location.origin}/contents/ja-jp/${page}`;
+    //location.href = `${location.origin}/contents/ja-jp/${page}`;
+    window.open(`${location.origin}/contents/ja-jp/${page}`, '_blank');
   }
 
   onClickSwitchLang(e) {
@@ -127,7 +143,6 @@ export class NavMenuComponent implements OnInit, OnDestroy {
 
     let $url = this.router.url.replace(/.../, currentLang);
     this.location.replaceState($url);
-
   }
 
   onClose() {
