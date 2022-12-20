@@ -49,10 +49,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   languages = environment.languages;
 
-  //currentLang: string = environment.defaultLang;
-  currentLang: string = isPlatformBrowser(this.platformId)
-    ? sessionStorage.getItem('gml')
-    : 'ja';
+  currentLang: string = environment.defaultLang;
+  // currentLang: string = isPlatformBrowser(this.platformId)
+  //   ? sessionStorage.getItem('gml')
+  //   : 'ja';
 
   // サイドナビバインドプロパティ
   @Output() event = new EventEmitter<boolean>();
