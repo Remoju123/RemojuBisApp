@@ -496,7 +496,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
-    this.gaService.sendEvent('planspotlist', val, 'tab', null);
+    //this.gaService.sendEvent('planspotlist', val, 'tab', null);
 
     this.condition.select = val;
     sessionStorage.setItem(
