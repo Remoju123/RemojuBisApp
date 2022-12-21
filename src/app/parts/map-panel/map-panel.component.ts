@@ -116,7 +116,7 @@ export class MapPanelComponent implements OnInit, OnDestroy {
     this.map = event;
 
     // 車の経路表示
-    if (this.isCar) {
+    if (this.isCar && this.overviewPolyline) {
       try {
         var decodedPath = google.maps.geometry.encoding.decodePath(
           this.overviewPolyline
