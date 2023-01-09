@@ -31,7 +31,9 @@
           type="radio"
           value="all"
           (change)="onSwitchPlanSpot($event)"
-          [checked]="condition.select ? condition.select === 'all' : false"
+          [checked]="
+            condition.select !== null ? condition.select === 'all' : false
+          "
         />
         <label for="all" class="all" value="all">All</label>
         <input
