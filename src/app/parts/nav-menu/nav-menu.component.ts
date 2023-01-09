@@ -99,7 +99,7 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   onNavgate(page: string, frag?: string, isSessionClear?: boolean) {
-    console.log(page);
+    //console.log(page);
     if (isSessionClear) {
       sessionStorage.removeItem(this.planSpotListService.conditionSessionKey);
       this.transferState.remove(PLANSPOT_KEY);

@@ -15,6 +15,15 @@ ul {
       display: block;
       width: 86px;
       font-weight: 800;
+      &.lg {
+        font-size: 120%;
+      }
+    }
+    h2 {
+      margin: unset;
+    }
+    ul {
+      padding-inline-start: 0px;
     }
   }
 }
