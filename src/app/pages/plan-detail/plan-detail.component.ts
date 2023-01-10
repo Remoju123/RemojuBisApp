@@ -1,40 +1,62 @@
-import { Component, HostListener, OnInit, OnDestroy, ViewChild, Inject, PLATFORM_ID, ElementRef, Input, HostBinding } from "@angular/core";
-import { ActivatedRoute, ParamMap, Router } from "@angular/router";
-import { PlanApp, Trans, mFeature, UserStaff } from "../../class/plan.class";
-import { Recommended, NestDataSelected, DataSelected, PlanSpotCommon, ComfirmDialogParam, MyPlanApp } from "../../class/common.class";
-import { ListSearchCondition } from "../../class/indexeddb.class";
-import { MyplanListCacheStore, UpdFavorite } from "../../class/mypageplanlist.class";
-import { CacheStore, PlanSpotList } from "../../class/planspotlist.class";
-import { ReviewResult } from "../../class/review.class";
-import { Catch } from "../../class/log.class";
-import { TranslateService } from "@ngx-translate/core";
-import { LangFilterPipe } from "../../utils/lang-filter.pipe";
-import { makeStateKey, Meta, TransferState } from "@angular/platform-browser";
-import { CommonService } from "../../service/common.service";
-import { IndexedDBService } from "../../service/indexeddb.service";
+import {
+  Component,
+  HostListener,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  Inject,
+  PLATFORM_ID,
+  ElementRef,
+  Input,
+  HostBinding,
+} from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { PlanApp, Trans, mFeature, UserStaff } from '../../class/plan.class';
+import {
+  Recommended,
+  NestDataSelected,
+  DataSelected,
+  PlanSpotCommon,
+  ComfirmDialogParam,
+  MyPlanApp,
+} from '../../class/common.class';
+import { ListSearchCondition } from '../../class/indexeddb.class';
+import {
+  MyplanListCacheStore,
+  UpdFavorite,
+} from '../../class/mypageplanlist.class';
+import { CacheStore, PlanSpotList } from '../../class/planspotlist.class';
+import { ReviewResult } from '../../class/review.class';
+import { Catch } from '../../class/log.class';
+import { TranslateService } from '@ngx-translate/core';
+import { LangFilterPipe } from '../../utils/lang-filter.pipe';
+import { makeStateKey, Meta, TransferState } from '@angular/platform-browser';
+import { CommonService } from '../../service/common.service';
+import { IndexedDBService } from '../../service/indexeddb.service';
 import { MyplanService } from '../../service/myplan.service';
-import { PlanService } from "../../service/plan.service";
-import { PlanSpotListService } from "../../service/planspotlist.service";
-import { MapPanelComponent } from "../../parts/map-panel/map-panel.component";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { isPlatformBrowser } from "@angular/common";
+import { PlanService } from '../../service/plan.service';
+import { PlanSpotListService } from '../../service/planspotlist.service';
+import { MapPanelComponent } from '../../parts/map-panel/map-panel.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
-export const MYPLANLIST_KEY = makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
+export const MYPLANLIST_KEY =
+  makeStateKey<MyplanListCacheStore>('MYPLANLIST_KEY');
 
 @Component({
-  selector: "app-plan-detail",
-  templateUrl: "./plan-detail.component.html",
-  styleUrls: ["./plan-detail.component.scss"]
+  selector: 'app-plan-detail',
+  templateUrl: './plan-detail.component.html',
+  styleUrls: ['./plan-detail.component.scss'],
 })
 export class PlanDetailComponent implements OnInit, OnDestroy {
   @ViewChild(MapPanelComponent)
   private mapPanelComponent: MapPanelComponent;
 
-  @ViewChild("cont") cont: ElementRef;
+  @ViewChild('cont') cont: ElementRef;
 
   private onDestroy$ = new Subject();
   constructor(
@@ -51,7 +73,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private transferState: TransferState,
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {}
 
   data: PlanApp = new PlanApp();
 
@@ -91,15 +113,15 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   addplanbtn_src: string;
 
-  blankUserSrc: string = "../../../../../assets/img/icon_who.svg";
-  blankuserName: string = "---";
+  blankUserSrc: string = '../../../../../assets/img/icon_who.svg';
+  blankuserName: string = '---';
 
-  noPic: string = "../../../assets/img/nopict.png";
+  noPic: string = '../../../assets/img/nopict.png';
 
   ct_department: any[] = [
-    { id: 1, text: "Remoju コンテンツチーム" },
-    { id: 2, text: "-----" },
-    { id: 3, text: "-----" }
+    { id: 1, text: 'Remoju コンテンツチーム' },
+    { id: 2, text: '-----' },
+    { id: 3, text: '-----' },
   ];
 
   myPlanSpots: any;
@@ -107,7 +129,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   isMypage: boolean = false;
 
-  loading:boolean = false;
+  loading: boolean = false;
 
   get lang() {
     return this.translate.currentLang;
@@ -117,49 +139,69 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
   }
 
+  ngAfterViewInit() {
+    const script = document.createElement('script');
+    script.async = true;
+    script.src =
+      '//rot8.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
+    const div = document.getElementById('script');
+    div.insertAdjacentElement('afterend', script);
+  }
+
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
 
-    if (this.transferState.hasKey(MYPLANLIST_KEY)
-    || this.transferState.hasKey(FAVORITE_KEY)) {
+    if (
+      this.transferState.hasKey(MYPLANLIST_KEY) ||
+      this.transferState.hasKey(FAVORITE_KEY)
+    ) {
       this.isMypage = true;
     }
 
-    this.activatedRoute.paramMap.pipe(takeUntil(this.onDestroy$)).subscribe((params: ParamMap) => {
-      this.id = params.get("id");
-      if (this.id) {
-        this.setPlanDetail(this.id);
-      } else {
-        this.router.navigate(["/" + this.lang + "/404"]);
-      }
-    });
+    this.activatedRoute.paramMap
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((params: ParamMap) => {
+        this.id = params.get('id');
+        if (this.id) {
+          this.setPlanDetail(this.id);
+        } else {
+          this.router.navigate(['/' + this.lang + '/404']);
+        }
+      });
 
     if (isPlatformBrowser(this.platformId)) {
       this.myplanService.FetchMyplanSpots();
-      let suffix = localStorage.getItem("gml") === "en" ? "_en" : "";
-      this.addplanbtn_src = "../../../assets/img/addplan_btn_h" + suffix + ".svg";
+      let suffix = localStorage.getItem('gml') === 'en' ? '_en' : '';
+      this.addplanbtn_src =
+        '../../../assets/img/addplan_btn_h' + suffix + '.svg';
     }
 
     this.isMobile = this.detectIsMobile(window.innerWidth);
 
-    this.myplanService.MySpots$.subscribe(v => {
+    this.myplanService.MySpots$.subscribe((v) => {
       this.myPlanSpots = v;
     });
 
-    this.myplanService.PlanUserSaved$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
+    this.myplanService.PlanUserSaved$.pipe(
+      takeUntil(this.onDestroy$)
+    ).subscribe((x) => {
       if (x.planUserId === this.$planId) {
         this.setPlanDetail(this.$planId.toString());
       }
     });
 
     // お気に入り更新通知
-    this.myplanService.updFavirute$.pipe(takeUntil(this.onDestroy$)).subscribe(x => {
-      let spot = this.data.spots.find(planSpot => planSpot.spotId === x.spotId && planSpot.type === x.type)
-      if (spot) {
-        spot.isFavorite = x.isFavorite;
-      }
-    });
+    this.myplanService.updFavirute$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((x) => {
+        let spot = this.data.spots.find(
+          (planSpot) => planSpot.spotId === x.spotId && planSpot.type === x.type
+        );
+        if (spot) {
+          spot.isFavorite = x.isFavorite;
+        }
+      });
   }
 
   @Catch()
@@ -168,13 +210,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     if (this.$isRemojuPlan) {
       this.planService
         .registPlanThanks(this.$planId, this.data.isThanks, this.guid)
-        .subscribe(r => {
+        .subscribe((r) => {
           this.data.thanksQty = r;
         });
     } else {
       this.planService
         .registPlanUserThanks(this.$planId, this.data.isThanks, this.guid)
-        .subscribe(r => {
+        .subscribe((r) => {
           this.data.thanksQty = r;
         });
     }
@@ -186,12 +228,17 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     item.isFavorite = !item.isFavorite;
     const param = new UpdFavorite();
     param.spotId = item.spotId;
-    param.type = item.type
+    param.type = item.type;
     param.isFavorite = item.isFavorite;
     this.myplanService.updateFavorite(param);
-    this.planSpotListService.setTransferStateFavorite(false, item.spotId, item.isFavorite, item.googleSpot ? true : false);
+    this.planSpotListService.setTransferStateFavorite(
+      false,
+      item.spotId,
+      item.isFavorite,
+      item.googleSpot ? true : false
+    );
     if (this.transferState.hasKey(FAVORITE_KEY)) {
-        this.transferState.remove(FAVORITE_KEY);
+      this.transferState.remove(FAVORITE_KEY);
     }
     this.planSpotListService
       .registFavorite(
@@ -203,18 +250,20 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         item.googleSpot ? true : false
       )
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(() => {
-
-      });
+      .subscribe(() => {});
   }
 
   // お気に入り登録
   @Catch()
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
-    this.planSpotListService.setTransferStateFavorite(true, this.data.planId, this.data.isFavorite);
+    this.planSpotListService.setTransferStateFavorite(
+      true,
+      this.data.planId,
+      this.data.isFavorite
+    );
     if (this.transferState.hasKey(FAVORITE_KEY)) {
-        this.transferState.remove(FAVORITE_KEY);
+      this.transferState.remove(FAVORITE_KEY);
     }
     this.planSpotListService
       .registFavorite(
@@ -225,77 +274,101 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         this.guid
       )
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(r => {
-
-      });
+      .subscribe((r) => {});
   }
 
   // プランに追加する
   async onClickAddToPlan(spot?: PlanSpotCommon) {
     // プラン共有ではないまたはスポット追加
-    if (!isNaN(this.id) || spot){
+    if (!isNaN(this.id) || spot) {
       // スポット数チェック
-      if (await this.commonService.checkAddPlan(spot ? 1 : this.spots.length) === false) {
+      if (
+        (await this.commonService.checkAddPlan(
+          spot ? 1 : this.spots.length
+        )) === false
+      ) {
         const param = new ComfirmDialogParam();
-        param.text = "ErrorMsgAddSpot";
-        param.leftButton = "EditPlanProgress";
+        param.text = 'ErrorMsgAddSpot';
+        param.leftButton = 'EditPlanProgress';
         const dialog = this.commonService.confirmMessageDialog(param);
-        dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-          if (d === "ok") {
-            // 編集中のプランを表示
-            this.commonService.onNotifyIsShowCart(true);
-          }
-        });
+        dialog
+          .afterClosed()
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe((d: any) => {
+            if (d === 'ok') {
+              // 編集中のプランを表示
+              this.commonService.onNotifyIsShowCart(true);
+            }
+          });
         return;
       }
 
       // プランに追加
       if (spot) {
-        this.planSpotListService.addPlan(spot.spotId, false, this.guid, undefined, spot.googleSpot ? true : false, null, this.$planId).then(result => {
-          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-            if (myPlanApp) {
-              this.addToPlanAfter(myPlanApp);
-            }
+        this.planSpotListService
+          .addPlan(
+            spot.spotId,
+            false,
+            this.guid,
+            undefined,
+            spot.googleSpot ? true : false,
+            null,
+            this.$planId
+          )
+          .then((result) => {
+            result
+              .pipe(takeUntil(this.onDestroy$))
+              .subscribe(async (myPlanApp) => {
+                if (myPlanApp) {
+                  this.addToPlanAfter(myPlanApp);
+                }
+              });
           });
-        });
       } else {
-        this.planSpotListService.addPlan(this.$planId, true, this.guid, this.$isRemojuPlan).then(result => {
-          result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-            if (myPlanApp) {
-              this.addToPlanAfter(myPlanApp);
-            }
+        this.planSpotListService
+          .addPlan(this.$planId, true, this.guid, this.$isRemojuPlan)
+          .then((result) => {
+            result
+              .pipe(takeUntil(this.onDestroy$))
+              .subscribe(async (myPlanApp) => {
+                if (myPlanApp) {
+                  this.addToPlanAfter(myPlanApp);
+                }
+              });
           });
-        });
       }
-    // プラン共有のプラン追加
+      // プラン共有のプラン追加
     } else {
       // 編集中のプランを取得
       let myPlan: any = await this.indexedDBService.getEditPlan();
       const myPlanApp: MyPlanApp = myPlan;
 
       // 未保存の場合
-      if(myPlanApp && !myPlanApp.isSaved){
+      if (myPlanApp && !myPlanApp.isSaved) {
         // 確認ダイアログの表示
         const param = new ComfirmDialogParam();
-        param.title = "EditPlanConfirmTitle";
-        param.text = "EditPlanConfirmText";
+        param.title = 'EditPlanConfirmTitle';
+        param.text = 'EditPlanConfirmText';
         const dialog = this.commonService.confirmMessageDialog(param);
-        dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((r: any) => {
-          if (r === "ok") {
-            // プランを取得してプラン作成に反映
-            this.getPlan();
-          } else {
-            // 編集中のプランを表示
-            this.commonService.onNotifyIsShowCart(true);
-          }
-        });
+        dialog
+          .afterClosed()
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe((r: any) => {
+            if (r === 'ok') {
+              // プランを取得してプラン作成に反映
+              this.getPlan();
+            } else {
+              // 編集中のプランを表示
+              this.commonService.onNotifyIsShowCart(true);
+            }
+          });
       } else {
         this.getPlan();
       }
     }
   }
 
-  chkInMyPlanspot(item:any){
+  chkInMyPlanspot(item: any) {
     return this.myPlanSpots.includes(item.spotId);
   }
 
@@ -304,7 +377,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     let condition = new ListSearchCondition();
     condition.areaId = [Number(this.data.areaId)];
     // 検索条件更新
-    sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
+    sessionStorage.setItem(
+      this.planSpotListService.conditionSessionKey,
+      JSON.stringify(condition)
+    );
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.transferState.remove(PLANSPOT_KEY);
     }
@@ -312,7 +388,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.transferState.remove(FAVORITE_KEY);
     }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/planspot"]);
+    this.router.navigate(['/' + this.lang + '/planspot']);
   }
 
   // カテゴリ
@@ -323,7 +399,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     }
     condition.searchCategories = [id];
     // 検索条件更新
-    sessionStorage.setItem(this.planSpotListService.conditionSessionKey, JSON.stringify(condition));
+    sessionStorage.setItem(
+      this.planSpotListService.conditionSessionKey,
+      JSON.stringify(condition)
+    );
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.transferState.remove(PLANSPOT_KEY);
     }
@@ -331,7 +410,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
       this.transferState.remove(FAVORITE_KEY);
     }
     // スポット一覧へ遷移
-    this.router.navigate(["/" + this.lang + "/planspot"]);
+    this.router.navigate(['/' + this.lang + '/planspot']);
   }
 
   // 違反報告
@@ -339,16 +418,22 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   onClickReport() {
     // 確認ダイアログの表示
     const param = new ComfirmDialogParam();
-    param.title = "ReportPlanUserConfirmTitle";
-    param.text = "ReportPlanUserConfirmText";
+    param.title = 'ReportPlanUserConfirmTitle';
+    param.text = 'ReportPlanUserConfirmText';
     const dialog = this.commonService.confirmMessageDialog(param);
-    dialog.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe((d: any) => {
-      if (d === "ok") {
-        this.planService.reportPlanUser(this.data.planId).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-          this.commonService.reportComplete(r);
-        });
-      }
-    });
+    dialog
+      .afterClosed()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((d: any) => {
+        if (d === 'ok') {
+          this.planService
+            .reportPlanUser(this.data.planId)
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((r) => {
+              this.commonService.reportComplete(r);
+            });
+        }
+      });
   }
 
   onCommentUpd(qty: number) {
@@ -361,7 +446,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
    *
    * -----------------------------*/
 
-  @HostListener("window:scroll", [])
+  @HostListener('window:scroll', [])
   onWindowScroll() {
     if (
       (window.pageYOffset ||
@@ -383,7 +468,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @HostBinding('attr.src') @Input() src;
   @HostListener('error') updateSrc() {
     this.src = this.default;
-    console.log(this.default)
+    console.log(this.default);
   }
 
   // Map表示
@@ -399,117 +484,131 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   @Catch()
   async setPlanDetail(id: string) {
     this.loading = true;
-    this.planService.getPlanDetail(id, this.guid).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
-      if (!r) {
-        this.router.navigate(["/" + this.lang + "/404"]);
-        return;
-      }
-
-      const langpipe = new LangFilterPipe();
-
-      this.data = r;
-      this.data.picCnt = this.data.pictures === null ? 0 : this.data.pictures.length;
-
-      this.isSpot = this.data.spots.length === 1;
-
-      this.$isRemojuPlan = this.data.isRemojuPlan;
-      this.$versionNo = this.data.versionNo;
-      this.$planId = this.data.planId;
-
-      if (this.$isRemojuPlan) {
-        this.meta.addTags([
-          {
-            name: "description",
-            content: langpipe.transform(this.data.seo.description, this.lang) ? langpipe.transform(this.data.seo.description, this.lang)
-              : langpipe.transform(this.data.planExplanation, this.lang)
-          },
-          {
-            name: "keyword",
-            content: langpipe.transform(this.data.seo.keyword, this.lang)
-          },
-          {
-            name: "subtitle",
-            content: langpipe.transform(this.data.seo.subtitle, this.lang) ? langpipe.transform(this.data.seo.subtitle, this.lang)
-              : langpipe.transform(this.data.planName, this.lang)
-          }
-        ]);
-
-        this.data.planName = langpipe.transform(this.data.planName, this.lang);
-        this.data.planExplanation = langpipe.transform(this.data.planExplanation, this.lang);
-      } else {
-        this.meta.addTags([
-          {
-            name: "description",
-            content: this.data.planExplanation
-          },
-          {
-            name: "keyword",
-            content: this.data.planName
-          },
-          {
-            name: "subtitle",
-            content: this.data.planName
-          }
-        ]);
-      }
-
-      // console.log(r);
-      let ids = [];
-      this.spots = this.data.spots.map((x, i) => {
-        if (x.type === 1) {
-          this.commonService.setAddPlanLang(x, this.lang);
-        }
-        // 次のスポットがある場合
-        if (i + 1 < this.data.spots.length) {
-          x.destination = this.commonService.isValidJson(this.data.spots[i + 1].spotName, this.lang);
+    this.planService
+      .getPlanDetail(id, this.guid)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((r) => {
+        if (!r) {
+          this.router.navigate(['/' + this.lang + '/404']);
+          return;
         }
 
-        // 移動方法
-        if (!this.data.isCar && x.transfer) {
-          let transfer: any;
-          try {
-            transfer = this.commonService.isValidJson(x.transfer, this.lang);
-          }
-          catch {
-            transfer = JSON.parse(x.transfer)[0].text;
-          }
+        const langpipe = new LangFilterPipe();
 
-          x.line = this.planService.transline(transfer);
-          x.transtime = this.planService.transtimes(transfer);
-          x.transflow = this.planService.transflows(transfer);
+        this.data = r;
+        this.data.picCnt =
+          this.data.pictures === null ? 0 : this.data.pictures.length;
+
+        this.isSpot = this.data.spots.length === 1;
+
+        this.$isRemojuPlan = this.data.isRemojuPlan;
+        this.$versionNo = this.data.versionNo;
+        this.$planId = this.data.planId;
+
+        if (this.$isRemojuPlan) {
+          this.meta.addTags([
+            {
+              name: 'description',
+              content: langpipe.transform(this.data.seo.description, this.lang)
+                ? langpipe.transform(this.data.seo.description, this.lang)
+                : langpipe.transform(this.data.planExplanation, this.lang),
+            },
+            {
+              name: 'keyword',
+              content: langpipe.transform(this.data.seo.keyword, this.lang),
+            },
+            {
+              name: 'subtitle',
+              content: langpipe.transform(this.data.seo.subtitle, this.lang)
+                ? langpipe.transform(this.data.seo.subtitle, this.lang)
+                : langpipe.transform(this.data.planName, this.lang),
+            },
+          ]);
+
+          this.data.planName = langpipe.transform(
+            this.data.planName,
+            this.lang
+          );
+          this.data.planExplanation = langpipe.transform(
+            this.data.planExplanation,
+            this.lang
+          );
+        } else {
+          this.meta.addTags([
+            {
+              name: 'description',
+              content: this.data.planExplanation,
+            },
+            {
+              name: 'keyword',
+              content: this.data.planName,
+            },
+            {
+              name: 'subtitle',
+              content: this.data.planName,
+            },
+          ]);
         }
-        x.ismore = false;
-        x.label = "more"
 
-        return x;
-      }, []);
+        // console.log(r);
+        let ids = [];
+        this.spots = this.data.spots.map((x, i) => {
+          if (x.type === 1) {
+            this.commonService.setAddPlanLang(x, this.lang);
+          }
+          // 次のスポットがある場合
+          if (i + 1 < this.data.spots.length) {
+            x.destination = this.commonService.isValidJson(
+              this.data.spots[i + 1].spotName,
+              this.lang
+            );
+          }
 
-      this.reviewResult = this.data.reviewResult;
-      this.reviewQty = this.data.reviewResult?.reviews?.length;
+          // 移動方法
+          if (!this.data.isCar && x.transfer) {
+            let transfer: any;
+            try {
+              transfer = this.commonService.isValidJson(x.transfer, this.lang);
+            } catch {
+              transfer = JSON.parse(x.transfer)[0].text;
+            }
 
-      this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
-        return e.pictureUrl !== null;
-      });
-      this.features = this.data.featureList.filter((e: any) => {
-        return e.languageCd === this.lang;
-      });
+            x.line = this.planService.transline(transfer);
+            x.transtime = this.planService.transtimes(transfer);
+            x.transflow = this.planService.transflows(transfer);
+          }
+          x.ismore = false;
+          x.label = 'more';
 
-      // カテゴリ
-      this.categoryNames = this.data.searchCategories;
-      this.mSearchCategory = this.data.mSearchCategory;
+          return x;
+        }, []);
 
-      // map表示
-      this.isMapDisp = !this.isMapDisp;
+        this.reviewResult = this.data.reviewResult;
+        this.reviewQty = this.data.reviewResult?.reviews?.length;
 
-      this.$userStaff = this.data.userStaff;
+        this.recommendedPlan = this.data.spotToGoList.filter((e: any) => {
+          return e.pictureUrl !== null;
+        });
+        this.features = this.data.featureList.filter((e: any) => {
+          return e.languageCd === this.lang;
+        });
 
-      let cids = []
-      this.spots.map(x => {
-        this.planSpotids.push(x.spotId)
-      });
+        // カテゴリ
+        this.categoryNames = this.data.searchCategories;
+        this.mSearchCategory = this.data.mSearchCategory;
 
-      // ユーザープランリストデータを事前取得
-      /*if (this.data.user) {
+        // map表示
+        this.isMapDisp = !this.isMapDisp;
+
+        this.$userStaff = this.data.userStaff;
+
+        let cids = [];
+        this.spots.map((x) => {
+          this.planSpotids.push(x.spotId);
+        });
+
+        // ユーザープランリストデータを事前取得
+        /*if (this.data.user) {
         this.planSpotListService.getUserPlanSpotList(id)
         .pipe(takeUntil(this.onDestroy$))
         .subscribe(rows => {
@@ -526,14 +625,14 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
           }
         });
       }*/
-      this.loading = false;
-    });
+        this.loading = false;
+      });
   }
 
   match(spots: any, plans: any) {
     try {
       if (spots) {
-        const res = Array.from(spots).every(v =>
+        const res = Array.from(spots).every((v) =>
           Array.from(plans).includes(v)
         );
         return res;
@@ -573,30 +672,43 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         window.scroll({ top: 0, behavior: 'smooth' });
       }, 800);
     })*/
-    this.router.navigate(["/" + this.lang + "/userplans", this.data.user.objectId]);
+    this.router.navigate([
+      '/' + this.lang + '/userplans',
+      this.data.user.objectId,
+    ]);
   }
 
   linktolist() {
     if (this.transferState.hasKey(FAVORITE_KEY)) {
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'favorite'});
+      this.router.navigate(['/' + this.lang + '/mypage'], {
+        fragment: 'favorite',
+      });
     } else if (this.transferState.hasKey(MYPLANLIST_KEY)) {
-      this.router.navigate(["/" + this.lang + "/mypage"],{fragment:'list'});
+      this.router.navigate(['/' + this.lang + '/mypage'], { fragment: 'list' });
     } else {
-      this.router.navigate(["/" + this.lang + "/planspot"]);
+      this.router.navigate(['/' + this.lang + '/planspot']);
     }
   }
 
   linktoSpot(planSpot: PlanSpotCommon) {
     if (planSpot.type === 1) {
-      this.router.navigate(["/" + this.lang + "/spots/detail/", planSpot.spotId]);
+      this.router.navigate([
+        '/' + this.lang + '/spots/detail/',
+        planSpot.spotId,
+      ]);
     } else {
-      this.commonService.locationPlaceIdGoogleMap(this.lang, planSpot.latitude, planSpot.longitude, planSpot.googleSpot.place_id);
+      this.commonService.locationPlaceIdGoogleMap(
+        this.lang,
+        planSpot.latitude,
+        planSpot.longitude,
+        planSpot.googleSpot.place_id
+      );
     }
   }
 
-  onIsmore(e: { ismore: boolean; label: string; }) {
+  onIsmore(e: { ismore: boolean; label: string }) {
     e.ismore = !e.ismore;
-    e.label = e.ismore ? "close" : "more";
+    e.label = e.ismore ? 'close' : 'more';
   }
 
   addToPlanAfter(myPlanApp) {
@@ -608,10 +720,13 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.myplanService.FetchMyplanSpots();
   }
 
-    // プラン取得
-    getPlan(){
-      // DBから取得
-      this.myplanService.getPlanUser(this.id).pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+  // プラン取得
+  getPlan() {
+    // DBから取得
+    this.myplanService
+      .getPlanUser(this.id)
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((r) => {
         r.isShare = false;
         r.shareUrl = null;
 
@@ -624,7 +739,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         // マイプランパネルを開く
         this.commonService.onNotifyIsShowCart(true);
       });
-    }
+  }
 
   /*------------------------------
    *
@@ -640,25 +755,25 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     navSpeed: 700,
     navText: [
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>",
     ],
     margin: 10,
     responsive: {
       0: {
-        items: 2
+        items: 2,
       },
       400: {
-        items: 3
+        items: 3,
       },
       740: {
-        items: 4
+        items: 4,
       },
       940: {
-        items: 5
-      }
+        items: 5,
+      },
     },
-    nav: true
-  }
+    nav: true,
+  };
 
   /*------------------------------
    *
@@ -676,20 +791,20 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     //margin: 10,
     responsive: {
       0: {
-        items: 2
+        items: 2,
       },
       400: {
-        items: 3
+        items: 3,
       },
       740: {
-        items: 4
+        items: 4,
       },
       940: {
-        items: 5
-      }
+        items: 5,
+      },
     },
     nav: false,
-    autoHeight: false
+    autoHeight: false,
   };
 
   /*------------------------------
@@ -706,10 +821,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     navSpeed: 700,
     navText: [
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>",
     ],
     items: 1,
-    nav: true
+    nav: true,
   };
 
   thumbOptions: any = {
@@ -721,34 +836,34 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     navSpeed: 700,
     navText: [
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>",
     ],
     stagePadding: 25,
     margin: 10,
     //items: 3,
     responsive: {
       0: {
-        items: 3
+        items: 3,
       },
       400: {
-        items: 3
+        items: 3,
       },
       740: {
-        items: 4
+        items: 4,
       },
       940: {
-        items: 5
-      }
+        items: 5,
+      },
     },
     nav: false,
     autoHeight: false,
-    autoPlay: false
+    autoPlay: false,
   };
 
   // スワイプで一覧に戻る
   onSwipeRight(event) {
     //console.log(event.target);
-    if(!event.target.classList.contains('noswip')){
+    if (!event.target.classList.contains('noswip')) {
       this.linktolist();
     }
   }
@@ -771,11 +886,14 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   // 比較関数（同じ配列同士で重複する値があるか否か）
   getIsDuplicate(arr1, arr2) {
-    if(arr2){
-      return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
-    }else{
+    if (arr2) {
+      return (
+        [...arr1, ...arr2].filter(
+          (item) => arr1.includes(item) && arr2.includes(item)
+        ).length > 0
+      );
+    } else {
       return false;
     }
-
   }
 }
