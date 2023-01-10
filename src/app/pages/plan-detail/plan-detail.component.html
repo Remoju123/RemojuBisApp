@@ -1,32 +1,55 @@
 <div class="plandtl" (swiperight)="onSwipeRight($event)">
-  <mat-card id="plandtlheader" [ngClass]="{'onplan':match(planSpotids,myPlanSpots)}">
-    <div class='link' (click)="linktolist()">
-      <span class="frame" *ngIf="!isMypage">{{"BackEveryoneRecommendations" | translate}}</span>
-      <span class="frame" *ngIf="isMypage">{{"BackEveryoneRecommendationsMyPage" | translate}}</span>
+  <mat-card
+    id="plandtlheader"
+    [ngClass]="{ onplan: match(planSpotids, myPlanSpots) }"
+  >
+    <div class="link" (click)="linktolist()">
+      <span class="frame" *ngIf="!isMypage">{{
+        "BackEveryoneRecommendations" | translate
+      }}</span>
+      <span class="frame" *ngIf="isMypage">{{
+        "BackEveryoneRecommendationsMyPage" | translate
+      }}</span>
     </div>
     <mat-card-header>
-      <div class='header'>
+      <div class="header">
         <div class="lt">
-          <span class='avatar'>
-            <img [src]='data.user?.pictureUrl || data.userStaff?.pictureUrl || blankUserSrc' alt=''>
+          <span class="avatar">
+            <img
+              [src]="
+                data.user?.pictureUrl ||
+                data.userStaff?.pictureUrl ||
+                blankUserSrc
+              "
+              alt=""
+            />
             <span class="username">
-              {{data.user?.displayName ? data.user?.displayName : data.userStaff?.romanLetterName | langFilter:lang}}</span>
+              {{
+                data.user?.displayName
+                  ? data.user?.displayName
+                  : (data.userStaff?.romanLetterName | langFilter : lang)
+              }}</span
+            >
           </span>
         </div>
         <div class="rt">
-          <div class='name'>
-            <span class='title'>
+          <div class="name">
+            <span class="title">
               {{ data.planName }}
             </span>
           </div>
-          <div class='buttons'>
+          <div class="buttons">
             <!-- <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
               <i class="material-icons">thumb_up</i>
             </button> -->
             <!-- <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
             </button> -->
-            <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
-              <img src="{{addplanbtn_src}}" alt="add to plan">
+            <button
+              mat-icon-button
+              class="plan_add"
+              (click)="onClickAddToPlan()"
+            >
+              <img src="{{ addplanbtn_src }}" alt="add to plan" />
             </button>
           </div>
         </div>
@@ -57,55 +80,68 @@
         </ng-template>
       </mat-card-content>
 
-      <div class='info' *ngIf="data.pictures">
-        <div class='lt'>
-          <span class='mark' [ngClass]="{'spot':isSpot,'plan':!isSpot}">
-            {{!isSpot?'Plan':'Spot'}}
+      <div class="info" *ngIf="data.pictures">
+        <div class="lt">
+          <span class="mark" [ngClass]="{ spot: isSpot, plan: !isSpot }">
+            {{ !isSpot ? "Plan" : "Spot" }}
           </span>
           <span class="areaName" *ngIf="data.areaName">
-            {{ data.areaName | langFilter: lang }}
+            {{ data.areaName | langFilter : lang }}
           </span>
           <!-- <span class="category" *ngIf="data.areaName2">
           {{ data.areaName2 | langFilter: lang }}
         </span> -->
         </div>
-        <div class='rt'>
+        <div class="rt">
           <div class="view">
-            <span>{{'View'|translate}}{{ data.pvQty }}{{ 'Man' | translate}}</span>
+            <span
+              >{{ "View" | translate }}{{ data.pvQty
+              }}{{ "Man" | translate }}</span
+            >
           </div>
         </div>
       </div>
     </mat-card>
 
     <!-- 基本情報 -->
-    <mat-card class='p0' id="planHeader">
+    <mat-card class="p0" id="planHeader">
       <mat-card-content>
         <mat-list class="plan-info">
           <mat-list-item class="title">
             {{ "BasicInfomation" | translate }}
             <ng-container *ngIf="!$isRemojuPlan">
-              <button mat-icon-button color="primary" aria-label="menu" [matMenuTriggerFor]="menuPlan">
-                <mat-icon>
-                  more_vert</mat-icon>
+              <button
+                mat-icon-button
+                color="primary"
+                aria-label="menu"
+                [matMenuTriggerFor]="menuPlan"
+              >
+                <mat-icon> more_vert</mat-icon>
               </button>
             </ng-container>
             <mat-menu #menuPlan="matMenu">
-              <button mat-menu-item (click)="onClickReport()">{{ "ReportPlanUser" | translate }}</button>
+              <button mat-menu-item (click)="onClickReport()">
+                {{ "ReportPlanUser" | translate }}
+              </button>
             </mat-menu>
           </mat-list-item>
-          <span class='divider'></span>
+          <span class="divider"></span>
           <mat-list-item class="row mt02 summery">
             <span class="spots">
               <label>{{ "NumberOfSpots" | translate }}：</label>
-              <div class='maru'>
+              <div class="maru">
                 <span>{{ data.spots?.length }}</span>
               </div>
             </span>
             <div>
               <span class="timerequired">
-                <label>{{'Roundtime'|translate}}</label>
-                <span *ngIf="data.timeRequiredHour !== null">{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span>
-                <span *ngIf="data.timeRequiredMin !== null">{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span>
+                <label>{{ "Roundtime" | translate }}</label>
+                <span *ngIf="data.timeRequiredHour !== null"
+                  >{{ data.timeRequiredHour }}{{ "Hour" | translate }}</span
+                >
+                <span *ngIf="data.timeRequiredMin !== null"
+                  >{{ data.timeRequiredMin }}{{ "Minute" | translate }}</span
+                >
               </span>
               <span class="timespan">
                 ({{ data.startTime }}～{{ data.endTime }})
@@ -113,11 +149,15 @@
             </div>
           </mat-list-item>
           <mat-list-item class="row psname">
-            <div class="wrap" *ngFor="let item of spots; index as i"><span>{{item.spotName}}</span></div>
+            <div class="wrap" *ngFor="let item of spots; index as i">
+              <span>{{ item.spotName }}</span>
+            </div>
           </mat-list-item>
           <mat-list-item class="row categories">
             <ng-container *ngFor="let item of categoryNames">
-              <span class="feature" (click)="onClickCategory(item.id)">{{ item.name | langFilter:lang }}</span>
+              <span class="feature" (click)="onClickCategory(item.id)">{{
+                item.name | langFilter : lang
+              }}</span>
             </ng-container>
           </mat-list-item>
         </mat-list>
@@ -132,16 +172,24 @@
             <span>{{ reviewQty }}</span>{{ "Count" | translate }}
           </a>
         </div>-->
-        <div class='favorite'>
-          <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isThanks}" (click)="onClickThanks()">
-          </button>
-            {{ "Thanks" | translate }}
+        <div class="favorite">
+          <button
+            mat-button
+            class="add-to-favorite"
+            [ngClass]="{ on: data.isThanks }"
+            (click)="onClickThanks()"
+          ></button>
+          {{ "Thanks" | translate }}
           <span>{{ data.thanksQty }}</span>
         </div>
-        <div class='bookmark'>
-          <button mat-button class="add-to-bookmark" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
-          </button>
-            {{ "Favorite" | translate }}
+        <div class="bookmark">
+          <button
+            mat-button
+            class="add-to-bookmark"
+            [ngClass]="{ on: data.isFavorite }"
+            (click)="onClickFavorite()"
+          ></button>
+          {{ "Favorite" | translate }}
         </div>
       </mat-card-content>
     </mat-card>
@@ -149,8 +197,15 @@
     <!-- プラン概要 -->
     <mat-card id="planExplanation" *ngIf="data.planExplanation">
       <mat-card-content>
-        <div class='avatar'>
-          <img [src]='data.user?.pictureUrl || data.userStaff?.pictureUrl || blankUserSrc' alt=''>
+        <div class="avatar">
+          <img
+            [src]="
+              data.user?.pictureUrl ||
+              data.userStaff?.pictureUrl ||
+              blankUserSrc
+            "
+            alt=""
+          />
         </div>
         <p [innerHTML]="data.planExplanation | replaceNewline"></p>
       </mat-card-content>
@@ -159,7 +214,7 @@
     <!-- プランスポットサムネイル -->
     <mat-card id="planPictures">
       <mat-card-content>
-        <h4>{{ 'SpotsVisited' | translate }}</h4>
+        <h4>{{ "SpotsVisited" | translate }}</h4>
         <owl-carousel-o [options]="thumbOptions">
           <ng-container *ngFor="let item of spots; index as i">
             <ng-template carouselSlide>
@@ -167,8 +222,11 @@
                 <span>{{ i + 1 }}</span>
               </div>
               <div class="thumbspots">
-                <a (click)="setMapCenter(item.latitude, item.longitude)" class="noswip">
-                  <img [src]="item.pictureUrl?item.pictureUrl:noPic" />
+                <a
+                  (click)="setMapCenter(item.latitude, item.longitude)"
+                  class="noswip"
+                >
+                  <img [src]="item.pictureUrl ? item.pictureUrl : noPic" />
                 </a>
               </div>
 
@@ -176,7 +234,7 @@
                 <span>{{ item.spotName }}</span>
               </div>
               <div class="thumbstart">
-                {{item.startTime}}
+                {{ item.startTime }}
               </div>
             </ng-template>
           </ng-container>
@@ -185,9 +243,15 @@
     </mat-card>
 
     <!-- マップ -->
-    <div class='map'>
-      <app-map-panel *ngIf="isMapDisp" [planSpots]="data.spots" [planId]="data.planId" [isDetail]="true"
-        [isCar]="data.isCar" [overviewPolyline]="data.overviewPolyline">
+    <div class="map">
+      <app-map-panel
+        *ngIf="isMapDisp"
+        [planSpots]="data.spots"
+        [planId]="data.planId"
+        [isDetail]="true"
+        [isCar]="data.isCar"
+        [overviewPolyline]="data.overviewPolyline"
+      >
       </app-map-panel>
     </div>
 
@@ -197,44 +261,72 @@
         <mat-card class="spotinfo">
           <mat-card-content>
             <!-- スタート時間-->
-            <mat-list style="margin: auto 16px 16px;" *ngIf="i === 0 && item.transfer">
+            <mat-list
+              style="margin: auto 16px 16px"
+              *ngIf="i === 0 && item.transfer"
+            >
               <mat-list-item class="endtime">
-                <span class="sufix">{{ "StartTime" | translate }}</span>{{item.startTime}}
+                <span class="sufix">{{ "StartTime" | translate }}</span
+                >{{ item.startTime }}
               </mat-list-item>
             </mat-list>
             <!-- 掲載OK -->
-            <ng-container *ngIf="!item.isEndOfPublication;">
+            <ng-container *ngIf="!item.isEndOfPublication">
               <div class="card-box">
                 <div class="spot-title">
                   <div class="lt">
-                    <span class="mark">{{i+1}}</span>
-                    <div class='titleline'>
+                    <span class="mark">{{ i + 1 }}</span>
+                    <div class="titleline">
                       <div>
-                        <span class="starttime">{{ item.startTime ? item.startTime : "--:--" }}</span>
-                        <span class="sugtime">{{ "SuggestedTime" | translate }}
-                          {{ item.stayTime }}{{ "Minute" | translate }}</span>
+                        <span class="starttime">{{
+                          item.startTime ? item.startTime : "--:--"
+                        }}</span>
+                        <span class="sugtime"
+                          >{{ "SuggestedTime" | translate }} {{ item.stayTime
+                          }}{{ "Minute" | translate }}</span
+                        >
                       </div>
                       <div class="spotname">
-                        {{ item.spotName  }}
+                        {{ item.spotName }}
                       </div>
                     </div>
                   </div>
                   <div class="rt">
-                    <button *ngIf="item.type!==3" mat-button class="add-to-favorite" (click)="onClickSpotFavorite(item)"
-                      [ngClass]="{'on':item.isFavorite}">
-                    </button>
-                    <button mat-button class='link-to-spot' (click)="linktoSpot(item)"></button>
+                    <button
+                      *ngIf="item.type !== 3"
+                      mat-button
+                      class="add-to-favorite"
+                      (click)="onClickSpotFavorite(item)"
+                      [ngClass]="{ on: item.isFavorite }"
+                    ></button>
+                    <button
+                      mat-button
+                      class="link-to-spot"
+                      (click)="linktoSpot(item)"
+                    ></button>
                   </div>
                 </div>
 
                 <div class="spot-image">
-                  <owl-carousel-o *ngIf="item.pictures.length > 1; else singlePict" [options]="mainOptions">
-                    <ng-container *ngFor="let pict of item.pictures;index as i">
+                  <owl-carousel-o
+                    *ngIf="item.pictures.length > 1; else singlePict"
+                    [options]="mainOptions"
+                  >
+                    <ng-container
+                      *ngFor="let pict of item.pictures; index as i"
+                    >
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain noswip">
-                          <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
-                          <div class="memo" *ngIf="item.pictureMemos && item.pictureMemos[i]">
-                            {{item.pictureMemos[i]}}
+                          <img
+                            [src]="pict ? pict : noPic"
+                            [alt]="item.spotId"
+                            [title]="item.spotId"
+                          />
+                          <div
+                            class="memo"
+                            *ngIf="item.pictureMemos && item.pictureMemos[i]"
+                          >
+                            {{ item.pictureMemos[i] }}
                           </div>
                         </div>
                       </ng-template>
@@ -244,11 +336,14 @@
                   <ng-template #singlePict>
                     <ng-container *ngFor="let pict of item.pictures">
                       <div class="thumbmain noswip" (click)="linktoSpot(item)">
-                        <img [src]="pict?pict:noPic" [alt]="item.spotId" [title]="item.spotId" />
+                        <img
+                          [src]="pict ? pict : noPic"
+                          [alt]="item.spotId"
+                          [title]="item.spotId"
+                        />
                       </div>
                     </ng-container>
                   </ng-template>
-
                 </div>
               </div>
             </ng-container>
@@ -256,14 +351,20 @@
             <ng-container *ngIf="item.isEndOfPublication">
               <div class="card-box">
                 <div class="spot-title">
-                  <span class="mark">{{i+1}}</span>
+                  <span class="mark">{{ i + 1 }}</span>
                 </div>
               </div>
               <span>{{ "EndOfPublication" | translate }}</span>
             </ng-container>
 
-            <div class='addToPlan'>
-              <button class="btn" (click)="onClickAddToPlan(item)" [ngClass]="{'on':chkInMyPlanspot(item)}">{{"AddToPlanOnly"|translate}}</button>
+            <div class="addToPlan">
+              <button
+                class="btn"
+                (click)="onClickAddToPlan(item)"
+                [ngClass]="{ on: chkInMyPlanspot(item) }"
+              >
+                {{ "AddToPlanOnly" | translate }}
+              </button>
             </div>
 
             <mat-list>
@@ -283,70 +384,96 @@
               </mat-list-item> -->
             </mat-list>
             <!-- 終了時間 -->
-            <mat-list style="margin: auto 16px;" *ngIf="i === spots.length - 1 && data.endTime">
+            <mat-list
+              style="margin: auto 16px"
+              *ngIf="i === spots.length - 1 && data.endTime"
+            >
               <mat-list-item class="endtime">
-                <span class="sufix">{{ "EndTime" | translate  }}</span>{{ data.endTime }}
+                <span class="sufix">{{ "EndTime" | translate }}</span
+                >{{ data.endTime }}
               </mat-list-item>
             </mat-list>
             <!-- 移動方法 -->
-            <app-transfer-panel *ngIf="i + 1 < spots.length" [isCar]="data.isCar" [item]="item"
-              [nextItem]="data.spots[i + 1]"></app-transfer-panel>
+            <app-transfer-panel
+              *ngIf="i + 1 < spots.length"
+              [isCar]="data.isCar"
+              [item]="item"
+              [nextItem]="data.spots[i + 1]"
+            ></app-transfer-panel>
           </mat-card-content>
         </mat-card>
       </ng-container>
 
       <div class="impression" *ngIf="data.memo">
-        <div class='avatar'>
+        <div class="avatar">
           <img [src]="data.user?.pictureUrl" [alt]="data.user?.displayName" />
         </div>
         <p [innerHTML]="data.memo | replaceNewline"></p>
       </div>
     </div>
 
+    <!-- A8テスト -->
+    <div class="box">
+      <script
+        type="text/javascript"
+        src="//rot8.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js"
+      ></script>
+    </div>
     <!-- コメント投稿 phase1では廃止 -->
     <!--<app-comment-list-post-panel *ngIf="reviewResult" [reviewResult]="reviewResult" [type]="$isRemojuPlan ? 2 : 3"
       [id]="data.planId" (onCommentUpd)="onCommentUpd($event)"></app-comment-list-post-panel>--?
 
     <!-- 投稿者のプロフィール-->
     <mat-card id="writer" *ngIf="data.user || data.userStaff">
+      <h4>{{ "PostersProfile" | translate }}</h4>
 
-      <h4>{{"PostersProfile"|translate}}</h4>
-
-      <ng-container *ngIf="$userStaff;else profile">
-        <div class='card-box'>
+      <ng-container *ngIf="$userStaff; else profile">
+        <div class="card-box">
           <div class="card-header">
             <div class="cover">
-              <div class="wrap">
-
-              </div>
+              <div class="wrap"></div>
             </div>
             <div class="user">
               <div class="wrap">
-                <img src="{{ $userStaff.pictureUrl }}" alt="{{ $userStaff.romanLetterName | langFilter: lang }}" />
+                <img
+                  src="{{ $userStaff.pictureUrl }}"
+                  alt="{{ $userStaff.romanLetterName | langFilter : lang }}"
+                />
               </div>
             </div>
           </div>
           <div class="card-info">
             <div class="username">
-              {{ $userStaff.romanLetterName | langFilter: lang }}
+              {{ $userStaff.romanLetterName | langFilter : lang }}
             </div>
             <div class="attribute">
               <span class="division">{{
-              $userStaff.departmentName | langFilter: lang
-            }}</span>
+                $userStaff.departmentName | langFilter : lang
+              }}</span>
             </div>
             <div class="about">
-              <p>{{ $userStaff?.introduction | langFilter: lang }}</p>
+              <p>{{ $userStaff?.introduction | langFilter : lang }}</p>
             </div>
           </div>
         </div>
       </ng-container>
 
       <ng-template #profile>
-        <app-userprofile-panel *ngIf="data.user" [otherUser]="data.user" [detail]="true"></app-userprofile-panel>
-        <div class='buttons'>
-          <button mat-button disableRipple matBadge="{{ data.userPlanQty }}" matBadgeSize="small"
-            (click)="onViewUserPost()">{{"ViewUserPost"|translate}}</button>
+        <app-userprofile-panel
+          *ngIf="data.user"
+          [otherUser]="data.user"
+          [detail]="true"
+        ></app-userprofile-panel>
+        <div class="buttons">
+          <button
+            mat-button
+            disableRipple
+            matBadge="{{ data.userPlanQty }}"
+            matBadgeSize="small"
+            (click)="onViewUserPost()"
+          >
+            {{ "ViewUserPost" | translate }}
+          </button>
         </div>
       </ng-template>
     </mat-card>
@@ -365,7 +492,7 @@
                 </a>
               </div>
               <div class="content">
-                <p>{{ item.name | langFilter: lang }}</p>
+                <p>{{ item.name | langFilter : lang }}</p>
               </div>
             </ng-template>
           </ng-container>
