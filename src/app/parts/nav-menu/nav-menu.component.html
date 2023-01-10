@@ -59,23 +59,7 @@
         }}</a>
       </mat-nav-list>
     </mat-nav-list>
-    <mat-nav-list>
-      <div class="header">{{ "ViewFeaturedArticles" | translate }}</div>
-      <mat-nav-list class="sub">
-        <a
-          mat-list-item
-          (click)="onNavgateFeature('area/kyoto/jyoshitabi.html')"
-          >{{ "RecommendedTripForGirls" | translate }}</a
-        >
-        <a
-          mat-list-item
-          (click)="onNavgateFeature('area/kyoto_guidemap.html')"
-          >{{ "LetsGoToKyotoNow" | translate }}</a
-        >
-        <!-- <a mat-list-item href="">{{ "ExcitingTripForKids" | translate }}</a>
-          <a mat-list-item href="">{{ "SeeOther" | translate }}</a> -->
-      </mat-nav-list>
-    </mat-nav-list>
+
     <mat-nav-list *ngIf="commonService.loggedIn">
       <div class="header">{{ "ViewMyPage" | translate }}</div>
       <mat-nav-list class="sub">
@@ -93,6 +77,25 @@
         }}</a>
       </mat-nav-list>
     </mat-nav-list>
+
+    <mat-nav-list>
+      <div class="header">{{ "ViewFeaturedArticles" | translate }}</div>
+      <mat-nav-list class="sub">
+        <a
+          mat-list-item
+          (click)="onNavgateFeature('area/kyoto/jyoshitabi.html')"
+          >{{ "RecommendedTripForGirls" | translate }}</a
+        >
+        <a
+          mat-list-item
+          (click)="onNavgateFeature('area/kyoto_guidemap.html')"
+          >{{ "LetsGoToKyotoNow" | translate }}</a
+        >
+        <!-- <a mat-list-item href="">{{ "ExcitingTripForKids" | translate }}</a>
+          <a mat-list-item href="">{{ "SeeOther" | translate }}</a> -->
+      </mat-nav-list>
+    </mat-nav-list>
+
     <mat-nav-list>
       <div class="header">{{ "Other" | translate }}</div>
       <mat-nav-list class="sub">
