@@ -5,34 +5,34 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   ViewChild,
-  ElementRef
-} from "@angular/core";
-import { Router } from "@angular/router";
-import { DataService } from "../../service/data.service";
-import { CommonService } from "../../service/common.service";
+  ElementRef,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from '../../service/data.service';
+import { CommonService } from '../../service/common.service';
 //import { IndexedDBService } from "../../service/indexeddb.service";
-import { MyplanService } from "../../service/myplan.service";
-import { LoadNotifyService } from "../../service/load-notify.service";
-import { Catch } from "../../class/log.class";
+import { MyplanService } from '../../service/myplan.service';
+import { LoadNotifyService } from '../../service/load-notify.service';
+import { Catch } from '../../class/log.class';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { HeaderComponent } from "../header/header.component";
-import { MatSidenav } from "@angular/material/sidenav";
-import { MyPlanApp } from "../../class/common.class";
+import { HeaderComponent } from '../header/header.component';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MyPlanApp } from '../../class/common.class';
 @Component({
-  selector: "app-root",
-  templateUrl: "./root.component.html",
-  styleUrls: ["../../common.scss", "./root.component.scss"]
+  selector: 'app-root',
+  templateUrl: './root.component.html',
+  styleUrls: ['../../common.scss', './root.component.scss'],
 })
 export class RootComponent implements OnInit, OnDestroy {
   private reloadRequestCount = 0;
   private onDestroy$ = new Subject();
-  title = "Remoju";
+  title = 'Remoju';
   showScroll: boolean | undefined;
   showScrollHeight = 300;
   hideScrollHeight = 10;
 
-  mode = "over";
+  mode = 'over';
   opened: boolean | undefined;
   events: string[] = [];
   closed: any;
@@ -47,9 +47,9 @@ export class RootComponent implements OnInit, OnDestroy {
   myPlanSpots: any;
   spots!: number;
 
-  viewbtn_src = "../../../assets/img/view-my-plan.svg";
-  backbtn_src = "../../../assets/img/close-my-plan.svg";
-  toTop_src = "../../../assets/img/toTop4.svg";
+  viewbtn_src = '../../../assets/img/view-my-plan.svg';
+  backbtn_src = '../../../assets/img/close-my-plan.svg';
+  toTop_src = '../../../assets/img/toTop4.svg';
 
   isMobile: boolean;
   userPic: string;
@@ -72,46 +72,56 @@ export class RootComponent implements OnInit, OnDestroy {
     //private indexedDBService: IndexedDBService,
     private myplanService: MyplanService,
     private changeDetectionRef: ChangeDetectorRef,
-    private loadNotifyService: LoadNotifyService) {
-  }
+    private loadNotifyService: LoadNotifyService
+  ) {}
 
   ngOnInit() {
+    this.loadNotifyService.requestLoad$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(() => {
+        //this.reloadRequestCount$.next(++this.reloadRequestCount);
+        location.reload();
+      });
 
-    this.loadNotifyService.requestLoad$.pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      //this.reloadRequestCount$.next(++this.reloadRequestCount);
-      location.reload();
-    })
+    this.commonService.isshowHeader$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((v) => {
+        this.expandHeader = v;
+        this.changeDetectionRef.detectChanges();
+      });
 
-    this.commonService.isshowHeader$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
-      this.expandHeader = v;
-      this.changeDetectionRef.detectChanges();
-    })
+    this.commonService.isshowcart$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(async (v) => {
+        this.cartopened = v;
+        this.changeDetectionRef.detectChanges();
+      });
 
-    this.commonService.isshowcart$.pipe(takeUntil(this.onDestroy$)).subscribe(async (v) => {
-      this.cartopened = v;
-      this.changeDetectionRef.detectChanges();
-    })
-
-    this.commonService.isshowmenu$.pipe(takeUntil(this.onDestroy$)).subscribe((v) => {
-      this.opened = v;
-      this.changeDetectionRef.detectChanges();
-    })
+    this.commonService.isshowmenu$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((v) => {
+        this.opened = v;
+        this.changeDetectionRef.detectChanges();
+      });
 
     this.myplanService.FetchMyplanSpots();
     this.myplanService.MySpots$.subscribe((v: any) => {
       this.spots = Array.from(v).length;
-    })
+    });
 
     this.isMobile = this.detectIsMobile(window.innerWidth);
 
-    this.commonService.curlang$.pipe(takeUntil(this.onDestroy$)).subscribe(lang => {
-      sessionStorage.setItem('gml', lang);
-      this.currentLang = lang;
-      let suffix = lang === "en" ? "_en" : "";
-      this.viewbtn_src = "../../../assets/img/view-my-plan" + suffix + ".svg";
-      this.backbtn_src = "../../../assets/img/close-my-plan" + suffix + ".svg";
-      this.toTop_src = "../../../assets/img/toTop4" + suffix + ".svg";
-    })
+    this.commonService.curlang$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((lang) => {
+        sessionStorage.setItem('gml', lang);
+        this.currentLang = lang;
+        let suffix = lang === 'en' ? '_en' : '';
+        this.viewbtn_src = '../../../assets/img/view-my-plan' + suffix + '.svg';
+        this.backbtn_src =
+          '../../../assets/img/close-my-plan' + suffix + '.svg';
+        this.toTop_src = '../../../assets/img/toTop4' + suffix + '.svg';
+      });
   }
 
   ngOnDestroy() {
@@ -124,14 +134,14 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   // ブラウザが閉じるイベントを検出
-  @HostListener("window:beforeunload", ["$event"])
+  @HostListener('window:beforeunload', ['$event'])
   beforeUnload = () => {
     this.dataService.onBeforeUnload();
     // tslint:disable-next-line: semicolon
   };
 
   // ブラウザスクロール検知：Topへ戻るボタン
-  @HostListener("window:scroll", [])
+  @HostListener('window:scroll', [])
   onWindowScroll() {
     if (
       (window.pageYOffset ||
@@ -150,7 +160,11 @@ export class RootComponent implements OnInit, OnDestroy {
       this.showPlanpanel = true;
     }
 
-    if ((document.documentElement.offsetHeight + document.documentElement.scrollTop) > (document.documentElement.scrollHeight - 122)) {
+    if (
+      document.documentElement.offsetHeight +
+        document.documentElement.scrollTop >
+      document.documentElement.scrollHeight - 122
+    ) {
       this.jumpFooter = true;
     } else {
       this.jumpFooter = false;
@@ -193,7 +207,7 @@ export class RootComponent implements OnInit, OnDestroy {
   // トップページへ戻る
   @Catch()
   async goHome() {
-    await this.router.navigate(["/"]);
+    await this.router.navigate(['/']);
   }
 
   // サイトナビ開閉状態の切り替え
@@ -210,7 +224,11 @@ export class RootComponent implements OnInit, OnDestroy {
 
   // カート開閉状態の切り替え
   async onhandleCartNav(e: boolean) {
+    event.stopPropagation();
     this.cartopened = !e;
+    document.body.style.overflow = this.cartopened ? 'hidden' : '';
+    document.body.style.top = `-${window.pageYOffset}px`;
+
     /*if (this.cartopened) {
       // 編集中のプランを取得
       let myPlan: any = await this.indexedDBService.getEditPlan();
