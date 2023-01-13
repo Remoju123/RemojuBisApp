@@ -182,8 +182,8 @@ mat-sidenav-content {
 
 .mat-sidenav.cartnav {
   width: 100%;
-  height: calc(100vh - 45px);
-  margin-top: 45px;
+  height: calc(100vh);
+  //margin-top: 45px;
 
   button.close-my-plan {
     position: fixed;

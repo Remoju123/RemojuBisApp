@@ -33,7 +33,7 @@ export class RootComponent implements OnInit, OnDestroy {
   hideScrollHeight = 10;
 
   mode = 'over';
-  opened: boolean | undefined;
+  opened: boolean = false;
   events: string[] = [];
   closed: any;
 
@@ -43,7 +43,7 @@ export class RootComponent implements OnInit, OnDestroy {
   expandHeader: boolean = true;
   jumpFooter: boolean = false;
 
-  cartopened: boolean | undefined;
+  cartopened: boolean = false;
   myPlanSpots: any;
   spots!: number;
 
@@ -141,8 +141,9 @@ export class RootComponent implements OnInit, OnDestroy {
   };
 
   // ブラウザスクロール検知：Topへ戻るボタン
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event) {
+    event.stopPropagation();
     if (
       (window.pageYOffset ||
         document.documentElement.scrollTop ||
@@ -173,6 +174,7 @@ export class RootComponent implements OnInit, OnDestroy {
 
   // Topへ戻るボタン
   scrollToTop() {
+    event.stopPropagation();
     this.commonService.scrollToTop();
   }
 
@@ -223,11 +225,12 @@ export class RootComponent implements OnInit, OnDestroy {
   }
 
   // カート開閉状態の切り替え
-  async onhandleCartNav(e: boolean) {
+  async onhandleCartNav() {
     event.stopPropagation();
-    this.cartopened = !e;
-    document.body.style.overflow = this.cartopened ? 'hidden' : '';
-    document.body.style.top = `-${window.pageYOffset}px`;
+    this.cartopened = !this.cartopened;
+    //document.body.style.overflow = this.cartopened ? 'hidden' : '';
+    //document.body.style.position = this.cartopened ? 'fixed' : '';
+    //document.body.style.top = `-${window.pageYOffset}px`;
 
     /*if (this.cartopened) {
       // 編集中のプランを取得
@@ -246,7 +249,7 @@ export class RootComponent implements OnInit, OnDestroy {
 
   // slide to myplan panel
   togglecart() {
-    this.header.togglecart();
+    //this.header.togglecart();
   }
 
   onSwipeRight() {

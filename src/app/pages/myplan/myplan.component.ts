@@ -10,6 +10,8 @@ import {
   QueryList,
   Input,
   IterableDiffers,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from '../../service/common.service';
@@ -158,6 +160,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   @Input() isMobile: boolean;
   @Input() userPic: string;
   @Input() useName: string;
+  @Output() cartevent = new EventEmitter<boolean>();
 
   /*------------------------------
    *
@@ -429,6 +432,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       .subscribe((d: any) => {
         if (d === 'ok') {
           this.spotAllRemove();
+          this.cartevent.emit(false);
         }
       });
   }
@@ -646,6 +650,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     // 1スポット削除して0スポットになる場合は編集エリアをすべて閉じる
     if (this.row.planSpots.length === 1) {
       this.spotAllRemove();
+      this.cartevent.emit(false);
     } else {
       // エリア設定
       if (planSpot.displayOrder === 1 && this.row.planSpots.length > 1) {
@@ -820,6 +825,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
           if (d === 'ok') {
             this.planRemove();
             this.router.navigate(['/' + this.lang + '/planspot']);
+            this.cartevent.emit(false);
           }
         });
       // this.planRemove();
