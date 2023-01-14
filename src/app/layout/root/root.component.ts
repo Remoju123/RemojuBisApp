@@ -228,9 +228,14 @@ export class RootComponent implements OnInit, OnDestroy {
   async onhandleCartNav() {
     event.stopPropagation();
     this.cartopened = !this.cartopened;
-    //document.body.style.overflow = this.cartopened ? 'hidden' : '';
-    //document.body.style.position = this.cartopened ? 'fixed' : '';
-    //document.body.style.top = `-${window.pageYOffset}px`;
+
+    const target = document.getElementById('bodyContent');
+    target.style.visibility = this.cartopened ? 'hidden' : 'hidden';
+    if (!this.cartopened) {
+      setTimeout(() => {
+        target.style.visibility = 'visible';
+      }, 350);
+    }
 
     /*if (this.cartopened) {
       // 編集中のプランを取得

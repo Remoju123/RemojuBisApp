@@ -36,7 +36,7 @@
       ></app-myplan>
     </mat-sidenav>
     <mat-sidenav-content>
-      <div class="body">
+      <div class="body" id="bodyContent">
         <app-header
           (event)="onhandleSiteNav($event)"
           [sidenav_closed]="!sidenav.opened"
@@ -55,20 +55,20 @@
             >
               <img src="{{ toTop_src }}" alt="toTop" />
             </button>
-            <button
-              mat-button
-              matBadge="{{ spots }}"
-              (click)="onhandleCartNav()"
-              class="view-my-plan"
-              [ngClass]="{ on: spots > 0, up: jumpFooter }"
-              disableRipple="true"
-            >
-              <img src="{{ viewbtn_src }}" alt="view my plan" />
-            </button>
           </div>
         </div>
         <app-footer></app-footer>
       </div>
+      <button
+        mat-button
+        matBadge="{{ spots }}"
+        (click)="onhandleCartNav()"
+        class="view-my-plan"
+        [ngClass]="{ on: spots > 0, up: jumpFooter }"
+        disableRipple="true"
+      >
+        <img src="{{ viewbtn_src }}" alt="view my plan" />
+      </button>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </ng-container>
