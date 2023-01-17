@@ -149,7 +149,9 @@
             border-radius: 10px 10px 0 0;
             -webkit-border-radius: 10px 10px 0 0;
             -moz-border-radius: 10px 10px 0 0;
-            background-color: $color-gry04;
+            //background-color: $color-gry04;
+            background-image: url("../../../../../assets/img/logobg-80.jpg");
+            background-repeat: repeat;
           }
 
           z-index: 2;

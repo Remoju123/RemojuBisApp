@@ -51,9 +51,10 @@ button {
 .scroll-to-top {
   position: fixed;
   margin: auto;
-  left: 0;
-  right: 0;
-  bottom: 19px;
+  left: 8px;
+  width: 62px;
+  //right: 0;
+  bottom: 6px;
   z-index: 100;
   padding: 0;
   opacity: 0;
@@ -96,7 +97,7 @@ button {
     top: -6px;
     // background-color: #000;
     color: #fff;
-    background: url("../../../assets/img/icon_badge.svg") no-repeat;
+    background: url("../../../assets/img/icon_badge_r.svg") no-repeat;
     width: 24px;
     height: 28px;
     line-height: 28px;
@@ -105,7 +106,7 @@ button {
   &.on {
     animation: bounce_frame 1s ease 1s;
     ::ng-deep .mat-badge-content {
-      background-image: url("../../../assets/img/icon_badge.svg");
+      background-image: url("../../../assets/img/icon_badge_r.svg");
     }
   }
 

@@ -150,7 +150,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.onViewUserPost(cache.planSpotList);
       }
 
-      this.transferState.remove(PLANSPOT_KEY);
+      //this.transferState.remove(PLANSPOT_KEY);
 
       this.condition = JSON.parse(
         sessionStorage.getItem(this.planspots.conditionSessionKey)
@@ -358,7 +358,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.condition.select !== 'google') {
       this.count = result.list.length;
     }
-    if (!this.transferState.hasKey(PLANSPOT_KEY)) this.mergeNextDataSet();
+    this.mergeNextDataSet();
   }
 
   async mergeNextDataSet(isDetail: boolean = false) {
