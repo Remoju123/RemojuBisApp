@@ -419,15 +419,15 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         ((this.prevkeyword === keyword && this.token) ||
           this.prevkeyword !== keyword)
       ) {
-        this.planspots
-          .getGoogleSpotList(this.guid, keyword, this.token)
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe((g) => {
-            this.prevkeyword = keyword;
-            this.details$ = this.details$.concat(g.planSpotList);
-            this.token = g.tokenGoogle;
-            this.loading = false;
-          });
+        //this.planspots
+        // .getGoogleSpotList(this.guid, keyword, this.token)
+        // .pipe(takeUntil(this.onDestroy$))
+        // .subscribe((g) => {
+        //   this.prevkeyword = keyword;
+        //   this.details$ = this.details$.concat(g.planSpotList);
+        //   this.token = g.tokenGoogle;
+        //   this.loading = false;
+        // });
       }
     }
   }

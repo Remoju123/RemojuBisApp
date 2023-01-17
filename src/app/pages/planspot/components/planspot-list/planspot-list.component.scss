@@ -3,7 +3,7 @@
   margin-top: 16px;
 
   .glink {
-    background-color: #7E9E9F;
+    background-color: #7e9e9f;
     padding: 3px 6px;
     margin: auto 3px;
     border-radius: 3px;
@@ -15,7 +15,7 @@
       display: inline-block;
       width: 14px;
       height: 14px;
-      background: url('../../../../../assets/img/icon_google.svg') no-repeat;
+      background: url("../../../../../assets/img/icon_google.svg") no-repeat;
       vertical-align: middle;
       margin-right: 2px;
     }
@@ -46,14 +46,14 @@
       z-index: 100;
       padding: 0;
       transition: all 0.2s ease-in-out;
-    
+
       @include ios-reset();
-    
+
       img {
         width: 49px;
       }
-    
-      &.up{
+
+      &.up {
         bottom: 198px;
       }
     }
@@ -68,20 +68,44 @@
     text-align: center;
   }
 
-  .alert{
+  .alert {
     border: 1px solid $color-pnk02;
     margin: 1rem 1.2rem;
-    p{
+    p {
       text-align: center;
-      span{
+      span {
         font-size: 120%;
         color: $color-pnk02;
       }
     }
-    .sm{
+    .sm {
       color: #999;
       font-size: 11px;
       margin-bottom: 1em;
+    }
+  }
+}
+
+#agm {
+  .card-box {
+    margin-bottom: 0;
+    input#keyword {
+      font-size: 16px;
+    }
+  }
+
+  .mapDiv {
+    position: relative;
+    .map {
+      height: 50vh;
+    }
+    .map-center-overlay {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
     }
   }
 }

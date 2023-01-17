@@ -28,10 +28,35 @@
       {{ "GoogleSearchAny" | translate }}<br />
       {{ "ReplaceKeyword" | translate }}<br />
       {{ "includedPlan" | translate }}
-
-      <!-- <div class='alert' *ngIf="condition.keyword">
-        <p>フリーキーワード<span>{{condition.keyword}}</span>で検索中です。</p>        
-      </div> -->
+      <!-- Google AutoComplete Search Insert -->
+      <mat-card-content id="agm">
+        <div class="card-box">
+          <mat-form-field appearance="outline" style="width: 100%">
+            <mat-label>{{ "GoogleKeyword" | translate }}</mat-label>
+            <input
+              matInput
+              matGoogleMapsAutocomplete
+              #keyword
+              id="keyword"
+              value="{{ place ? place.name : '' }}"
+            />
+          </mat-form-field>
+        </div>
+        <div class="mapDiv">
+          <agm-map
+            class="map"
+            [scrollwheel]="false"
+            [streetViewControl]="false"
+            [zoom]="zoom"
+            (mapReady)="mapReady($event)"
+          >
+          </agm-map>
+          <div class="map-center-overlay" *ngIf="place">
+            <img src="../../../assets/img/pin_mypos.svg" height="48" />
+          </div>
+        </div>
+      </mat-card-content>
+      <!-- Google AutoComplete Search Insert -->
     </mat-card-content>
   </mat-card>
   <mat-card id="nolist" *ngIf="!isList && condition.select === 'user'">

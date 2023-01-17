@@ -576,10 +576,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.router.navigate(['/' + this.lang + '/planspot']);
+    //this.router.navigate(['/' + this.lang + '/planspot']);
 
     // スライドを閉じる
-    this.commonService.onNotifyIsShowCart(false);
+    //this.commonService.onNotifyIsShowCart(false);
+    this.cartevent.emit(false);
   }
 
   // Map
@@ -824,7 +825,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
           // 新しいプランを作成する
           if (d === 'ok') {
             this.planRemove();
-            this.router.navigate(['/' + this.lang + '/planspot']);
+            // this.router.navigate(['/' + this.lang + '/planspot']);
             this.cartevent.emit(false);
           }
         });
@@ -832,7 +833,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
       // this.onClickPlanEdit(this.row);
     } else {
       this.planRemove();
-      this.router.navigate(['/' + this.lang + '/planspot']);
+      // this.router.navigate(['/' + this.lang + '/planspot']);
+      this.cartevent.emit(false);
     }
   }
 

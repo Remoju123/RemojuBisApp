@@ -8,13 +8,17 @@ import { PlanspotSelectorComponent } from './components/planspot-selector/plansp
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 import { PlanspotListItemComponent } from './components/planspot-list-item/planspot-list-item.component';
 
-import { MaterialModule } from "../../material/material.module";
+import { MaterialModule } from '../../material/material.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { UtilsModule } from "../../utils/utils.module";
+import { UtilsModule } from '../../utils/utils.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { SearchDialogComponent } from './components/search-dialog/search-dialog.component';
 
 import { NgxLoadingModule } from 'ngx-loading';
+
+import { environment } from '../../../environments/environment';
+import { AgmCoreModule } from '@agm/core';
+import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 @NgModule({
   declarations: [
     PlanspotComponent,
@@ -33,12 +37,18 @@ import { NgxLoadingModule } from 'ngx-loading';
     FormsModule,
     ReactiveFormsModule,
     NgxLoadingModule.forRoot({}),
+    AgmCoreModule.forRoot({
+      apiKey: environment.apiKey,
+      libraries: ['places', 'geometry'], //,
+      //language: localStorage && localStorage.gml || 'ja'
+    }),
+    MatGoogleMapsAutocompleteModule,
   ],
   exports: [
     PlanspotComponent,
     PlanspotListComponent,
     PlanspotListItemComponent,
-    PlanspotSelectorComponent
-  ]
+    PlanspotSelectorComponent,
+  ],
 })
-export class PlanspotModule { }
+export class PlanspotModule {}

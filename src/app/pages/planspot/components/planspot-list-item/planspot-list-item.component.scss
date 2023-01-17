@@ -927,3 +927,27 @@
     }
   }
 }
+
+#agm {
+  .card-box {
+    margin-bottom: 0;
+    input#keyword {
+      font-size: 16px;
+    }
+  }
+
+  .mapDiv {
+    position: relative;
+    .map {
+      height: 50vh;
+    }
+    .map-center-overlay {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <mat-card id="planspot-list-item">
-  <mat-card-content *ngIf="item.googleSpot === null; else isGoogle">
+  <mat-card-content *ngIf="item.googleSpot === null">
     <div class="header">
       <div class="lt">
         <span class="avatar">
@@ -180,90 +180,33 @@
       <div class="link-area" (click)="linktoDetail(item)"></div>
     </div>
   </mat-card-content>
-  <ng-template #isGoogle>
-    <div class="header">
-      <div class="lt">
-        <span class="avatar">
-          <img src="../../../../../assets/img/icon_google.svg" alt="google" />
-          <span class="username">google</span>
-        </span>
+  <!-- <ng-template #isGoogle>
+    <mat-card-content id="agm">
+      <div class="card-box">
+        <mat-form-field appearance="outline" style="width: 100%">
+          <mat-label>{{ "GoogleKeyword" | translate }}</mat-label>
+          <input
+            matInput
+            matGoogleMapsAutocomplete
+            #keyword
+            id="keyword"
+            value="{{ place ? place.name : '' }}"
+          />
+        </mat-form-field>
       </div>
-      <div class="rt" [ngClass]="{ fav: myFavorite }">
-        <span class="mark">
-          <img [src]="genMarkPath()" alt="mark" />
-        </span>
-        <span class="title">
-          {{ item.googleSpot.spot_name }}
-        </span>
-      </div>
-      <button
-        *ngIf="myFavorite"
-        type="button"
-        class="delete"
-        (click)="onClickDeleteFavorite(item)"
-      ></button>
-    </div>
-    <div class="card-box">
-      <div class="card-header">
-        <div class="picture">
-          <div class="thumbmain fullwidth">
-            <ng-container *ngIf="item.googleSpot.picture_url; else noImage">
-              <img [src]="item.googleSpot.picture_url" alt="" />
-            </ng-container>
-            <ng-template #noImage>
-              <img src="../../../../../assets/img/nopict.png" alt="noImage" />
-            </ng-template>
-          </div>
-        </div>
-        <div class="info">
-          <div class="lt">
-            <span class="areaName" *ngIf="item.googleSpot.mArea?.area_name_1">
-              {{ item.googleSpot.mArea.area_name_1 | langFilter : lang }}
-            </span>
-          </div>
+      <div class="mapDiv">
+        <agm-map
+          class="map"
+          [scrollwheel]="false"
+          [streetViewControl]="false"
+          [zoom]="zoom"
+          (mapReady)="mapReady($event)"
+        >
+        </agm-map>
+        <div class="map-center-overlay" *ngIf="place">
+          <img src="../../../assets/img/pin_mypos.svg" height="48" />
         </div>
       </div>
-      <div class="card-bottom" [ngClass]="{ on: chkInMyPlanspot(item) }">
-        <mat-list>
-          <mat-list-item class="bottom-view">
-            <span class="note">
-              {{ "NotPostedRemoju" | translate }}
-            </span>
-            <button
-              *ngIf="!myFavorite"
-              mat-button
-              class="add-to-favorite"
-              [ngClass]="{ on: item.isFavorite }"
-              (click)="onClickFavorite(item)"
-            ></button>
-          </mat-list-item>
-          <mat-list-item class="row mt1">
-            <span class="googleaddress">{{
-              item.googleSpot.formatAddress
-            }}</span>
-          </mat-list-item>
-          <!-- Remoju plan プランに追加 -->
-          <mat-list-item class="footer">
-            <button
-              mat-flat-button
-              class="link-to-detail"
-              (click)="linktoDetail(item)"
-            >
-              {{ "LinktoDetail" | translate }}
-            </button>
-            <button
-              mat-flat-button
-              class="add-to-plan"
-              [ngClass]="{ on: chkInMyPlanspot(item) }"
-              (click)="onClickAddToPlan(item)"
-            >
-              {{ "AddToPlan" | translate }}
-            </button>
-          </mat-list-item>
-        </mat-list>
-      </div>
-
-      <div class="link-area" (click)="linktoDetail(item)"></div>
-    </div>
-  </ng-template>
+    </mat-card-content>
+  </ng-template> -->
 </mat-card>

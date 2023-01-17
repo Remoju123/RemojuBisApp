@@ -1,23 +1,36 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
 import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
 import { LangFilterPipe } from 'src/app/utils/lang-filter.pipe';
 import { environment } from 'src/environments/environment';
 
+import PlaceResult = google.maps.places.PlaceResult;
+
+declare const google: any;
 
 @Component({
   selector: 'app-planspot-list-item',
   templateUrl: './planspot-list-item.component.html',
-  styleUrls: ['./planspot-list-item.component.scss']
+  styleUrls: ['./planspot-list-item.component.scss'],
 })
 export class PlanspotListItemComponent implements OnInit {
   @Input() item: PlanSpotList;
   @Input() lang: string;
   @Input() myFavorite: boolean;
-  @Input() myPlanSpots:any;
+  @Input() myPlanSpots: any;
 
   @Output() linked = new EventEmitter<PlanSpotList>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
@@ -26,138 +39,150 @@ export class PlanspotListItemComponent implements OnInit {
   @Output() keyword = new EventEmitter<any>();
   @Output() userPosts = new EventEmitter<PlanSpotList>();
 
-  isProd:boolean;
-  noPic:string = "../../../../../assets/img/nopict.png";
+  isProd: boolean;
+  noPic: string = '../../../../../assets/img/nopict.png';
+
+  @ViewChild('keyword') keyrowd: ElementRef;
+  private onDestroy$ = new Subject();
+  map: any;
+  zoom: number;
+  place: any;
+  autocomplete: any;
 
   constructor(
     private commonService: CommonService,
     private spotService: SpotService,
-    private router:Router
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.isProd = environment.production;
   }
 
-  linktoDetail(planSpot: PlanSpotList){
+  linktoDetail(planSpot: PlanSpotList) {
     this.linked.emit(planSpot);
   }
 
   // スポット：定休日
-  genSpotHoliday(){
-    if(!this.item.isPlan){
-      try{
+  genSpotHoliday() {
+    if (!this.item.isPlan) {
+      try {
         return this.spotService.getRegularholidays(this.item.regularHoliday);
-      }catch{
+      } catch {
         //
       }
     }
-    return ""
+    return '';
   }
 
   // スポット：営業時間
-  genSpotBusinessHour(){
-    if(!this.item.isPlan){
-      try{
-        const businessHour = this.item.businessHours!==null?this.item.businessHours:"";
-          return businessHour!==""?this.spotService.getBusinessHourHead(this.item.businessHours):"";
-      }catch{
+  genSpotBusinessHour() {
+    if (!this.item.isPlan) {
+      try {
+        const businessHour =
+          this.item.businessHours !== null ? this.item.businessHours : '';
+        return businessHour !== ''
+          ? this.spotService.getBusinessHourHead(this.item.businessHours)
+          : '';
+      } catch {
         //
       }
     }
-    return ""
+    return '';
   }
 
   // スポット：アクセス
-  genSpotAccess(){
+  genSpotAccess() {
     const langpipe = new LangFilterPipe();
-    if(!this.item.isPlan){
-      try{
-        const nearest = this.item.spotAccess.nearest!==null?this.item.spotAccess.nearest:"";
-        if(nearest!=="")
-          return langpipe.transform(nearest, this.lang);
-      }catch{
-        return ""
+    if (!this.item.isPlan) {
+      try {
+        const nearest =
+          this.item.spotAccess.nearest !== null
+            ? this.item.spotAccess.nearest
+            : '';
+        if (nearest !== '') return langpipe.transform(nearest, this.lang);
+      } catch {
+        return '';
       }
     }
   }
 
   // ユーザー写真
-  genUserPicture(){
-    return this.item.userPictureUrl?
-      this.item.userPictureUrl:
-      '../../../../../assets/img/icon_who.svg'
+  genUserPicture() {
+    return this.item.userPictureUrl
+      ? this.item.userPictureUrl
+      : '../../../../../assets/img/icon_who.svg';
   }
 
   // ユーザー名
-  genUserName(){
-    return this.item.userName?
-      this.item.userName:
-      '---'
+  genUserName() {
+    return this.item.userName ? this.item.userName : '---';
   }
 
   // スポット、プランマーク
-  genMarkPath(){
-    return this.item.isPlan?
-      '../../../../../assets/img/mark_plan.svg':
-      '../../../../../assets/img/mark_spot.svg';
+  genMarkPath() {
+    return this.item.isPlan
+      ? '../../../../../assets/img/mark_plan.svg'
+      : '../../../../../assets/img/mark_spot.svg';
   }
 
   // タイトル
-  genTitle(){
-    return this.item.isPlan?
-      this.commonService.isValidJson(this.item.planName,this.lang):
-      this.commonService.isValidJson(this.item.spotName,this.lang);
+  genTitle() {
+    return this.item.isPlan
+      ? this.commonService.isValidJson(this.item.planName, this.lang)
+      : this.commonService.isValidJson(this.item.spotName, this.lang);
   }
 
   // プラン：スポットリスト
-  genPlanSpotNames(item:any){
-    if(item){
+  genPlanSpotNames(item: any) {
+    if (item) {
       const arr: any[] = [];
-      item.map((x: { isRemojuSpot: any; spotName: string; })=>{
-        if(x.isRemojuSpot){
-          arr.push(this.commonService.isValidJson(x.spotName,this.lang))
-        }else{
-          arr.push(x.spotName)
+      item.map((x: { isRemojuSpot: any; spotName: string }) => {
+        if (x.isRemojuSpot) {
+          arr.push(this.commonService.isValidJson(x.spotName, this.lang));
+        } else {
+          arr.push(x.spotName);
         }
-      })
+      });
       let list = arr.join("</span></div><div class='wrap'><span>");
-      return "<div class='wrap'><span>" + list + "</span></div>";
-    }else{
+      return "<div class='wrap'><span>" + list + '</span></div>';
+    } else {
       return null;
     }
   }
 
-  onClickAddToPlan(item:PlanSpotList){
+  onClickAddToPlan(item: PlanSpotList) {
     this.addMyPlan.emit(item);
   }
 
-  onClickFavorite(item:PlanSpotList){
+  onClickFavorite(item: PlanSpotList) {
     this.setFav.emit(item);
   }
 
-  onClickDeleteFavorite(item:PlanSpotList){
+  onClickDeleteFavorite(item: PlanSpotList) {
     this.delFav.emit(item);
   }
 
-  chkInMyPlanspot(item:PlanSpotList){
+  chkInMyPlanspot(item: PlanSpotList) {
     try {
-      if(!this.myFavorite){
-        if(item.isPlan){
-          if(item.planSpotNames!==null){
+      if (!this.myFavorite) {
+        if (item.isPlan) {
+          if (item.planSpotNames !== null) {
             let planSpotIds = [];
-            Array.from(item.planSpotNames).map(n => {
+            Array.from(item.planSpotNames).map((n) => {
               planSpotIds.push(n.spotId);
             });
-            return this.getIsDuplicate(planSpotIds,this.myPlanSpots);
+            return this.getIsDuplicate(planSpotIds, this.myPlanSpots);
           }
           return false;
-        }else if (item.googleSpot){
-          return Array.from(this.myPlanSpots).includes(item.googleSpot.google_spot_id);
+        } else if (item.googleSpot) {
+          return Array.from(this.myPlanSpots).includes(
+            item.googleSpot.google_spot_id
+          );
         } else {
           return Array.from(this.myPlanSpots).includes(item.id);
         }
-      }else{
+      } else {
         return false;
       }
     } catch (error) {
@@ -167,7 +192,7 @@ export class PlanspotListItemComponent implements OnInit {
   }
 
   mainOptions: any = {
-    rewindSpeed:0,
+    rewindSpeed: 0,
     loop: false,
     mouseDrag: true,
     touchDrag: true,
@@ -176,31 +201,32 @@ export class PlanspotListItemComponent implements OnInit {
     navSpeed: 700,
     navText: [
       "<i class='material-icons' aria-hidden='true'>keyboard_arrow_left</i>",
-      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>"
+      "<i class='material-icons' aria-hidden='true'>keyboard_arrow_right</i>",
     ],
-    stagePadding:40,
-    margin:0,
+    stagePadding: 40,
+    margin: 0,
     items: 2,
-    nav: true
+    nav: true,
   };
-
 
   // 比較関数（同じ配列同士で重複する値があるか否か）
   getIsDuplicate(arr1, arr2) {
-    if(arr2){
-      return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
-    }else{
+    if (arr2) {
+      return (
+        [...arr1, ...arr2].filter(
+          (item) => arr1.includes(item) && arr2.includes(item)
+        ).length > 0
+      );
+    } else {
       return false;
     }
-
   }
 
-  toPostUser(item:PlanSpotList){
+  toPostUser(item: PlanSpotList) {
     if (item.isPlan && !item.isRemojuPlan) {
       this.userPosts.emit(item);
     } else {
       this.keyword.emit(item.postObjectId);
     }
   }
-
 }
