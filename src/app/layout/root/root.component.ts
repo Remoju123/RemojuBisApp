@@ -47,7 +47,7 @@ export class RootComponent implements OnInit, OnDestroy {
   myPlanSpots: any;
   spots!: number;
 
-  viewbtn_src = '../../../assets/img/view-my-plan_g.svg';
+  viewbtn_src = '../../../assets/img/view-my-plan.svg';
   backbtn_src = '../../../assets/img/close-my-plan.svg';
   toTop_src = '../../../assets/img/toTop.svg';
 
