@@ -358,7 +358,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if (this.condition.select !== 'google') {
       this.count = result.list.length;
     }
-    this.mergeNextDataSet();
+    if (!this.transferState.hasKey(PLANSPOT_KEY)) this.mergeNextDataSet();
   }
 
   async mergeNextDataSet(isDetail: boolean = false) {
