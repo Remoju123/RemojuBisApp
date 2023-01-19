@@ -123,6 +123,10 @@ export class PlanspotListComponent implements OnInit {
       fields: ['geometry', 'name'],
     };
 
+    // this.autocomplete = new google.maps.places.PlacesService(
+    //   this.keyrowd.nativeElement
+    // );
+
     this.autocomplete = new google.maps.places.Autocomplete(
       this.keyrowd.nativeElement,
       options
