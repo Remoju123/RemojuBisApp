@@ -58,6 +58,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('cont') cont: ElementRef;
 
+  @ViewChild('script')
+  public scriptElementRef!: ElementRef;
+
   private onDestroy$ = new Subject();
   constructor(
     public router: Router,
@@ -144,7 +147,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     script.async = true;
     script.src =
       'https://rot1.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/dc5c7986daef50c1e02ab09b442ee34f.js';
-    const div = document.getElementById('script');
+    const div = document.getElementById('insertA8');
     div.insertAdjacentElement('afterend', script);
   }
 
