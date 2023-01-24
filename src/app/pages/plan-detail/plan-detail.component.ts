@@ -144,7 +144,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     const script = document.createElement('script');
-    //script.async = true;
+    script.async = true;
+    //script.defer = true;
     script.type = 'text/javascript';
     script.src =
       '//rot9.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
