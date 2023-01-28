@@ -28,10 +28,6 @@
       {{ "GoogleSearchAny" | translate }}<br />
       {{ "ReplaceKeyword" | translate }}<br />
       {{ "includedPlan" | translate }}
-
-      <!-- <div class='alert' *ngIf="condition.keyword">
-        <p>フリーキーワード<span>{{condition.keyword}}</span>で検索中です。</p>        
-      </div> -->
     </mat-card-content>
   </mat-card>
   <mat-card id="nolist" *ngIf="!isList && condition.select === 'user'">

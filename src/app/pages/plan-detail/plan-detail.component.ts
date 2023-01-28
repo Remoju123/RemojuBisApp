@@ -30,7 +30,13 @@ import { ReviewResult } from '../../class/review.class';
 import { Catch } from '../../class/log.class';
 import { TranslateService } from '@ngx-translate/core';
 import { LangFilterPipe } from '../../utils/lang-filter.pipe';
-import { makeStateKey, Meta, TransferState } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  makeStateKey,
+  Meta,
+  SafeResourceUrl,
+  TransferState,
+} from '@angular/platform-browser';
 import { CommonService } from '../../service/common.service';
 import { IndexedDBService } from '../../service/indexeddb.service';
 import { MyplanService } from '../../service/myplan.service';
@@ -75,8 +81,11 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private transferState: TransferState,
     public dialog: NgDialogAnimationService,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+    public sanitizer: DomSanitizer
+  ) {
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
+  }
 
   data: PlanApp = new PlanApp();
 
@@ -134,6 +143,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   loading: boolean = false;
 
+  url: string =
+    '//rot5.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
+  urlSafe: SafeResourceUrl;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -148,9 +161,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     //script.defer = true;
     script.type = 'text/javascript';
     script.src =
-      '//rot9.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
+      'https://rot9.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
     const div = document.getElementById('insertA8');
-    div.insertAdjacentElement('afterend', script);
+    //div.insertAdjacentElement('afterend', script);
   }
 
   async ngOnInit() {
