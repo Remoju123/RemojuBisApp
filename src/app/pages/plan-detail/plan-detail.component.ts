@@ -83,9 +83,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public sanitizer: DomSanitizer
-  ) {
-    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
-  }
+  ) {}
 
   data: PlanApp = new PlanApp();
 
@@ -143,27 +141,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   loading: boolean = false;
 
-  url: string =
-    '//rot5.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
-  urlSafe: SafeResourceUrl;
-
   get lang() {
     return this.translate.currentLang;
   }
 
   ngOnDestroy() {
     this.onDestroy$.next();
-  }
-
-  ngAfterViewInit() {
-    const script = document.createElement('script');
-    script.async = true;
-    //script.defer = true;
-    script.type = 'text/javascript';
-    script.src =
-      'https://rot9.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
-    const div = document.getElementById('insertA8');
-    //div.insertAdjacentElement('afterend', script);
   }
 
   async ngOnInit() {
