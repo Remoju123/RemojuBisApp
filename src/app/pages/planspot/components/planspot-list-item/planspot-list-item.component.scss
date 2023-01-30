@@ -1,5 +1,10 @@
 @import "vars";
 
+div.banner {
+  margin: 0 16px;
+  justify-content: center;
+  display: flex;
+}
 //::ng-deep .mat-card{
 #planspot-list-item {
   padding: 0;
