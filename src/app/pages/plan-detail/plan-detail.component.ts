@@ -9,6 +9,7 @@ import {
   ElementRef,
   Input,
   HostBinding,
+  Renderer2,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PlanApp, Trans, mFeature, UserStaff } from '../../class/plan.class';
@@ -64,8 +65,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('cont') cont: ElementRef;
 
-  @ViewChild('script')
-  public scriptElementRef!: ElementRef;
+  @ViewChild('divA8', { static: false }) divA8: ElementRef;
 
   private onDestroy$ = new Subject();
   constructor(
@@ -82,7 +82,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     private transferState: TransferState,
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private renderer: Renderer2
   ) {}
 
   data: PlanApp = new PlanApp();
@@ -152,6 +153,22 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
+    const a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow">
+    <img border="0" width="234" height="60" alt="" src="https://www21.a8.net/svt/bgt?aid=220727851298&wid=001&eno=01&mid=s00000005350001016000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=3NEYP7+4XF71U+15A4+61RI9" alt="">`;
+    const a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow">
+    <img border="0" width="234" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663567&wid=002&eno=01&mid=s00000008903001036000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=3NENR3+9DKTJU+1WP2+661TT" alt="">`;
+    const a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow">
+    <img border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663568&wid=002&eno=01&mid=s00000016565001019000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=3NENR3+9E695M+3JTE+62ENL" alt="">`;
+
+    const banners = [a8banner, a8b1, a8b2];
+    this.renderer.setProperty(
+      this.divA8.nativeElement,
+      'innerHTML',
+      banners[Math.floor(Math.random() * banners.length)]
+    );
 
     if (
       this.transferState.hasKey(MYPLANLIST_KEY) ||

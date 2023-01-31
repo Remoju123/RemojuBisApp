@@ -7,6 +7,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
@@ -31,6 +32,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() lang: string;
   @Input() myFavorite: boolean;
   @Input() myPlanSpots: any;
+  @Input() index: number;
 
   @Output() linked = new EventEmitter<PlanSpotList>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
@@ -43,6 +45,8 @@ export class PlanspotListItemComponent implements OnInit {
   noPic: string = '../../../../../assets/img/nopict.png';
 
   @ViewChild('keyword') keyrowd: ElementRef;
+
+  @ViewChild('divA8list', { static: false }) divA8list: ElementRef;
   private onDestroy$ = new Subject();
   map: any;
   zoom: number;
@@ -52,7 +56,8 @@ export class PlanspotListItemComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private spotService: SpotService,
-    private router: Router
+    private router: Router,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
@@ -228,5 +233,33 @@ export class PlanspotListItemComponent implements OnInit {
     } else {
       this.keyword.emit(item.postObjectId);
     }
+  }
+
+  a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow">
+    <img border="0" width="234" height="60" alt="" src="https://www21.a8.net/svt/bgt?aid=220727851298&wid=001&eno=01&mid=s00000005350001016000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=3NEYP7+4XF71U+15A4+61RI9" alt="">`;
+  a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow">
+    <img border="0" width="234" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663567&wid=002&eno=01&mid=s00000008903001036000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=3NENR3+9DKTJU+1WP2+661TT" alt="">`;
+  a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow">
+    <img border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663568&wid=002&eno=01&mid=s00000016565001019000&mc=1"></a>
+    <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=3NENR3+9E695M+3JTE+62ENL" alt="">`;
+
+  setA8banner(index: number) {
+    const banners = [this.a8banner, this.a8b1, this.a8b2];
+    // let random = Math.floor(Math.random() * 2);
+    // let res = index.toString(3).toString();
+    let i = index.toString(3).toString().slice(-1);
+    return banners[i];
+  }
+}
+
+function getNum(num, dig) {
+  // 整数かつ桁数が文字数を上回らないことを条件に指定
+  if (Number.isInteger(num) && dig <= num.toString().length) {
+    const result = String(num)[dig - 1];
+    console.log(result);
+  } else {
+    console.log('不正な数値です');
   }
 }

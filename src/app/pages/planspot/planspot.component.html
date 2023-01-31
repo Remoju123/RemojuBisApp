@@ -19,9 +19,10 @@
   [condition]="condition"
 >
   <app-planspot-list-item
-    *ngFor="let item of details$"
+    *ngFor="let item of details$; index as i"
     [item]="item"
     [lang]="lang"
+    [index]="i"
     [myPlanSpots]="myPlanSpots"
     (linked)="linktoDetail($event)"
     (addMyPlan)="addMyPlan($event)"
