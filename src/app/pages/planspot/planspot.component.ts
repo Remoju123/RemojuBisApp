@@ -26,6 +26,7 @@ import { UpdFavorite } from '../../class/mypageplanlist.class';
 import {
   CacheStore,
   PlanSpotList,
+  searchResult,
   tarms,
 } from '../../class/planspotlist.class';
 import { UserPlanData } from '../../class/user.class';
@@ -53,6 +54,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   condition: ListSearchCondition;
   listSelectMaster: ListSelectMaster;
+
+  source: PlanSpotList[] = [];
 
   rows: PlanSpotList[] = [];
   spots: PlanSpotList[] = [];
@@ -82,6 +85,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   token: string;
   loading: boolean;
 
+  switch: boolean = false;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -104,7 +109,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     public animationDialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.limit = 24;
+    this.limit = 36;
     this.p = 1;
     this.condition = new ListSearchCondition();
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -128,35 +133,37 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
+  cacheRecoveryDataSet() {
+    const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+    this.rows = cache.data;
+    this.spots = cache.spots;
+    this.plans = cache.plans;
+    this.end = cache.end;
+    this.offset = cache.offset;
+    this.details$ = cache.data.filter((d)=>d.pictures.length>0);
+    this.p = cache.p - 1;
+    this.$mSort = cache.mSort;
+    this.count = cache.data.length;
+    this.isList = cache.isList; //change
+    this.listSelectMaster = cache.ListSelectMaster;
+    this.optionKeywords = cache.optionKeywords;
+    this.searchParams = cache.searchParams;
+    if (cache.planSpotList) {
+      this.onViewUserPost(cache.planSpotList);
+    }
+    this.transferState.remove(PLANSPOT_KEY);
+
+    this.condition = JSON.parse(
+      sessionStorage.getItem(this.planspots.conditionSessionKey)
+    );
+    this.historyReplace(this.searchParams);
+  }
+
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
-      const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-      this.rows = cache.data;
-      this.spots = cache.spots;
-      this.plans = cache.plans;
-      this.end = cache.end;
-      this.offset = cache.offset;
-      this.details$ = this.rows.slice(0, this.end);
-      this.p = cache.p - 1;
-      this.$mSort = cache.mSort;
-      this.count = cache.data.length;
-      this.isList = cache.isList; //change
-      this.listSelectMaster = cache.ListSelectMaster;
-      this.optionKeywords = cache.optionKeywords;
-      this.searchParams = cache.searchParams;
-      if (cache.planSpotList) {
-        this.onViewUserPost(cache.planSpotList);
-      }
-
-      //this.transferState.remove(PLANSPOT_KEY);
-
-      this.condition = JSON.parse(
-        sessionStorage.getItem(this.planspots.conditionSessionKey)
-      );
-      this.historyReplace(this.searchParams);
-      this.mergeNextDataSet(true);
+      this.cacheRecoveryDataSet();
     } else {
       let condition = new ListSearchCondition();
       this.activatedRoute.queryParams
@@ -191,16 +198,15 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             condition.keyword = params.kwd;
 
             if (this.isBrowser) {
-              sessionStorage.setItem(
-                this.planspots.conditionSessionKey,
-                JSON.stringify(condition)
-              );
+            sessionStorage.setItem(
+              this.planspots.conditionSessionKey,
+              JSON.stringify(condition)
+            );
             }
           } else if (
             this.isBrowser &&
             sessionStorage.getItem(this.planspots.conditionSessionKey)
           ) {
-            // パラメータなしの場合、保存されている条件を使用
             condition = JSON.parse(
               sessionStorage.getItem(this.planspots.conditionSessionKey)
             );
@@ -343,6 +349,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.condition,
       this.listSelectMaster
     );
+
     if (this.isBrowser) {
       this.offset = 0;
       this.commonService.scrollToTop();
@@ -364,7 +371,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   async mergeNextDataSet(isDetail: boolean = false) {
     if (this.rows.length > 0) {
       this.isList = true;
-
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
       if (startIndex === 0) {
@@ -376,10 +382,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.end = this.rows.length;
       }
       if (isDetail) {
-        // 詳細を読み込み完了せずにDetailに遷移したケースを補完するため
         startIndex = 0;
       }
-
+      //console.log(this.details$)
       for (let i = startIndex; i < this.end; i++) {
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
@@ -423,7 +428,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((g) => {
-            console.log(g);
+            //console.log(g);
             this.prevkeyword = keyword;
             this.details$ = this.details$.concat(g.planSpotList);
             this.token = g.tokenGoogle;
@@ -497,13 +502,15 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
-    this.gaService.sendEvent('planspotlist', val, 'tab', null);
+    //google analysticはcutする
+    //this.gaService.sendEvent('planspotlist', val, 'tab', null);
 
     this.condition.select = val;
     sessionStorage.setItem(
       this.planspots.conditionSessionKey,
       JSON.stringify(this.condition)
     );
+    this.switch = true;
     this.filteringData();
   }
 
@@ -516,7 +523,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       item.id
     );
 
-    this.setSessionStorage();
+    this.setTransferState();
 
     if (item.isPlan) {
       this.router.navigate(['/' + this.lang + '/plans/detail', item.id]);
@@ -532,7 +539,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  setSessionStorage(planSpotList: PlanSpotList = null) {
+  setTransferState(planSpotList: PlanSpotList = null) {
     try {
       let _offset: number;
       if (this.list.isMobile) {
@@ -545,6 +552,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.data = this.rows;
       c.spots = this.spots;
       c.plans = this.plans;
+      c.details$= this.details$;
       c.p = this.p;
       c.end = this.end;
       c.offset = _offset;
@@ -707,7 +715,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     //   item.user.objectId
     // );
 
-    this.setSessionStorage(item);
+    this.setTransferState(item);
 
     const param = new UserPlanData();
     param.user = item.user;

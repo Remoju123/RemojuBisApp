@@ -83,6 +83,7 @@ export class CacheStore {
   data: PlanSpotList[];
   spots: PlanSpotList[];
   plans: PlanSpotList[];
+  details$:PlanSpotList[];
   p:number;
   end:number;
   offset:number;
