@@ -109,7 +109,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     public animationDialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.limit = 24;
+    this.limit = 36;
     this.p = 1;
     this.condition = new ListSearchCondition();
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -140,7 +140,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.plans = cache.plans;
     this.end = cache.end;
     this.offset = cache.offset;
-    this.details$ = this.rows.slice(0, this.end);
+    this.details$ = cache.data.filter((d)=>d.pictures.length>0);
     this.p = cache.p - 1;
     this.$mSort = cache.mSort;
     this.count = cache.data.length;
@@ -428,7 +428,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((g) => {
-            console.log(g);
+            //console.log(g);
             this.prevkeyword = keyword;
             this.details$ = this.details$.concat(g.planSpotList);
             this.token = g.tokenGoogle;
@@ -523,7 +523,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       item.id
     );
 
-    this.setSessionStorage();
+    this.setTransferState();
 
     if (item.isPlan) {
       this.router.navigate(['/' + this.lang + '/plans/detail', item.id]);
@@ -539,7 +539,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  setSessionStorage(planSpotList: PlanSpotList = null) {
+  setTransferState(planSpotList: PlanSpotList = null) {
     try {
       let _offset: number;
       if (this.list.isMobile) {
@@ -552,6 +552,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.data = this.rows;
       c.spots = this.spots;
       c.plans = this.plans;
+      c.details$= this.details$;
       c.p = this.p;
       c.end = this.end;
       c.offset = _offset;
@@ -714,7 +715,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     //   item.user.objectId
     // );
 
-    this.setSessionStorage(item);
+    this.setTransferState(item);
 
     const param = new UserPlanData();
     param.user = item.user;
