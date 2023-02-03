@@ -27,7 +27,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Input() mSort: DataSelected[];
   @Input() searchTarms: tarms;
   @Input() myFavorite: boolean;
-  @Output() event = new EventEmitter<any>();
+  @Output() switch = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();
   @Output() open = new EventEmitter<number>();
@@ -48,7 +48,7 @@ export class PlanspotSelectorComponent implements OnInit {
   ngOnInit(): void {}
 
   onSwitchPlanSpot(e) {
-    this.event.emit(e.target.value);
+    this.switch.emit(e.target.value);
   }
 
   onSortChange(e: { value: number }) {

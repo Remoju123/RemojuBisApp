@@ -4,7 +4,7 @@
   [condition]="condition"
   [mSort]="$mSort"
   [searchTarms]="optionKeywords"
-  (event)="onPlanSpotChange($event)"
+  (switch)="onPlanSpotChange($event)"
   (sort)="sortChange($event)"
   (keyword)="keywordSearch($event)"
   (open)="openDialog($event)"
@@ -32,4 +32,4 @@
   >
   </app-planspot-list-item>
 </app-planspot-list>
-<ngx-loading [show]="loading"></ngx-loading>
+<ngx-loading [show]="loading" ></ngx-loading>
