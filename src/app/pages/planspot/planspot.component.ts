@@ -388,9 +388,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
           this.loading = false;
-          return;
-        }
-        this.planspots
+        }else{
+          this.planspots
           .fetchDetails(this.rows[i], this.guid)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe(async (d) => {
@@ -406,12 +405,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
                   d
                 );
               }
-              console.log(this.rows)
+              //console.log(this.rows)
               this.details$ = this.rows.slice(0, this.end);
-              console.log(this.details$)
+              //console.log(this.details$)
               this.loading = false;
             }
           });
+        }
       }
       this.p++;
     } else if (this.condition.select === 'google') {
