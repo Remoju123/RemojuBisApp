@@ -26,7 +26,6 @@ import { UpdFavorite } from '../../class/mypageplanlist.class';
 import {
   CacheStore,
   PlanSpotList,
-  searchResult,
   tarms,
 } from '../../class/planspotlist.class';
 import { UserPlanData } from '../../class/user.class';
@@ -36,7 +35,6 @@ import { SearchDialogComponent } from './components/search-dialog/search-dialog.
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
-import { LangFilterPipe } from '../../utils/lang-filter.pipe';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserDialogComponent } from 'src/app/parts/user-dialog/user-dialog.component';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
@@ -115,157 +113,68 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
-  ngAfterViewChecked(): void {
-    if (typeof this.offset !== 'undefined') {
-      if (this.list.isMobile) {
-        if (this.offset > 0) {
-          window.scrollTo(0, this.offset);
-        }
-        if (this.offset === window.pageYOffset) {
-          this.offset = 0;
-        }
-      } else {
-        if (this.offset > 0) {
-          this.list.box.nativeElement.scrollTo(0, this.offset);
-          this.offset = 0;
-        }
-      }
-    }
-  }
-
-  cacheRecoveryDataSet() {
-    const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
-    this.rows = cache.data;
-    this.spots = cache.spots;
-    this.plans = cache.plans;
-    this.end = cache.end;
-    this.offset = cache.offset;
-    this.details$ = cache.data.filter((d)=>d.pictures.length>0);
-    this.p = cache.p - 1;
-    this.$mSort = cache.mSort;
-    this.count = cache.data.length;
-    this.isList = cache.isList; //change
-    this.listSelectMaster = cache.ListSelectMaster;
-    this.optionKeywords = cache.optionKeywords;
-    this.searchParams = cache.searchParams;
-    if (cache.planSpotList) {
-      this.onViewUserPost(cache.planSpotList);
-    }
-    this.transferState.remove(PLANSPOT_KEY);
-
-    this.condition = JSON.parse(
-      sessionStorage.getItem(this.planspots.conditionSessionKey)
-    );
-    this.historyReplace(this.searchParams);
-  }
-
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
     } else {
-      let condition = new ListSearchCondition();
-      this.activatedRoute.queryParams
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(async (params: Params) => {
-          if (
-            (params.aid && params.aid.length > 0) ||
-            (params.era && params.era.length > 0) ||
-            (params.cat && params.cat.length > 0) ||
-            (params.srt && params.srt.length > 0) ||
-            (params.lst && params.lst.length > 0) ||
-            (params.kwd && params.kwd.length > 0)
-          ) {
-            condition.areaId =
-              params.aid && params.aid.length > 0
-                ? params.aid.split(',').map(Number)
-                : [];
-            condition.areaId2 =
-              params.era && params.era.length > 0
-                ? params.era.split(',').map(Number)
-                : [];
-            condition.searchCategories =
-              params.cat && params.cat.length > 0
-                ? params.cat.split(',').map(Number)
-                : [];
-            condition.searchOptions =
-              params.opt && params.opt.length > 0
-                ? params.opt.split(',').map(Number)
-                : [];
-            condition.sortval = params.srt;
-            condition.select = params.lst;
-            condition.keyword = params.kwd;
+      let condition = this.recoveryQueryParams();
 
-            if (this.isBrowser) {
-            sessionStorage.setItem(
-              this.planspots.conditionSessionKey,
-              JSON.stringify(condition)
-            );
-            }
-          } else if (
-            this.isBrowser &&
-            sessionStorage.getItem(this.planspots.conditionSessionKey)
-          ) {
-            condition = JSON.parse(
-              sessionStorage.getItem(this.planspots.conditionSessionKey)
-            );
-          }
+      const result = [];
+      result.push(
+        new Promise((resolve) => {
+          this.planspots
+            .getPlanSpotListSearchCondition()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(async (r) => {
+              this.listSelectMaster = r;
+              this.$mSort = r.mSort;
+              resolve(true);
+            });
+        })
+      );
+      result.push(
+        new Promise((resolve) => {
+          this.planspots
+            .getPlanList()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((r) => {
+              this.plans = r;
+              resolve(true);
+            });
+        })
+      );
+      result.push(
+        new Promise((resolve) => {
+          this.planspots
+            .getSpotList()
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe((r) => {
+              this.spots = r;
+              resolve(true);
+            });
+        })
+      );
 
-          const result = [];
-          result.push(
-            new Promise((resolve) => {
-              this.planspots
-                .getPlanSpotListSearchCondition()
-                .pipe(takeUntil(this.onDestroy$))
-                .subscribe(async (r) => {
-                  this.listSelectMaster = r;
-                  this.$mSort = r.mSort;
-                  resolve(true);
-                });
-            })
-          );
-          result.push(
-            new Promise((resolve) => {
-              this.planspots
-                .getPlanList()
-                .pipe(takeUntil(this.onDestroy$))
-                .subscribe((r) => {
-                  this.plans = r;
-                  resolve(true);
-                });
-            })
-          );
-          result.push(
-            new Promise((resolve) => {
-              this.planspots
-                .getSpotList()
-                .pipe(takeUntil(this.onDestroy$))
-                .subscribe((r) => {
-                  this.spots = r;
-                  resolve(true);
-                });
-            })
-          );
+      await Promise.all(result);
 
-          await Promise.all(result);
-
-          const filterResult = await this.planspots.getFilterbyCondition(
-            this.spots.concat(this.plans),
-            condition
+      const filterResult = await this.planspots.getFilterbyCondition(
+        this.spots.concat(this.plans),
+        condition
+      );
+      if (filterResult.length === 0 && condition.keyword) {
+        condition.select = 'google';
+        if (this.isBrowser) {
+          sessionStorage.setItem(
+            this.planspots.conditionSessionKey,
+            JSON.stringify(condition)
           );
-          if (filterResult.length === 0 && condition.keyword) {
-            condition.select = 'google';
-            if (this.isBrowser) {
-              sessionStorage.setItem(
-                this.planspots.conditionSessionKey,
-                JSON.stringify(condition)
-              );
-            }
-          }
-          this.condition = condition;
-          this.filteringData();
-        });
+        }
+      }
+      this.condition = condition;
+      this.filteringData();
+
     }
 
     this.myplanService.FetchMyplanSpots();
@@ -335,6 +244,24 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
+  ngAfterViewChecked(): void {
+    if (typeof this.offset !== 'undefined') {
+      if (this.list.isMobile) {
+        if (this.offset > 0) {
+          window.scrollTo(0, this.offset);
+        }
+        if (this.offset === window.pageYOffset) {
+          this.offset = 0;
+        }
+      } else {
+        if (this.offset > 0) {
+          this.list.box.nativeElement.scrollTo(0, this.offset);
+          this.offset = 0;
+        }
+      }
+    }
+  }
+
   ngOnDestroy() {
     this.onDestroy$.next();
   }
@@ -354,11 +281,11 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.offset = 0;
       this.commonService.scrollToTop();
     }
+
     this.p = 1;
     this.prevkeyword = null;
     this.token = null;
     this.rows = result.list;
-    this.details$ = [];
     this.optionKeywords = result.searchTarm;
     this.searchParams = result.searchParams;
     this.historyReplace(result.searchParams);
@@ -373,11 +300,11 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.isList = true;
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      if (startIndex === 0) {
-        this.loading = true;
-      } else {
-        this.loading = false;
-      }
+      // if (startIndex === 0) {
+      //   this.loading = true;
+      // } else {
+      //   this.loading = false;
+      // }
       if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
       }
@@ -388,31 +315,30 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (this.rows[i].isDetail) {
           this.details$ = this.rows.slice(0, this.end);
           this.loading = false;
-        }else{
-          this.planspots
-          .fetchDetails(this.rows[i], this.guid)
-          .pipe(takeUntil(this.onDestroy$))
-          .subscribe(async (d) => {
-            if (d) {
-              if (d.isEndOfPublication) {
-                this.rows.splice(i, 1);
-                if (this.rows.length - startIndex < this.limit) {
-                  this.end = this.rows.length;
-                }
-              } else {
-                this.rows[i] = await this.planspots.mergeDetail(
-                  this.rows[i],
-                  d
-                );
-              }
-              //console.log(this.rows)
-              this.details$ = this.rows.slice(0, this.end);
-              //console.log(this.details$)
-              this.loading = false;
-            }
-          });
+          return;
         }
+        this.planspots
+        .fetchDetails(this.rows[i], this.guid)
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(async (d) => {
+          if (d) {
+            if (d.isEndOfPublication) {
+              this.rows.splice(i, 1);
+              if (this.rows.length - startIndex < this.limit) {
+                this.end = this.rows.length;
+              }
+            } else {
+              this.rows[i] = await this.planspots.mergeDetail(
+                this.rows[i],
+                d
+              );
+            }
+            this.details$ = this.rows.slice(0, this.end);
+            this.loading = false;
+          }
+        });
       }
+      //console.log(this.rows)
       this.p++;
     } else if (this.condition.select === 'google') {
       this.isList = false;
@@ -674,6 +600,86 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         });
       });
   }
+
+  cacheRecoveryDataSet() {
+    const cache = this.transferState.get<CacheStore>(PLANSPOT_KEY, null);
+    this.rows = cache.data;
+    this.spots = cache.spots;
+    this.plans = cache.plans;
+    this.details$ = cache.data.filter((d)=>d.pictures.length>0);
+    this.end = cache.end;
+    this.offset = cache.offset;
+    this.p = cache.p - 1;
+    this.$mSort = cache.mSort;
+    this.count = cache.data.length;
+    this.isList = cache.isList; //change
+    this.listSelectMaster = cache.ListSelectMaster;
+    this.optionKeywords = cache.optionKeywords;
+    this.searchParams = cache.searchParams;
+    if (cache.planSpotList) {
+      this.onViewUserPost(cache.planSpotList);
+    }
+    this.transferState.remove(PLANSPOT_KEY);
+
+    this.condition = JSON.parse(
+      sessionStorage.getItem(this.planspots.conditionSessionKey)
+    );
+    this.historyReplace(this.searchParams);
+  }
+
+  recoveryQueryParams(){
+    let condition = new ListSearchCondition();
+
+    this.activatedRoute.queryParams
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe(async (params: Params) => {
+          if (
+            (params.aid && params.aid.length > 0) ||
+            (params.era && params.era.length > 0) ||
+            (params.cat && params.cat.length > 0) ||
+            (params.srt && params.srt.length > 0) ||
+            (params.lst && params.lst.length > 0) ||
+            (params.kwd && params.kwd.length > 0)
+          ) {
+            condition.areaId =
+              params.aid && params.aid.length > 0
+                ? params.aid.split(',').map(Number)
+                : [];
+            condition.areaId2 =
+              params.era && params.era.length > 0
+                ? params.era.split(',').map(Number)
+                : [];
+            condition.searchCategories =
+              params.cat && params.cat.length > 0
+                ? params.cat.split(',').map(Number)
+                : [];
+            condition.searchOptions =
+              params.opt && params.opt.length > 0
+                ? params.opt.split(',').map(Number)
+                : [];
+            condition.sortval = params.srt;
+            condition.select = params.lst;
+            condition.keyword = params.kwd;
+
+            if (this.isBrowser) {
+            sessionStorage.setItem(
+              this.planspots.conditionSessionKey,
+              JSON.stringify(condition)
+            );
+            }
+          } else if (
+            this.isBrowser &&
+            sessionStorage.getItem(this.planspots.conditionSessionKey)
+          ) {
+            condition = JSON.parse(
+              sessionStorage.getItem(this.planspots.conditionSessionKey)
+            );
+          }
+        })
+    return condition;
+  }
+
+
 
   // お気に入り登録・除外
   setFavorite(item: PlanSpotList) {
