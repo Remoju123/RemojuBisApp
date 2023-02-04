@@ -107,7 +107,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     public animationDialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.limit = 6;
+    this.limit = 9;
     this.p = 1;
     this.condition = new ListSearchCondition();
     this.isBrowser = isPlatformBrowser(this.platformId);
