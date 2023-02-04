@@ -300,11 +300,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.isList = true;
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      // if (startIndex === 0) {
-      //   this.loading = true;
-      // } else {
-      //   this.loading = false;
-      // }
+      console.log(startIndex)
+      if (startIndex === 0) {
+        this.loading = true;
+      } else {
+        this.loading = false;
+      }
       if (this.rows.length - startIndex < this.limit) {
         this.end = this.rows.length;
       }
@@ -312,11 +313,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         startIndex = 0;
       }
       for (let i = startIndex; i < this.end; i++) {
-        if (this.rows[i].isDetail) {
-          this.details$ = this.rows.slice(0, this.end);
-          this.loading = false;
-          return;
-        }
         this.planspots
         .fetchDetails(this.rows[i], this.guid)
         .pipe(takeUntil(this.onDestroy$))
@@ -338,7 +334,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           }
         });
       }
-      //console.log(this.rows)
       this.p++;
     } else if (this.condition.select === 'google') {
       this.isList = false;
@@ -355,7 +350,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((g) => {
-            //console.log(g);
             this.prevkeyword = keyword;
             this.details$ = this.details$.concat(g.planSpotList);
             this.token = g.tokenGoogle;
@@ -430,7 +424,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
     //google analysticはcutする
-    //this.gaService.sendEvent('planspotlist', val, 'tab', null);
+    this.gaService.sendEvent('planspotlist', val, 'tab', null);
 
     this.condition.select = val;
     sessionStorage.setItem(
@@ -556,12 +550,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランに追加
   async addMyPlan(item: PlanSpotList) {
-    // this.gaService.sendEvent(
-    //   'planspotlist',
-    //   this.condition.select,
-    //   'add_to_cart',
-    //   item.id
-    // );
+    this.gaService.sendEvent(
+      'planspotlist',
+      this.condition.select,
+      'add_to_cart',
+      item.id
+    );
 
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if ((await this.commonService.checkAddPlan(tempqty)) === false) {
