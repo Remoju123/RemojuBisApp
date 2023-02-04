@@ -32,7 +32,7 @@
           value="all"
           (change)="onSwitchPlanSpot($event)"
           [checked]="
-            condition.select && condition.select !== null
+            condition && condition.select !== null
               ? condition.select === 'all'
               : false
           "

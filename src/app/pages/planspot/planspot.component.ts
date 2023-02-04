@@ -174,7 +174,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.condition = condition;
       this.filteringData();
-
     }
 
     this.myplanService.FetchMyplanSpots();
@@ -303,30 +302,31 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       if (isDetail) startIndex = 0;
 
       //if(this.condition.select === 'all')
-        this.loading = startIndex === 0 ? true :false;
+      this.loading = startIndex === 0 ? true : false;
 
-      if (this.rows.length - startIndex < this.limit) this.end = this.rows.length;
+      if (this.rows.length - startIndex < this.limit)
+        this.end = this.rows.length;
       for (let i = startIndex; i < this.end; i++) {
         this.planspots
-        .fetchDetails(this.rows[i], this.guid)
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(async (d) => {
-          if (d) {
-            if (d.isEndOfPublication) {
-              this.rows.splice(i, 1);
-              if (this.rows.length - startIndex < this.limit) {
-                this.end = this.rows.length;
+          .fetchDetails(this.rows[i], this.guid)
+          .pipe(takeUntil(this.onDestroy$))
+          .subscribe(async (d) => {
+            if (d) {
+              if (d.isEndOfPublication) {
+                this.rows.splice(i, 1);
+                if (this.rows.length - startIndex < this.limit) {
+                  this.end = this.rows.length;
+                }
+              } else {
+                this.rows[i] = await this.planspots.mergeDetail(
+                  this.rows[i],
+                  d
+                );
               }
-            } else {
-              this.rows[i] = await this.planspots.mergeDetail(
-                this.rows[i],
-                d
-              );
+              this.details$ = this.rows.slice(0, this.end);
             }
-            this.details$ = this.rows.slice(0, this.end);
-          }
-          this.loading = false;
-        });
+            this.loading = false;
+          });
       }
       this.p++;
     } else if (this.condition.select === 'google') {
@@ -467,7 +467,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       c.data = this.rows;
       c.spots = this.spots;
       c.plans = this.plans;
-      c.details$= this.details$;
+      c.details$ = this.details$;
       c.p = this.p;
       c.end = this.end;
       c.offset = _offset;
@@ -594,7 +594,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.rows = cache.data;
     this.spots = cache.spots;
     this.plans = cache.plans;
-    this.details$ = cache.data.filter((d)=>d.pictures.length>0);
+    this.details$ = cache.data.filter((d) => d.pictures.length > 0);
     this.end = cache.end;
     this.offset = cache.offset;
     this.p = cache.p - 1;
@@ -615,59 +615,57 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.historyReplace(this.searchParams);
   }
 
-  recoveryQueryParams(){
+  recoveryQueryParams() {
     let condition = new ListSearchCondition();
 
     this.activatedRoute.queryParams
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(async (params: Params) => {
-          if (
-            (params.aid && params.aid.length > 0) ||
-            (params.era && params.era.length > 0) ||
-            (params.cat && params.cat.length > 0) ||
-            (params.srt && params.srt.length > 0) ||
-            (params.lst && params.lst.length > 0) ||
-            (params.kwd && params.kwd.length > 0)
-          ) {
-            condition.areaId =
-              params.aid && params.aid.length > 0
-                ? params.aid.split(',').map(Number)
-                : [];
-            condition.areaId2 =
-              params.era && params.era.length > 0
-                ? params.era.split(',').map(Number)
-                : [];
-            condition.searchCategories =
-              params.cat && params.cat.length > 0
-                ? params.cat.split(',').map(Number)
-                : [];
-            condition.searchOptions =
-              params.opt && params.opt.length > 0
-                ? params.opt.split(',').map(Number)
-                : [];
-            condition.sortval = params.srt;
-            condition.select = params.lst;
-            condition.keyword = params.kwd;
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(async (params: Params) => {
+        if (
+          (params.aid && params.aid.length > 0) ||
+          (params.era && params.era.length > 0) ||
+          (params.cat && params.cat.length > 0) ||
+          (params.srt && params.srt.length > 0) ||
+          (params.lst && params.lst.length > 0) ||
+          (params.kwd && params.kwd.length > 0)
+        ) {
+          condition.areaId =
+            params.aid && params.aid.length > 0
+              ? params.aid.split(',').map(Number)
+              : [];
+          condition.areaId2 =
+            params.era && params.era.length > 0
+              ? params.era.split(',').map(Number)
+              : [];
+          condition.searchCategories =
+            params.cat && params.cat.length > 0
+              ? params.cat.split(',').map(Number)
+              : [];
+          condition.searchOptions =
+            params.opt && params.opt.length > 0
+              ? params.opt.split(',').map(Number)
+              : [];
+          condition.sortval = params.srt;
+          condition.select = params.lst;
+          condition.keyword = params.kwd;
 
-            if (this.isBrowser) {
+          if (this.isBrowser) {
             sessionStorage.setItem(
               this.planspots.conditionSessionKey,
               JSON.stringify(condition)
             );
-            }
-          } else if (
-            this.isBrowser &&
-            sessionStorage.getItem(this.planspots.conditionSessionKey)
-          ) {
-            condition = JSON.parse(
-              sessionStorage.getItem(this.planspots.conditionSessionKey)
-            );
           }
-        })
+        } else if (
+          this.isBrowser &&
+          sessionStorage.getItem(this.planspots.conditionSessionKey)
+        ) {
+          condition = JSON.parse(
+            sessionStorage.getItem(this.planspots.conditionSessionKey)
+          );
+        }
+      });
     return condition;
   }
-
-
 
   // お気に入り登録・除外
   setFavorite(item: PlanSpotList) {
