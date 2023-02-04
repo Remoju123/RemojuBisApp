@@ -101,7 +101,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   ngDoCheck() {
     let changes = this.iterableDiffer.diff(this.myPlanSpots);
     if (changes) {
-      changes.forEachAddedItem((record) => {
+      changes.forEachAddedItem((record: any) => {
+        console.log(record)
         this.snackBar.open(this.translate.instant('PlanboxChange'), null, {
           duration: 2000,
           panelClass: ['myplanSnackBar'],
