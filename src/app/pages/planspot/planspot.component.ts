@@ -300,17 +300,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.isList = true;
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      if (startIndex === 0) {
-        this.loading = true;
-      } else {
-        this.loading = false;
-      }
-      if (this.rows.length - startIndex < this.limit) {
-        this.end = this.rows.length;
-      }
-      if (isDetail) {
-        startIndex = 0;
-      }
+      if (isDetail) startIndex = 0;
+      //this.loading = startIndex === 0 ? true :false;
+      if (this.rows.length - startIndex < this.limit) this.end = this.rows.length;
       for (let i = startIndex; i < this.end; i++) {
         this.planspots
         .fetchDetails(this.rows[i], this.guid)
@@ -329,8 +321,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               );
             }
             this.details$ = this.rows.slice(0, this.end);
-            this.loading = false;
           }
+          this.loading = false;
         });
       }
       this.p++;
