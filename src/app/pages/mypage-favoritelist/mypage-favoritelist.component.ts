@@ -74,6 +74,8 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   end: number;
   offset: number;
 
+  type:string = 'mypage';
+
   get lang() {
     return this.translate.currentLang;
   }

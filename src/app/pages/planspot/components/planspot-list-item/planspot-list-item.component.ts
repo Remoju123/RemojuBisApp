@@ -33,6 +33,8 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() myFavorite: boolean;
   @Input() myPlanSpots: any;
   @Input() index: number;
+  @Input() type?: string;
+  show:boolean = true;
 
   @Output() linked = new EventEmitter<PlanSpotList>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
@@ -58,10 +60,13 @@ export class PlanspotListItemComponent implements OnInit {
     private spotService: SpotService,
     private router: Router,
     private renderer: Renderer2
-  ) {}
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.isProd = environment.production;
+    this.show = this.type==='mypage'?false:true;
   }
 
   linktoDetail(planSpot: PlanSpotList) {
