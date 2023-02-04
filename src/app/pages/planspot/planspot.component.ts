@@ -107,7 +107,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     public animationDialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
-    this.limit = 12;
+    this.limit = 6;
     this.p = 1;
     this.condition = new ListSearchCondition();
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -300,7 +300,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.isList = true;
       let startIndex = (this.p - 1) * this.limit;
       this.end = startIndex + this.limit;
-      console.log(startIndex)
       if (startIndex === 0) {
         this.loading = true;
       } else {
