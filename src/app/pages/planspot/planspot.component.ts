@@ -6,6 +6,7 @@ import {
   Inject,
   AfterViewChecked,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -83,7 +84,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   token: string;
   loading: boolean;
 
-  switch: boolean = false;
+  //switch: boolean = false;
 
   isClearSearch:boolean = false;
 
@@ -94,6 +95,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   codec = new HttpUrlEncodingCodec();
 
   isBrowser: boolean = false;
+
+  isMobile: boolean;
 
   constructor(
     private translate: TranslateService,
@@ -117,6 +120,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
+
+    this.isMobile = this.detectIsMobile(window.innerWidth);
 
     if (this.transferState.hasKey(PLANSPOT_KEY)) {
       this.cacheRecoveryDataSet();
@@ -413,7 +418,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   // 表示順
   sortChange(v: any) {
     //this.gaService.sendEvent('planspotlist', this.condition.select, 'sort', v);
-
     this.condition.sortval = v;
     sessionStorage.setItem(
       this.planspots.conditionSessionKey,
@@ -425,14 +429,17 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   // プランスポット切り替え
   onPlanSpotChange(val: any) {
     //google analysticはcutする
-    this.gaService.sendEvent('planspotlist', val, 'tab', null);
+    //this.gaService.sendEvent('planspotlist', val, 'tab', null);
 
     this.condition.select = val;
     sessionStorage.setItem(
       this.planspots.conditionSessionKey,
       JSON.stringify(this.condition)
     );
-    this.switch = true;
+    //this.switch = true;
+    if(!this.isMobile){
+      this.list.scrollToTop();
+    }
     this.filteringData();
   }
 
@@ -729,5 +736,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       data: param,
       autoFocus: false,
     });
+  }
+
+  detectIsMobile(w: any) {
+    if (w < 1024) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -122,7 +122,7 @@ export class MypagePlanListComponent
         this.$releaseDestination = r;
       });
 
-    /*  
+    /*
     if (this.transferState.hasKey(MYPLANLIST_KEY)) {
       const cache = this.transferState.get<MyplanListCacheStore>(
         MYPLANLIST_KEY,
@@ -411,7 +411,6 @@ export class MypagePlanListComponent
    *
    * -----------------------------*/
 
-  @Catch()
   detectIsMobile(w: any) {
     if (w < 1024) {
       return true;
