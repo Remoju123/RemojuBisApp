@@ -654,16 +654,7 @@
           </select>
         </div>
       </div-->
-      <!-- 保存 -->
-      <div class="save">
-        <button
-          mat-button
-          type="button"
-          id="plansave"
-          (click)="onClickSavePlan()"
-        ></button>
-        <label for="plansave">{{ "Save" | translate }}</label>
-      </div>
+
       <!-- 新規プラン作成 -->
       <div class="newplan">
         <button
@@ -671,8 +662,19 @@
           type="button"
           id="plannew"
           (click)="onClickNewPlan()"
-        ></button>
-        <label for="plannew">{{ "CreatingNewPlan" | translate }}</label>
+        >{{ "CreatingNewPlan" | translate }}</button>
+        <!--label for="plannew">{{ "CreatingNewPlan" | translate }}</label-->
+      </div>
+
+      <!-- 保存 -->
+      <div class="save">
+        <button
+          mat-button
+          type="button"
+          id="plansave"
+          (click)="onClickSavePlan()"
+        >{{ "Save" | translate }}</button>
+        <!--label for="plansave">{{ "Save" | translate }}</label-->
       </div>
     </div>
 

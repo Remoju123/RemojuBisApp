@@ -1849,11 +1849,17 @@ form {
       align-items: center;
 
       button {
-        background: url("../../../assets/img/btn_save.svg") no-repeat;
-        border: 0;
-        width: 40px;
-        height: 40px;
-        min-width: initial;
+        // background: url("../../../assets/img/btn_save.svg") no-repeat;
+        // border: 0;
+        // width: 40px;
+        // height: 40px;
+        // min-width: initial;
+        width: 120px;
+        height: 42px;
+        background-color: #707070;
+        border-radius: 10px;
+        color:#fff;
+        font-size: small;
 
         &:disabled {
           opacity: 0.5;
@@ -1868,11 +1874,17 @@ form {
       align-items: center;
 
       button {
-        background: url("../../../assets/img/btn_new.svg") no-repeat;
-        border: 0;
-        width: 40px;
-        height: 40px;
-        min-width: initial;
+        // background: url("../../../assets/img/btn_new.svg") no-repeat;
+        // border: 0;
+        // width: 40px;
+        // height: 40px;
+        // min-width: initial;
+        width: 120px;
+        height: 42px;
+        background-color: $color-pnk04;
+        border-radius: 10px;
+        color:#fff;
+        font-size: small;
 
         &:disabled {
           opacity: 0.5;
