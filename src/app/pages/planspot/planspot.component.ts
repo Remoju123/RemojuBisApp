@@ -438,12 +438,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プラン/スポット詳細リンク
   linktoDetail(item: PlanSpotList) {
-    this.gaService.sendEvent(
-      'planspotlist',
-      this.condition.select,
-      'detail',
-      item.id
-    );
+    // this.gaService.sendEvent(
+    //   'planspotlist',
+    //   this.condition.select,
+    //   'detail',
+    //   item.id
+    // );
 
     this.setTransferState();
 
@@ -551,12 +551,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // プランに追加
   async addMyPlan(item: PlanSpotList) {
-    this.gaService.sendEvent(
-      'planspotlist',
-      this.condition.select,
-      'add_to_cart',
-      item.id
-    );
+    // this.gaService.sendEvent(
+    //   'planspotlist',
+    //   this.condition.select,
+    //   'add_to_cart',
+    //   item.id
+    // );
 
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if ((await this.commonService.checkAddPlan(tempqty)) === false) {

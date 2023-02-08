@@ -528,7 +528,7 @@ var PlanspotComponent = /** @class */ (function () {
     };
     // プラン/スポット詳細リンク
     PlanspotComponent.prototype.linktoDetail = function (item) {
-        this.gaService.sendEvent('planspotlist', this.condition.select, 'detail', item.id);
+        //this.gaService.sendEvent('planspotlist', this.condition.select, 'detail', item.id);
         this.setTransferState();
         if (item.isPlan) {
             this.router.navigate(['/' + this.lang + '/plans/detail', item.id]);
