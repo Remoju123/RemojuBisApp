@@ -177,7 +177,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.mypageFavoriteListService.conditionSessionKey
     );
     this.transferState.remove(FAVORITE_KEY);
-    this.router.navigate(['/' + this.currentLang + '/planspot/']);
+    if(!this.router.url.includes('planspot')){
+      this.router.navigate(['/' + this.currentLang + '/planspot/']);
+      this.planSpotListService.onSetClearSearch(false)
+    }else{
+      this.planSpotListService.onSetClearSearch(true)
+    }
+
   }
 
   linktoProfile() {

@@ -85,6 +85,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   switch: boolean = false;
 
+  isClearSearch:boolean = false;
+
   get lang() {
     return this.translate.currentLang;
   }
@@ -241,6 +243,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           spotDetail.isFavorite = x.isFavorite;
         }
       });
+
+      this.planspots.clearSearch.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
+        if(v){
+          this.keywordSearch('');
+        }
+      })
   }
 
   ngAfterViewChecked(): void {
@@ -375,7 +383,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     //   'search',
     //   v
     // );
-
     this.condition.keyword = v;
     this.prevkeyword = null;
     this.token = null;

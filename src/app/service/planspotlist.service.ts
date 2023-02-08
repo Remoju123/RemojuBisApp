@@ -48,6 +48,12 @@ export class PlanSpotListService {
   public userPlanSubject = new Subject<PlanSpotList[]>();
   public userPlanSubject$ = this.userPlanSubject.asObservable();
 
+  public setClearSearch = new Subject<boolean>();
+  public clearSearch = this.setClearSearch.asObservable();
+  public onSetClearSearch(state:boolean){
+    this.setClearSearch.next(state)
+  }
+
   public conditionSessionKey = 'PlanSpotSearchCondition';
   public listSessionKey = 'PlanSpotList';
 
