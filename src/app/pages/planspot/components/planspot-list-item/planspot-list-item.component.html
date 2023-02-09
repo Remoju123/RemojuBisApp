@@ -35,7 +35,11 @@
                     [src]="src ? src : noPic"
                     [alt]="item.id"
                     [title]="item.id"
+                    (load)="imageloaded = true"
                   />
+                  <div class="loading" *ngIf="!imageloaded">
+                    <p>Loading image...</p>
+                  </div>
                 </div>
               </ng-template>
             </ng-container>
@@ -47,7 +51,11 @@
                   [src]="src ? src : noPic"
                   [alt]="item.id"
                   [title]="item.id"
+                  (load)="imageloaded = true"
                 />
+                <div class="loading" *ngIf="!imageloaded">
+                  <p>Loading image...</p>
+                </div>
               </div>
             </ng-container>
           </ng-template>
@@ -269,4 +277,3 @@
 
   <div *ngIf="show" class="banner" [innerHTML]="setA8banner(index)"></div>
 </mat-card>
-

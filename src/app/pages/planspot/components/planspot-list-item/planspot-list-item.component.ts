@@ -34,7 +34,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() myPlanSpots: any;
   @Input() index: number;
   @Input() type?: string;
-  show:boolean = true;
+  show: boolean = true;
 
   @Output() linked = new EventEmitter<PlanSpotList>();
   @Output() addMyPlan = new EventEmitter<PlanSpotList>();
@@ -45,6 +45,8 @@ export class PlanspotListItemComponent implements OnInit {
 
   isProd: boolean;
   noPic: string = '../../../../../assets/img/nopict.png';
+
+  imageloaded = false;
 
   @ViewChild('keyword') keyrowd: ElementRef;
 
@@ -60,13 +62,11 @@ export class PlanspotListItemComponent implements OnInit {
     private spotService: SpotService,
     private router: Router,
     private renderer: Renderer2
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.isProd = environment.production;
-    this.show = this.type==='mypage'?false:true;
+    this.show = this.type === 'mypage' ? false : true;
   }
 
   linktoDetail(planSpot: PlanSpotList) {
@@ -240,13 +240,13 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
-  a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow">
+  a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow" target="_blank">
     <img border="0" width="234" height="60" alt="" src="https://www21.a8.net/svt/bgt?aid=220727851298&wid=001&eno=01&mid=s00000005350001016000&mc=1"></a>
     <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=3NEYP7+4XF71U+15A4+61RI9" alt="">`;
-  a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow">
+  a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow" target="_blank">
     <img border="0" width="234" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663567&wid=002&eno=01&mid=s00000008903001036000&mc=1"></a>
     <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=3NENR3+9DKTJU+1WP2+661TT" alt="">`;
-  a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow">
+  a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow" target="_blank">
     <img border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663568&wid=002&eno=01&mid=s00000016565001019000&mc=1"></a>
     <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=3NENR3+9E695M+3JTE+62ENL" alt="">`;
 

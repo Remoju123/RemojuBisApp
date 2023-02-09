@@ -284,6 +284,16 @@ div.banner {
               width: 100%;
             }
           }
+
+          .loading {
+            min-height: 167px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            p {
+              color: #919191;
+            }
+          }
         }
       }
 
