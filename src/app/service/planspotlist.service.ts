@@ -246,7 +246,7 @@ export class PlanSpotListService {
           }
         }
       }
-
+      console.log(_result)
       resolve(_result);
     });
   }
