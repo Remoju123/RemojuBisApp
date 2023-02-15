@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 21"><defs><style>.cls-1,.cls-2,.cls-3{fill:none;}.cls-2,.cls-3{stroke:#cecece;}.cls-3{stroke-linecap:round;}</style></defs><g id="レイヤー_2" data-name="レイヤー 2"><g id="レイヤー_1-2" data-name="レイヤー 1"><g id="グループ_169" data-name="グループ 169"><g id="楕円形_26" data-name="楕円形 26"><circle class="cls-1" cx="10.5" cy="10.5" r="10.5"/><circle class="cls-2" cx="10.5" cy="10.5" r="10"/></g><line id="線_146" data-name="線 146" class="cls-3" x1="6.65" y1="6.65" x2="14.35" y2="14.35"/><line id="線_147" data-name="線 147" class="cls-3" x1="14.35" y1="6.65" x2="6.65" y2="14.35"/></g></g></g></svg>
+<svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.5 21C16.299 21 21 16.299 21 10.5C21 4.70101 16.299 0 10.5 0C4.70101 0 0 4.70101 0 10.5C0 16.299 4.70101 21 10.5 21Z" fill="#B7B7B7"/>
+<path d="M10.5 20.5C16.0228 20.5 20.5 16.0228 20.5 10.5C20.5 4.97715 16.0228 0.5 10.5 0.5C4.97715 0.5 0.5 4.97715 0.5 10.5C0.5 16.0228 4.97715 20.5 10.5 20.5Z" fill="#B7B7B7"/>
+<path d="M6.65002 6.64999L14.35 14.35" stroke="white" stroke-linecap="round"/>
+<path d="M14.35 6.64999L6.65002 14.35" stroke="white" stroke-linecap="round"/>
+</svg>
