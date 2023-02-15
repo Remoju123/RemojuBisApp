@@ -314,6 +314,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.end = startIndex + this.limit;
       if (isDetail) startIndex = 0;
 
+      //if(this.condition.select === 'all')
       this.loading = startIndex === 0 ? true : false;
 
       if (this.rows.length - startIndex < this.limit)
@@ -345,7 +346,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.isList = false;
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
-        this.details$ = this.details$;
+        this.details$ = [];
       }
       if (
         keyword &&
@@ -362,8 +363,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             this.loading = false;
           });
       }
-    } else if(this.condition.select !== 'google'){
-      //console.log(this.condition.select)
     }
   }
 
@@ -441,8 +440,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     if(!this.isMobile){
       this.list.scrollToTop();
     }
-
-
     this.filteringData();
   }
 
