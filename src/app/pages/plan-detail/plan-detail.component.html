@@ -16,6 +16,7 @@
         <div class="lt">
           <span class="avatar">
             <img
+              decoding="async"
               [src]="
                 data.user?.pictureUrl ||
                 data.userStaff?.pictureUrl ||
@@ -65,7 +66,7 @@
           <ng-container *ngFor="let item of data.pictures; index as i">
             <ng-template carouselSlide id="i + 1">
               <div class="thumb">
-                <img [src]="item" [alt]="data.planId" [title]="data.planId" />
+                <img decoding="async" [src]="item" [alt]="data.planId" [title]="data.planId" />
               </div>
             </ng-template>
           </ng-container>
@@ -74,7 +75,7 @@
         <ng-template #singlePict>
           <ng-container *ngFor="let item of data.pictures; index as i">
             <div class="thumb">
-              <img [src]="item" [alt]="data.planId" [title]="data.planId" />
+              <img decoding="async" [src]="item" [alt]="data.planId" [title]="data.planId" />
             </div>
           </ng-container>
         </ng-template>
@@ -199,6 +200,7 @@
       <mat-card-content>
         <div class="avatar">
           <img
+            decoding="async"
             [src]="
               data.user?.pictureUrl ||
               data.userStaff?.pictureUrl ||
@@ -226,7 +228,7 @@
                   (click)="setMapCenter(item.latitude, item.longitude)"
                   class="noswip"
                 >
-                  <img [src]="item.pictureUrl ? item.pictureUrl : noPic" />
+                  <img decoding="async" [src]="item.pictureUrl ? item.pictureUrl : noPic" />
                 </a>
               </div>
 
@@ -318,6 +320,7 @@
                       <ng-template carouselSlide id="item.spotId">
                         <div class="thumbmain noswip">
                           <img
+                            decoding="async"
                             [src]="pict ? pict : noPic"
                             [alt]="item.spotId"
                             [title]="item.spotId"
@@ -428,6 +431,7 @@
             <div class="user">
               <div class="wrap">
                 <img
+                  decoding="async"
                   src="{{ $userStaff.pictureUrl }}"
                   alt="{{ $userStaff.romanLetterName | langFilter : lang }}"
                 />
@@ -480,7 +484,7 @@
             <ng-template carouselSlide id="item.spotPlanID">
               <div class="thumbnail">
                 <a href="{{ lang }}/spots/detail/{{ item.spotPlanID }}">
-                  <img [src]="item.pictureUrl" alt="" />
+                  <img decoding="async" [src]="item.pictureUrl" alt="" />
                 </a>
               </div>
               <div class="content">
@@ -503,7 +507,7 @@
               <div class="wrap">
                 <div class="thumbnail">
                   <a href="{{ item.url }}">
-                    <img [src]="item.picture_url" alt="" />
+                    <img decoding="async" [src]="item.picture_url" alt="" />
                   </a>
                 </div>
                 <div class="content">
@@ -516,7 +520,7 @@
       </mat-card-content>
     </mat-card>
     <button *ngIf="!isMobile" class="scroll-to-top" (click)="scrollToTop()">
-      <img src="../../../../../assets/img/toTop3.svg" alt="toTop" />
+      <img decoding="async" src="../../../../../assets/img/toTop3.svg" alt="toTop" />
     </button>
   </div>
 </div>

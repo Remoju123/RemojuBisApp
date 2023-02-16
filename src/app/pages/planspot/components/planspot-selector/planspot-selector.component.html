@@ -3,24 +3,26 @@
     <div class="row title" *ngIf="!myFavorite">
       {{ "FindEveryoneRecommendations" | translate }}
     </div>
-    <div class="row input" *ngIf="!myFavorite">
-      <input
-        type="text"
-        placeholder="{{ 'SearchGuide' | translate }}"
-        class="keyword"
-        #keywordInput
-        [value]="condition.keyword"
-        (keyup.enter)="onKeywordSearch($event)"
-        (blur)="onKeywordSearch($event)"
-      />
-      <img
-        class="prefix"
-        src="../../../../../assets/img/keyword-search.svg"
-        alt=""
-      />
-      <button mat-button class="reset" (click)="inputClear()">
-        <img src="../../../../../assets/img/reset_btn.svg" alt="reset" />
-      </button>
+    <div class="row" *ngIf="!myFavorite">
+      <div class="input">
+        <input
+          type="text"
+          placeholder="{{ 'SearchGuide' | translate }}"
+          class="keyword"
+          #keywordInput
+          [value]="condition.keyword"
+          (keyup.enter)="onKeywordSearch($event)"
+          (blur)="onKeywordSearch($event)"
+        />
+        <img
+          class="prefix"
+          src="../../../../../assets/img/keyword-search.svg"
+          alt=""
+        />
+        <button mat-button class="reset" (click)="inputClear()">
+          <img src="../../../../../assets/img/reset_btn.svg" alt="reset" />
+        </button>
+      </div>
     </div>
     <div class="row switch">
       <div class="switch-toggle">

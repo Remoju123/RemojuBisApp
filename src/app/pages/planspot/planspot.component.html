@@ -11,7 +11,9 @@
   (reset)="conditionReset()"
 >
 </app-planspot-selector>
-<div class="list-header">{{ "PlanSpotList" | translate }}</div>
+<div *ngIf="condition.select!=='google'" class="list-header">
+  {{ "PlanSpotList" | translate }}
+</div>
 <app-planspot-list
   (scrolled)="onScrollDown()"
   (glink)="onPlanSpotChange($event)"
