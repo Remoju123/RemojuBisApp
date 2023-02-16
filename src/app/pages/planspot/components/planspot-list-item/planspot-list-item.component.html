@@ -32,6 +32,7 @@
               <ng-template carouselSlide id="row.planId">
                 <div class="thumbmain">
                   <img
+                    decoding="async"
                     [src]="src ? src : noPic"
                     [alt]="item.id"
                     [title]="item.id"
@@ -48,6 +49,7 @@
             <ng-container *ngFor="let src of item.pictures; index as i">
               <div class="thumbmain fullwidth">
                 <img
+                  decoding="async"
                   [src]="src ? src : noPic"
                   [alt]="item.id"
                   [title]="item.id"
