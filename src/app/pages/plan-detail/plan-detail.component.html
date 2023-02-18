@@ -16,7 +16,6 @@
         <div class="lt">
           <span class="avatar">
             <img
-              decoding="async"
               [src]="
                 data.user?.pictureUrl ||
                 data.userStaff?.pictureUrl ||
@@ -39,21 +38,12 @@
               {{ data.planName }}
             </span>
           </div>
-          <div class="buttons">
-            <!-- <button class="deletePlan" (click)="onClickThanks()"  [ngStyle]="{'color' : ($isThanks ? 'red' : 'gray')}">
-              <i class="material-icons">thumb_up</i>
-            </button> -->
-            <!-- <button mat-button class="add-to-favorite" [ngClass]="{'on':data.isFavorite}" (click)="onClickFavorite()">
-            </button> -->
-            <button
-              mat-icon-button
-              class="plan_add"
-              (click)="onClickAddToPlan()"
-            >
-              <img src="{{ addplanbtn_src }}" alt="add to plan" />
-            </button>
-          </div>
         </div>
+      </div>
+      <div class="buttons">
+        <button mat-icon-button class="plan_add" (click)="onClickAddToPlan()">
+          プランに入れる
+        </button>
       </div>
     </mat-card-header>
   </mat-card>
@@ -66,7 +56,12 @@
           <ng-container *ngFor="let item of data.pictures; index as i">
             <ng-template carouselSlide id="i + 1">
               <div class="thumb">
-                <img decoding="async" [src]="item" [alt]="data.planId" [title]="data.planId" />
+                <img
+                  decoding="async"
+                  [src]="item"
+                  [alt]="data.planId"
+                  [title]="data.planId"
+                />
               </div>
             </ng-template>
           </ng-container>
@@ -75,7 +70,12 @@
         <ng-template #singlePict>
           <ng-container *ngFor="let item of data.pictures; index as i">
             <div class="thumb">
-              <img decoding="async" [src]="item" [alt]="data.planId" [title]="data.planId" />
+              <img
+                decoding="async"
+                [src]="item"
+                [alt]="data.planId"
+                [title]="data.planId"
+              />
             </div>
           </ng-container>
         </ng-template>
@@ -228,7 +228,10 @@
                   (click)="setMapCenter(item.latitude, item.longitude)"
                   class="noswip"
                 >
-                  <img decoding="async" [src]="item.pictureUrl ? item.pictureUrl : noPic" />
+                  <img
+                    decoding="async"
+                    [src]="item.pictureUrl ? item.pictureUrl : noPic"
+                  />
                 </a>
               </div>
 
@@ -419,7 +422,7 @@
     <div #divA8 class="banner"></div>
 
     <!-- 投稿者のプロフィール-->
-    <mat-card id="writer" *ngIf="data.user || data.userStaff">
+    <mat-card id="writer" #writer *ngIf="data.user || data.userStaff">
       <h4>{{ "PostersProfile" | translate }}</h4>
 
       <ng-container *ngIf="$userStaff; else profile">
@@ -520,7 +523,11 @@
       </mat-card-content>
     </mat-card>
     <button *ngIf="!isMobile" class="scroll-to-top" (click)="scrollToTop()">
-      <img decoding="async" src="../../../../../assets/img/toTop3.svg" alt="toTop" />
+      <img
+        decoding="async"
+        src="../../../../../assets/img/toTop3.svg"
+        alt="toTop"
+      />
     </button>
   </div>
 </div>

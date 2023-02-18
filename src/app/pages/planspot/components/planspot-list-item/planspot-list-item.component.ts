@@ -254,8 +254,11 @@ export class PlanspotListItemComponent implements OnInit {
     const banners = [this.a8banner, this.a8b1, this.a8b2];
     // let random = Math.floor(Math.random() * 2);
     // let res = index.toString(3).toString();
-    let i = index.toString(3).toString().slice(-1);
-    return banners[i];
+
+    if (index !== undefined) {
+      let i = index.toString(3).toString().slice(-1);
+      return banners[i];
+    }
   }
 }
 

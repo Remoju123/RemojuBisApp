@@ -1,13 +1,14 @@
-  <div class='listheader'>
-    <div class="head">
-      <button mat-icon-button (click)="onSwipeRight()">
-        <mat-icon>arrow_back</mat-icon>{{ 'Return' | translate }}
-      </button>
-      <span *ngIf="user">{{ user.displayName }}{{ 'PostList' | translate }}
-      </span>
-      <div class='badge'>{{userPlanSpots.length}}</div>
-    </div>
-    <!-- <div class='profile'>
+<div class="listheader">
+  <div class="head">
+    <button mat-icon-button (click)="onSwipeRight()">
+      <mat-icon>arrow_back</mat-icon>{{ "Return" | translate }}
+    </button>
+    <span *ngIf="user"
+      >{{ user.displayName }}{{ "PostList" | translate }}
+    </span>
+    <div class="badge">{{ userPlanSpots.length }}</div>
+  </div>
+  <!-- <div class='profile'>
       <app-userprofile-panel *ngIf="user" [otherUser]="user" [detail]="true"></app-userprofile-panel>
       <h4>私がおすすめの旅プラン</h4>
       <dl class='category' *ngIf="searchCategories.length > 0">
@@ -16,12 +17,23 @@
         </dd>
       </dl>
     </div> -->
-  </div>
+</div>
 
-  <app-planspot-list (scrolled)="onScrollDown()" [isList]="true" [condition]="condition" (swiperight)="onSwipeRight()">
-    <app-planspot-list-item *ngFor="let item of details$" [item]="item" [lang]="lang" [myPlanSpots]="myPlanSpots"
-      (linked)="linktoDetail($event)" (addMyPlan)="addMyPlan($event)" (setFav)="setFavorite($event)">
-    </app-planspot-list-item>
-  </app-planspot-list>
-
-
+<app-planspot-list
+  (scrolled)="onScrollDown()"
+  [isList]="true"
+  [condition]="condition"
+  (swiperight)="onSwipeRight()"
+>
+  <app-planspot-list-item
+    *ngFor="let item of details$; index as i"
+    [item]="item"
+    [lang]="lang"
+    [index]="i"
+    [myPlanSpots]="myPlanSpots"
+    (linked)="linktoDetail($event)"
+    (addMyPlan)="addMyPlan($event)"
+    (setFav)="setFavorite($event)"
+  >
+  </app-planspot-list-item>
+</app-planspot-list>

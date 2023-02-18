@@ -101,7 +101,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (changes) {
       changes.forEachAddedItem((record: any) => {
         this.snackBar.open(this.translate.instant('PlanboxChange'), null, {
-          duration: 2000,
+          duration: 800,
           panelClass: ['myplanSnackBar'],
         });
       });

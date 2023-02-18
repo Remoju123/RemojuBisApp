@@ -53,7 +53,7 @@ table.dlgtbl {
 }
 
 .myplanSnackBar {
-  background-color: $color-pnk05;
+  background-color: #baa069;
   font-weight: 800;
 
   margin: auto !important;
@@ -64,6 +64,9 @@ table.dlgtbl {
   height: 70px;
   right: 0;
   left: 0;
+  @media screen and (min-width: 768px) {
+    max-width: 280px !important;
+  }
 
   .mat-simple-snackbar {
     justify-content: center !important;

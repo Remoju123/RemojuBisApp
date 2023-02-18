@@ -17,7 +17,8 @@ form {
   position: sticky;
   top: 0;
   z-index: 20;
-  background-color: #fff;
+  color: white;
+  background-color: #de7274;
 
   .title {
     font-size: 18px;
@@ -505,11 +506,11 @@ form {
           }
 
           &:nth-child(2) {
-            flex-basis: 76%;
+            flex-basis: 62%;
           }
 
           &:nth-child(3) {
-            flex-basis: 12%;
+            flex-basis: 16%;
           }
         }
       }
@@ -1856,9 +1857,9 @@ form {
         // min-width: initial;
         width: 175px;
         height: 42px;
-        background-color: #707070;
+        background-color: $color-pnk04;
         border-radius: 10px;
-        color:#fff;
+        color: #fff;
         font-size: small;
 
         &:disabled {
@@ -1881,9 +1882,9 @@ form {
         // min-width: initial;
         width: 175px;
         height: 42px;
-        background-color: $color-pnk04;
+        background-color: #707070;
         border-radius: 10px;
-        color:#fff;
+        color: #fff;
         font-size: small;
 
         &:disabled {

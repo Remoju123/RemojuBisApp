@@ -58,7 +58,7 @@
           *ngIf="row && !row.isRelease"
           class="lt"
           matTooltip="{{ 'StartEx' | translate }}"
-          matTooltipPosition="above"
+          matTooltipPosition="after"
           matTooltipClass="toolExplanation"
         >
           <!-- 出発地を設定 -->
@@ -141,7 +141,7 @@
           (click)="onClickAuto()"
           [disabled]="!row?.planSpots"
           matTooltip="{{ 'AutoTips' | translate }}"
-          matTooltipPosition="above"
+          matTooltipPosition="after"
           matTooltipClass="toolExplanation"
         >
           {{ "Auto" | translate }}
@@ -162,6 +162,7 @@
         <dl class="th">
           <dt>{{ "Remove" | translate }}</dt>
           <dt>{{ "Spot" | translate }}</dt>
+          <dt>{{ "Favorite" | translate }}</dt>
           <dt>{{ "Movement" | translate }}</dt>
         </dl>
 
@@ -220,10 +221,10 @@
                     <span class="spotName" [innerHTML]="item.spotName"></span>
                     <span class="areaName">
                       <ng-container *ngIf="item.areaName">{{
-                        item.areaName | langFilter: lang
+                        item.areaName | langFilter : lang
                       }}</ng-container>
                       <ng-container *ngIf="item.categoryText">
-                        / {{ item.categoryText | langFilter: lang }}
+                        / {{ item.categoryText | langFilter : lang }}
                       </ng-container>
                       / {{ "SuggestedTime" | translate }}
                       <span class="stayTime">
@@ -260,9 +261,12 @@
         </div>
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
-          <div class="guide" *ngIf="isMobile; else pcBlank">
-            <p class="under">{{ "MyPlan#Sec3" | translate }}</p>
-            <div class="inputWrapper">
+          <div class="pcguide guide" *ngIf="isMobile; else pcBlank">
+            <p>{{ "NoSpot" | translate }}</p>
+            <p>{{ "NoSpot1" | translate }}</p>
+            <p>{{ "NoSpot2" | translate }}</p>
+            <!-- <p class="under">{{ "MyPlan#Sec3" | translate }}</p> -->
+            <!-- <div class="inputWrapper">
               <input
                 placeholder="{{ 'SearchGuide' | translate }}"
                 class="keyword"
@@ -282,8 +286,8 @@
                   alt="reset"
                 />
               </button>
-            </div>
-            <p class="m1">{{ "MyPlan#Sec4" | translate }}</p>
+            </div> -->
+            <!-- <p class="m1">{{ "MyPlan#Sec4" | translate }}</p> -->
             <button mat-button class="search" (click)="onClickAddSpot()">
               {{ "MyPlan#Sec5" | translate }}
             </button>
@@ -293,9 +297,9 @@
               <p>{{ "NoSpot" | translate }}</p>
               <p>{{ "NoSpot1" | translate }}</p>
               <p>{{ "NoSpot2" | translate }}</p>
-              <button mat-button class="search" (click)="onClickAddSpot()">
+              <!-- <button mat-button class="search" (click)="onClickAddSpot()">
                 {{ "MyPlan#Sec5" | translate }}
-              </button>
+              </button> -->
             </div>
           </ng-template>
         </div>
@@ -329,7 +333,7 @@
         <div
           class="lt"
           matTooltip="{{ 'EndEx' | translate }}"
-          matTooltipPosition="above"
+          matTooltipPosition="after"
           matTooltipClass="toolExplanation"
         >
           <button
@@ -662,7 +666,9 @@
           type="button"
           id="plannew"
           (click)="onClickNewPlan()"
-        >{{ "CreatingNewPlan" | translate }}</button>
+        >
+          {{ "CreatingNewPlan" | translate }}
+        </button>
         <!--label for="plannew">{{ "CreatingNewPlan" | translate }}</label-->
       </div>
 
@@ -673,7 +679,9 @@
           type="button"
           id="plansave"
           (click)="onClickSavePlan()"
-        >{{ "Save" | translate }}</button>
+        >
+          {{ "Save" | translate }}
+        </button>
         <!--label for="plansave">{{ "Save" | translate }}</label-->
       </div>
     </div>

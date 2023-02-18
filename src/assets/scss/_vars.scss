@@ -585,7 +585,7 @@ $color-grn01: #81c5b4;
 
     position: relative;
     width: 130px;
-    background: #fff;
+    background: #de7274;
 
     color: transparent;
 
@@ -647,6 +647,7 @@ $color-grn01: #81c5b4;
       height: $height;
       border: 1px solid $color-pnk02;
       border-radius: $radius;
+      background-color: #fff;
 
       span::after {
         content: $preview; //$edit;
@@ -763,7 +764,7 @@ $color-grn01: #81c5b4;
       position: absolute;
       width: 86px;
       height: $height;
-      background: $color;
+      background: #81c5b4; //$color;
       top: 0px;
       left: 0px;
       border-radius: $radius;

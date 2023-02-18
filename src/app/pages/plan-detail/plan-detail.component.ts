@@ -67,6 +67,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('divA8', { static: false }) divA8: ElementRef;
 
+  @ViewChild('writer') writer: ElementRef;
+
   private onDestroy$ = new Subject();
   constructor(
     public router: Router,
