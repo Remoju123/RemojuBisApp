@@ -576,6 +576,7 @@ $color-grn01: #81c5b4;
     $preview_en: "Preview";
     $height: 32px;
     $radius: 16px;
+    $tabColor: #707070;
 
     line-height: $height;
     letter-spacing: 0;
@@ -626,13 +627,13 @@ $color-grn01: #81c5b4;
         span::after {
           content: $edit; //$preview;
           padding: 0 65px 0 0;
-          color: $color-pnk02;
+          color: $tabColor;
         }
       }
 
       &:checked ~ #swImg {
         transform: translateX(60px);
-        background: $color-pnk02;
+        background: $tabColor;
 
         &::before {
           content: $preview; //$edit;
@@ -652,7 +653,7 @@ $color-grn01: #81c5b4;
       span::after {
         content: $preview; //$edit;
         padding: 0 0 0 67px;
-        color: $color-pnk02;
+        color: $tabColor;
       }
     }
 
@@ -660,7 +661,7 @@ $color-grn01: #81c5b4;
       position: absolute;
       width: 70px;
       height: $height;
-      background: $color-pnk02;
+      background: $tabColor;
       top: 0px;
       left: 0px;
       border-radius: $radius;

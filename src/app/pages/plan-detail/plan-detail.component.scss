@@ -39,14 +39,14 @@ div.plandtl {
     position: relative;
     .link {
       font-size: 14px;
-      padding: 3px 12px 9px;
+      padding: 12px 9px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       cursor: pointer;
 
       .frame {
         border: 1px solid #b7b7b7;
-        padding: 4px 16px;
+        padding: 3px 16px;
         border-radius: 16px;
         background-color: #00000080;
         color: #fff;
@@ -127,14 +127,14 @@ div.plandtl {
 
       .buttons {
         position: absolute;
-        top: 5px;
+        top: 9px;
         right: 18px;
         button {
           all: unset;
           width: auto;
           height: 28px;
-          padding: 0 6px;
-          border-radius: 4px;
+          padding: 0 12px;
+          border-radius: 14px;
           background-color: #de7274;
           color: white;
           font-weight: 800;
@@ -152,7 +152,7 @@ div.plandtl {
         height: 28px;
         position: absolute;
         right: 10px;
-        top: -8px;
+        top: 0;
         animation: 0.7s ease-in 0s 1 jump;
       }
       @keyframes jump {
