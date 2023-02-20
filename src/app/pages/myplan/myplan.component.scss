@@ -41,6 +41,8 @@ form {
   flex-direction: row;
   align-items: center;
 
+  justify-content: space-between;
+
   //padding: 0 12px;
   @include switchTran();
 
