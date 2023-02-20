@@ -610,8 +610,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     } else {
       this.dialog.open(MapDialogComponent, {
         maxWidth: '60%',
-        width: '60vw',
-        height: '95vh',
+        width: '1024px',
+        height: '100%',
         //position: { top: "0" },
         data: param,
         autoFocus: false,
@@ -1088,6 +1088,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.isWarningCar = true;
     } else if (!this.row.isCar && qty > 8) {
       this.isWarningEkitan = true;
+      setTimeout(() => {
+        this.isWarningEkitan = false;
+      }, 2500);
     } else {
       this.isWarningCar = false;
       this.isWarningEkitan = false;
