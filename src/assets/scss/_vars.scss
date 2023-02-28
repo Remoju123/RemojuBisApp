@@ -628,7 +628,7 @@ $color-grn01: #81c5b4;
           content: $edit; //$preview;
           padding: 0 65px 0 0;
           //color: $tabColor;
-          color:#707070;
+          color: #707070;
         }
       }
 
@@ -655,7 +655,7 @@ $color-grn01: #81c5b4;
         content: $preview; //$edit;
         padding: 0 0 0 67px;
         //color: $tabColor;
-        color:#707070;
+        color: #707070;
       }
     }
 
@@ -740,7 +740,7 @@ $color-grn01: #81c5b4;
 
       &:checked ~ #swImg {
         transform: translateX(73px);
-        background: $color;
+        background: #81c5b4; //$color;
 
         &::before {
           content: $preview; //$edit;
