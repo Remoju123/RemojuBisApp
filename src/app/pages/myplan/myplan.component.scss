@@ -95,6 +95,11 @@ form {
         height: 14px;
       }
     }
+    .mat-slide-toggle-label {
+      display: flex;
+      flex-direction: column;
+      height: unset;
+    }
 
     .mat-slide-toggle-content {
       font-size: 11px;
