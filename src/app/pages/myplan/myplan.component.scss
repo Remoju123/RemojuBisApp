@@ -468,7 +468,7 @@ form {
       height: 26px;
       width: auto;
       padding: 0 12px;
-      background-color: #81c5b4;
+      background-color: $color-gld01;
       border-radius: 16px;
       color: #fff;
       text-align: center;
@@ -478,7 +478,7 @@ form {
       top: 2px;
 
       &:disabled {
-        background: #81c5b450;
+        background: #bfa06050;
       }
     }
   }
