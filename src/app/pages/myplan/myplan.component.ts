@@ -111,6 +111,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   @ViewChild('keywordInput') keywordInput: { nativeElement: any };
   @ViewChild('switch') switch: { nativeElement: any };
 
+  currentLang: string = environment.defaultLang;
+
   // 編集/プレビュー
   isEdit: boolean = true;
   isChecked: string = 'checked';
@@ -575,6 +577,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
 
     //this.router.navigate(['/' + this.lang + '/planspot']);
+    if (!this.router.url.includes('planspot')) {
+      this.router.navigate(['/' + this.currentLang + '/planspot/']);
+    }
 
     // スライドを閉じる
     //this.commonService.onNotifyIsShowCart(false);
@@ -824,6 +829,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
           if (d === 'ok') {
             this.planRemove();
             // this.router.navigate(['/' + this.lang + '/planspot']);
+            if (!this.router.url.includes('planspot')) {
+              this.router.navigate(['/' + this.currentLang + '/planspot/']);
+            }
             this.cartevent.emit(false);
           }
         });
@@ -832,6 +840,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
     } else {
       this.planRemove();
       // this.router.navigate(['/' + this.lang + '/planspot']);
+      if (!this.router.url.includes('planspot')) {
+        this.router.navigate(['/' + this.currentLang + '/planspot/']);
+      }
       this.cartevent.emit(false);
     }
   }
@@ -1281,10 +1292,14 @@ export class MyplanComponent implements OnInit, OnDestroy {
             .subscribe((d: any) => {
               // マイプラン一覧へ
               if (d === 'ok') {
-                this.commonService.onNotifyIsShowCart(false);
-                this.router.navigate(['/' + this.lang + '/mypage'], {
-                  fragment: 'list',
-                });
+                // this.router.navigate(['/' + this.lang + '/mypage'], {
+                //   fragment: 'list',
+                // });
+                // this.commonService.onNotifyIsShowCart(false);
+
+                this.router.navigate(['/' + this.currentLang + '/mypage/']);
+
+                this.cartevent.emit(false);
               }
             });
         }
