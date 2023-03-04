@@ -150,7 +150,7 @@
   "month": "月",
   "day": "日",
   "Edit": "編集",
-  "GoogleSpot": "Remojuではまだご紹介していないスポットです。Googleマップから場所を取得しています。",
+  "GoogleSpot": "Remojuではまだご紹介していないスポットです。",
   "Welcome": "ようこそ",
   "San": "さん",
   "Sanno": "さんの",
@@ -298,7 +298,7 @@
   "LoginConfirmTitle": "保存にはログインが必要です。",
   "LoginConfirmText": "ログイン画面 又は ユーザー登録画面に移動しますか？",
   "RequiredPlanName": "プラン名を入力してください。",
-  "InplanCount": "プランに追加された回数",
+  "InplanCount": "プランに追加",
   "ReviewRate": "レビュー",
   "AutoSearchConfirmTitle": "最短ルートを検索します",
   "AutoSearchConfirmText": "<dl class='route'><dt>出発地</dt><dd>{0}</dd><dt>到着地</dt><dd>{1}</dd></dl>",
@@ -322,7 +322,8 @@
   "includedPlan": "",
   "UserPlan": "ユーザープラン",
   "Man": "回",
-  "NotPostedRemoju": "Remojuではまだ掲載されていないスポットです。Googleから場所を取得しています。",
+  "NotPostedRemoju": "Remojuではまだ掲載されていないスポットです。",
+  "NotPostedRemoju2": "新規に追加してオリジナルのプランを作成しましょう",
   "PostList": "さんの投稿一覧",
   "ShareLink": "リンク共有",
   "ShareLinkPlanContents": "このリンクを知っているユーザーとは、このプランを共有できます。",
@@ -355,5 +356,6 @@
   "InPlanBox": "「my休日プラン」エリアで編集可能になりました。",
   "Contact": "お問い合わせ",
   "PlanboxChange": "プラン編集可能です。",
-  "PlanSpotList": "みんなのおすすめ"
+  "PlanSpotList": "みんなのおすすめ",
+  "Loading": "読み込んでいます。少々お待ちください..."
 }

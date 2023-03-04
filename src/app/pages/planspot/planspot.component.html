@@ -11,7 +11,7 @@
   (reset)="conditionReset()"
 >
 </app-planspot-selector>
-<div *ngIf="condition.select!=='google'" class="list-header">
+<div *ngIf="condition.select !== 'google'" class="list-header">
   {{ "PlanSpotList" | translate }}
 </div>
 <app-planspot-list
@@ -34,4 +34,12 @@
   >
   </app-planspot-list-item>
 </app-planspot-list>
-<ngx-loading [show]="loading" ></ngx-loading>
+<ng-template #customLoadingTemplate>
+  <div class="custom-class">
+    <div style="text-align: center; color: gray; font-size: 12px">
+      {{ "Loading" | translate }}
+    </div>
+    <!-- <button (click)="showAlert()">Click me!</button> -->
+  </div>
+</ng-template>
+<ngx-loading [show]="loading" [template]="customLoadingTemplate"></ngx-loading>

@@ -3,7 +3,7 @@
   infinite-scroll
   [infiniteScrollDistance]="isList ? 5 : 5"
   [infiniteScrollUpDistance]="1.5"
-  [infiniteScrollThrottle]="isMobile?150:75"
+  [infiniteScrollThrottle]="isMobile ? 150 : 75"
   [infiniteScrollContainer]="isMobile ? null : box"
   [scrollWindow]="isMobile ? true : false"
   [fromRoot]="isMobile ? false : true"
@@ -25,7 +25,7 @@
   </mat-card>
   <mat-card id="nolist" *ngIf="!isList && condition.select === 'google'">
     <mat-card-content>
-      {{ "GoogleSearchAny" | translate }}<br />
+      <!-- {{ "GoogleSearchAny" | translate }}<br /> -->
       {{ "ReplaceKeyword" | translate }}<br />
       {{ "includedPlan" | translate }}
     </mat-card-content>

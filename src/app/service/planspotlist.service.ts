@@ -50,8 +50,8 @@ export class PlanSpotListService {
 
   public setClearSearch = new Subject<boolean>();
   public clearSearch = this.setClearSearch.asObservable();
-  public onSetClearSearch(state:boolean){
-    this.setClearSearch.next(state)
+  public onSetClearSearch(state: boolean) {
+    this.setClearSearch.next(state);
   }
 
   public conditionSessionKey = 'PlanSpotSearchCondition';
@@ -643,6 +643,7 @@ export class PlanSpotListService {
     await Promise.all(result);
     return rows;
   }
+
   promiseGetDetail(row: PlanSpotList, guid: string) {
     return new Promise(async (resolve) => {
       (await this.fetchDetails(row, guid)).subscribe((_row) => {

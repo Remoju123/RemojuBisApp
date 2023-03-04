@@ -86,7 +86,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   //switch: boolean = false;
 
-  isClearSearch:boolean = false;
+  isClearSearch: boolean = false;
 
   get lang() {
     return this.translate.currentLang;
@@ -249,11 +249,13 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       });
 
-      this.planspots.clearSearch.pipe(takeUntil(this.onDestroy$)).subscribe((v)=>{
-        if(v){
+    this.planspots.clearSearch
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((v) => {
+        if (v) {
           this.keywordSearch('');
         }
-      })
+      });
   }
 
   ngAfterViewChecked(): void {
@@ -353,6 +355,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         ((this.prevkeyword === keyword && this.token) ||
           this.prevkeyword !== keyword)
       ) {
+        this.loading = true;
         this.planspots
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
@@ -437,7 +440,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       JSON.stringify(this.condition)
     );
     //this.switch = true;
-    if(!this.isMobile){
+    if (!this.isMobile) {
       this.list.scrollToTop();
     }
     this.filteringData();

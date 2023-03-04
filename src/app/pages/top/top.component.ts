@@ -1,46 +1,46 @@
-import { HttpUrlEncodingCodec } from "@angular/common/http";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { HttpUrlEncodingCodec } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { JsonHubProtocol } from "@aspnet/signalr";
-import { TranslateService } from "@ngx-translate/core";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { ListSearchCondition } from "src/app/class/indexeddb.class";
-import { CommonService } from "src/app/service/common.service";
-import { IndexedDBService } from "src/app/service/indexeddb.service";
-import { PlanSpotListService } from "src/app/service/planspotlist.service";
-import { UserService } from "src/app/service/user.service";
+import { JsonHubProtocol } from '@aspnet/signalr';
+import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ListSearchCondition } from 'src/app/class/indexeddb.class';
+import { CommonService } from 'src/app/service/common.service';
+import { IndexedDBService } from 'src/app/service/indexeddb.service';
+import { PlanSpotListService } from 'src/app/service/planspotlist.service';
+import { UserService } from 'src/app/service/user.service';
 import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 
 @Component({
-  selector: "app-top",
-  templateUrl: "./top.component.html",
-  styleUrls: ["./top.component.scss"]
+  selector: 'app-top',
+  templateUrl: './top.component.html',
+  styleUrls: ['./top.component.scss'],
 })
-export class TopComponent implements OnInit,OnDestroy {
+export class TopComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
 
   condition: ListSearchCondition;
-  mode:any = "over";
+  mode: any = 'over';
   opened: boolean;
   currentLang: string;
 
-  isVal:boolean = false;
+  isVal: boolean = false;
 
-  codec = new HttpUrlEncodingCodec;
-  
+  codec = new HttpUrlEncodingCodec();
+
   get lang() {
     return this.translate.currentLang;
   }
 
   constructor(
     private translate: TranslateService,
-    public service: LoadingIndicatorService,
+    public loading: LoadingIndicatorService,
     private commonService: CommonService,
     private indexedDBService: IndexedDBService,
     private planspots: PlanSpotListService,
     private userService: UserService,
-    private router: Router,
+    private router: Router
   ) {
     this.condition = new ListSearchCondition();
   }
@@ -48,7 +48,7 @@ export class TopComponent implements OnInit,OnDestroy {
     this.onDestroy$.next();
   }
 
-  redirectUri = "";
+  redirectUri = '';
 
   profile: any;
 
@@ -56,9 +56,9 @@ export class TopComponent implements OnInit,OnDestroy {
 
   _url: any = `${window.location.origin}`;
 
-  pictureUrl:string = "../../../assets/img/icon_who.svg";
+  pictureUrl: string = '../../../assets/img/icon_who.svg';
 
-  condtion:ListSearchCondition;
+  condtion: ListSearchCondition;
 
   ngOnInit() {
     // // this.authService.profile.subscribe(p => (this.profile = p));
@@ -71,12 +71,17 @@ export class TopComponent implements OnInit,OnDestroy {
     //   );
     // }
 
-    if(this.commonService.loggedIn){
-      this.userService.getUser().pipe(takeUntil(this.onDestroy$)).subscribe((r: { pictureUrl: string; displayName: string; }) =>{
-        if(r){
-          if(r.pictureUrl){this.pictureUrl = r.pictureUrl};
-        }
-      });
+    if (this.commonService.loggedIn) {
+      this.userService
+        .getUser()
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe((r: { pictureUrl: string; displayName: string }) => {
+          if (r) {
+            if (r.pictureUrl) {
+              this.pictureUrl = r.pictureUrl;
+            }
+          }
+        });
     }
   }
 
@@ -85,20 +90,29 @@ export class TopComponent implements OnInit,OnDestroy {
     this.opened = !eventData;
   }
 
-  toggleactive(){
+  toggleactive() {
     this.opened = true;
   }
 
-  onKeywordSearch(e){
+  onKeywordSearch(e) {
     const val = e.target.value.toLowerCase();
-    val!==""?this.isVal=true:false;
-    if(val!==""){
+    val !== '' ? (this.isVal = true) : false;
+    if (val !== '') {
       let encval = this.codec.encodeValue(val);
-      this.router.navigate(["/" + this.lang + "/planspot"],{queryParams:{aid:'',era:'',cat:'',srt:'11',lst:'all',kwd:val}});
+      this.router.navigate(['/' + this.lang + '/planspot'], {
+        queryParams: {
+          aid: '',
+          era: '',
+          cat: '',
+          srt: '11',
+          lst: 'all',
+          kwd: val,
+        },
+      });
     }
   }
 
-  linktolist(){
-    this.router.navigate(["/" + this.lang + "/planspot"]);
+  linktolist() {
+    this.router.navigate(['/' + this.lang + '/planspot']);
   }
 }
