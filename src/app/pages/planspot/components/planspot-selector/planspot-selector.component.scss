@@ -5,6 +5,12 @@
   border-bottom: 1px solid $color-gld05;
   border-radius: 0;
   box-shadow: none;
+  height: 147px;
+
+  &.close {
+    height: 0;
+    display: none;
+  }
 
   .mat-card-content {
     margin: 0 16px;
@@ -65,7 +71,7 @@
 
       &.switch {
         $r: 4px;
-        margin: 0.9em 0 0.2em;
+        margin: 0.2em 0 0.2em;
         justify-content: flex-end;
 
         .switch-toggle {

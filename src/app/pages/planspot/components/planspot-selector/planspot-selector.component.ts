@@ -32,6 +32,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Output() keyword = new EventEmitter<any>();
   @Output() open = new EventEmitter<number>();
   @Output() reset = new EventEmitter();
+  @Input() close: boolean;
 
   @ViewChild('keywordInput') keywordInput: { nativeElement: any };
 
@@ -79,7 +80,6 @@ export class PlanspotSelectorComponent implements OnInit {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const h = 208;
-
     if (
       (window.pageYOffset ||
         document.documentElement.scrollTop ||
@@ -106,5 +106,9 @@ export class PlanspotSelectorComponent implements OnInit {
 
   condReset() {
     this.reset.emit();
+  }
+
+  selectorClose() {
+    event.stopPropagation();
   }
 }

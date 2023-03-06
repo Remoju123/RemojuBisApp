@@ -62,6 +62,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   details$: PlanSpotList[] = [];
   count: number = 0;
 
+  $close: boolean = false;
+
   result: Observable<PlanSpotList>[] = [];
 
   myPlanSpots: any;
@@ -444,6 +446,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.list.scrollToTop();
     }
     this.filteringData();
+  }
+
+  onSelectorClose(e: boolean) {
+    this.$close = e;
   }
 
   // プラン/スポット詳細リンク

@@ -1,6 +1,6 @@
 @import "vars";
 .box {
-  margin-top: 16px;
+  //margin-top: 16px;
 
   .glink {
     background-color: #7e9e9f;
@@ -31,7 +31,7 @@
 @media screen and (min-width: 1025px) {
   .box {
     height: 100%;
-    // overflow-y: scroll;
+    overflow-y: scroll;
     position: relative;
 
     &::-webkit-scrollbar {

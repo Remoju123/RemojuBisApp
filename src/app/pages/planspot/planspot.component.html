@@ -4,6 +4,7 @@
   [condition]="condition"
   [mSort]="$mSort"
   [searchTarms]="optionKeywords"
+  [close]="$close"
   (switch)="onPlanSpotChange($event)"
   (sort)="sortChange($event)"
   (keyword)="keywordSearch($event)"
@@ -17,6 +18,7 @@
 <app-planspot-list
   (scrolled)="onScrollDown()"
   (glink)="onPlanSpotChange($event)"
+  (close)="onSelectorClose($event)"
   [isList]="isList"
   [condition]="condition"
 >

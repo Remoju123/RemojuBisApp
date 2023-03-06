@@ -1,4 +1,4 @@
-<mat-card id="planspot-selector">
+<mat-card id="planspot-selector" [ngClass]="{ close: close }">
   <mat-card-content>
     <div class="row title" *ngIf="!myFavorite">
       {{ "FindEveryoneRecommendations" | translate }}

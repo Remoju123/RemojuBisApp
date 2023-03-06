@@ -21,11 +21,13 @@ export class PlanspotListComponent implements OnInit {
   @Input() condition: ListSearchCondition;
   @Output() scrolled = new EventEmitter();
   @Output() glink = new EventEmitter<any>();
+  @Output() close = new EventEmitter<any>();
 
   @ViewChild('box') box: ElementRef;
   scrollPos: number;
-
   isMobile: boolean;
+
+  $close: boolean = false;
 
   constructor() {}
 
@@ -50,6 +52,7 @@ export class PlanspotListComponent implements OnInit {
   }
 
   onScroll(e: any) {
+    this.close.emit(e.target.scrollTop >= 1);
     this.scrollPos = e.target.scrollTop;
   }
 
