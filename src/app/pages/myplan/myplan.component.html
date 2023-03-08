@@ -694,7 +694,7 @@
             type="checkbox"
             id="switch-tran"
             (click)="onClickTran()"
-            [checked]="row?.isCar"
+            [checked]="!row?.isCar"
             [disabled]="!row"
           />
           <label for="switch-tran"><span></span></label>
@@ -721,3 +721,12 @@
     {{ "ErrorMsgSetTransferEkitan" | translate }}
   </div>
 </form>
+<ng-template #customLoadingTemplate>
+  <div class="custom-class">
+    <div style="text-align: center; color: gray; font-size: 12px">
+      {{ "Loading" | translate }}
+    </div>
+    <!-- <button (click)="showAlert()">Click me!</button> -->
+  </div>
+</ng-template>
+<ngx-loading [show]="loading" [template]="customLoadingTemplate"></ngx-loading>

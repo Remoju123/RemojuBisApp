@@ -37,7 +37,6 @@ import { MapDialogComponent } from '../../parts/map-dialog/map-dialog.component'
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { LoadingIndicatorService } from '../../service/loading-indicator.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../../../environments/environment';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
@@ -83,7 +82,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     public dialog: MatDialog,
     private router: Router,
-    private loading: LoadingIndicatorService,
     private dateAdapter: DateAdapter<NativeDateAdapter>,
     private _iterableDiffers: IterableDiffers,
     private snackBar: MatSnackBar,
@@ -154,6 +152,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   get lang() {
     return this.translate.currentLang;
   }
+
+  loading: boolean = false;
 
   pictureUrl: string = '../../../assets/img/icon_who.svg';
 
@@ -543,14 +543,14 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     // プレビューの場合、切り替えた移動方法で検索
     if (!this.isEdit) {
-      const ref = this.loading.show();
+      //const ref = this.loading.show();
       this.myplanService.setTransfer(false).then((result) => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
           if (r) {
             this.setUserPicture(r);
             // 変更を保存
             this.registPlan();
-            ref.close();
+            //ref.close();
             if (!r.isCar && r.ekitanStatus !== '0') {
               this.commonService.messageDialog('ErrorMsgEkitan');
             }
@@ -1155,6 +1155,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     // 保存ボタンロック
     this.isSaving = true;
+    this.loading = true;
 
     let isNew = false;
     if (this.row.planUserId === 0) {
@@ -1280,7 +1281,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         this.indexedDBService.registPlan(this.row);
         // 保存完了
         if (location.pathname.indexOf('mypage') > 0 || !isNew) {
-          this.commonService.snackBarDisp('PlanSave', 5000);
+          this.commonService.snackBarDisp('PlanSave', 3000);
         } else {
           const param = new ComfirmDialogParam();
           param.title = 'PlanSavedConfirmTitle';
@@ -1305,6 +1306,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         }
         // 保存ボタンロック解除
         this.isSaving = false;
+        this.loading = false;
       });
     });
   }

@@ -732,7 +732,7 @@ $color-grn01: #81c5b4;
         border-color: $color;
 
         span::after {
-          content: $edit; //$preview;
+          content: $preview;
           padding: 0 78px 0 0;
           color: $color;
         }
@@ -743,7 +743,7 @@ $color-grn01: #81c5b4;
         background: #81c5b4; //$color;
 
         &::before {
-          content: $preview; //$edit;
+          content: $edit;
           color: #fff;
         }
       }
@@ -757,7 +757,7 @@ $color-grn01: #81c5b4;
       border-radius: $radius;
 
       span::after {
-        content: $preview; //$edit;
+        content: $edit;
         padding: 0 0 0 84px;
         color: $color;
       }
@@ -774,7 +774,7 @@ $color-grn01: #81c5b4;
       transition: 0.2s;
 
       &::before {
-        content: $edit; //$preview;
+        content: $preview;
         color: #fff;
       }
     }

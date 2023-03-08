@@ -613,7 +613,7 @@ export class PlanSpotListService {
         MyPlan: myPlan,
         planId: id,
         isRemojuPlan: isRemojuPlan,
-        isTransferSearch: false, // trueにするとスポットを追加して駅探検索する
+        isTransferSearch: true, // trueにするとスポットを追加して駅探検索する
       };
       const url = this.host + '/api/Plan/Addplan';
       return this.http.post<MyPlanApp>(url, addPlan, httpOptions);
@@ -625,7 +625,7 @@ export class PlanSpotListService {
         type: isGoogle ? 2 : 1,
         googleSpot: googleSpot,
         basePlanId: basePlanId,
-        isTransferSearch: false, // trueにするとスポットを追加して駅探検索する
+        isTransferSearch: true, // trueにするとスポットを追加して駅探検索する
       };
       const url = this.host + '/api/Spot/AddSpot';
       return this.http.post<MyPlanApp>(url, addSpot, httpOptions);
