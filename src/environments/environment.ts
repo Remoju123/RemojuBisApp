@@ -5,6 +5,16 @@
 let locationhost = `http://localhost:4200`;
 //let locationhost = `http://10.0.1.13:4200`;
 export const environment = {
+  firebase: {
+    projectId: 'remoju-web-master',
+    appId: '1:358334806643:web:56b8d10977f80527678806',
+    storageBucket: 'remoju-web-master.appspot.com',
+    locationId: 'us-central',
+    apiKey: 'AIzaSyBClxmgTI-wh06eGIKJfv9iiF00nzKhSfA',
+    authDomain: 'remoju-web-master.firebaseapp.com',
+    messagingSenderId: '358334806643',
+    measurementId: 'G-XRRT975Q6X',
+  },
   production: false,
   defaultLang: 'ja',
   languages: [

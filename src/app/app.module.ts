@@ -114,6 +114,8 @@ import { MyplanSpotEditDialogComponent } from './parts/myplan-spot-edit-dialog/m
 import { MyplanPlanEditDialogComponent } from './parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component';
 import { MyplanAutoDialogComponent } from './parts/myplan-auto-dialog/myplan-auto-dialog.component';
 import { CommentListPostPanelComponent } from './parts/comment-list-post-panel/comment-list-post-panel.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 export function createTranslateLoader(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
@@ -246,6 +248,8 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
         MypageModule,
         OffcialModule,
         RouterModule,
+        provideFirebaseApp(() => initializeApp(environment.firebase)),
+        provideFirestore(() => getFirestore()),
     ],
     providers: [
         DataService,
