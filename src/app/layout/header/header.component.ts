@@ -17,7 +17,7 @@ import { PlanSpotListService } from '../../service/planspotlist.service';
 import { UserService } from '../../service/user.service';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../../environments/environment';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export const MYPLANLIST_KEY =
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
-  mode = new FormControl('over');
+  mode = new UntypedFormControl('over');
   shouldRun: boolean = false;
   // shouldRun = [/(^|\.)plnkr\.co$/, /(^|\.)stackblitz\.io$/].some(h =>
   //   h.test(window.location.host)

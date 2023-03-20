@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Inject } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Guid } from 'guid-typescript';
@@ -34,12 +34,12 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   list:PlanSpotList[];
 
-  get areas(): FormArray {
-    return this.searchForm.get("areas") as FormArray;
+  get areas(): UntypedFormArray {
+    return this.searchForm.get("areas") as UntypedFormArray;
   }
 
-  get cates(): FormArray {
-    return this.searchForm.get("cates") as FormArray;
+  get cates(): UntypedFormArray {
+    return this.searchForm.get("cates") as UntypedFormArray;
   }
 
   get lang() {
@@ -55,7 +55,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     private planspots: PlanSpotListService,
     private cs: CommonService,
     public dialogRef: MatDialogRef<SearchDialogComponent>,
-    public fb: FormBuilder,
+    public fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectMaster
   ) {
     this.$mSearchCategory = this.data.mSearchCategoryPlan.concat(this.data.mSearchCategory);
@@ -145,7 +145,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   // エリア-エクスパンションOpen
   onAreaCollapseOpen(i: number, id: number) {
     this.areas.controls[i].get("selected").patchValue(true);
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     // エリアのsubエリアがひとつしかない場合、最初のサブエリアをチェックする
     if (fa.length === 1) {
       if (fa.controls[0].get("qty").value > 0) {
@@ -163,7 +163,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   // エリア-エクスパンションClose
   onAreaCollapseClose(i: number) {
     this.areas.controls[i].get("selected").patchValue(false);
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     fa.controls.map(d => {
       d.get("selected").patchValue(false);
     });
@@ -172,7 +172,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   // エリア-サブエリア選択時のすべて選択
   onAreaAllClick(i: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     if (this.areas.controls[i].get("selected").value === false) {
       this.areas.controls[i].get("selected").patchValue(true);
       fa.controls.map(d => {
@@ -186,7 +186,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
   // エリア-チェックボックス選択
   onAreaSelection(i: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
 
     if (fa.controls.length !== 1) {
       if (this.cs.isSome(fa)) {
@@ -205,7 +205,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
       return true;
     }
     // サブエリアが選択されている場合
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     if (this.cs.isSome(fa)) {
       return true;
     }
@@ -228,14 +228,14 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
   onReset(): void {
     this.areas.controls.map(x => {
       x.get("selected").patchValue(false);
-      const sub = x.get("dataSelecteds") as FormArray;
+      const sub = x.get("dataSelecteds") as UntypedFormArray;
       sub.controls.map(y => {
         y.get("selected").patchValue(false);
       });
     });
 
     this.cates.controls.map(x => {
-      const sub = x.get("dataSelecteds") as FormArray;
+      const sub = x.get("dataSelecteds") as UntypedFormArray;
       sub.controls.map(y => {
         y.get("selected").patchValue(false);
       });
@@ -294,7 +294,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
 
       const sub = this.areas.controls
         .find(y => y.value["parentId"] === x.parentId)
-        .get("dataSelecteds") as FormArray;
+        .get("dataSelecteds") as UntypedFormArray;
 
       x.dataSelecteds.forEach((y: { qty: number; }, j: any) => {
         sub.controls[j].get("qty").patchValue(y.qty);
@@ -314,7 +314,7 @@ export class SearchDialogComponent implements OnInit,OnDestroy {
     // カテゴリコントロールを再レンダリング
     $mCategory.forEach((x, i) => {
       this.cates.controls[i].get("qty").patchValue(x.qty);
-      const sub = this.cates.controls[i].get("dataSelecteds") as FormArray;
+      const sub = this.cates.controls[i].get("dataSelecteds") as UntypedFormArray;
       x.dataSelecteds.forEach((y: { qty: number; }, j: any) => {
         sub.controls[j].get("qty").patchValue(y.qty);
         if (y.qty === 0) {

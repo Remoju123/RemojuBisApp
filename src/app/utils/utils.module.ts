@@ -9,29 +9,26 @@ import { SafeUrlPipe } from "./safe-url.pipe";
 //import { IconvPipe } from "./iconv.pipe";
 
 @NgModule({
-  imports: [
-    //
-    CarouselModule
-  ],
-  declarations: [
-    LangFilterPipe,
-    TimestampStringPipe,
-    BusinessdayStringPipe,
-    ReplaceNewlinePipe,
-    SafeUrlPipe,
-    //IconvPipe
-  ],
-  exports: [
-    LangFilterPipe,
-    TimestampStringPipe,
-    BusinessdayStringPipe,
-    CarouselModule,
-    ReplaceNewlinePipe,
-    SafeUrlPipe,
-    //IconvPipe
-  ],
-  entryComponents: [
-    //
-  ]
+    imports: [
+        //
+        CarouselModule
+    ],
+    declarations: [
+        LangFilterPipe,
+        TimestampStringPipe,
+        BusinessdayStringPipe,
+        ReplaceNewlinePipe,
+        SafeUrlPipe,
+        //IconvPipe
+    ],
+    exports: [
+        LangFilterPipe,
+        TimestampStringPipe,
+        BusinessdayStringPipe,
+        CarouselModule,
+        ReplaceNewlinePipe,
+        SafeUrlPipe,
+        //IconvPipe
+    ]
 })
 export class UtilsModule {}

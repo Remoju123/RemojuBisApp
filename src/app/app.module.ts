@@ -144,143 +144,126 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
   }
 }
 @NgModule({
-  declarations: [
-    RootComponent,
-    HeaderComponent,
-    FooterComponent,
-    BlankComponent,
-    TopComponent,
-    SpotDetailComponent,
-    NavMenuComponent,
-    PlanDetailComponent,
-    MyplanComponent,
-    MypagePlanListComponent,
-    MypageFavoriteListComponent,
-    SystemErrorComponent,
-    LanguageComponent,
-    UrlcopyDialogComponent,
-    MessageDialogComponent,
-    MapPanelComponent,
-    MypageUserprofileComponent,
-    AppComponent,
-    MapInfowindowDialogComponent,
-    MypageComponent,
-    HeaderPlanPanelComponent,
-    UserDialogComponent,
-    ConfirmMessageDialogComponent,
-    RatingCompComponent,
-    TransferPanelComponent,
-    MapDialogComponent,
-    NotfoundComponent,
-    GoogleSpotDialogComponent,
-    UserprofilePanelComponent,
-    ImageCropperDialogComponent,
-    UserPlanListComponent,
-    MypageReviewlistComponent,
-    PrivacyComponent,
-    AboutComponent,
-    GuideComponent,
-    MyplanSpotEditDialogComponent,
-    MyplanPlanEditDialogComponent,
-    MyplanAutoDialogComponent,
-    CommentListPostPanelComponent
-  ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
-    BrowserTransferStateModule,
-    TransferHttpCacheModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    // ngx-translateの登録
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: translateBrowserLoaderFactory,
-        deps: [HttpClient, TransferState]
-      }
-    }),
-    BrowserTransferStateModule,
-    NgxPageScrollCoreModule,
-    NgxPageScrollModule,
-    AppRoutingModule,
-    NgxLoadingModule.forRoot({}),
-    // Angular GoogleMapの登録
-    AgmCoreModule.forRoot({
-      apiKey: environment.apiKey,
-      libraries: ["places", "geometry"]//,
-      //language: localStorage && localStorage.gml || 'ja'
-    }),
-    MatGoogleMapsAutocompleteModule,
-    // Service Workerの登録
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    }),
-    OAuthModule.forRoot({
-      resourceServer: {
-        allowedUrls: [environment.backend],
-        sendAccessToken: true
-      }
-    }),
-    UtilsModule,
-    SharedModule,
-    MaterialModule,
-    MatDialogModule,
-    MatTooltipModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    FilterPipeModule,
-    NgxMaterialTimepickerModule,
-    ...CDK_MODULES,
-    ...MATERIAL_MODULES,
-    InfiniteScrollModule,
-    HammerModule,
-    CrystalLightboxModule,
-    PlanspotModule,
-    PlanDetailModule,
-    ImageCropperModule,
-    SpotDetailModule,
-    MypageModule,
-    OffcialModule,
-    RouterModule,
-  ],
-  providers: [
-    DataService,
-    PermissionService,
-    PushService,
-    HttpClient,
-    SwPush,
-    DatePipe,
-    Location,
-    { provide: LocationStrategy, useClass: PathLocationStrategy },
-    { provide: "BASE_HOST_URL", useValue: environment.host },
-    { provide: "BASE_API_URL", useValue: environment.backend },
-    AuthGuard,
-    { provide: MAT_DATE_LOCALE, useValue: "ja-JP" },
-    NgDialogAnimationService,
-    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
-    { provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
-  ],
-  entryComponents: [
-    MatSpinner,
-    UrlcopyDialogComponent,
-    MessageDialogComponent,
-    SpotDetailComponent,
-    MapPanelComponent,
-    MapInfowindowDialogComponent,
-    AppComponent,
-    SpinnerLoadingIndicatorComponent,
-    ConfirmMessageDialogComponent,
-    GoogleSpotDialogComponent,
-    UserprofilePanelComponent,
-    TransferPanelComponent,
-    MapDialogComponent,
-    ImageCropperDialogComponent,
-    UserDialogComponent
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        RootComponent,
+        HeaderComponent,
+        FooterComponent,
+        BlankComponent,
+        TopComponent,
+        SpotDetailComponent,
+        NavMenuComponent,
+        PlanDetailComponent,
+        MyplanComponent,
+        MypagePlanListComponent,
+        MypageFavoriteListComponent,
+        SystemErrorComponent,
+        LanguageComponent,
+        UrlcopyDialogComponent,
+        MessageDialogComponent,
+        MapPanelComponent,
+        MypageUserprofileComponent,
+        AppComponent,
+        MapInfowindowDialogComponent,
+        MypageComponent,
+        HeaderPlanPanelComponent,
+        UserDialogComponent,
+        ConfirmMessageDialogComponent,
+        RatingCompComponent,
+        TransferPanelComponent,
+        MapDialogComponent,
+        NotfoundComponent,
+        GoogleSpotDialogComponent,
+        UserprofilePanelComponent,
+        ImageCropperDialogComponent,
+        UserPlanListComponent,
+        MypageReviewlistComponent,
+        PrivacyComponent,
+        AboutComponent,
+        GuideComponent,
+        MyplanSpotEditDialogComponent,
+        MyplanPlanEditDialogComponent,
+        MyplanAutoDialogComponent,
+        CommentListPostPanelComponent
+    ],
+    imports: [
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
+        BrowserTransferStateModule,
+        TransferHttpCacheModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        // ngx-translateの登録
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: translateBrowserLoaderFactory,
+                deps: [HttpClient, TransferState]
+            }
+        }),
+        BrowserTransferStateModule,
+        NgxPageScrollCoreModule,
+        NgxPageScrollModule,
+        AppRoutingModule,
+        NgxLoadingModule.forRoot({}),
+        // Angular GoogleMapの登録
+        AgmCoreModule.forRoot({
+            apiKey: environment.apiKey,
+            libraries: ["places", "geometry"] //,
+            //language: localStorage && localStorage.gml || 'ja'
+        }),
+        MatGoogleMapsAutocompleteModule,
+        // Service Workerの登録
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: environment.production,
+            // Register the ServiceWorker as soon as the app is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000'
+        }),
+        OAuthModule.forRoot({
+            resourceServer: {
+                allowedUrls: [environment.backend],
+                sendAccessToken: true
+            }
+        }),
+        UtilsModule,
+        SharedModule,
+        MaterialModule,
+        MatDialogModule,
+        MatTooltipModule,
+        NgMultiSelectDropDownModule.forRoot(),
+        FilterPipeModule,
+        NgxMaterialTimepickerModule,
+        ...CDK_MODULES,
+        ...MATERIAL_MODULES,
+        InfiniteScrollModule,
+        HammerModule,
+        CrystalLightboxModule,
+        PlanspotModule,
+        PlanDetailModule,
+        ImageCropperModule,
+        SpotDetailModule,
+        MypageModule,
+        OffcialModule,
+        RouterModule,
+    ],
+    providers: [
+        DataService,
+        PermissionService,
+        PushService,
+        HttpClient,
+        SwPush,
+        DatePipe,
+        Location,
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
+        { provide: "BASE_HOST_URL", useValue: environment.host },
+        { provide: "BASE_API_URL", useValue: environment.backend },
+        AuthGuard,
+        { provide: MAT_DATE_LOCALE, useValue: "ja-JP" },
+        NgDialogAnimationService,
+        { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerGestureConfig },
+        { provide: HAMMER_LOADER, useValue: () => import('@egjs/hammerjs').then(m => (window as any)['Hammer'] = m) }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

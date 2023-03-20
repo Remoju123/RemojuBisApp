@@ -7,7 +7,7 @@ import { ImageCropperParam } from "../../class/common.class";
 import { User } from "../../class/user.class";
 import { LangFilterPipe } from "../../utils/lang-filter.pipe";
 import { environment } from "../../../environments/environment";
-import { FormBuilder,FormControl, FormGroupDirective, NgForm, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder,UntypedFormControl, FormGroupDirective, NgForm, Validators, UntypedFormGroup } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { isPlatformBrowser } from "@angular/common";
 import { ImageCropperDialogComponent } from "../../parts/image-cropper-dialog/image-cropper-dialog.component";
 
 export class MypageErrorStateMatcher implements ErrorStateMatcher{
-  isErrorState(control:FormControl | null,form:FormGroupDirective | NgForm | null):boolean{
+  isErrorState(control:UntypedFormControl | null,form:FormGroupDirective | NgForm | null):boolean{
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
@@ -54,7 +54,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     private translate: TranslateService,
     private userService: UserService,
     public dialog: MatDialog,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private dateAdapter:DateAdapter<NativeDateAdapter>,
     @Inject(PLATFORM_ID) private platformId:Object
   ) {
@@ -72,7 +72,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
     return this.translate.currentLang;
   }
 
-  myForm:FormGroup;
+  myForm:UntypedFormGroup;
 
   get diplayName():any{
     return this.myForm.get("displayName");
@@ -87,7 +87,7 @@ export class MypageUserprofileComponent implements OnInit,OnDestroy {
   }
 
   get email():any{
-    return this.myForm.get("email") as FormControl;
+    return this.myForm.get("email") as UntypedFormControl;
   }
 
   createForm(){

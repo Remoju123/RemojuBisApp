@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { EmailClient } from '@azure/communication-email';
 import { CommonService } from './common.service';
 
@@ -14,7 +14,7 @@ const sender = 'DoNotReply@b558a3b3-99ab-4787-be1a-c2b6a44024fc.azurecomm.net';
 export class EmailService {
   constructor(private http: HttpClient, private commonService: CommonService) {}
 
-  createHtmlBody(form: FormGroup) {
+  createHtmlBody(form: UntypedFormGroup) {
     const optionSelect = [
       { value: 'contact', label: 'お問い合わせ' },
       { value: 'member', label: 'ユーザー会員登録' },
@@ -24,7 +24,7 @@ export class EmailService {
       { value: 'functions', label: 'アプリ機能改善要望' },
     ];
 
-    const cf: FormGroup = form;
+    const cf: UntypedFormGroup = form;
     const name = cf.get('fullName')?.value;
     const email = cf.get('email')?.value;
     const title = optionSelect.find(
@@ -45,7 +45,7 @@ export class EmailService {
     return body;
   }
 
-  createMailBody(form: FormGroup) {
+  createMailBody(form: UntypedFormGroup) {
     const body = this.createHtmlBody(form);
 
     const header = `

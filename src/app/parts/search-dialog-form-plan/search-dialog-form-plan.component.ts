@@ -4,7 +4,7 @@ import { ListSelectedPlan, NestDataSelected } from "../../class/common.class";
 import { ListSearchCondition } from "../../class/indexeddb.class";
 import { CommonService } from "../../service/common.service";
 import { TranslateService } from "@ngx-translate/core";
-import { FormBuilder, FormArray } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormArray } from "@angular/forms";
 import { Guid } from "guid-typescript";
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -36,23 +36,23 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
     addes: this.fb.array([])
   });
 
-  get areas(): FormArray {
-    return this.searchForm.get("areas") as FormArray;
+  get areas(): UntypedFormArray {
+    return this.searchForm.get("areas") as UntypedFormArray;
   }
 
-  get cates(): FormArray {
-    return this.searchForm.get("cates") as FormArray;
+  get cates(): UntypedFormArray {
+    return this.searchForm.get("cates") as UntypedFormArray;
   }
 
-  get addes(): FormArray {
-    return this.searchForm.get("addes") as FormArray;
+  get addes(): UntypedFormArray {
+    return this.searchForm.get("addes") as UntypedFormArray;
   }
 
   constructor(
     private translate: TranslateService,
     private cs: CommonService,
     public dialogRef: MatDialogRef<SearchDialogFormPlanComponent>,
-    public fb: FormBuilder,
+    public fb: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: ListSelectedPlan
   ) {}
 
@@ -149,7 +149,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
   // エリア-エクスパンションClose
   onAreaCollapseClose(i: number) {
     this.areas.controls[i].get("selected")?.patchValue(false);
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     fa.controls.map(d => {
       d.get("selected")?.patchValue(false);
     });
@@ -158,7 +158,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
 
   // エリア-サブエリア選択時のすべて選択
   onAreaAllClick(i: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     if (this.areas.controls[i].get("selected")?.value === false) {
       this.areas.controls[i].get("selected")?.patchValue(true);
       fa.controls.map(d => {
@@ -172,7 +172,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
 
   // エリア-チェックボックス選択
   onAreaSelection(i: number, j: number) {
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
 
     // 何か選択されていたらクリアする
     for (let idx = 0; idx < fa.controls.length; idx++){
@@ -192,7 +192,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
       return true;
     }
     // サブエリアが選択されている場合
-    const fa = this.areas.controls[i].get("dataSelecteds") as FormArray;
+    const fa = this.areas.controls[i].get("dataSelecteds") as UntypedFormArray;
     if (this.cs.isSome(fa)) {
       return true;
     }
@@ -206,7 +206,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
    *  ---------------------------*/
   // カテゴリ-全選択
   onCatSelectAll(i: number) {
-    const data = this.cates.controls[i].get("dataSelecteds") as FormArray;
+    const data = this.cates.controls[i].get("dataSelecteds") as UntypedFormArray;
     data.controls.map(x => {
       if (x.get("qty")?.value > 0) {
         this.condition.searchCategories.push(x.get("id")?.value);
@@ -217,7 +217,7 @@ export class SearchDialogFormPlanComponent implements OnInit, OnDestroy {
   }
   // カテゴリ-キャンセル
   onCatCancelAll(i: number) {
-    const data = this.cates.controls[i].get("dataSelecteds") as FormArray;
+    const data = this.cates.controls[i].get("dataSelecteds") as UntypedFormArray;
     data.controls.map(x => {
       this.condition.searchCategories = this.condition.searchCategories.filter(
         v => v === x.get("id")?.value

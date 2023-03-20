@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ComfirmDialogParam } from 'src/app/class/common.class';
@@ -14,7 +14,7 @@ import { CustomValidator } from 'src/app/shared/custom-validator';
 })
 export class ContactFormComponent implements OnInit {
   private onDestroy$ = new Subject();
-  contactForm: FormGroup;
+  contactForm: UntypedFormGroup;
   disabledSubmitButton: boolean = true;
   optionSelect: Array<any> | undefined;
 
@@ -23,7 +23,7 @@ export class ContactFormComponent implements OnInit {
   }
 
   constructor(
-    private builder: FormBuilder,
+    private builder: UntypedFormBuilder,
     public commonService: CommonService,
     private emailService: EmailService
   ) {
@@ -56,12 +56,12 @@ export class ContactFormComponent implements OnInit {
     //this.dumiForm();
   }
 
-  get email(): FormControl {
-    return this.contactForm.get('email') as FormControl
+  get email(): UntypedFormControl {
+    return this.contactForm.get('email') as UntypedFormControl
   }
 
-  get title(): FormControl {
-    return this.contactForm.get('title') as FormControl
+  get title(): UntypedFormControl {
+    return this.contactForm.get('title') as UntypedFormControl
   }
 
   sendMail() {
