@@ -251,7 +251,7 @@ export class PlanspotListItemComponent implements OnInit {
     // let random = Math.floor(Math.random() * 2);
     // let res = index.toString(3).toString();
 
-    if (index !== undefined) {
+    if (index !== undefined && this.banners) {
       let i = index.toString(this.banners.length).toString().slice(-1);
       return banners[i];
     }
