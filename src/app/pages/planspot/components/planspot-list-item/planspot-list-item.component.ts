@@ -11,12 +11,15 @@ import {
 } from '@angular/core';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { PlanSpotList } from 'src/app/class/planspotlist.class';
+import { BannerService } from 'src/app/service/banner.service';
 import { CommonService } from 'src/app/service/common.service';
 import { SpotService } from 'src/app/service/spot.service';
 import { LangFilterPipe } from 'src/app/utils/lang-filter.pipe';
 import { environment } from 'src/environments/environment';
+import { BannerType } from 'src/app/class/banner.class';
 
 import PlaceResult = google.maps.places.PlaceResult;
 
@@ -34,6 +37,7 @@ export class PlanspotListItemComponent implements OnInit {
   @Input() myPlanSpots: any;
   @Input() index: number;
   @Input() type?: string;
+  @Input() banners?: BannerType[];
   show: boolean = true;
 
   @Output() linked = new EventEmitter<PlanSpotList>();
@@ -240,23 +244,15 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
-  a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow" target="_blank">
-    <img border="0" width="234" height="60" alt="" src="https://www21.a8.net/svt/bgt?aid=220727851298&wid=001&eno=01&mid=s00000005350001016000&mc=1"></a>
-    <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=3NEYP7+4XF71U+15A4+61RI9" alt="">`;
-  a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow" target="_blank">
-    <img border="0" width="234" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663567&wid=002&eno=01&mid=s00000008903001036000&mc=1"></a>
-    <img border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=3NENR3+9DKTJU+1WP2+661TT" alt="">`;
-  a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow" target="_blank">
-    <img border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663568&wid=002&eno=01&mid=s00000016565001019000&mc=1"></a>
-    <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=3NENR3+9E695M+3JTE+62ENL" alt="">`;
-
   setA8banner(index: number) {
-    const banners = [this.a8banner, this.a8b1, this.a8b2];
+    //const banners = [this.a8banner, this.a8b1, this.a8b2];
+    const banners = this.banners;
+
     // let random = Math.floor(Math.random() * 2);
     // let res = index.toString(3).toString();
 
     if (index !== undefined) {
-      let i = index.toString(3).toString().slice(-1);
+      let i = index.toString(this.banners.length).toString().slice(-1);
       return banners[i];
     }
   }

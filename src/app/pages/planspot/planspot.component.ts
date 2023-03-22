@@ -39,6 +39,8 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { UserDialogComponent } from 'src/app/parts/user-dialog/user-dialog.component';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { BannerType } from 'src/app/class/banner.class';
+import { BannerService } from 'src/app/service/banner.service';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
@@ -100,6 +102,10 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   isMobile: boolean;
 
+  //banner$: Observable<BannerType[]> | undefined;
+
+  banners: any[];
+
   constructor(
     private translate: TranslateService,
     private commonService: CommonService,
@@ -112,6 +118,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     private router: Router,
     public dialog: MatDialog,
     public animationDialog: NgDialogAnimationService,
+    private bannerService: BannerService,
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 9;
@@ -122,6 +129,16 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
+
+    const arr = [];
+    this.bannerService.getBannerList().subscribe((d) => {
+      d.map((item) => {
+        if (item.size === '320x50') {
+          arr.push(item);
+        }
+      });
+      this.banners = arr.map((f) => f.link);
+    });
 
     this.isMobile = this.detectIsMobile(window.innerWidth);
 

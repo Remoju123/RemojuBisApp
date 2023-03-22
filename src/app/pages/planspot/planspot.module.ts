@@ -19,6 +19,8 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { environment } from '../../../environments/environment';
 import { AgmCoreModule } from '@agm/core';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
+
+import { AngularFireModule } from '@angular/fire/compat';
 @NgModule({
   declarations: [
     PlanspotComponent,
@@ -43,6 +45,7 @@ import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/go
       //language: localStorage && localStorage.gml || 'ja'
     }),
     MatGoogleMapsAutocompleteModule,
+    AngularFireModule.initializeApp(environment.firebase),
   ],
   exports: [
     PlanspotComponent,
