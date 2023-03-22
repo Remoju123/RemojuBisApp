@@ -48,6 +48,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
+import { BannerService } from 'src/app/service/banner.service';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
@@ -85,7 +86,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     public dialog: NgDialogAnimationService,
     @Inject(PLATFORM_ID) private platformId: Object,
     public sanitizer: DomSanitizer,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private bannerService: BannerService
   ) {}
 
   data: PlanApp = new PlanApp();
@@ -148,6 +150,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     return this.translate.currentLang;
   }
 
+  banners: any[] = [];
+
   ngOnDestroy() {
     this.onDestroy$.next();
   }
@@ -155,22 +159,21 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
-    const a8banner = `<a href="https://px.a8.net/svt/ejp?a8mat=3NEYP7+4XF71U+15A4+61RI9" rel="nofollow" target="_blank">
-    <img decoding="async" border="0" width="234" height="60" alt="" src="https://www21.a8.net/svt/bgt?aid=220727851298&wid=001&eno=01&mid=s00000005350001016000&mc=1"></a>
-    <img border="0" width="1" height="1" src="https://www14.a8.net/0.gif?a8mat=3NEYP7+4XF71U+15A4+61RI9" alt="">`;
-    const a8b1 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9DKTJU+1WP2+661TT" rel="nofollow" target="_blank">
-    <img decoding="async" border="0" width="234" height="60" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663567&wid=002&eno=01&mid=s00000008903001036000&mc=1"></a>
-    <img decoding="async" border="0" width="1" height="1" src="https://www18.a8.net/0.gif?a8mat=3NENR3+9DKTJU+1WP2+661TT" alt="">`;
-    const a8b2 = `<a href="https://px.a8.net/svt/ejp?a8mat=3NENR3+9E695M+3JTE+62ENL" rel="nofollow" target="_blank">
-    <img decoding="async" border="0" width="320" height="50" alt="" src="https://www29.a8.net/svt/bgt?aid=220713663568&wid=002&eno=01&mid=s00000016565001019000&mc=1"></a>
-    <img border="0" width="1" height="1" src="https://www11.a8.net/0.gif?a8mat=3NENR3+9E695M+3JTE+62ENL" alt="">`;
 
-    const banners = [a8banner, a8b1, a8b2];
-    this.renderer.setProperty(
-      this.divA8.nativeElement,
-      'innerHTML',
-      banners[Math.floor(Math.random() * banners.length)]
-    );
+    const arr = [];
+    this.bannerService.getBannerList().subscribe((d) => {
+      d.map((item) => {
+        if (item.size === '320x50') {
+          arr.push(item);
+        }
+      });
+      const _banner = arr.map((f) => f.link);
+      this.renderer.setProperty(
+        this.divA8.nativeElement,
+        'innerHTML',
+        _banner[Math.floor(Math.random() * _banner.length)]
+      );
+    });
 
     if (
       this.transferState.hasKey(MYPLANLIST_KEY) ||
