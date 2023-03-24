@@ -395,7 +395,7 @@
             id="switch-tran"
             (click)="onClickTran()"
             x
-            [checked]="row?.isCar"
+            [checked]="!row?.isCar"
             [disabled]="!row"
           />
           <label for="switch-tran"><span></span></label>

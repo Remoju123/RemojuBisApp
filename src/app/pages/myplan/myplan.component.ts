@@ -316,21 +316,20 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.isEdit = !this.isEdit;
       // プレビューの場合
       if (!this.isEdit) {
-        /*
         // 移動方法取得処理
         if (this.row.isTransferSearch) {
-          const ref = this.loading.show();
-          this.myplanService.setTransfer(isAuto).then(result => {
-            result.pipe(takeUntil(this.onDestroy$)).subscribe(r => {
+          this.loading = true;
+          this.myplanService.setTransfer(isAuto).then((result) => {
+            result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
               if (r) {
                 this.setUserPicture(r);
                 // 変更を保存
                 this.registPlan();
                 // 最適化OFF
                 this.row.isAuto = false;
-                ref.close();
-                if (!r.isCar && r.ekitanStatus !== "0") {
-                  this.commonService.messageDialog("ErrorMsgEkitan");
+                this.loading = false;
+                if (!r.isCar && r.ekitanStatus !== '0') {
+                  this.commonService.messageDialog('ErrorMsgEkitan');
                 }
               }
             });
@@ -338,7 +337,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
         } else {
           this.setPreviewPicture();
         }
-        */
         this.setPreviewPicture();
       }
     }
@@ -470,7 +468,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     const dialog = this.dialog.open(MyplanAutoDialogComponent, {
       maxWidth: '100%',
-      width: this.isMobile ? '92vw' : '540px',
+      width: this.isMobile ? '92vw' : '720px',
       maxHeight: '90vh',
       position: { top: '10px' },
       data: [this.isMobile, this.row],
@@ -481,6 +479,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((d: any) => {
+        console.log(d);
         if (d === 'ok') {
           // 最適化ON
           this.row.isAuto = true;
