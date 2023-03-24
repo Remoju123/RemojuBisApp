@@ -3,13 +3,15 @@
     id="plandtlheader"
     [ngClass]="{ onplan: match(planSpotids, myPlanSpots) }"
   >
-    <div class="link" (click)="linktolist()">
-      <span class="frame" *ngIf="!isMypage">{{
-        "BackEveryoneRecommendations" | translate
-      }}</span>
-      <span class="frame" *ngIf="isMypage">{{
-        "BackEveryoneRecommendationsMyPage" | translate
-      }}</span>
+    <div class="link">
+      <div (click)="linktolist()">
+        <span class="frame" *ngIf="!isMypage">{{
+          "BackEveryoneRecommendations" | translate
+        }}</span>
+        <span class="frame" *ngIf="isMypage">{{
+          "BackEveryoneRecommendationsMyPage" | translate
+        }}</span>
+      </div>
     </div>
     <mat-card-header>
       <div class="header">
