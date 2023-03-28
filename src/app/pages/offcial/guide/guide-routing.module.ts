@@ -6,12 +6,12 @@ import { GuideComponent } from './guide.component';
 const routes: Routes = [
   {
     path: '',
-    component: GuideComponent
-  }
-]
+    component: GuideComponent,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class GuideRoutingModule { }
+export class GuideRoutingModule {}

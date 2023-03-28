@@ -250,7 +250,7 @@ export class MyHammerGestureConfig extends HammerGestureConfig {
     ImageCropperModule,
     SpotDetailModule,
     MypageModule,
-    OffcialModule,
+    //OffcialModule,
     RouterModule,
     //provideFirebaseApp(() => initializeApp(environment.firebase)),
     //provideFirestore(() => getFirestore()),
