@@ -25,6 +25,7 @@ import { PlanSpotListService } from '../../service/planspotlist.service';
 import { MyplanService } from '../../service/myplan.service';
 import { isPlatformBrowser } from '@angular/common';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
+import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
 
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
 
@@ -74,7 +75,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
   end: number;
   offset: number;
 
-  type:string = 'mypage';
+  type: string = 'mypage';
 
   get lang() {
     return this.translate.currentLang;
@@ -296,6 +297,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
 
   // プランに追加
   async addMyPlan(item: PlanSpotList) {
+    const memoPipe = new MyplanMemoClearPipe();
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if ((await this.commonService.checkAddPlan(tempqty)) === false) {
       const param = new ComfirmDialogParam();
@@ -325,6 +327,7 @@ export class MypageFavoriteListComponent implements OnInit, OnDestroy {
       .then((result) => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async (myPlanApp) => {
           if (myPlanApp) {
+            memoPipe.transform(myPlanApp);
             this.myplanService.onPlanUserChanged(myPlanApp);
             this.indexedDBService.registPlan(myPlanApp);
             this.myplanService.FetchMyplanSpots();

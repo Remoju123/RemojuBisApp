@@ -42,6 +42,8 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { BannerType } from 'src/app/class/banner.class';
 import { BannerService } from 'src/app/service/banner.service';
 
+import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
+
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
 @Component({
@@ -591,6 +593,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     //   item.id
     // );
 
+    const memoPipe = new MyplanMemoClearPipe();
+
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if ((await this.commonService.checkAddPlan(tempqty)) === false) {
       const param = new ComfirmDialogParam();
@@ -621,6 +625,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       .then((result) => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe(async (myPlanApp) => {
           if (myPlanApp) {
+            //myPlanのplanSpotsのmemoを初期化する処理
+            memoPipe.transform(myPlanApp);
             this.myplanService.onPlanUserChanged(myPlanApp);
             this.indexedDBService.registPlan(myPlanApp);
             this.myplanService.FetchMyplanSpots();

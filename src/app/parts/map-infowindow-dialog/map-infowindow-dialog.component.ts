@@ -1,22 +1,23 @@
-import { Component, Inject, OnInit ,OnDestroy} from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { TranslateService } from "@ngx-translate/core";
-import { MapSpot } from "../../class/common.class";
-import { UpdFavorite } from "../../class/mypageplanlist.class";
-import { CommonService } from "../../service/common.service";
-import { MyplanService } from "../../service/myplan.service";
-import { IndexedDBService } from "../../service/indexeddb.service";
-import { PlanSpotListService } from "../../service/planspotlist.service";
-import { Router } from "@angular/router";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { MapSpot } from '../../class/common.class';
+import { UpdFavorite } from '../../class/mypageplanlist.class';
+import { CommonService } from '../../service/common.service';
+import { MyplanService } from '../../service/myplan.service';
+import { IndexedDBService } from '../../service/indexeddb.service';
+import { PlanSpotListService } from '../../service/planspotlist.service';
+import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
 
 @Component({
-  selector: "app-map-infowindow-dialog",
-  templateUrl: "./map-infowindow-dialog.component.html",
-  styleUrls: ["./map-infowindow-dialog.component.scss"]
+  selector: 'app-map-infowindow-dialog',
+  templateUrl: './map-infowindow-dialog.component.html',
+  styleUrls: ['./map-infowindow-dialog.component.scss'],
 })
-export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
+export class MapInfowindowDialogComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject();
   constructor(
     private translate: TranslateService,
@@ -27,7 +28,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
     private planSpotListService: PlanSpotListService,
     public dialogRef: MatDialogRef<MapInfowindowDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MapSpot
-  ) { }
+  ) {}
 
   guid: string;
 
@@ -39,7 +40,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
     this.guid = await this.commonService.getGuid();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.onDestroy$.next();
   }
 
@@ -52,7 +53,11 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
 
   // 現在地からの行き方
   onClickMapApp() {
-    this.commonService.locationGoogleMap(this.lang, this.data.latitude, this.data.longitude);
+    this.commonService.locationGoogleMap(
+      this.lang,
+      this.data.latitude,
+      this.data.longitude
+    );
     this.dialogRef.close();
   }
 
@@ -60,7 +65,7 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
   onClickFavorite() {
     this.data.isFavorite = !this.data.isFavorite;
     const param = new UpdFavorite();
-    param.spotId =  this.data.spotId;
+    param.spotId = this.data.spotId;
     param.type = this.data.type;
     param.isFavorite = this.data.isFavorite;
     this.myplanService.updateFavorite(param);
@@ -74,41 +79,49 @@ export class MapInfowindowDialogComponent implements OnInit ,OnDestroy{
         this.data.type === 2 ? true : false
       )
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(r => {
+      .subscribe((r) => {
         if (!r) {
-          this.router.navigate(["/" + this.lang + "/systemerror"]);
+          this.router.navigate(['/' + this.lang + '/systemerror']);
           return;
         }
-
       });
   }
 
   // プランに追加
   async onClickAddToPlan() {
+    const memoPipe = new MyplanMemoClearPipe();
     // スポット数チェック
-    if(await this.commonService.checkAddPlan(1) === false) {
-      this.commonService.messageDialog("ErrorMsgAddSpot");
+    if ((await this.commonService.checkAddPlan(1)) === false) {
+      this.commonService.messageDialog('ErrorMsgAddSpot');
       return;
     }
 
     // プランに追加
     this.planSpotListService
-    .addPlan(this.data.spotId, false, this.guid, undefined, this.data.type === 2 ? true : false).then(result => {
-      result.pipe(takeUntil(this.onDestroy$)).subscribe(async myPlanApp => {
-        if (myPlanApp) {
-          // プラン作成に反映
-          this.myplanService.onPlanUserChanged(myPlanApp);
-          // 保存
-          this.indexedDBService.registPlan(myPlanApp);
-          // 地図に反映
-          this.dialogRef.close(myPlanApp.planSpots);
-        }
+      .addPlan(
+        this.data.spotId,
+        false,
+        this.guid,
+        undefined,
+        this.data.type === 2 ? true : false
+      )
+      .then((result) => {
+        result.pipe(takeUntil(this.onDestroy$)).subscribe(async (myPlanApp) => {
+          if (myPlanApp) {
+            memoPipe.transform(myPlanApp);
+            // プラン作成に反映
+            this.myplanService.onPlanUserChanged(myPlanApp);
+            // 保存
+            this.indexedDBService.registPlan(myPlanApp);
+            // 地図に反映
+            this.dialogRef.close(myPlanApp.planSpots);
+          }
+        });
       });
-    });
   }
 
   // プランから削除
   onClickDelSpot() {
-    this.dialogRef.close("delete");
+    this.dialogRef.close('delete');
   }
 }

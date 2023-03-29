@@ -49,6 +49,7 @@ import { takeUntil } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { BannerService } from 'src/app/service/banner.service';
+import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
@@ -302,6 +303,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
 
   // プランに追加する
   async onClickAddToPlan(spot?: PlanSpotCommon) {
+    const memoPipe = new MyplanMemoClearPipe();
     // プラン共有ではないまたはスポット追加
     if (!isNaN(this.id) || spot) {
       // スポット数チェック
@@ -343,6 +345,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
               .pipe(takeUntil(this.onDestroy$))
               .subscribe(async (myPlanApp) => {
                 if (myPlanApp) {
+                  memoPipe.transform(myPlanApp);
                   this.addToPlanAfter(myPlanApp);
                 }
               });
@@ -355,6 +358,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
               .pipe(takeUntil(this.onDestroy$))
               .subscribe(async (myPlanApp) => {
                 if (myPlanApp) {
+                  memoPipe.transform(myPlanApp);
                   this.addToPlanAfter(myPlanApp);
                 }
               });
