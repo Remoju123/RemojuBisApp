@@ -127,7 +127,7 @@ export class PlanSpotListService {
 
   // プランスポット一覧、詳細データ
   fetchDetails(planSpotList: PlanSpotList, guid: string) {
-    if (planSpotList.isPlan) {
+    if (planSpotList.isPlan !== undefined && planSpotList.isPlan) {
       return this.http.get<PlanSpotList>(
         this.host + '/api/PlanSpotList/SearchDetailPlan',
         {
@@ -291,7 +291,7 @@ export class PlanSpotListService {
             break;
           case 11: // 新着純
             _result = _result.sort((a, b) => {
-              return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1;
+              return a.createDate < b.createDate ? 1 : -1;
             });
             break;
           case 9: // プランに追加された件数
