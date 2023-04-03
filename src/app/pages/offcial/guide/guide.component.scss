@@ -32,6 +32,7 @@
     font-size: 14px;
     opacity: 0;
     word-wrap: break-word;
+    margin: auto;
   }
 
   .section {
@@ -96,7 +97,70 @@
     &.step1 {
       .mark.cap1 {
         top: 65px;
-        left: 183px;
+        left: 65px;
+        z-index: 2;
+        .balloon {
+          left: -50%;
+        }
+      }
+      .mark.cap2 {
+        top: 161px;
+        left: 33px;
+        .balloon {
+          margin: auto;
+          left: 0;
+        }
+      }
+      .mark.cap3 {
+        top: 90px;
+        right: 42px;
+        .balloon {
+          right: 0;
+        }
+      }
+      .mark.cap4 {
+        top: 425px;
+        right: 151px;
+        .balloon {
+          right: 0;
+        }
+      }
+      .mark.cap5 {
+        top: 425px;
+        right: 73px;
+        .balloon {
+          bottom: 55px;
+          right: -52px;
+        }
+      }
+      .mark.cap6 {
+        top: 533px;
+        right: 39px;
+        .balloon {
+          bottom: 55px;
+          right: 0;
+        }
+      }
+
+      @media screen and (min-width: 1025px) {
+        .mark.cap1 {
+          left: 160px;
+        }
+        .mark.cap2 {
+          left: 154px;
+        }
+        .mark.cap3 {
+          left: 362px;
+        }
+        .mark.cap4 {
+          left: 247px;
+        }
+        .mark.cap5 {
+          right: 197px;
+        }
+        .mark.cap6 {
+          right: 161px;
+        }
       }
     }
   }

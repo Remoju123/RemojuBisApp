@@ -1,5 +1,9 @@
 import { AfterViewInit, Component, Injector, OnInit } from '@angular/core';
+import { doc } from 'firebase/firestore';
 import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-guide',
@@ -38,18 +42,96 @@ export class GuideComponent implements OnInit, AfterViewInit {
       '-=0.5'
     );
 
+    let step1 = document.querySelector('.section.step1');
+
+    const tl1 = gsap.timeline({
+      scrollTrigger: {
+        trigger: step1,
+        start: 'top top',
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    // tl1.from(step1, {
+    //   opacity: 0,
+    //   duration: 0.5,
+    // });
+    // tl1.fromTo(
+    //   '.mark .balloon',
+    //   { opacity: 1 },
+    //   {
+    //     opacity: 0,
+    //     duration: 0.2,
+    //     repeat: 0,
+    //     stagger: { each: 1 },
+    //     ease: 'power4in',
+    //   }
+    // );
+
+    let step2 = document.querySelector('.section.step2');
+
+    const tl2 = gsap.timeline({
+      scrollTrigger: {
+        trigger: step2,
+        start: 'top top',
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl2.from(step2, {
+      opacity: 0,
+      duration: 0.5,
+    });
+
+    let step3 = document.querySelector('.section.step3');
+
+    const tl3 = gsap.timeline({
+      scrollTrigger: {
+        trigger: step3,
+        start: 'top top',
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl3.from(step3, {
+      opacity: 0,
+      duration: 0.5,
+    });
+
+    let step4 = document.querySelector('.section.step4');
+
+    const tl4 = gsap.timeline({
+      scrollTrigger: {
+        trigger: step4,
+        start: 'top top',
+        scrub: 1,
+        pin: true,
+      },
+    });
+
+    tl4.from(step4, {
+      opacity: 0,
+      duration: 0.5,
+    });
+
+    /**
+     * Marker クリックアニメーション
+     */
     document.querySelectorAll('.mark').forEach((mark) => {
       mark.addEventListener('mouseover', () => {
         const tl = gsap.timeline();
         tl.to(mark, {
-          scale: 1.05,
+          scale: 1.1,
           duration: 0.5,
           overwrite: true,
         });
         tl.to(mark.firstChild, {
           scale: 1,
           opacity: 1,
-          duration: 0.2,
+          duration: 0.5,
           overwrite: true,
         });
       });
