@@ -1,29 +1,103 @@
-h1 {
-  text-align: center;
-  font-size: 24px;
-}
+.container {
+  p {
+    font-family: source-han-sans-japanese, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+  }
+  .mark {
+    display: block;
+    position: absolute;
+    cursor: pointer;
+    &::before {
+      content: "";
+      display: inline-block;
+      background-image: url("../../../../assets/img/guide/circle.svg");
+      width: 60px;
+      height: 60px;
+      background-size: contain;
+      vertical-align: middle;
+    }
+  }
+  .balloon {
+    position: absolute;
+    width: 156px;
+    background-color: #d36f71;
+    border: 3px solid #fff;
+    border-radius: 8px;
+    padding: 8px;
+    color: #fff;
+    font-family: source-han-sans-japanese, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 14px;
+    opacity: 0;
+    word-wrap: break-word;
+  }
 
-ul {
-  list-style: none;
-  padding: 20px;
-  //border-bottom: 1px solid #ccc;
-  li {
-    line-height: 1.5;
-    //border-top: 1px solid #ccc;
-    padding: 1em 0;
-    span {
-      display: block;
-      width: 86px;
-      font-weight: 800;
-      &.lg {
-        font-size: 120%;
+  .section {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: relative;
+    padding: 1.5em;
+    .head {
+      .step-mark {
+        display: flex;
+        text-align: end;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 14px;
       }
     }
-    h2 {
-      margin: unset;
+    .screen {
+      position: relative;
+      img.bg {
+        margin: auto;
+        position: absolute;
+        top: 30px;
+        left: 0;
+        right: 0;
+        width: 257px;
+      }
+      .balloon {
+        width: 156px;
+        position: absolute;
+      }
+      .s1b1 {
+        top: 0;
+        left: 0;
+      }
     }
-    ul {
-      padding-inline-start: 0px;
+
+    &.top {
+      //background-color: #b89b7e;
+      img.logo {
+        position: absolute;
+        margin: auto;
+        right: 0;
+        left: 0;
+        top: 37%;
+        width: 65%;
+      }
+      .caption {
+        position: absolute;
+        margin: auto;
+        right: 0;
+        left: 0;
+        top: 40%;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    &.step1 {
+      .mark.cap1 {
+        top: 65px;
+        left: 183px;
+      }
     }
   }
 }

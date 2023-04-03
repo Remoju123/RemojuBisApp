@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_2" data-name="レイヤー 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80.41 80.41">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #ca6c6e;
+        stroke-dasharray: 0 0 8.14 8.14;
+        stroke-miterlimit: 10;
+        stroke-width: 13px;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_1-2" data-name="レイヤー 1">
+    <circle class="cls-1" cx="40.21" cy="40.21" r="33.71" transform="translate(-5.92 6.96) rotate(-9.22)"/>
+  </g>
+</svg>

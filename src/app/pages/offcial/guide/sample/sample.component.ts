@@ -96,6 +96,9 @@ export class SampleComponent implements OnInit, AfterViewInit {
       x: -300,
       duration: 1,
     });
+
+
+    
   }
 
   ngOnInit() {}
