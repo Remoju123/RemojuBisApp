@@ -48,9 +48,33 @@ export class GuideComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: step1,
         start: 'top top',
+        //end: '50% top',
         scrub: 1,
         pin: true,
+        //anticipatePin: 1,
+        //invalidateOnRefresh: true,
+        toggleActions: 'play complete complete complete',
       },
+    });
+
+    tl1.to('.mark .balloon', {
+      keyframes: [
+        {
+          opacity: 1,
+          duration: 0.5,
+          overwrite: true,
+          stagger: {
+            from: 'start',
+            //amount: 0.4,
+            each: 1.4,
+          },
+        },
+        {
+          opacity: 0,
+          //duration: 0.5,
+          overwrite: true,
+        },
+      ],
     });
 
     // tl1.from(step1, {
@@ -75,8 +99,11 @@ export class GuideComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: step2,
         start: 'top top',
+        //end: '50% top',
         scrub: 1,
         pin: true,
+        // anticipatePin: 1,
+        // invalidateOnRefresh: true,
       },
     });
 
@@ -91,8 +118,11 @@ export class GuideComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: step3,
         start: 'top top',
+        //end: '50% top',
         scrub: 1,
         pin: true,
+        // anticipatePin: 1,
+        // invalidateOnRefresh: true,
       },
     });
 
@@ -107,8 +137,11 @@ export class GuideComponent implements OnInit, AfterViewInit {
       scrollTrigger: {
         trigger: step4,
         start: 'top top',
+        //end: '50% top',
         scrub: 1,
         pin: true,
+        // anticipatePin: 1,
+        // invalidateOnRefresh: true,
       },
     });
 

@@ -4,6 +4,7 @@ import { ContactFormComponent } from './contact-form/contact-form.component';
 
 import { GsapComponent } from './guide/gsap/gsap.component';
 import { SampleComponent } from './guide/sample/sample.component';
+import { Guide2Component } from './guide/guide2/guide2.component';
 
 const routes: Routes = [
   //{ path: '', redirectTo: 'privacy', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
 
   { path: 'gsap', component: GsapComponent },
   { path: 'sample', component: SampleComponent },
+  { path: 'guide2', component: Guide2Component },
 ];
 
 @NgModule({
