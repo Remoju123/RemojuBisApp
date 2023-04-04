@@ -38,8 +38,8 @@ form {
 .transport {
   display: flex;
 
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  //align-items: center;
 
   justify-content: space-between;
 
@@ -97,8 +97,9 @@ form {
     }
     .mat-slide-toggle-label {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       height: unset;
+      margin-left: 16px;
     }
 
     .mat-slide-toggle-content {
@@ -577,7 +578,7 @@ form {
 
               // spot item
               &:nth-child(2) {
-                flex-basis: 72%;
+                flex-basis: 64%;
                 display: flex;
 
                 .clickable {
@@ -657,26 +658,29 @@ form {
               }
 
               &:nth-child(3) {
-                flex-basis: 8%;
+                flex-basis: 12%;
 
                 button.add-to-favorite {
                   box-shadow: none;
-                  min-width: auto;
+                  //min-width: auto;
                   padding: 0;
+                  height: 68px;
+                  width: 48px;
 
                   &::before {
                     content: "";
                     display: inline-block;
-                    width: 18px;
-                    height: 18px;
-                    background: url("../../../assets/img/icon_bookmark_d.svg");
+                    width: 24px;
+                    height: 24px;
+                    background: url("../../../assets/img/icon_bookmark_b.svg");
                     background-repeat: no-repeat;
+                    margin: auto;
                   }
 
                   &.on {
                     // background-color: $color-pnk04;
                     &::before {
-                      background: url("../../../assets/img/icon_bookmark_d_on.svg");
+                      background: url("../../../assets/img/icon_bookmark_b_on.svg");
                       background-repeat: no-repeat;
                     }
                   }
@@ -689,7 +693,13 @@ form {
               }
 
               &:nth-child(4) {
-                flex-basis: 8%;
+                flex-basis: 12%;
+                display: flex;
+                height: 68px;
+                width: 40px;
+                img {
+                  margin-left: 8px;
+                }
               }
             }
           }
@@ -2005,7 +2015,7 @@ form {
 
             // spot item
             &:nth-child(2) {
-              flex-basis: 76%;
+              flex-basis: 64%;
               display: flex;
 
               .lt {
@@ -2060,6 +2070,13 @@ form {
 
             &:nth-child(3) {
               flex-basis: 12%;
+            }
+
+            &:nth-child(4) {
+              flex-basis: 12%;
+              display: flex;
+              height: 68px;
+              width: 40px;
             }
           }
         }

@@ -1320,13 +1320,13 @@ div.spotdtl {
             display: inline-block;
             width: 20px;
             height: 20px;
-            background: url(../../../assets/img/icon_bookmark_d.svg);
+            background: url(../../../assets/img/icon_bookmark_b.svg);
             background-repeat: no-repeat;
           }
 
           &.on {
             &::before {
-              background: url(../../../assets/img/icon_bookmark_d_on.svg);
+              background: url(../../../assets/img/icon_bookmark_b_on.svg);
               background-repeat: no-repeat;
             }
           }

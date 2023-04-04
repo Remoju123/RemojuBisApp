@@ -495,16 +495,16 @@ div.banner {
           &::before {
             content: "";
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            background: url("../../../../../assets/img/icon_bookmark_d.svg");
+            width: 24px;
+            height: 24px;
+            background: url("../../../../../assets/img/icon_bookmark_b.svg");
             background-repeat: no-repeat;
           }
 
           &.on {
             // background-color: $color-pnk04;
             &::before {
-              background: url("../../../../../assets/img/icon_bookmark_d_on.svg");
+              background: url("../../../../../assets/img/icon_bookmark_b_on.svg");
               background-repeat: no-repeat;
             }
           }
