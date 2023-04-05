@@ -307,7 +307,7 @@
   "AgeAnnounced": "年代は公表されます。",
   "SetBirthday": "設定は編集の生年月日で行います。",
   "ImgSelected": "選択",
-  "TravelBookmark": "ポイントやサブタイトルを書こう",
+  "TravelBookmark": "プラン名",
   "PasteImg": "プランの表紙写真を選ぼう",
   "PasteImgSpot": "スポットの写真を追加します",
   "NotFound": "お探しのページは見つかりませんでした。",
@@ -358,5 +358,7 @@
   "PlanboxChange": "my休日プランに入りました。",
   "PlanSpotList": "みんなのおすすめ",
   "Loading": "検索しています。少々お待ちください...",
-  "SaveMemo": "このダイアログを閉じてから保存します"
+  "SaveMemo": "このダイアログを閉じてから保存します",
+  "Planpoint": "このプランのポイント",
+  "Planmemo": "フリーメモ"
 }

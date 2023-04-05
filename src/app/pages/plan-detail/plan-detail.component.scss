@@ -1680,16 +1680,16 @@ div.plandtl {
           box-shadow: none;
           min-width: auto;
           padding: 0;
-          width: 20px;
-          height: 20px;
+          width: 24px;
+          height: 24px;
           margin-right: 12px;
           line-height: initial;
 
           &::before {
             content: "";
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: url(../../../assets/img/icon_fav_b.svg);
             background-repeat: no-repeat;
           }

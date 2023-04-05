@@ -1,66 +1,116 @@
-<div class='panel-content'>
-  <div class='sub'>
-    {{ 'TravelBookmark' | translate }}
+<div class="panel-content">
+  <div class="sub">
+    {{ "TravelBookmark" | translate }}
   </div>
   <!-- プラン名 -->
   <mat-form-field appearance="outline">
-    <mat-label>{{ 'PlanName' | translate }}</mat-label>
-    <textarea matInput #planName name="planName" maxlength="30" required #inputinfo="ngModel"
-      [(ngModel)]="row.planName"></textarea>
-    <mat-hint align="end">{{planName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
-  </mat-form-field>
-  <!-- プラン概要 -->
-  <div class='sub item'>
-    note
-  </div>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'TravelBookmark' | translate }}</mat-label>
-    <textarea matInput #planExplanation name="planExplanation" maxlength="1000" rows="5"
+    <mat-label>{{ "PlanName" | translate }}</mat-label>
+    <textarea
+      matInput
+      #planName
+      name="planName"
+      maxlength="30"
+      required
       #inputinfo="ngModel"
-      [(ngModel)]="row.planExplanation"></textarea>
-    <mat-hint align="end">{{planExplanation.value?.length || 0}}/1000{{ "Characters" | translate }} &nbsp;<a
-        href="javascript:void(0);" (click)="row.planExplanation='';"><span
-          class="material-icons">backspace</span></a></mat-hint>
-  </mat-form-field>
-  <!-- フリー文章 -->
-  <div class='sub item'>
-    memo
-  </div>
-  <mat-form-field appearance="outline">
-    <mat-label>{{ 'Memo' | translate }}</mat-label>
-    <textarea matInput #memo name="memo" maxlength="1000" rows="5"
-      #inputinfo="ngModel" [(ngModel)]="row.memo"></textarea>
-    <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
-        href="javascript:void(0);" (click)="row.memo='';"><span class="material-icons">backspace</span></a>
-    </mat-hint>
+      [(ngModel)]="row.planName"
+    ></textarea>
+    <mat-hint align="end"
+      >{{ planName.value?.length || 0 }}/30{{
+        "Characters" | translate
+      }}</mat-hint
+    >
   </mat-form-field>
   <!-- 写真 -->
   <div *ngIf="row.picturePreviewUrl || row.pictureUrl" class="picpreview">
-    <div class='picture'>
-      <img width="100%" height="100%" [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl" />
-      <button *ngIf="row.pictureFile" type="button" class="crop"
-        (click)="onClickCropPlan()">{{"Edit"|translate}}</button>
-      <button type="button" class="delete" (click)="onClickPhotoDeletePlan()"></button>
+    <div class="picture">
+      <img
+        width="100%"
+        height="100%"
+        [src]="row.imageCropped ?? row.picturePreviewUrl ?? row.pictureUrl"
+      />
+      <button
+        *ngIf="row.pictureFile"
+        type="button"
+        class="crop"
+        (click)="onClickCropPlan()"
+      >
+        {{ "Edit" | translate }}
+      </button>
+      <button
+        type="button"
+        class="delete"
+        (click)="onClickPhotoDeletePlan()"
+      ></button>
     </div>
   </div>
-  <div class='select'>
+  <div class="select">
     <div class="fileselector">
       {{ "MyplanSelectPhoto" | translate }}
-      <input type="file" accept="image/*" class="selectPhoto" (change)="onClickSelectPhotoPlan($event)" />
+      <input
+        type="file"
+        accept="image/*"
+        class="selectPhoto"
+        (change)="onClickSelectPhotoPlan($event)"
+      />
     </div>
-    <label>{{ 'PasteImg' | translate }}</label>
+    <label>{{ "PasteImg" | translate }}</label>
   </div>
   <!-- 都道府県 -->
-  <div class="area" *ngIf="row">
-    <div class='container'>
-      <select id="selectarea" name="selectarea" [(ngModel)]="row.areaId">
-        <option *ngFor="let area of $area" [ngValue]="area.parentId">
-          {{ commonService.isValidJson(area.parentName, lang) }}
-        </option>
-      </select>
+  <div class="select">
+    <div class="area" *ngIf="row">
+      <div class="container">
+        <select id="selectarea" name="selectarea" [(ngModel)]="row.areaId">
+          <option *ngFor="let area of $area" [ngValue]="area.parentId">
+            {{ commonService.isValidJson(area.parentName, lang) }}
+          </option>
+        </select>
+      </div>
+      <label for="selectarea" class="time-label">{{
+        "SelectAnAreaCategory" | translate
+      }}</label>
     </div>
-    <label for="selectarea" class="time-label">{{"SelectAnAreaCategory"|translate}}</label>
   </div>
+
+  <!-- プラン概要 -->
+  <div class="sub item" style="margin-top: 1.5em">
+    {{ "Planpoint" | translate }}
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ "TravelBookmark" | translate }}</mat-label>
+    <textarea
+      matInput
+      #planExplanation
+      name="planExplanation"
+      maxlength="1000"
+      rows="5"
+      #inputinfo="ngModel"
+      [(ngModel)]="row.planExplanation"
+    ></textarea>
+    <mat-hint align="end"
+      >{{ planExplanation.value?.length || 0 }}/1000{{
+        "Characters" | translate
+      }}
+    </mat-hint>
+  </mat-form-field>
+  <!-- フリー文章 -->
+  <div class="sub item">
+    {{ "Planmemo" | translate }}
+  </div>
+  <mat-form-field appearance="outline">
+    <mat-label>{{ "Memo" | translate }}</mat-label>
+    <textarea
+      matInput
+      #memo
+      name="memo"
+      maxlength="1000"
+      rows="5"
+      #inputinfo="ngModel"
+      [(ngModel)]="row.memo"
+    ></textarea>
+    <mat-hint align="end"
+      >{{ memo.value?.length || 0 }}/1000{{ "Characters" | translate }}
+    </mat-hint>
+  </mat-form-field>
 
   <!-- カテゴリー選択ボタン -->
   <!-- <button mat-stroked-button (click)="onClickAreaCategory()">
@@ -76,6 +126,10 @@
   <div class='close'>
     <button (click)="mep.expanded = false;">{{ 'Close' | translate}}</button>
   </div> -->
-  <button type="button" mat-dialog-close="cancel" class="absclose">{{"Close"|translate}}</button>
-  <button type="button" mat-dialog-close="cancel" class="abscloseb">{{"Close"|translate}}</button>
+  <button type="button" mat-dialog-close="cancel" class="absclose">
+    {{ "Close" | translate }}
+  </button>
+  <button type="button" mat-dialog-close="cancel" class="abscloseb">
+    {{ "Close" | translate }}
+  </button>
 </div>

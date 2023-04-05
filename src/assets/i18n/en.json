@@ -358,5 +358,7 @@
   "PlanboxChange": "Plan BOX has been added.",
   "PlanSpotList": "Recommended Planlist",
   "Loading": "please wait a little bit...",
-  "SaveMemo": "このダイアログを閉じてから保存します"
+  "SaveMemo": "このダイアログを閉じてから保存します",
+  "Planpoint": "このプランのポイント",
+  "Planmemo": "フリーメモ"
 }

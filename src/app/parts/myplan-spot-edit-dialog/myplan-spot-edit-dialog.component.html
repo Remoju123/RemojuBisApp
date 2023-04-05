@@ -1,69 +1,146 @@
-<div class='panel-content'>
-  <div class='sub'>
-    {{ 'SpotOverview' | translate }}
+<div class="panel-content">
+  <div class="sub">
+    {{ "SpotOverview" | translate }}
   </div>
-  <mat-form-field hintLabel="{{ 'Required' | translate }}" appearance="outline" class="spotname">
-    <mat-label>{{ 'SpotNameEx' | translate }}</mat-label>
-    <textarea matInput #spotName name="spotName" maxlength="30" required #inputinfo="ngModel"
-      [(ngModel)]="p.item.spotName"></textarea>
-    <mat-hint align="end">{{spotName.value?.length || 0}}/30{{ "Characters" | translate }}</mat-hint>
+  <mat-form-field
+    hintLabel="{{ 'Required' | translate }}"
+    appearance="outline"
+    class="spotname"
+  >
+    <mat-label>{{ "SpotNameEx" | translate }}</mat-label>
+    <textarea
+      matInput
+      #spotName
+      name="spotName"
+      maxlength="30"
+      required
+      #inputinfo="ngModel"
+      [(ngModel)]="p.item.spotName"
+    ></textarea>
+    <mat-hint align="end"
+      >{{ spotName.value?.length || 0 }}/30{{
+        "Characters" | translate
+      }}</mat-hint
+    >
   </mat-form-field>
 
-  <div class='sub item'>
-    note
+  <div class="sub item">
+    {{ "MemoEx" | translate }}
   </div>
   <mat-form-field appearance="outline" class="memo">
-    <textarea matInput #memo name="memo" maxlength="1000" rows="5" placeholder="{{ 'SpotExplanationEx' | translate }}"
-      #inputinfo="ngModel" rows="5" [(ngModel)]="p.item.memo">
+    <textarea
+      matInput
+      #memo
+      name="memo"
+      maxlength="1000"
+      rows="5"
+      placeholder="{{ 'SpotExplanationEx' | translate }}"
+      #inputinfo="ngModel"
+      rows="5"
+      [(ngModel)]="p.item.memo"
+    >
     </textarea>
-    <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
-        href="javascript:void(0);" class="aclear" (click)="p.item.memo='';"><span
-          class="material-icons">backspace</span></a></mat-hint>
+    <mat-hint align="end"
+      >{{ memo.value?.length || 0 }}/1000{{
+        "Characters" | translate
+      }}</mat-hint
+    >
   </mat-form-field>
 
-  <div *ngFor="let picture of p.item.planUserpictures; index as j;trackBy: myTrackBy" class="picpreview">
-    <div class='picture'>
-      <img width="100%" height="100%"
-        [src]="picture.imageCropped ?? picture.picturePreviewUrl ?? picture.picture_url" />
-      <button type="button" class="delete" (click)="onClickPhotoDeleteSpot(p.item, picture)"></button>
-      <button *ngIf="picture.pictureFile" type="button" class="crop"
-        (click)="onClickCropSpot(p.item, picture)">{{"Edit"|translate}}</button>
-      <button class="swapbtn" *ngIf="p.item.planUserpictures.length > j + 1" (click)="onClickSpotPicture(picture)">
-        <img src="../../../assets/img/icon_changepic.svg" alt="swip">
+  <div
+    *ngFor="
+      let picture of p.item.planUserpictures;
+      index as j;
+      trackBy: myTrackBy
+    "
+    class="picpreview"
+  >
+    <div class="picture">
+      <img
+        width="100%"
+        height="100%"
+        [src]="
+          picture.imageCropped ??
+          picture.picturePreviewUrl ??
+          picture.picture_url
+        "
+      />
+      <button
+        type="button"
+        class="delete"
+        (click)="onClickPhotoDeleteSpot(p.item, picture)"
+      ></button>
+      <button
+        *ngIf="picture.pictureFile"
+        type="button"
+        class="crop"
+        (click)="onClickCropSpot(p.item, picture)"
+      >
+        {{ "Edit" | translate }}
+      </button>
+      <button
+        class="swapbtn"
+        *ngIf="p.item.planUserpictures.length > j + 1"
+        (click)="onClickSpotPicture(picture)"
+      >
+        <img src="../../../assets/img/icon_changepic.svg" alt="swip" />
       </button>
     </div>
-    <div class='memo'>
+    <div class="memo">
       <mat-form-field appearance="outline">
-        <textarea matInput #memo name="memo{{j}}" maxlength="1000" rows="3"
-          placeholder="{{ 'PictureMemo' | translate }}" #inputinfo="ngModel" [(ngModel)]="picture.memo"
-          ></textarea>
-        <mat-hint align="end">{{memo.value?.length || 0}}/1000{{ "Characters" | translate }}&nbsp;<a
-            href="javascript:void(0);" (click)="picture.memo='';"><span class="material-icons">backspace</span></a>
+        <textarea
+          matInput
+          #memo
+          name="memo{{ j }}"
+          maxlength="1000"
+          rows="3"
+          placeholder="{{ 'PictureMemo' | translate }}"
+          #inputinfo="ngModel"
+          [(ngModel)]="picture.memo"
+        ></textarea>
+        <mat-hint align="end"
+          >{{ memo.value?.length || 0 }}/1000{{
+            "Characters" | translate
+          }}&nbsp;<a href="javascript:void(0);" (click)="picture.memo = ''"
+            ><span class="material-icons">backspace</span></a
+          >
         </mat-hint>
       </mat-form-field>
     </div>
   </div>
 
-  <div class='select'>
+  <div class="select">
     <div class="fileselector">
       {{ "MyplanSelectPhoto" | translate }}
-      <input type="file" multiple="multiple" name="selectPhoto" accept="image/*"
-        (change)="onClickSelectPhotoSpot($event, p.item)" />
+      <input
+        type="file"
+        multiple="multiple"
+        name="selectPhoto"
+        accept="image/*"
+        (change)="onClickSelectPhotoSpot($event, p.item)"
+      />
     </div>
-    <label>{{ 'PasteImgSpot' | translate }}</label>
+    <label>{{ "PasteImgSpot" | translate }}</label>
   </div>
 
   <div class="selectStay">
     <label>{{ "SuggestedTime" | translate }}</label>
     <div class="stayTime">
-      <select name="stayTime" [(ngModel)]="p.item.stayTime" (change)="onChangeTransfer($event)">
+      <select
+        name="stayTime"
+        [(ngModel)]="p.item.stayTime"
+        (change)="onChangeTransfer($event)"
+      >
         <option *ngFor="let sTime of p.stayTimes" [ngValue]="sTime.id">
           {{ commonService.isValidJson(sTime.name, lang) }}
         </option>
       </select>
     </div>
   </div>
-  <button type="button" mat-dialog-close="cancel" class="absclose">{{"Close"|translate}}</button>
-  <button type="button" mat-dialog-close="cancel" class="abscloseb">{{"Close"|translate}}</button>
+  <button type="button" mat-dialog-close="cancel" class="absclose">
+    {{ "Close" | translate }}
+  </button>
+  <button type="button" mat-dialog-close="cancel" class="abscloseb">
+    {{ "Close" | translate }}
+  </button>
 </div>
-

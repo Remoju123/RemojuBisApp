@@ -1,7 +1,6 @@
 @import "vars";
 
 #review {
-
   //mat-card
   .mat-card-header {
     position: relative;
@@ -28,14 +27,14 @@
         }
 
         .mat-expansion-panel-header {
-
           //padding: 0 8px!important;
           .container {
             display: inline-flex;
             align-items: baseline;
 
             .star-ratings-sprite {
-              background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+              background: url("../../../assets/img/star-rating-sprite.png")
+                repeat-x;
               background-size: 14px;
               font-size: 0;
               height: 14px;
@@ -46,7 +45,8 @@
               margin: 0 auto;
 
               .star-ratings-sprite-rating {
-                background: url("../../../assets/img/star-rating-sprite.png") repeat-x;
+                background: url("../../../assets/img/star-rating-sprite.png")
+                  repeat-x;
                 background-size: 14px;
                 background-position: 0 100%;
                 float: left;
@@ -101,7 +101,6 @@
                     }
                   }
                 }
-
               }
 
               .mat-list-item {
@@ -138,14 +137,12 @@
                       align-items: center;
                     }
 
-
                     .mat-icon-button {
                       all: unset;
                       position: absolute;
                       right: 5px;
                       top: 13px;
                     }
-
                   }
 
                   .title {
@@ -250,8 +247,8 @@
                           &::before {
                             content: "";
                             display: inline-block;
-                            width: 20px;
-                            height: 20px;
+                            width: 24px;
+                            height: 24px;
                             background: url("../../../assets/img/icon_fav_b.svg");
                             background-repeat: no-repeat;
                           }
@@ -284,7 +281,6 @@
                         }
                       }
                     }
-
                   }
 
                   .deletePlan {
@@ -301,7 +297,7 @@
                     width: 24px;
                     height: 24px;
 
-                    >i {
+                    > i {
                       color: #fff;
                       font-size: 15px;
                     }
@@ -325,7 +321,6 @@
                 color: $color-pnk04;
               }
             }
-
           }
         }
       }
@@ -335,7 +330,7 @@
       padding: 0 16px;
     }
 
-    button.edit{
+    button.edit {
       all: unset;
       background-color: #ddd;
       padding: 2px 11px;
@@ -345,7 +340,7 @@
   }
 
   ::ng-deep {
-    .mat-form-field{
+    .mat-form-field {
       font-size: 14px;
     }
 
