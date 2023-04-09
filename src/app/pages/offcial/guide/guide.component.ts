@@ -97,7 +97,6 @@ export class GuideComponent implements OnInit, AfterViewInit {
         tl.from(mark15, { right: -170, delay: dy1, duration: 0.5 });
         tl.from(mark16, { right: -170, delay: dy1, duration: 0.5 });
       },
-      markers: true,
     });
 
     let step2 = document.querySelector('.section.step2');
