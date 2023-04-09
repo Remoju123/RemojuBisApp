@@ -1,4 +1,25 @@
 .container {
+  #load__mask {
+    background-color: #5f6c68;
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+
+    &.reval {
+      height: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: scaleY(0) translateZ(10px);
+      transform-origin: center top;
+      width: 0;
+      transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1) 0s,
+        opacity 0s linear 1s, width 0s linear 1s, height 0s linear 1s;
+    }
+  }
   p {
     font-family: source-han-sans-japanese, sans-serif;
     font-style: normal;
@@ -33,6 +54,28 @@
     opacity: 0;
     word-wrap: break-word;
     margin: auto;
+    &.fade {
+      opacity: 1;
+      scale: 1.1;
+      transform: scale(1);
+      transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1) 0s,
+        opacity 0s linear 1s, width 0s linear 1s, height 0s linear 1s;
+    }
+    &.out {
+      animation-name: opacity-kf;
+      animation-duration: 0.5s;
+    }
+  }
+
+  @keyframes opacity-kf {
+    0% {
+      opacity: 1;
+      scale: 1.1;
+    }
+    100% {
+      opacity: 0;
+      scale: 1;
+    }
   }
 
   .section {
@@ -165,67 +208,80 @@
       }
     }
 
-    .arrows {
+    &.step2 {
+      .screen {
+        img {
+        }
+      }
+    }
+
+    .scroll {
       width: 60px;
-      height: 72px;
+      height: 93px;
       position: absolute;
       left: 50%;
       margin-left: -30px;
       bottom: 170px;
-    }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #b89b7e;
+      .arrows {
+        width: 100%;
+        path {
+          stroke: #b89b7e;
+          fill: transparent;
+          stroke-width: 1px;
+          animation: arrow 2s infinite;
+          -webkit-animation: arrow 2s infinite;
 
-    /*-scroll down-*/
-    .arrows path {
-      stroke: #b89b7e;
-      fill: transparent;
-      stroke-width: 1px;
-      animation: arrow 2s infinite;
-      -webkit-animation: arrow 2s infinite;
-    }
+          @keyframes arrow {
+            0% {
+              opacity: 0;
+            }
+            40% {
+              opacity: 1;
+            }
+            80% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 0;
+            }
+          }
 
-    @keyframes arrow {
-      0% {
-        opacity: 0;
-      }
-      40% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
+          @-webkit-keyframes arrow /*Safari and Chrome*/ {
+            0% {
+              opacity: 0;
+            }
+            40% {
+              opacity: 1;
+            }
+            80% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 0;
+            }
+          }
 
-    @-webkit-keyframes arrow /*Safari and Chrome*/ {
-      0% {
-        opacity: 0;
-      }
-      40% {
-        opacity: 1;
-      }
-      80% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 0;
-      }
-    }
+          &.a1 {
+            animation-delay: -1s;
+            -webkit-animation-delay: -1s; /* Safari 和 Chrome */
+          }
 
-    .arrows path.a1 {
-      animation-delay: -1s;
-      -webkit-animation-delay: -1s; /* Safari 和 Chrome */
-    }
+          &.a2 {
+            animation-delay: -0.5s;
+            -webkit-animation-delay: -0.5s; /* Safari 和 Chrome */
+          }
 
-    .arrows path.a2 {
-      animation-delay: -0.5s;
-      -webkit-animation-delay: -0.5s; /* Safari 和 Chrome */
-    }
-
-    .arrows path.a3 {
-      animation-delay: 0s;
-      -webkit-animation-delay: 0s; /* Safari 和 Chrome */
+          &.a3 {
+            animation-delay: 0s;
+            -webkit-animation-delay: 0s; /* Safari 和 Chrome */
+          }
+        }
+      }
     }
   }
 }
