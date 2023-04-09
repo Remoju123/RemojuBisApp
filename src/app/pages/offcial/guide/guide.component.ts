@@ -55,7 +55,9 @@ export class GuideComponent implements OnInit, AfterViewInit {
       '<'
     );
 
-    // step1
+    /**
+     * step1 *************************************************
+     */
     let step1 = document.querySelector('.section.step1');
     const tl1 = gsap.timeline({
       scrollTrigger: {
@@ -99,35 +101,44 @@ export class GuideComponent implements OnInit, AfterViewInit {
       },
     });
 
+    /**
+     * step2 *************************************************
+     */
     let step2 = document.querySelector('.section.step2');
     let step2bg1 = document.querySelector(
       '.section.step2 > .screen.scr1 > img'
     );
-    let step2bg2 = document.querySelector(
-      '.section.step2 > .screen.scr2 > img'
-    );
+    // let step2bg2 = document.querySelector(
+    //   '.section.step2 > .screen.scr2 > img'
+    // );
     let step2bg3 = document.querySelector(
       '.section.step2 > .screen.scr3 > img'
     );
 
     gsap.set(step2bg1, { opacity: 0, x: 1000 });
-    gsap.set(step2bg2, { opacity: 0, x: 0 });
+    //gsap.set(step2bg2, { opacity: 0, x: 0 });
     gsap.set(step2bg3, { opacity: 0, x: 0, y: 300 });
 
     const tl2 = gsap.timeline({
-      repeat: -1,
-      repeatDelay: 0.8,
       scrollTrigger: {
         trigger: step2,
-        start: 'top center',
+        start: 'top top',
+        end: 'bottom -=100',
+        scrub: 1,
+        pin: true,
       },
+    });
+
+    tl2.from(step2, {
+      opacity: 0.5,
+      duration: 0.2,
     });
 
     tl2.to(step2bg1, {
       keyframes: [
-        { duration: 1, x: 0, opacity: 1, delay: 1 },
+        { duration: 21, x: 0, opacity: 1, delay: 1, ease: 'power4.in,' },
         { duration: 2, x: 0 },
-        { duration: 0.5, x: 1000 },
+        { duration: 2, x: 1000, opacity: 0, delay: 1, ease: 'power4.out' },
       ],
     });
 
@@ -138,6 +149,9 @@ export class GuideComponent implements OnInit, AfterViewInit {
       ],
     });
 
+    /**
+     * step3 *************************************************
+     */
     let step3 = document.querySelector('.section.step3');
     const tl3 = gsap.timeline({
       scrollTrigger: {
@@ -156,7 +170,19 @@ export class GuideComponent implements OnInit, AfterViewInit {
       duration: 0.5,
     });
 
+    /**
+     * step4 *************************************************
+     */
     let step4 = document.querySelector('.section.step4');
+    let step4bg1 = document.querySelector(
+      '.section.step4 > .screen.scr1 > img'
+    );
+    let step4bg2 = document.querySelector(
+      '.section.step4 > .screen.scr2 > img'
+    );
+    gsap.set(step4bg1, { opacity: 1 });
+    gsap.set(step4bg2, { opacity: 0 });
+
     const tl4 = gsap.timeline({
       scrollTrigger: {
         trigger: step4,
@@ -174,8 +200,18 @@ export class GuideComponent implements OnInit, AfterViewInit {
       duration: 0.5,
     });
 
+    tl4.to(step4bg1, {
+      opacity: 1,
+      duration: 2,
+    });
+
+    tl4.to(step4bg2, {
+      opacity: 1,
+      duration: 2,
+    });
+
     /**
-     * Marker クリックアニメーション
+     * Marker クリックアニメーション *****************************
      */
     document.querySelectorAll('.mark').forEach((mark) => {
       mark.addEventListener('mouseover', () => {

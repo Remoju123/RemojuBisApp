@@ -81,7 +81,7 @@
   .section {
     display: flex;
     flex-direction: column;
-    height: calc(100vh + 100px);
+    height: 100vh;
     position: relative;
     padding: 1.5em;
     .head {
@@ -104,7 +104,7 @@
         top: 30px;
         left: 0;
         right: 0;
-        width: 257px;
+        width: 210px;
       }
       .balloon {
         width: 156px;
@@ -139,38 +139,40 @@
 
     &.step1 {
       .mark.cap1 {
-        top: 65px;
+        top: 54px;
         left: 65px;
         z-index: 2;
         .balloon {
           left: -50%;
+          bottom: 65px;
         }
       }
       .mark.cap2 {
-        top: 161px;
-        left: 33px;
+        top: 129px;
+        left: 131px;
         .balloon {
           margin: auto;
           left: 0;
         }
       }
       .mark.cap3 {
-        top: 90px;
-        right: 42px;
+        top: 64px;
+        right: 56px;
         z-index: 3;
         .balloon {
-          right: 0;
+          right: -47px;
+          bottom: 65px;
         }
       }
       .mark.cap4 {
-        top: 425px;
+        top: 349px;
         right: 151px;
         .balloon {
           right: 0;
         }
       }
       .mark.cap5 {
-        top: 425px;
+        top: 349px;
         right: 73px;
         .balloon {
           bottom: 55px;
@@ -178,8 +180,8 @@
         }
       }
       .mark.cap6 {
-        top: 533px;
-        right: 39px;
+        top: 436px;
+        right: 58px;
         .balloon {
           bottom: 55px;
           right: 0;
