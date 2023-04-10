@@ -29,10 +29,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { MaterialModule } from './material/material.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import {
-  MatProgressSpinnerModule,
-  MatSpinner,
-} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 import Hammer from '@egjs/hammerjs';
@@ -95,7 +92,6 @@ import { MyplanComponent } from './pages/myplan/myplan.component';
 import { MessageDialogComponent } from './parts/message-dialog/message-dialog.component';
 import { SystemErrorComponent } from './pages/system-error/system-error.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
-import { SpinnerLoadingIndicatorComponent } from './parts/spinner-loading-indicator/spinner-loading-indicator.component';
 import { UserDialogComponent } from './parts/user-dialog/user-dialog.component';
 import { HeaderPlanPanelComponent } from './parts/header-plan-panel/header-plan-panel.component';
 import { MypageFavoriteListComponent } from './pages/mypage-favoritelist/mypage-favoritelist.component';
@@ -113,14 +109,11 @@ import { AboutComponent } from './pages/offcial/about/about.component';
 import { GuideComponent } from './pages/offcial/guide/guide.component';
 import { SpotDetailModule } from './pages/spot-detail/spot-detail.module';
 import { MypageModule } from './pages/mypage/mypage.module';
-import { OffcialModule } from './pages/offcial/offcial.module';
 import { RouterModule } from '@angular/router';
 import { MyplanSpotEditDialogComponent } from './parts/myplan-spot-edit-dialog/myplan-spot-edit-dialog.component';
 import { MyplanPlanEditDialogComponent } from './parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component';
 import { MyplanAutoDialogComponent } from './parts/myplan-auto-dialog/myplan-auto-dialog.component';
 import { CommentListPostPanelComponent } from './parts/comment-list-post-panel/comment-list-post-panel.component';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { AngularFireModule } from '@angular/fire/compat';
 
