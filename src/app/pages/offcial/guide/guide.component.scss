@@ -105,6 +105,9 @@
         left: 0;
         right: 0;
         width: 210px;
+        @media screen and (min-width: 1025px) {
+          width: 560px;
+        }
       }
       .balloon {
         width: 156px;
@@ -190,22 +193,30 @@
 
       @media screen and (min-width: 1025px) {
         .mark.cap1 {
-          left: 160px;
+          top: 59px;
+          left: 220px;
         }
         .mark.cap2 {
-          left: 154px;
+          top: 121px;
+          left: 368px;
         }
         .mark.cap3 {
-          left: 362px;
+          top: 80px;
+          left: 516px;
         }
         .mark.cap4 {
-          left: 247px;
+          left: 397px;
         }
         .mark.cap5 {
-          right: 197px;
+          top: 357px;
+          right: 43px;
         }
         .mark.cap6 {
-          right: 161px;
+          top: 217px;
+          left: 91px;
+          .balloon {
+            left: 0;
+          }
         }
       }
     }

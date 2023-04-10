@@ -30,7 +30,21 @@
       </p>
     </div>
     <div class="screen">
-      <img src="../../../../../assets/img/guide/body1.png" class="bg" alt="" />
+      <span *ngIf="!isPc">
+        <img
+          src="../../../../../assets/img/guide/body1.png"
+          class="bg"
+          alt=""
+        />
+      </span>
+      <span *ngIf="isPc">
+        <img
+          src="../../../../../assets/img/guide/body11pc.png"
+          class="bg"
+          alt=""
+        />
+      </span>
+
       <div class="mark cap1" id="mark11">
         <div class="balloon">任意のキーワードで検索しよう！</div>
       </div>
@@ -47,7 +61,7 @@
         <div class="balloon">気に入ったプランは、myプランに入れてみよう</div>
       </div>
       <div class="mark cap6" id="mark16">
-        <div class="balloon">myプランはここから</div>
+        <div class="balloon">myプランに入れてみよう</div>
       </div>
     </div>
   </div>
@@ -63,17 +77,47 @@
         移動手段や所用時間も、自宅からホテルまでスポットを最短で周るルートも自動計算してくれる
       </p>
     </div>
-    <div class="screen scr0">
-      <img src="../../../../../assets/img/guide/body21.png" class="bg" alt="" />
+    <div *ngIf="!isPc">
+      <div class="screen scr0">
+        <img
+          src="../../../../../assets/img/guide/body21.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <div class="screen scr1">
+        <img
+          src="../../../../../assets/img/guide/body2.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <!-- <div class="screen scr2">
+          <img src="../../../../../assets/img/guide/body21.png" class="bg" alt="" />
+        </div> -->
+      <div class="screen scr3">
+        <img
+          src="../../../../../assets/img/guide/body22.png"
+          class="bg"
+          alt=""
+        />
+      </div>
     </div>
-    <div class="screen scr1">
-      <img src="../../../../../assets/img/guide/body2.png" class="bg" alt="" />
-    </div>
-    <!-- <div class="screen scr2">
-        <img src="../../../../../assets/img/guide/body21.png" class="bg" alt="" />
-      </div> -->
-    <div class="screen scr3">
-      <img src="../../../../../assets/img/guide/body22.png" class="bg" alt="" />
+    <div *ngIf="isPc">
+      <div class="screen scr21">
+        <img
+          src="../../../../../assets/img/guide/body21pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <div class="screen scr22">
+        <img
+          src="../../../../../assets/img/guide/body22pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
     </div>
   </div>
 
@@ -89,8 +133,30 @@
         おでかけした後に編集すれば、楽しかった時間が思い出として詰まったアルバムにもなる
       </p>
     </div>
-    <div class="screen">
-      <img src="../../../../../assets/img/guide/body33.png" class="bg" alt="" />
+    <div *ngIf="!isPc">
+      <div class="screen">
+        <img
+          src="../../../../../assets/img/guide/body33.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+    </div>
+    <div *ngIf="isPc">
+      <div class="screen scr31">
+        <img
+          src="../../../../../assets/img/guide/body31pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <div class="screen scr32">
+        <img
+          src="../../../../../assets/img/guide/body32pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
     </div>
   </div>
 
@@ -105,11 +171,37 @@
         URLを知っている人にだけ共有したり、みんなに公開したり、みんなにも魅力的な休日プランを発信しよう!
       </p>
     </div>
-    <div class="screen scr1">
-      <img src="../../../../../assets/img/guide/body41.png" class="bg" alt="" />
+    <div *ngIf="!isPc">
+      <div class="screen scr1">
+        <img
+          src="../../../../../assets/img/guide/body41.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <div class="screen scr2">
+        <img
+          src="../../../../../assets/img/guide/body42.png"
+          class="bg"
+          alt=""
+        />
+      </div>
     </div>
-    <div class="screen scr2">
-      <img src="../../../../../assets/img/guide/body42.png" class="bg" alt="" />
+    <div *ngIf="isPc">
+      <div class="screen scr41">
+        <img
+          src="../../../../../assets/img/guide/body41pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
+      <div class="screen scr42">
+        <img
+          src="../../../../../assets/img/guide/body43pc.png"
+          class="bg"
+          alt=""
+        />
+      </div>
     </div>
   </div>
 </div>

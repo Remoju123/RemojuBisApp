@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 export class GuideComponent implements OnInit, AfterViewInit {
   constructor() {}
 
-  isPc: any = true;
+  isPc: boolean = true;
 
   ngAfterViewInit(): void {
     let LoadMask = document.getElementById('load__mask');
@@ -211,6 +211,24 @@ export class GuideComponent implements OnInit, AfterViewInit {
         opacity: 1,
         duration: 2,
       });
+    });
+
+    mm.add('(min-width:1025px)', () => {
+      this.isPc = true;
+      let scr21 = document.querySelector('.scr21');
+      let scr22 = document.querySelector('.scr22');
+
+      gsap.set(scr22, { y: 200, x: 150 });
+
+      let scr31 = document.querySelector('.scr31');
+      let scr32 = document.querySelector('.scr32');
+
+      gsap.set(scr32, { y: 200, x: 150 });
+
+      let scr41 = document.querySelector('.scr41');
+      let scr42 = document.querySelector('.scr42');
+
+      gsap.set(scr42, { y: 350, x: 150 });
     });
 
     /**
