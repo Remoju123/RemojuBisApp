@@ -360,5 +360,7 @@
   "Loading": "please wait a little bit...",
   "SaveMemo": "このダイアログを閉じてから保存します",
   "Planpoint": "このプランのポイント",
-  "Planmemo": "フリーメモ"
+  "Planmemo": "フリーメモ",
+  "MetaTitle": "",
+  "MetaDescription": ""
 }

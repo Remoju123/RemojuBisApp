@@ -363,7 +363,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
               : langpipe.transform(this.data.spotOverview, this.lang),
           },
           {
-            name: 'keyword',
+            name: 'keywords',
             content: langpipe.transform(this.data.seo.keyword, this.lang),
           },
           {

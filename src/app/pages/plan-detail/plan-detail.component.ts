@@ -567,7 +567,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
               content: this.data.planExplanation,
             },
             {
-              name: 'keyword',
+              name: 'keywords',
               content: this.data.planName,
             },
             {

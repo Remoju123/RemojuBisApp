@@ -294,6 +294,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         }
       });
 
+    // A8バナー表示
     const arr = [];
     this.bannerService.getBannerList().subscribe((d) => {
       d.map((item) => {
