@@ -6,6 +6,13 @@
   }
 }
 
+div.banner {
+  margin: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 div.spotdtl {
   p {
     font-size: $fs-normal;

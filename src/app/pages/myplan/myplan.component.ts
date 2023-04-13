@@ -10,6 +10,8 @@ import {
   IterableDiffers,
   Output,
   EventEmitter,
+  ElementRef,
+  Renderer2,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { CommonService } from '../../service/common.service';
@@ -46,6 +48,7 @@ import { MyplanSpotEditDialogComponent } from '../../parts/myplan-spot-edit-dial
 import { MyplanPlanEditDialogComponent } from '../../parts/myplan-plan-edit-dialog/myplan-plan-edit-dialog.component';
 import { MyplanAutoDialogComponent } from 'src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BannerService } from 'src/app/service/banner.service';
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -85,6 +88,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     private dateAdapter: DateAdapter<NativeDateAdapter>,
     private _iterableDiffers: IterableDiffers,
     private snackBar: MatSnackBar,
+    private renderer: Renderer2,
+    private bannerService: BannerService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
     if (isPlatformBrowser(this.platformId)) {
@@ -108,6 +113,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   @ViewChild('keywordInput') keywordInput: { nativeElement: any };
   @ViewChild('switch') switch: { nativeElement: any };
+  @ViewChild('divA8', { static: false }) divA8: ElementRef;
 
   currentLang: string = environment.defaultLang;
 
@@ -287,6 +293,27 @@ export class MyplanComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    const arr = [];
+    this.bannerService.getBannerList().subscribe((d) => {
+      d.map((item) => {
+        if (!this.isMobile) {
+          if (item.size === '300x250') {
+            arr.push(item);
+          }
+        } else {
+          if (item.size === '320x50') {
+            arr.push(item);
+          }
+        }
+      });
+      const _banner = arr.map((f) => f.link);
+      this.renderer.setProperty(
+        this.divA8.nativeElement,
+        'innerHTML',
+        _banner[Math.floor(Math.random() * _banner.length)]
+      );
+    });
   }
 
   ngOnDestroy() {

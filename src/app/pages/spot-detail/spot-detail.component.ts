@@ -9,6 +9,7 @@ import {
   PLATFORM_ID,
   ViewChild,
   ElementRef,
+  Renderer2,
 } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CommonService } from '../../service/common.service';
@@ -36,6 +37,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { CacheStore } from '../../class/planspotlist.class';
 import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MyplanListCacheStore } from '../../class/mypageplanlist.class';
+import { BannerService } from 'src/app/service/banner.service';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
@@ -50,6 +52,8 @@ export const MYPLANLIST_KEY =
 export class SpotDetailComponent implements OnInit, OnDestroy {
   @ViewChild('cont') cont: ElementRef;
 
+  @ViewChild('divA8', { static: false }) divA8: ElementRef;
+
   private onDestroy$ = new Subject();
   constructor(
     public router: Router,
@@ -62,7 +66,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private translate: TranslateService,
     private transferState: TransferState,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private renderer: Renderer2,
+    private bannerService: BannerService
   ) {}
 
   data: SpotApp = new SpotApp();
@@ -124,18 +130,24 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
   loading: boolean = false;
 
-  ngAfterViewInit() {
-    const script = document.createElement('script');
-    script.async = true;
-    script.src =
-      '//rot8.a8.net/jsa/38b464a3857e947cc8a7d78d48239462/c6f057b86584942e415435ffb1fa93d4.js';
-    const div = document.getElementById('script');
-    div.insertAdjacentElement('afterend', script);
-  }
-
   async ngOnInit() {
     // GUID取得
     this.guid = await this.commonService.getGuid();
+
+    const arr = [];
+    this.bannerService.getBannerList().subscribe((d) => {
+      d.map((item) => {
+        if (item.size === '320x50') {
+          arr.push(item);
+        }
+      });
+      const _banner = arr.map((f) => f.link);
+      this.renderer.setProperty(
+        this.divA8.nativeElement,
+        'innerHTML',
+        _banner[Math.floor(Math.random() * _banner.length)]
+      );
+    });
 
     this.activatedRoute.paramMap
       .pipe(takeUntil(this.onDestroy$))
