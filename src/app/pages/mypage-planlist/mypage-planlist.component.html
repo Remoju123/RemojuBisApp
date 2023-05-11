@@ -1,158 +1,166 @@
-  <!-- マイページプラン一覧 -->
-  <div
-    class="box"
-    infinite-scroll
-    [infiniteScrollDistance]="5"
-    [infiniteScrollUpDistance]="1.5"
-    [infiniteScrollThrottle]="100"
-    [infiniteScrollContainer]="isMobile ? null : box"
-    [scrollWindow]="isMobile ? true : false"
-    [fromRoot]="isMobile ? false : true"
-    (scrolled)="onScrollDown()"
-    (scroll)="onScroll($event)"
-    #box
-  >
-    <ng-container *ngFor="let row of details$">
-      <mat-card>
-        <mat-card-content>
-          <div class="card-box">
-            <div class="delete">
-              <button class="deletePlan" (click)="onClickDeletePlan(row)">
-                <i class="material-icons">clear</i>
-              </button>
-            </div>
-            <mat-list>
-              <mat-list-item class="top">
-                <div class="lt">
-                  <div class="areaName">
-                    {{ row.areaName | langFilter: lang }}
-                  </div>
-                  <div class="update">
-                    {{ "LastUpdated" | translate }} :
-                    {{ row.updateDatetime | date: "yyyy/MM/dd" }}
-                  </div>
+<!-- マイページプラン一覧 -->
+<div
+  class="box"
+  infinite-scroll
+  [infiniteScrollDistance]="5"
+  [infiniteScrollUpDistance]="1.5"
+  [infiniteScrollThrottle]="100"
+  [infiniteScrollContainer]="isMobile ? null : box"
+  [scrollWindow]="isMobile ? true : false"
+  [fromRoot]="isMobile ? false : true"
+  (scrolled)="onScrollDown()"
+  (scroll)="onScroll($event)"
+  #box
+>
+  <ng-container *ngFor="let row of details$">
+    <mat-card>
+      <mat-card-content>
+        <div class="card-box">
+          <div class="delete">
+            <button class="deletePlan" (click)="onClickDeletePlan(row)">
+              <i class="material-icons">clear</i>
+            </button>
+          </div>
+          <mat-list>
+            <mat-list-item class="top">
+              <div class="lt">
+                <div class="areaName">
+                  {{ row.areaName | langFilter : lang }}
                 </div>
-                <div class="rt">
-                  <!--<div class="release" (click)="onClickRelease(row)">
+                <div class="update">
+                  {{ "LastUpdated" | translate }} :
+                  {{ row.updateDatetime | date : "yyyy/MM/dd" }}
+                </div>
+              </div>
+              <div class="rt">
+                <!--<div class="release" (click)="onClickRelease(row)">
                     <img *ngIf="row.isRelease" src="../../../assets/img/sw_release_on.svg" alt="">
                     <img *ngIf="!row.isRelease" src="../../../assets/img/sw_release_off.svg" alt="">
                   </div>-->
-                  <!-- 共有先 -->
-                  <div class="share">
-                    <label class="time-label">{{
-                      "ReleaseDestination" | translate
-                    }}</label>
-                    <div
-                      class="container"
-                      *ngIf="row"
-                      [ngClass]="{ all: row.isRelease }"
+                <!-- 共有先 -->
+                <div class="share">
+                  <label class="time-label">{{
+                    "ReleaseDestination" | translate
+                  }}</label>
+                  <div
+                    class="container"
+                    *ngIf="row"
+                    [ngClass]="{ all: row.isRelease }"
+                  >
+                    <select
+                      name="isRelease"
+                      [(ngModel)]="row.isRelease"
+                      (change)="onClickRelease(row)"
                     >
-                      <select
-                        name="isRelease"
-                        [(ngModel)]="row.isRelease"
-                        (change)="onClickRelease(row)"
+                      <option
+                        *ngFor="let destination of $releaseDestination"
+                        [ngValue]="destination.id === 0 ? false : true"
                       >
-                        <option
-                          *ngFor="let destination of $releaseDestination"
-                          [ngValue]="destination.id === 0 ? false : true"
-                        >
-                          {{
-                            commonService.isValidJson(destination.name, lang)
-                          }}
-                        </option>
-                      </select>
-                    </div>
+                        {{ commonService.isValidJson(destination.name, lang) }}
+                      </option>
+                    </select>
                   </div>
                 </div>
-              </mat-list-item>
-              <mat-list-item class="planname">
-                <span>{{ row.planName }}</span>
-              </mat-list-item>
-              <mat-list-item class="timereq">
-                <span *ngIf="row.timeRequiredHour !== '0'"
-                  >{{ "TimeRequired" | translate }}：{{ row.timeRequiredHour
-                  }}{{ "Hour" | translate }}</span
-                >
-                <span *ngIf="row.timeRequiredMin !== '0'"
-                  >{{ row.timeRequiredMin }}{{ "Minute" | translate }}</span
-                >
-                <span class="spotqty">
-                  {{ "NumberOfSpots" | translate }} : {{ row.spots?.length }}
-                </span>
-              </mat-list-item>
-            </mat-list>
+              </div>
+            </mat-list-item>
+            <mat-list-item class="planname">
+              <span>{{ row.planName }}</span>
+            </mat-list-item>
+            <mat-list-item class="timereq">
+              <span *ngIf="row.timeRequiredHour !== '0'"
+                >{{ "TimeRequired" | translate }}：{{ row.timeRequiredHour
+                }}{{ "Hour" | translate }}</span
+              >
+              <span *ngIf="row.timeRequiredMin !== '0'"
+                >{{ row.timeRequiredMin }}{{ "Minute" | translate }}</span
+              >
+              <span class="spotqty">
+                {{ "NumberOfSpots" | translate }} : {{ row.spots?.length }}
+              </span>
+            </mat-list-item>
+          </mat-list>
 
-            <div class="picgrid">
-              <ng-container *ngFor="let item of row.spots; index as i">
-                <div class="container">
-                  <div class="thumbspots" (click)="linktoSpot(item)">
-                    <div class="thumbnum">
-                      <span>{{ i + 1 }}</span>
-                    </div>
-                    <div class="pic">
+          <div class="picgrid">
+            <ng-container *ngFor="let item of row.spots; index as i">
+              <div class="container">
+                <div class="thumbspots" (click)="linktoSpot(item)">
+                  <div class="thumbnum">
+                    <span>{{ i + 1 }}</span>
+                  </div>
+                  <div class="pic">
+                    <img
+                      *ngIf="
+                        item.pictures && item.pictures.length > 0;
+                        else blank
+                      "
+                      [src]="item.pictures[0]"
+                      [alt]="item.spotId"
+                      [title]="item.spotId"
+                    />
+                    <ng-template #blank>
                       <img
-                        *ngIf="item.pictures && item.pictures.length > 0"
-                        [src]="item.pictures[0]"
+                        [src]="noPic"
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
-                    </div>
-                  </div>
-                  <div class="thumbname" (click)="linktoSpot(item)">
-                    <!-- 掲載OK -->
-                    <span *ngIf="!item.isEndOfPublication">
-                      {{ item.spotName }}
-                    </span>
-                    <!-- 掲載終了スポットの場合 -->
-                    <span *ngIf="item.isEndOfPublication">{{
-                      "EndOfPublication" | translate
-                    }}</span>
+                    </ng-template>
                   </div>
                 </div>
-              </ng-container>
-            </div>
-            <mat-list>
-              <mat-list-item class="row bottom">
-                <!-- URL共有 -->
-                <div class="share">
-                  <button
-                    mat-flat-button
-                    class="share"
-                    id="planshare"
-                    (click)="onClickSharePlan(row)"
-                  >
-                    <mat-icon>share</mat-icon>
-                    {{ "SharePlan" | translate }}
-                  </button>
+                <div class="thumbname" (click)="linktoSpot(item)">
+                  <!-- 掲載OK -->
+                  <span *ngIf="!item.isEndOfPublication">
+                    {{ item.spotName }}
+                  </span>
+                  <!-- 掲載終了スポットの場合 -->
+                  <span *ngIf="item.isEndOfPublication">{{
+                    "EndOfPublication" | translate
+                  }}</span>
                 </div>
-                <button
-                  mat-flat-button
-                  class="edit-to-plan"
-                  (click)="onClickEditPlan(row)"
-                >
-                  {{ "EditPlan" | translate }}
-                </button>
-                <button
-                  mat-flat-button
-                  class="edit-to-plan"
-                  (click)="onClickPlanCopy(row)"
-                >
-                  {{ "CopyPlan" | translate }}
-                </button>
-                <button
-                  mat-flat-button
-                  class="edit-to-plan"
-                  (click)="onClickPreview(row)"
-                >
-                  {{ "Preview" | translate }}
-                </button>
-              </mat-list-item>
-            </mat-list>
+              </div>
+            </ng-container>
           </div>
-        </mat-card-content>
-      </mat-card>
-    </ng-container>
-  </div>
+          <mat-list>
+            <mat-list-item class="row bottom">
+              <!-- URL共有 -->
+              <div class="share">
+                <button
+                  mat-flat-button
+                  class="share"
+                  id="planshare"
+                  (click)="onClickSharePlan(row)"
+                >
+                  <mat-icon>share</mat-icon>
+                  {{ "SharePlan" | translate }}
+                </button>
+              </div>
+              <button
+                mat-flat-button
+                class="edit-to-plan"
+                (click)="onClickEditPlan(row)"
+              >
+                {{ "EditPlan" | translate }}
+              </button>
+              <button
+                mat-flat-button
+                class="edit-to-plan"
+                (click)="onClickPlanCopy(row)"
+              >
+                {{ "CopyPlan" | translate }}
+              </button>
+              <button
+                mat-flat-button
+                class="edit-to-plan"
+                (click)="onClickPreview(row)"
+              >
+                {{ "Preview" | translate }}
+              </button>
+            </mat-list-item>
+          </mat-list>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </ng-container>
+</div>
 <!--/ng-container>
 <ng-template #noplan>
   <mat-card id="noPlan">

@@ -87,6 +87,8 @@ export class MypagePlanListComponent
 
   currentlang: string;
 
+  noPic: string = '../../../../../assets/img/nopict.png';
+
   get lang() {
     return this.translate.currentLang;
   }
