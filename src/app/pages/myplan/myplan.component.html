@@ -262,7 +262,7 @@
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
           <div class="pcguide guide" *ngIf="isMobile; else pcBlank">
-            <p>{{ "NoSpot" | translate }}</p>
+            <p><b>{{ "NoSpot" | translate }}</b></p>
             <p>{{ "NoSpot1" | translate }}</p>
             <p>{{ "NoSpot2" | translate }}</p>
             <!-- <p class="under">{{ "MyPlan#Sec3" | translate }}</p> -->
@@ -294,7 +294,7 @@
           </div>
           <ng-template #pcBlank>
             <div class="pcguide guide">
-              <p>{{ "NoSpot" | translate }}</p>
+              <p><b>{{ "NoSpot" | translate }}</b></p>
               <p>{{ "NoSpot1" | translate }}</p>
               <p>{{ "NoSpot2" | translate }}</p>
               <!-- <button mat-button class="search" (click)="onClickAddSpot()">
