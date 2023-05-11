@@ -185,33 +185,19 @@
                   ></button>
                 </dt>
                 <dt>
-                  <div
-                    class="clickable"
-                    (click)="onClickSpotEdit(item)"
-                    ï
-                  ></div>
+                  <div class="clickable" (click)="onClickSpotEdit(item)"></div>
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
-                    <ng-container
-                      *ngIf="
-                        item.planUserpictures &&
-                          item.planUserpictures.length > 0;
-                        else spotPicture
-                      "
-                    >
+                    <ng-container *ngIf="item.pictures[0]; else editbrank">
                       <img
-                        [src]="
-                          item.planUserpictures[0].imageCropped ??
-                          item.planUserpictures[0].picturePreviewUrl ??
-                          item.planUserpictures[0].picture_url
-                        "
+                        [src]="item.pictures[0]"
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
                     </ng-container>
-                    <ng-template #spotPicture>
+                    <ng-template #editbrank>
                       <img
-                        [src]="item.pictures[0]"
+                        [src]="noPic"
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
@@ -262,7 +248,9 @@
         <!-- _blank view -->
         <div id="overlay" *ngIf="!row?.planSpots">
           <div class="pcguide guide" *ngIf="isMobile; else pcBlank">
-            <p><b>{{ "NoSpot" | translate }}</b></p>
+            <p>
+              <b>{{ "NoSpot" | translate }}</b>
+            </p>
             <p>{{ "NoSpot1" | translate }}</p>
             <p>{{ "NoSpot2" | translate }}</p>
             <!-- <p class="under">{{ "MyPlan#Sec3" | translate }}</p> -->
@@ -294,7 +282,9 @@
           </div>
           <ng-template #pcBlank>
             <div class="pcguide guide">
-              <p><b>{{ "NoSpot" | translate }}</b></p>
+              <p>
+                <b>{{ "NoSpot" | translate }}</b>
+              </p>
               <p>{{ "NoSpot1" | translate }}</p>
               <p>{{ "NoSpot2" | translate }}</p>
               <!-- <button mat-button class="search" (click)="onClickAddSpot()">
@@ -530,44 +520,57 @@
                 </div>
 
                 <div class="spot-image">
-                  <!-- 写真(複数枚) -->
-                  <owl-carousel-o
-                    *ngIf="item.previewPictures?.length > 1; else singlePict"
-                    [options]="mainOptions"
+                  <ng-container
+                    *ngIf="item.previewPictures.length !== 0; else blank"
                   >
-                    <ng-container
-                      *ngFor="let pic of item.previewPictures; index as j"
+                    <!-- 写真(複数枚) -->
+                    <owl-carousel-o
+                      *ngIf="item.previewPictures?.length > 1; else singlePict"
+                      [options]="mainOptions"
                     >
-                      <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain covered">
+                      <ng-container
+                        *ngFor="let pic of item.previewPictures; index as j"
+                      >
+                        <ng-template carouselSlide id="item.spotId">
+                          <div class="thumbmain covered">
+                            <img
+                              [src]="pic"
+                              [alt]="item.spotId"
+                              [title]="item.spotId"
+                            />
+                            <div
+                              class="memo"
+                              *ngIf="item.previewMemos && item.previewMemos[j]"
+                            >
+                              {{ item.previewMemos[j] }}
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-container>
+                    </owl-carousel-o>
+                    <!-- 写真(1枚) -->
+                    <ng-template #singlePict>
+                      <ng-container
+                        *ngFor="let pic of item.previewPictures; index as i"
+                      >
+                        <div class="thumbmain">
                           <img
                             [src]="pic"
                             [alt]="item.spotId"
                             [title]="item.spotId"
                           />
-                          <div
-                            class="memo"
-                            *ngIf="item.previewMemos && item.previewMemos[j]"
-                          >
-                            {{ item.previewMemos[j] }}
-                          </div>
                         </div>
-                      </ng-template>
-                    </ng-container>
-                  </owl-carousel-o>
-                  <!-- 写真(1枚) -->
-                  <ng-template #singlePict>
-                    <ng-container
-                      *ngFor="let pic of item.previewPictures; index as i"
-                    >
-                      <div class="thumbmain">
-                        <img
-                          [src]="pic"
-                          [alt]="item.spotId"
-                          [title]="item.spotId"
-                        />
-                      </div>
-                    </ng-container>
+                      </ng-container>
+                    </ng-template>
+                  </ng-container>
+                  <ng-template #blank>
+                    <div class="thumbmain">
+                      <img
+                        [src]="noPic"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
+                    </div>
                   </ng-template>
                 </div>
               </div>

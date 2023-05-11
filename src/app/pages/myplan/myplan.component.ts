@@ -163,6 +163,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   pictureUrl: string = '../../../assets/img/icon_who.svg';
 
+  noPic: string = '../../../assets/img/nopict.png';
+
   @Input() isMobile: boolean;
   @Input() userPic: string;
   @Input() useName: string;
@@ -199,10 +201,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
       // スポット・写真補完
       this.myplanService.getPlanComplement().then((result) => {
         result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
-          if (!r) {
-            this.router.navigate(['/' + this.lang + '/systemerror']);
-            return;
-          }
           // 写真を戻すために先にバインドしておく
           this.row = myPlanApp;
           this.setUserPicture(r);

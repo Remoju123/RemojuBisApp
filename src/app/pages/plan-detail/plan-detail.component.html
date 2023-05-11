@@ -315,42 +315,56 @@
                 </div>
 
                 <div class="spot-image">
-                  <owl-carousel-o
-                    *ngIf="item.pictures.length > 1; else singlePict"
-                    [options]="mainOptions"
-                  >
-                    <ng-container
-                      *ngFor="let pict of item.pictures; index as i"
+                  <ng-container *ngIf="item.pictures.length !== 0; else blank">
+                    <owl-carousel-o
+                      *ngIf="item.pictures.length > 1; else singlePict"
+                      [options]="mainOptions"
                     >
-                      <ng-template carouselSlide id="item.spotId">
-                        <div class="thumbmain noswip">
+                      <ng-container
+                        *ngFor="let pict of item.pictures; index as i"
+                      >
+                        <ng-template carouselSlide id="item.spotId">
+                          <div class="thumbmain noswip">
+                            <img
+                              decoding="async"
+                              [src]="pict ? pict : noPic"
+                              [alt]="item.spotId"
+                              [title]="item.spotId"
+                            />
+                            <div
+                              class="memo"
+                              *ngIf="item.pictureMemos && item.pictureMemos[i]"
+                            >
+                              {{ item.pictureMemos[i] }}
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-container>
+                    </owl-carousel-o>
+
+                    <ng-template #singlePict>
+                      <ng-container *ngFor="let pict of item.pictures">
+                        <div
+                          class="thumbmain noswip"
+                          (click)="linktoSpot(item)"
+                        >
                           <img
-                            decoding="async"
                             [src]="pict ? pict : noPic"
                             [alt]="item.spotId"
                             [title]="item.spotId"
                           />
-                          <div
-                            class="memo"
-                            *ngIf="item.pictureMemos && item.pictureMemos[i]"
-                          >
-                            {{ item.pictureMemos[i] }}
-                          </div>
                         </div>
-                      </ng-template>
-                    </ng-container>
-                  </owl-carousel-o>
-
-                  <ng-template #singlePict>
-                    <ng-container *ngFor="let pict of item.pictures">
-                      <div class="thumbmain noswip" (click)="linktoSpot(item)">
-                        <img
-                          [src]="pict ? pict : noPic"
-                          [alt]="item.spotId"
-                          [title]="item.spotId"
-                        />
-                      </div>
-                    </ng-container>
+                      </ng-container>
+                    </ng-template>
+                  </ng-container>
+                  <ng-template #blank>
+                    <div class="thumbmain noswip" (click)="linktoSpot(item)">
+                      <img
+                        [src]="noPic"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
+                    </div>
                   </ng-template>
                 </div>
               </div>
