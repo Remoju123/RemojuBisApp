@@ -1,9 +1,9 @@
 @import "../../common.scss";
 @import "vars";
 
-.body {
-  height: 100vh;
-}
+// .body {
+//   height: 100%;
+// }
 .darkBackground {
   position: absolute;
   top: 0;
@@ -155,12 +155,13 @@ mat-sidenav-content {
   overflow: initial;
   @include mobile-xsmall {
     .wrapper {
+      //height: 100%;
       //padding-top: 110px;
       // padding-top: 44px;
       // padding-top: 189px;
-      &.on {
-        // padding-top: 50px;
-      }
+      // &.on {
+      //   // padding-top: 50px;
+      // }
 
       &.off {
         padding-top: 50px;

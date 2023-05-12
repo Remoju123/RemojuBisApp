@@ -596,7 +596,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     // );
 
     const memoPipe = new MyplanMemoClearPipe();
-
     const tempqty: number = item.isPlan ? item.spotQty : 1;
     if ((await this.commonService.checkAddPlan(tempqty)) === false) {
       const param = new ComfirmDialogParam();
