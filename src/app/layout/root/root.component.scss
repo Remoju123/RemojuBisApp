@@ -1,6 +1,9 @@
 @import "../../common.scss";
 @import "vars";
 
+.body {
+  height: 100vh;
+}
 .darkBackground {
   position: absolute;
   top: 0;

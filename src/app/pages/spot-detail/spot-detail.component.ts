@@ -511,7 +511,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
         });
       return;
     }
-
+    this.loading = true;
     // プランに追加
     this.planspotListService
       .addPlan(this.$spotId, false, this.guid)
@@ -523,7 +523,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
             // プランを保存
             this.indexedDBService.registPlan(myPlanApp);
             // subject更新
-            this.myplanService.FetchMyplanSpots();
+            this.myplanService.FetchMyplanSpots().then(() => {
+              this.loading = false;
+            });
           }
         });
       });

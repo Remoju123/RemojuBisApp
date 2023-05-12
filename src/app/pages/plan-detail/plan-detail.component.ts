@@ -327,7 +327,7 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
           });
         return;
       }
-
+      this.loading = true;
       // プランに追加
       if (spot) {
         this.planSpotListService
@@ -744,7 +744,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     // プランを保存
     this.indexedDBService.registPlan(myPlanApp);
     // subject更新
-    this.myplanService.FetchMyplanSpots();
+    this.myplanService.FetchMyplanSpots().then(() => {
+      this.loading = false;
+    });
   }
 
   // プラン取得

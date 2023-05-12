@@ -43,6 +43,7 @@ import { BannerType } from 'src/app/class/banner.class';
 import { BannerService } from 'src/app/service/banner.service';
 
 import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
+import { timeStamp } from 'console';
 
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 
@@ -361,6 +362,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               }
               this.details$ = this.rows.slice(0, this.end);
             }
+
             this.loading = false;
           });
       }
@@ -612,7 +614,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
         });
       return;
     }
-
+    this.loading = true;
     this.planspots
       .addPlan(
         item.id,
@@ -629,7 +631,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
             memoPipe.transform(myPlanApp);
             this.myplanService.onPlanUserChanged(myPlanApp);
             this.indexedDBService.registPlan(myPlanApp);
-            this.myplanService.FetchMyplanSpots();
+            this.myplanService.FetchMyplanSpots().then(() => {
+              this.loading = false;
+            });
           }
         });
       });
