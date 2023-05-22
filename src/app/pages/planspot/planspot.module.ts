@@ -7,6 +7,7 @@ import { PlanspotComponent } from './planspot.component';
 import { PlanspotSelectorComponent } from './components/planspot-selector/planspot-selector.component';
 import { PlanspotListComponent } from './components/planspot-list/planspot-list.component';
 import { PlanspotListItemComponent } from './components/planspot-list-item/planspot-list-item.component';
+import { GoogleListItemComponent } from './components/google-list-item/google-list-item.component';
 
 import { MaterialModule } from '../../material/material.module';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
@@ -21,6 +22,7 @@ import { AgmCoreModule } from '@agm/core';
 import { MatGoogleMapsAutocompleteModule } from '@angular-material-extensions/google-maps-autocomplete';
 
 import { AngularFireModule } from '@angular/fire/compat';
+import { GoogleSpotDialogComponent } from 'src/app/parts/google-spot-dialog/google-spot-dialog.component';
 @NgModule({
   declarations: [
     PlanspotComponent,
@@ -28,6 +30,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     PlanspotListComponent,
     PlanspotListItemComponent,
     SearchDialogComponent,
+    GoogleListItemComponent
   ],
   imports: [
     CommonModule,
@@ -52,6 +55,7 @@ import { AngularFireModule } from '@angular/fire/compat';
     PlanspotListComponent,
     PlanspotListItemComponent,
     PlanspotSelectorComponent,
+    GoogleListItemComponent
   ],
 })
 export class PlanspotModule {}

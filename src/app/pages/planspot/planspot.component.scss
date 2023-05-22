@@ -46,3 +46,68 @@
   background-color: $color-gld10;
   color: #fff;
 }
+
+
+.google-box{
+  display: flex;
+  .box{
+    &.left{
+      flex-basis: 78%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .wrap{
+        width:260px;
+        .title{
+          font-size: 16px;
+          font-weight: bolder;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .address{
+          font-size: 12px;
+        }
+      }
+      .actions{
+        .add-to-plan{
+          color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background: $color-pnk04;
+            // padding: 0 25px;
+            line-height: 27px;
+            // width: 150px;
+            white-space: nowrap;
+        }
+        .link-to-detail{
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
+          border: 1px solid #fff;
+          border-radius: 5px;
+          background: $color-gry06;
+          line-height: 27px;
+          white-space: nowrap;
+        }
+      }
+    }
+    &.right{
+      flex-basis: 22%;
+      .wrap{
+        width: 90px;
+        height: 90px;
+        border-radius: 8px;
+        overflow: hidden;
+        img{
+          height: 90px;
+          object-fit: cover;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+}

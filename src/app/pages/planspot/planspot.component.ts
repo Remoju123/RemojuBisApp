@@ -67,6 +67,9 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   details$: PlanSpotList[] = [];
   count: number = 0;
 
+  // google search another holder
+  googles$: PlanSpotList[] = [];
+
   $close: boolean = false;
 
   result: Observable<PlanSpotList>[] = [];
@@ -282,7 +285,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngAfterViewChecked(): void {
     if (typeof this.offset !== 'undefined') {
-      if (this.list.isMobile) {
+      if (this.list?.isMobile) {
         if (this.offset > 0) {
           window.scrollTo(0, this.offset);
         }
@@ -372,20 +375,25 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
       const keyword = this.condition.keyword;
       if (this.prevkeyword !== keyword) {
         this.details$ = [];
+        this.googles$ = [];
       }
+
+      //this.loading = true;
       if (
         keyword &&
         ((this.prevkeyword === keyword && this.token) ||
           this.prevkeyword !== keyword)
       ) {
-        this.loading = true;
+        //this.loading = true;
         this.planspots
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((g) => {
-            console.log(g.planSpotList);
+            console.log(g)
             this.prevkeyword = keyword;
-            this.details$ = this.details$.concat(g.planSpotList);
+            //this.googles$ = this.details$.concat(g.planSpotList);
+            this.isList=true;
+            this.googles$ = this.googles$.concat(g.planSpotList);
             this.token = g.tokenGoogle;
             this.loading = false;
           });
@@ -457,7 +465,6 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   onPlanSpotChange(val: any) {
     //google analysticはcutする
     //this.gaService.sendEvent('planspotlist', val, 'tab', null);
-
     this.condition.select = val;
     sessionStorage.setItem(
       this.planspots.conditionSessionKey,
@@ -465,7 +472,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     );
     //this.switch = true;
     if (!this.isMobile) {
-      this.list.scrollToTop();
+      this.list?.scrollToTop();
     }
     this.filteringData();
   }

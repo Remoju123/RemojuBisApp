@@ -15,14 +15,16 @@
 <div *ngIf="condition?.select !== 'google'" class="list-header">
   {{ "PlanSpotList" | translate }}
 </div>
-<app-planspot-list
+
+<ng-container *ngIf="condition?.select !== 'google';else gresult">
+  <app-planspot-list
   (scrolled)="onScrollDown()"
   (glink)="onPlanSpotChange($event)"
   (close)="onSelectorClose($event)"
   [isList]="isList"
   [condition]="condition"
->
-  <app-planspot-list-item
+  >
+    <app-planspot-list-item
     *ngFor="let item of details$; index as i"
     [item]="item"
     [lang]="lang"
@@ -34,9 +36,54 @@
     (setFav)="setFavorite($event)"
     (keyword)="keywordSearch($event)"
     (userPosts)="onViewUserPost(item)"
+    >
+    </app-planspot-list-item>
+  </app-planspot-list>
+</ng-container>
+<ng-template #gresult>
+  <app-planspot-list
+  (scrolled)="onScrollDown()"
+  (glink)="onPlanSpotChange($event)"
+  (close)="onSelectorClose($event)"
+  [isList]="isList"
+  [condition]="condition"
   >
-  </app-planspot-list-item>
-</app-planspot-list>
+    <mat-card *ngFor="let item of googles$">
+      <div class="google-box">
+        <div class="box left">
+          <div class="wrap">
+            <div class="title">{{item.googleSpot.spot_name}}</div>
+            <div class="address">{{item.googleSpot.address.replace('日本、','')}}</div>
+          </div>
+          <div class="actions">
+            <button
+            mat-flat-button
+            class="add-to-plan"
+            (click)="addMyPlan(item)"
+          >
+            {{ "AddToPlan" | translate }}
+          </button>
+            <button
+            mat-flat-button
+            class="link-to-detail"
+            (click)="linktoDetail(item)"
+          >
+            Googleで検索
+          </button>
+
+          </div>
+        </div>
+        <div class="box right">
+          <div class="wrap">
+            <img src="https://maps.googleapis.com/maps/api/place/photo?maxheight=100&amp;photo_reference={{item.googleSpot.photoReference}}&amp;key=AIzaSyBClxmgTI-wh06eGIKJfv9iiF00nzKhSfA" alt=""/>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  </app-planspot-list>
+</ng-template>
+
+
 <ng-template #customLoadingTemplate>
   <div class="custom-class">
     <div style="text-align: center; color: gray; font-size: 12px">
