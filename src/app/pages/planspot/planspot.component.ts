@@ -389,10 +389,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           .getGoogleSpotList(this.guid, keyword, this.token)
           .pipe(takeUntil(this.onDestroy$))
           .subscribe((g) => {
-            console.log(g)
             this.prevkeyword = keyword;
-            //this.googles$ = this.details$.concat(g.planSpotList);
-            this.isList=true;
+            //this.isList=true;
             this.googles$ = this.googles$.concat(g.planSpotList);
             this.token = g.tokenGoogle;
             this.loading = false;

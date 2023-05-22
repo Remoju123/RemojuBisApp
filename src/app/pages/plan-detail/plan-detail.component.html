@@ -233,6 +233,7 @@
                   <img
                     decoding="async"
                     [src]="item.pictureUrl ? item.pictureUrl : noPic"
+                    [alt]="item.spotName"
                   />
                 </a>
               </div>
@@ -329,7 +330,7 @@
                               decoding="async"
                               [src]="pict ? pict : noPic"
                               [alt]="item.spotId"
-                              [title]="item.spotId"
+                              [title]="item.spotName"
                             />
                             <div
                               class="memo"
@@ -351,7 +352,7 @@
                           <img
                             [src]="pict ? pict : noPic"
                             [alt]="item.spotId"
-                            [title]="item.spotId"
+                            [title]="item.spotName"
                           />
                         </div>
                       </ng-container>
@@ -362,8 +363,11 @@
                       <img
                         [src]="noPic"
                         [alt]="item.spotId"
-                        [title]="item.spotId"
+                        [title]="item.spotName"
                       />
+                    </div>
+                    <div class="alt">
+                      {{item.spotName}}
                     </div>
                   </ng-template>
                 </div>

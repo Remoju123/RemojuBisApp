@@ -271,7 +271,7 @@ div.banner {
 
         .thumbmain {
           border-right: 1px solid #fff;
-
+          position: relative;
           img {
             // width: 37vw;
             height: 167px;
@@ -293,6 +293,16 @@ div.banner {
             p {
               color: #919191;
             }
+          }
+          .alt{
+            position: absolute;
+            top:50%;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            width: 95%;
+            text-align: center;
+            font-size: 11px;
           }
         }
       }

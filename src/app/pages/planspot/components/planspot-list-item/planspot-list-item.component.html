@@ -35,9 +35,10 @@
                     decoding="async"
                     [src]="src ? src : noPic"
                     [alt]="item.id"
-                    [title]="item.id"
+                    [title]="item?.planSpotNames[i]?.spotName"
                     (load)="imageloaded = true"
                   />
+                  <div class="alt" *ngIf="!src">{{item?.planSpotNames[i]?.spotName}}</div>
                   <div class="loading" *ngIf="!imageloaded">
                     <p>Loading image...</p>
                   </div>
