@@ -474,7 +474,6 @@
     <div class="box" *ngIf="row.planSpots">
       <ng-container *ngFor="let item of row.planSpots; index as i">
         <mat-card class="spotinfo">
-          <!-- 掲載OK -->
           <mat-card-content>
             <ng-container *ngIf="!item.isEndOfPublication">
               <div class="card-box">
@@ -557,7 +556,7 @@
                           <img
                             [src]="pic"
                             [alt]="item.spotId"
-                            [title]="item.spotId"
+                            [title]="item.spotName"
                           />
                         </div>
                       </ng-container>
@@ -570,6 +569,9 @@
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
+                    </div>
+                    <div class="alt">
+                      {{item.spotName}}
                     </div>
                   </ng-template>
                 </div>
