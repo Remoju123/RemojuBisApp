@@ -112,6 +112,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   banners: any[];
 
+  noPic: string = '../../../../assets/img/nopict.png';
+
   constructor(
     private translate: TranslateService,
     private commonService: CommonService,

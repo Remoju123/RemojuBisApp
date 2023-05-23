@@ -68,13 +68,13 @@
             class="link-to-detail"
             (click)="linktoDetail(item)"
           >
-            Googleで検索
+            {{"SearchGoogle" | translate }}
           </button>
           </div>
         </div>
         <div class="box right">
           <div class="wrap">
-            <img src="https://maps.googleapis.com/maps/api/place/photo?maxheight=100&amp;photo_reference={{item.googleSpot.photoReference}}&amp;key=AIzaSyBClxmgTI-wh06eGIKJfv9iiF00nzKhSfA" alt=""/>
+            <img [src]="item.googleSpot.picture_url?item.googleSpot.picture_url:noPic" alt=""/>
           </div>
         </div>
       </div>
