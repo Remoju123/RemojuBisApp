@@ -157,7 +157,8 @@ export class PlanSpotListService {
 
   mergeDetail(
     planSpotList: PlanSpotList,
-    detail: PlanSpotList
+    detail: PlanSpotList,
+    snum?: number
   ): Promise<PlanSpotList> {
     return new Promise((resolve) => {
       try {
@@ -172,6 +173,7 @@ export class PlanSpotListService {
           detail.userName,
           this.translate.currentLang
         );
+        detail.serialNum = snum;
         resolve(detail);
       } catch {}
     });

@@ -1,6 +1,6 @@
-import { DataSelected, ListSelectMaster } from "./common.class";
-import { OtherUser } from "./plan.class";
-import { Businesshours, Accesses, Seo } from "./spot.class";
+import { DataSelected, ListSelectMaster } from './common.class';
+import { OtherUser } from './plan.class';
+import { Businesshours, Accesses, Seo } from './spot.class';
 
 export class PlanSpotList {
   address: string;
@@ -10,7 +10,7 @@ export class PlanSpotList {
   areaName2: string;
   averageStayTime: number;
   //budgets: Budgets[];//
-  businessHours: Businesshours[];//
+  businessHours: Businesshours[]; //
   createDate: string;
   favoriteQty: number;
   googleSpot: GoogleSpot;
@@ -22,15 +22,15 @@ export class PlanSpotList {
   isFavorite: boolean;
   isPlan: boolean;
   isRegularHoliday: boolean;
-  isRemojuPlan: boolean
+  isRemojuPlan: boolean;
   keyword: string;
   objectId: string;
-  overview: null;//
+  overview: null; //
   pictures: string[];
   planName: string;
   planSpotNames: PlanSpotName[];
   planSpotQty: number;
-  postObjectId:string;
+  postObjectId: string;
   pvQtyAll: number;
   regularHoliday: string;
   releaseCreateDatetime: string;
@@ -51,11 +51,13 @@ export class PlanSpotList {
   versionNo: number;
   user: OtherUser;
   userPlanList: PlanSpotList[];
+  //temp
+  serialNum: number;
 }
 
-export class searchResult{
-  constructor(){
-    this.searchParamsObj = new SearchParamsObj;
+export class searchResult {
+  constructor() {
+    this.searchParamsObj = new SearchParamsObj();
   }
   list: PlanSpotList[];
   searchTarm: tarms;
@@ -63,19 +65,19 @@ export class searchResult{
   searchParamsObj: SearchParamsObj;
 }
 
-export class tarms{
-  area:string;
-  cate:string;
+export class tarms {
+  area: string;
+  cate: string;
 }
 
-export class SearchParamsObj{
+export class SearchParamsObj {
   aid: string;
   era: string;
   cat: string;
   lst: string;
   srt: string;
   rep: boolean;
-  usp:boolean;
+  usp: boolean;
   kwd: string;
 }
 
@@ -83,17 +85,17 @@ export class CacheStore {
   data: PlanSpotList[];
   spots: PlanSpotList[];
   plans: PlanSpotList[];
-  details$:PlanSpotList[];
-  p:number;
-  end:number;
-  offset:number;
-  select:string;
-  sortval:string;
-  keyword:string;
-  mSort:DataSelected[];
-  isList:boolean;
-  tabIndex:number;
-  ListSelectMaster:ListSelectMaster;
+  details$: PlanSpotList[];
+  p: number;
+  end: number;
+  offset: number;
+  select: string;
+  sortval: string;
+  keyword: string;
+  mSort: DataSelected[];
+  isList: boolean;
+  tabIndex: number;
+  ListSelectMaster: ListSelectMaster;
   optionKeywords: tarms;
   searchParams: string;
   planSpotList: PlanSpotList;
@@ -144,8 +146,8 @@ export class PlanSearchCategory {
   icon: string;
 }
 
-export class PlanSpotName{
+export class PlanSpotName {
   isRemojuSpot: boolean;
   spotName: string;
-  spotId:number;
+  spotId: number;
 }

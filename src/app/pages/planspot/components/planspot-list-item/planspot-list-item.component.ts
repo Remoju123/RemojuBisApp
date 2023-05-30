@@ -244,17 +244,14 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
-  setA8banner(index: number) {
-    //const banners = [this.a8banner, this.a8b1, this.a8b2];
+  setA8banner(item: PlanSpotList) {
     const banners = this.banners;
 
-    // let random = Math.floor(Math.random() * 2);
-    // let res = index.toString(3).toString();
-
-    if (index !== undefined && this.banners) {
-      let i = index.toString(this.banners.length).toString().slice(-1);
-      return banners[i];
+    if (banners[item.serialNum % banners.length]) {
+      //console.log(banners[item.serialNum % banners.length].keyword);
+      return banners[item.serialNum % banners.length].link;
     }
+    return null;
   }
 }
 

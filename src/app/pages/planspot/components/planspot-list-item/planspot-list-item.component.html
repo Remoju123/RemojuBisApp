@@ -38,7 +38,9 @@
                     [title]="item?.planSpotNames[i]?.spotName"
                     (load)="imageloaded = true"
                   />
-                  <div class="alt" *ngIf="!src">{{item?.planSpotNames[i]?.spotName}}</div>
+                  <div class="alt" *ngIf="!src">
+                    {{ item?.planSpotNames[i]?.spotName }}
+                  </div>
                   <div class="loading" *ngIf="!imageloaded">
                     <p>Loading image...</p>
                   </div>
@@ -278,6 +280,5 @@
       <div class="link-area" (click)="linktoDetail(item)"></div>
     </div>
   </ng-template>
-
-  <div *ngIf="show" class="banner" [innerHTML]="setA8banner(index)"></div>
+  <div *ngIf="show" class="banner" [innerHTML]="setA8banner(item)"></div>
 </mat-card>

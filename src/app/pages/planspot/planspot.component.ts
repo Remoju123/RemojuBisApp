@@ -80,6 +80,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   limit: number;
   end: number;
   offset: number;
+  num: number;
 
   $mSort: DataSelected[];
   sortval: number;
@@ -130,7 +131,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Inject(PLATFORM_ID) private platformId: object
   ) {
     this.limit = 9;
-    this.p = 1;
+    //this.p = 1;
     this.condition = new ListSearchCondition();
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -145,7 +146,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
           arr.push(item);
         }
       });
-      this.banners = arr.map((f) => f.link);
+      this.banners = arr.map((f) => f);
     });
 
     this.isMobile = this.detectIsMobile(window.innerWidth);
@@ -362,12 +363,12 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
               } else {
                 this.rows[i] = await this.planspots.mergeDetail(
                   this.rows[i],
-                  d
+                  d,
+                  i
                 );
               }
               this.details$ = this.rows.slice(0, this.end);
             }
-
             this.loading = false;
           });
       }

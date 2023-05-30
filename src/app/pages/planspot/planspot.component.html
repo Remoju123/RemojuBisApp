@@ -16,72 +16,80 @@
   {{ "PlanSpotList" | translate }}
 </div>
 
-<ng-container *ngIf="condition?.select !== 'google';else gresult">
+<ng-container *ngIf="condition?.select !== 'google'; else gresult">
   <app-planspot-list
-  (scrolled)="onScrollDown()"
-  (glink)="onPlanSpotChange($event)"
-  (close)="onSelectorClose($event)"
-  [isList]="isList"
-  [condition]="condition"
+    (scrolled)="onScrollDown()"
+    (glink)="onPlanSpotChange($event)"
+    (close)="onSelectorClose($event)"
+    [isList]="isList"
+    [condition]="condition"
   >
     <app-planspot-list-item
-    *ngFor="let item of details$; index as i"
-    [item]="item"
-    [lang]="lang"
-    [index]="i"
-    [myPlanSpots]="myPlanSpots"
-    [banners]="banners"
-    (linked)="linktoDetail($event)"
-    (addMyPlan)="addMyPlan($event)"
-    (setFav)="setFavorite($event)"
-    (keyword)="keywordSearch($event)"
-    (userPosts)="onViewUserPost(item)"
+      *ngFor="let item of details$; index as i"
+      [item]="item"
+      [lang]="lang"
+      [index]="i"
+      [myPlanSpots]="myPlanSpots"
+      [banners]="banners"
+      (linked)="linktoDetail($event)"
+      (addMyPlan)="addMyPlan($event)"
+      (setFav)="setFavorite($event)"
+      (keyword)="keywordSearch($event)"
+      (userPosts)="onViewUserPost(item)"
     >
     </app-planspot-list-item>
   </app-planspot-list>
 </ng-container>
 <ng-template #gresult>
   <app-planspot-list
-  (scrolled)="onScrollDown()"
-  (glink)="onPlanSpotChange($event)"
-  (close)="onSelectorClose($event)"
-  [isList]="isList"
-  [condition]="condition"
+    (scrolled)="onScrollDown()"
+    (glink)="onPlanSpotChange($event)"
+    (close)="onSelectorClose($event)"
+    [isList]="isList"
+    [condition]="condition"
   >
     <mat-card *ngFor="let item of googles$">
       <div class="google-box">
         <div class="box left">
           <div class="wrap">
-            <div class="title">{{item.googleSpot.spot_name}}</div>
-            <div class="address">{{item.googleSpot.address.replace('日本、','')}}</div>
+            <div class="title">{{ item.googleSpot.spot_name }}</div>
+            <div class="address">
+              {{ item.googleSpot.address.replace("日本、", "") }}
+            </div>
           </div>
           <div class="actions">
             <button
-            mat-flat-button
-            class="add-to-plan"
-            (click)="addMyPlan(item)"
-          >
-            {{ "AddToPlan" | translate }}
-          </button>
+              mat-flat-button
+              class="add-to-plan"
+              (click)="addMyPlan(item)"
+            >
+              {{ "AddToPlan" | translate }}
+            </button>
             <button
-            mat-flat-button
-            class="link-to-detail"
-            (click)="linktoDetail(item)"
-          >
-            {{"SearchGoogle" | translate }}
-          </button>
+              mat-flat-button
+              class="link-to-detail"
+              (click)="linktoDetail(item)"
+            >
+              {{ "SearchGoogle" | translate }}
+            </button>
           </div>
         </div>
         <div class="box right">
           <div class="wrap">
-            <img [src]="item.googleSpot.picture_url?item.googleSpot.picture_url:noPic" alt=""/>
+            <img
+              [src]="
+                item.googleSpot.picture_url
+                  ? item.googleSpot.picture_url
+                  : noPic
+              "
+              alt=""
+            />
           </div>
         </div>
       </div>
     </mat-card>
   </app-planspot-list>
 </ng-template>
-
 
 <ng-template #customLoadingTemplate>
   <div class="custom-class">
