@@ -76,7 +76,7 @@ export class GuideComponent implements OnInit, AfterViewInit {
       });
 
       tl1.from(step1, {
-        opacity: 0.5,
+        opacity: 0.9,
         duration: 0.2,
       });
 
