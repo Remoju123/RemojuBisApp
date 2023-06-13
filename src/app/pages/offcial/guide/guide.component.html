@@ -30,14 +30,14 @@
       </p>
     </div>
     <div class="screen">
-      <span *ngIf="!isPc">
+      <span *ngIf="isMobile">
         <img
           src="../../../../../assets/img/guide/body1.png"
           class="bg"
           alt=""
         />
       </span>
-      <span *ngIf="isPc">
+      <span *ngIf="!isMobile">
         <img
           src="../../../../../assets/img/guide/body11pc.png"
           class="bg"
@@ -77,7 +77,7 @@
         移動手段や所用時間も、自宅からホテルまでスポットを最短で周るルートも自動計算してくれる
       </p>
     </div>
-    <div *ngIf="!isPc">
+    <div *ngIf="isMobile">
       <div class="screen scr0">
         <img
           src="../../../../../assets/img/guide/body21.png"
@@ -103,7 +103,7 @@
         />
       </div>
     </div>
-    <div *ngIf="isPc">
+    <div *ngIf="!isMobile">
       <div class="screen scr21">
         <img
           src="../../../../../assets/img/guide/body21pc.png"
@@ -133,7 +133,7 @@
         おでかけした後に編集すれば、楽しかった時間が思い出として詰まったアルバムにもなる
       </p>
     </div>
-    <div *ngIf="!isPc">
+    <div *ngIf="isMobile">
       <div class="screen">
         <img
           src="../../../../../assets/img/guide/body33.png"
@@ -142,7 +142,7 @@
         />
       </div>
     </div>
-    <div *ngIf="isPc">
+    <div *ngIf="!isMobile">
       <div class="screen scr31">
         <img
           src="../../../../../assets/img/guide/body31pc.png"
@@ -171,7 +171,7 @@
         URLを知っている人にだけ共有したり、みんなに公開したり、みんなにも魅力的な休日プランを発信しよう!
       </p>
     </div>
-    <div *ngIf="!isPc">
+    <div *ngIf="isMobile">
       <div class="screen scr1">
         <img
           src="../../../../../assets/img/guide/body41.png"
@@ -187,7 +187,7 @@
         />
       </div>
     </div>
-    <div *ngIf="isPc">
+    <div *ngIf="!isMobile">
       <div class="screen scr41">
         <img
           src="../../../../../assets/img/guide/body41pc.png"

@@ -108,13 +108,13 @@ export class GuideComponent implements OnInit, AfterViewInit {
        */
       let step2 = document.querySelector('.section.step2');
       let step2bg1 = document.querySelector(
-        '.section.step2 > .screen.scr1 > img'
+        '.section.step2 > div > .screen.scr1 > img'
       );
       // let step2bg2 = document.querySelector(
       //   '.section.step2 > .screen.scr2 > img'
       // );
       let step2bg3 = document.querySelector(
-        '.section.step2 > .screen.scr3 > img'
+        '.section.step2 > div > .screen.scr3 > img'
       );
 
       gsap.set(step2bg1, { opacity: 0, x: 1000 });
@@ -177,10 +177,10 @@ export class GuideComponent implements OnInit, AfterViewInit {
        */
       let step4 = document.querySelector('.section.step4');
       let step4bg1 = document.querySelector(
-        '.section.step4 > .screen.scr1 > img'
+        '.section.step4 > div > .screen.scr1 > img'
       );
       let step4bg2 = document.querySelector(
-        '.section.step4 > .screen.scr2 > img'
+        '.section.step4 > div > .screen.scr2 > img'
       );
       gsap.set(step4bg1, { opacity: 1 });
       gsap.set(step4bg2, { opacity: 0 });
@@ -266,5 +266,17 @@ export class GuideComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit() {}
+  isMobile: boolean;
+
+  ngOnInit() {
+    this.isMobile = this.detectIsMobile(window.innerWidth);
+  }
+
+  detectIsMobile(w: any) {
+    if (w < 1024) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
