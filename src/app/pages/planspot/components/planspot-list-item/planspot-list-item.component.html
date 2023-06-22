@@ -25,45 +25,25 @@
       <div class="card-header">
         <div class="picture">
           <owl-carousel-o
-            *ngIf="item.pictures && item.pictures.length > 1; else single"
+
             [options]="mainOptions"
           >
-            <ng-container *ngFor="let src of item.pictures; index as i">
-              <ng-template carouselSlide id="row.planId">
+            <ng-container *ngFor="let row of item.planSpotNames;index as i">
+              <ng-template carouselSlide id="item.planId">
                 <div class="thumbmain">
                   <img
                     decoding="async"
-                    [src]="src ? src : noPic"
-                    [alt]="item.id"
-                    [title]="item?.planSpotNames[i]?.spotName"
+                    [src]="item.pictures[i]?item.pictures[i]:noPic"
+                    [alt]=""
+                    [title]="item.spotName"
                     (load)="imageloaded = true"
                   />
-                  <div class="alt" *ngIf="!src">
-                    {{ item?.planSpotNames[i]?.spotName }}
-                  </div>
-                  <div class="loading" *ngIf="!imageloaded">
-                    <p>Loading image...</p>
-                  </div>
                 </div>
               </ng-template>
             </ng-container>
+
           </owl-carousel-o>
-          <ng-template #single>
-            <ng-container *ngFor="let src of item.pictures; index as i">
-              <div class="thumbmain fullwidth">
-                <img
-                  decoding="async"
-                  [src]="src ? src : noPic"
-                  [alt]="item.id"
-                  [title]="item.id"
-                  (load)="imageloaded = true"
-                />
-                <div class="loading" *ngIf="!imageloaded">
-                  <p>Loading image...</p>
-                </div>
-              </div>
-            </ng-container>
-          </ng-template>
+
         </div>
         <div class="info">
           <div class="lt">
