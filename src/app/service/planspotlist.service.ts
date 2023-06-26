@@ -81,13 +81,13 @@ export class PlanSpotListService {
     return this.http.get<ListSelectMaster>(url);
   }
 
-  // プランスポット一覧を取得
+  // プラン一覧を取得
   getPlanList() {
     const url = this.host + '/api/PlanSpotList/SearchPlan  ';
     return this.http.get<PlanSpotList[]>(url);
   }
 
-  // プランスポット一覧を取得
+  // スポット一覧を取得
   getSpotList() {
     const url = this.host + '/api/PlanSpotList/SearchSpot';
     return this.http.get<PlanSpotList[]>(url);

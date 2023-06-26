@@ -247,6 +247,13 @@ export class PlanspotListItemComponent implements OnInit {
   setA8banner(item: PlanSpotList) {
     const banners = this.banners;
 
+    //console.log(item.keyword);
+    banners.map((b) => {
+      if (b.keyword !== '') {
+        //console.log(b.keyword);
+      }
+    });
+
     if (banners[item.serialNum % banners.length]) {
       //console.log(banners[item.serialNum % banners.length].keyword);
       return banners[item.serialNum % banners.length].link;
