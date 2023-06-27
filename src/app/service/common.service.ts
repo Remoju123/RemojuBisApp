@@ -1,6 +1,6 @@
 import { Inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import {
   ComfirmDialogParam,
   MyPlanApp,
@@ -16,7 +16,7 @@ import { ConfirmMessageDialogComponent } from '../parts/confirm-message-dialog/c
 import { MessageDialogComponent } from '../parts/message-dialog/message-dialog.component';
 import { LangFilterPipe } from '../utils/lang-filter.pipe';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { Router } from '@angular/router';
+import { Event,NavigationEnd,RouterEvent,Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -45,6 +45,10 @@ export class CommonService implements OnDestroy {
   private curlang = new Subject<string>();
   public curlang$ = this.curlang.asObservable();
 
+  // issues#194
+  private curUrl = new Subject<any>();
+  public curUrl$ = this.curUrl.asObservable();
+
   public loggedIn: boolean = false;
 
   private onDestroy$ = new Subject();
@@ -57,7 +61,14 @@ export class CommonService implements OnDestroy {
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    // issues#194
+    this.router.events
+      .pipe(filter((e: Event): e is RouterEvent => e instanceof NavigationEnd))
+      .subscribe((e: RouterEvent) => {
+        this.curUrl.next(e.url);
+      });
+  }
 
   /*----------------------------
    *

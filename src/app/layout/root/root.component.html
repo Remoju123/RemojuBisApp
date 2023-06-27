@@ -59,16 +59,18 @@
         </div>
         <app-footer></app-footer>
       </div>
-      <button
-        mat-button
-        matBadge="{{ spots }}"
-        (click)="onhandleCartNav()"
-        class="view-my-plan"
-        [ngClass]="{ on: spots > 0, up: jumpFooter }"
-        disableRipple="true"
-      >
-        <img src="{{ viewbtn_src }}" alt="view my plan" />
-      </button>
+      <ng-container *ngIf="!isOfficial">
+        <button
+          mat-button
+          matBadge="{{ spots }}"
+          (click)="onhandleCartNav()"
+          class="view-my-plan"
+          [ngClass]="{ on: spots > 0, up: jumpFooter }"
+          disableRipple="true"
+        >
+          <img src="{{ viewbtn_src }}" alt="view my plan" />
+        </button>
+      </ng-container>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </ng-container>

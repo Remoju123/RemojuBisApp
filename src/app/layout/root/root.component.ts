@@ -7,7 +7,7 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { DataService } from '../../service/data.service';
 import { CommonService } from '../../service/common.service';
 //import { IndexedDBService } from "../../service/indexeddb.service";
@@ -15,7 +15,7 @@ import { MyplanService } from '../../service/myplan.service';
 import { LoadNotifyService } from '../../service/load-notify.service';
 import { Catch } from '../../class/log.class';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from '../header/header.component';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MyPlanApp } from '../../class/common.class';
@@ -39,6 +39,8 @@ export class RootComponent implements OnInit, OnDestroy {
 
   currentLang: string | undefined;
 
+  currentUrl: string | undefined;
+
   showPlanpanel: boolean = true;
   expandHeader: boolean = true;
   jumpFooter: boolean = false;
@@ -59,6 +61,8 @@ export class RootComponent implements OnInit, OnDestroy {
 
   deviceInfo = null;
 
+  isOfficial: boolean;
+
   @ViewChild(HeaderComponent) protected header: HeaderComponent;
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
@@ -76,10 +80,14 @@ export class RootComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    // issues#194
+    this.commonService.curUrl$.subscribe((r) => {
+      this.isOfficial = r.indexOf('offcial') !== -1;
+    });
+
     this.loadNotifyService.requestLoad$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(() => {
-        //this.reloadRequestCount$.next(++this.reloadRequestCount);
         location.reload();
       });
 
