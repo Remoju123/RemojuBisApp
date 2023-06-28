@@ -44,9 +44,6 @@ export class MyplanSpotEditDialogComponent implements OnInit, OnDestroy {
   onChangeTransfer(e:any) {
     this.row.isTransferSearch = true;
     this.row.optimized = false;
-
-
-    console.log(e.target)
   }
 
   // スポット写真

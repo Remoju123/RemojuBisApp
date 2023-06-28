@@ -188,9 +188,9 @@
                   <div class="clickable" (click)="onClickSpotEdit(item)"></div>
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
-                    <ng-container *ngIf="item.pictures[0]; else editbrank">
+                    <ng-container *ngIf="item.pictures[0] || item.planUserpictures; else editbrank">
                       <img
-                        [src]="item.pictures[0]"
+                        [src]="item.pictures[0] ?? item.planUserpictures[0]?.picturePreviewUrl"
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
@@ -202,6 +202,7 @@
                         [title]="item.spotId"
                       />
                     </ng-template>
+
                   </div>
                   <div class="rt">
                     <span class="spotName" [innerHTML]="item.spotName"></span>
