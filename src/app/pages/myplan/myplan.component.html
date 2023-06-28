@@ -188,9 +188,15 @@
                   <div class="clickable" (click)="onClickSpotEdit(item)"></div>
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
+                    <img
+                        [src]="setThumbPicture(item)"
+                        [alt]="item.spotId"
+                        [title]="item.spotId"
+                      />
+                    <!--
                     <ng-container *ngIf="item.pictures[0] || item.planUserpictures; else editbrank">
                       <img
-                        [src]="item.pictures[0] ?? item.planUserpictures[0]?.picturePreviewUrl"
+                        [src]="item.pictures[0]"
                         [alt]="item.spotId"
                         [title]="item.spotId"
                       />
@@ -202,7 +208,7 @@
                         [title]="item.spotId"
                       />
                     </ng-template>
-
+                -->
                   </div>
                   <div class="rt">
                     <span class="spotName" [innerHTML]="item.spotName"></span>

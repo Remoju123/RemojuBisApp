@@ -6,6 +6,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { Editparams, ImageCropperParam, MyPlanApp, PlanSpotCommon, PlanUserPicture } from 'src/app/class/common.class';
 import { CommonService } from 'src/app/service/common.service';
 import { ImageCropperDialogComponent } from '../image-cropper-dialog/image-cropper-dialog.component';
+import { PlanspotComponent } from 'src/app/pages/planspot/planspot.component';
 
 @Component({
   selector: 'app-myplan-spot-edit-dialog',

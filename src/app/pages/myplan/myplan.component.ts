@@ -1462,4 +1462,14 @@ export class MyplanComponent implements OnInit, OnDestroy {
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
+  setThumbPicture(item: PlanSpotCommon) {
+    let result = this.noPic;
+    if (item.planUserpictures && item.planUserpictures.length>0) {
+      result = item.planUserpictures[0]?.picturePreviewUrl ?? item.planUserpictures[0]?.picture_url
+    } else if (item.pictures[0]) {
+      result = item.pictures[0]
+    }
+    return result;
+  }
 }
