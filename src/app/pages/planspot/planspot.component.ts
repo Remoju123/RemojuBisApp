@@ -138,6 +138,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   async ngOnInit() {
     this.guid = await this.commonService.getGuid();
+    this.commonService.onNotifyIsOffcial(false);
 
     const arr = [];
     this.bannerService.getBannerList().subscribe((d) => {

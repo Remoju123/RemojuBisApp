@@ -67,8 +67,6 @@ export class RootComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
-  //@ViewChild('contentBody') contentBody: ElementRef;
-
   constructor(
     public router: Router,
     public dataService: DataService,
@@ -76,13 +74,14 @@ export class RootComponent implements OnInit, OnDestroy {
     //private indexedDBService: IndexedDBService,
     private myplanService: MyplanService,
     private changeDetectionRef: ChangeDetectorRef,
-    private loadNotifyService: LoadNotifyService
+    private loadNotifyService: LoadNotifyService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    // issues#194
-    this.commonService.curUrl$.subscribe((r) => {
-      this.isOfficial = r.indexOf('offcial') !== -1;
+    this.commonService.isOffcial$.subscribe((v) => {
+      this.isOfficial = v;
+      this.cd.detectChanges();
     });
 
     this.loadNotifyService.requestLoad$

@@ -40,7 +40,7 @@ export class MypageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.commonService.onNotifyIsOffcial(false);
     //this.getPlanSpotDataSet();
     this.activatedRoute.fragment.pipe(takeUntil(this.onDestroy$)).subscribe((fragment: any) => {
       if (fragment === "list"){

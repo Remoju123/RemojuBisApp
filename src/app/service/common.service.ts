@@ -19,6 +19,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Event,NavigationEnd,RouterEvent,Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
+import { stat } from 'fs';
 
 @Injectable({
   providedIn: 'root',
@@ -48,6 +49,9 @@ export class CommonService implements OnDestroy {
   // issues#194
   private curUrl = new Subject<any>();
   public curUrl$ = this.curUrl.asObservable();
+
+  private isOffcial = new Subject<boolean>();
+  public isOffcial$ = this.isOffcial.asObservable();
 
   public loggedIn: boolean = false;
 
@@ -101,6 +105,10 @@ export class CommonService implements OnDestroy {
 
   public onNotifyChangeLang(state: string) {
     this.curlang.next(state);
+  }
+
+  public onNotifyIsOffcial(state: boolean) {
+    this.isOffcial.next(state);
   }
 
   /*----------------------------

@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { CommonService } from 'src/app/service/common.service';
 
 gsap.registerPlugin(ScrollTrigger);
 @Component({
@@ -9,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
   styleUrls: ['./guide.component.scss'],
 })
 export class GuideComponent implements OnInit, AfterViewInit {
-  constructor() {}
+  constructor(private commonService: CommonService) {}
 
   isPc: boolean = true;
 
@@ -270,6 +271,7 @@ export class GuideComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.isMobile = this.detectIsMobile(window.innerWidth);
+    this.commonService.onNotifyIsOffcial(true);
   }
 
   detectIsMobile(w: any) {
