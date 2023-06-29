@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/all';
 import { CommonService } from 'src/app/service/common.service';
 
 gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollToPlugin);
 @Component({
   selector: 'app-guide',
   templateUrl: './guide.component.html',
@@ -262,6 +264,68 @@ export class GuideComponent implements OnInit, AfterViewInit {
           opacity: 0,
           duration: 0.2,
           overwrite: true,
+        });
+      });
+    });
+
+    mm.add('(min-width:1025px)', () => {
+      const right = document.getElementsByClassName('right')[0];
+      const step1 = document.getElementsByClassName('step1')[0];
+      const step2 = document.getElementsByClassName('step2')[0];
+      const step3 = document.getElementsByClassName('step3')[0];
+      const step4 = document.getElementsByClassName('step4')[0];
+      const scroll1 = document.getElementsByClassName('scroll1')[0];
+      const scroll2 = document.getElementsByClassName('scroll2')[0];
+      const scroll3 = document.getElementsByClassName('scroll3')[0];
+      const scroll4 = document.getElementsByClassName('scroll4')[0];
+
+      const target = this.isPc ? right : window;
+
+      scroll1.addEventListener('click', (e) => {
+        e.preventDefault();
+        gsap.to(target, {
+          duration: 1,
+          ease: 'power4.out',
+          scrollTo: {
+            y: step1,
+            autoKill: false,
+          },
+        });
+      });
+
+      scroll2.addEventListener('click', (e) => {
+        e.preventDefault();
+        gsap.to(target, {
+          duration: 1,
+          ease: 'power4.out',
+          scrollTo: {
+            y: step2,
+            autoKill: false,
+          },
+        });
+      });
+
+      scroll3.addEventListener('click', (e) => {
+        e.preventDefault();
+        gsap.to(target, {
+          duration: 1,
+          ease: 'power4.out',
+          scrollTo: {
+            y: step3,
+            autoKill: false,
+          },
+        });
+      });
+
+      scroll4.addEventListener('click', (e) => {
+        e.preventDefault();
+        gsap.to(target, {
+          duration: 1,
+          ease: 'power4.out',
+          scrollTo: {
+            y: step4,
+            autoKill: false,
+          },
         });
       });
     });

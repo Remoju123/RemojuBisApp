@@ -23,6 +23,19 @@
         opacity 0s linear 1s, width 0s linear 1s, height 0s linear 1s;
     }
   }
+
+  #scroll{
+    //width: 100%;
+    position:fixed;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    a{
+      text-decoration: none;
+    }
+  }
   p {
     font-family: source-han-sans-japanese, sans-serif;
     font-style: normal;
@@ -296,6 +309,20 @@
             animation-delay: 0s;
             -webkit-animation-delay: 0s; /* Safari 和 Chrome */
           }
+        }
+      }
+
+      @media screen and (min-width: 1025px) {
+        &.scroll3{
+          bottom: -27px;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        &.scroll2{
+          bottom: 71px;
+        }
+        &.scroll4{
+          bottom: 36px;
         }
       }
     }
