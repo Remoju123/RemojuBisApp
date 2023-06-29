@@ -19,7 +19,6 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Event,NavigationEnd,RouterEvent,Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformBrowser } from '@angular/common';
-import { stat } from 'fs';
 
 @Injectable({
   providedIn: 'root',
