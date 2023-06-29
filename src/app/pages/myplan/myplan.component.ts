@@ -368,36 +368,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
   }
 
-  // エリア・カテゴリ選択
-  /*onClickAreaCategory() {
-    const dialogRef = this.dialog.open(SearchDialogFormPlanComponent, {
-      maxWidth: "100%",
-      width: "92vw",
-      position: { top: "10px" },
-      data: this.listSelectedPlan,
-      autoFocus: false,
-      // maxHeight: "80vh"
-      id: "searchDialogPlan"
-    });
-
-    dialogRef.afterClosed().pipe(takeUntil(this.onDestroy$)).subscribe(() => {
-      if (this.listSelectedPlan.condition.areaId.length > 0) {
-        this.row.areaId = this.listSelectedPlan.condition.areaId[0];
-      } else {
-        this.row.areaId = null;
-      }
-      if (this.listSelectedPlan.condition.areaId2.length > 0) {
-        this.row.areaId2 = this.listSelectedPlan.condition.areaId2[0];
-      } else {
-        this.row.areaId2 = null;
-      }
-      this.row.categories = this.listSelectedPlan.condition.searchCategories
-      this.myplanService.getSearchFilter(this.listSelectedPlan.mArea, this.listSelectedPlan.mSearchCategory, this.listSelectedPlan.condition);
-      // 保存
-      this.onChange(false);
-    });
-  }*/
-
   // プラン編集ダイアログ
   onClickPlanEdit(row: MyPlanApp) {
     const param = new EditPlanParam();
@@ -505,7 +475,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((d: any) => {
-        console.log(d);
         if (d === 'ok') {
           // 最適化ON
           this.row.isAuto = true;
@@ -1472,4 +1441,5 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
     return result;
   }
+
 }
