@@ -38,6 +38,12 @@
                     [title]="item.spotName"
                     (load)="imageloaded = true"
                   />
+                  <div class="alt" *ngIf="!item.pictures[i+1]">
+                    {{ item?.planSpotNames[i]?.spotName }}
+                  </div>
+                  <div class="loading" *ngIf="!imageloaded">
+                    <p>Loading image...</p>
+                  </div>
                 </div>
               </ng-template>
             </ng-container>
