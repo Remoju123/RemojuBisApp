@@ -1,4 +1,7 @@
 .container {
+  box-sizing: border-box;
+  overflow-x: hidden;
+
   #load__mask {
     background-color: #5f6c68;
     display: block;
