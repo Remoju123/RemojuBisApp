@@ -1091,6 +1091,9 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
     if (this.row.isCar && qty > 10) {
       this.isWarningCar = true;
+      setTimeout(() => {
+        this.isWarningCar = false;
+      }, 2500);
     } else if (!this.row.isCar && qty > 8) {
       this.isWarningEkitan = true;
       setTimeout(() => {
