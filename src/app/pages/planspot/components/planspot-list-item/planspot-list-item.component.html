@@ -24,21 +24,18 @@
     <div class="card-box" [ngClass]="{ on: chkInMyPlanspot(item) }">
       <div class="card-header">
         <div class="picture">
-          <owl-carousel-o
-
-            [options]="mainOptions"
-          >
-            <ng-container *ngFor="let row of item.planSpotNames;index as i">
+          <owl-carousel-o [options]="mainOptions" *ngIf="item.planSpotNames && item.planSpotNames.length > 1; else single">
+            <ng-container *ngFor="let row of item.planSpotNames; index as i">
               <ng-template carouselSlide id="item.planId">
                 <div class="thumbmain">
                   <img
                     decoding="async"
-                    [src]="item.pictures[i]?item.pictures[i]:noPic"
+                    [src]="item.pictures[i] ? item.pictures[i] : noPic"
                     [alt]=""
                     [title]="item.spotName"
                     (load)="imageloaded = true"
                   />
-                  <div class="alt" *ngIf="!item.pictures[i+1]">
+                  <div class="alt" *ngIf="!item.pictures[i + 1]">
                     {{ item?.planSpotNames[i]?.spotName }}
                   </div>
                   <div class="loading" *ngIf="!imageloaded">
@@ -47,9 +44,23 @@
                 </div>
               </ng-template>
             </ng-container>
-
           </owl-carousel-o>
-
+          <ng-template #single>
+            <ng-container *ngFor="let src of item.pictures; index as i">
+              <div class="thumbmain fullwidth">
+                <img
+                  decoding="async"
+                  [src]="src ? src : noPic"
+                  [alt]="item.id"
+                  [title]="item.id"
+                  (load)="imageloaded = true"
+                />
+                <div class="loading" *ngIf="!imageloaded">
+                  <p>Loading image...</p>
+                </div>
+              </div>
+            </ng-container>
+          </ng-template>
         </div>
         <div class="info">
           <div class="lt">
