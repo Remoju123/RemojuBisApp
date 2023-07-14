@@ -43,7 +43,7 @@ header {
     cursor: pointer;
   }
 
-  //@media screen and (min-width: 415px) and (max-width: 1024px) { 
+  //@media screen and (min-width: 415px) and (max-width: 1024px) {
   //@media screen and (min-width: 415px) {
   @media screen and (min-width: 429px) {
     .imgsp {
@@ -89,6 +89,13 @@ header {
 
   .logo {
     z-index: 2;
+    position: relative;
+
+    .beta{
+      position: absolute;
+      bottom: 2px;
+      left: 14px;
+    }
   }
 
   .menu {
@@ -159,7 +166,7 @@ header {
     //border-radius: 15px;
     border-bottom: 1px solid #ccc;
     height: 26px;
-    
+
     cursor: pointer;
 
     &::before {
