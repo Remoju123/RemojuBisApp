@@ -357,11 +357,14 @@
   "Contact": "Contact",
   "PlanboxChange": "Plan BOX has been added.",
   "PlanSpotList": "Recommended Planlist",
+  "AllListHeader": "Recommended",
+  "PlanListHeader": "Recommended Planlist",
+  "SpotListHeader": "Recommended Spotlist",
   "Loading": "please wait a little bit...",
   "SaveMemo": "このダイアログを閉じてから保存します",
   "Planpoint": "このプランのポイント",
   "Planmemo": "フリーメモ",
   "MetaTitle": "",
   "MetaDescription": "",
-  "SearchGoogle":"Google Search"
+  "SearchGoogle": "Google Search"
 }
