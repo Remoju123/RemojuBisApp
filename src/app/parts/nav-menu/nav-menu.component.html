@@ -49,10 +49,11 @@
     <mat-nav-list>
       <div class="header">{{ "MakeATripPlan" | translate }}</div>
       <mat-nav-list class="sub">
-        <!-- <a mat-list-item (click)="onNavgate('spots')">{{ "SearchBySpot" | translate }}</a>
-          <a mat-list-item (click)="onNavgate('plans')">{{ "SearchByModelPlan" | translate }}</a> -->
         <a mat-list-item (click)="onNavgate('planspot')">{{
-          "FindEveryoneRecommendations" | translate
+          "AddNewPlan" | translate
+        }}</a>
+        <a mat-list-item (click)="onNavgate('planspot')">{{
+          "みんなのおすすめから作る" | translate
         }}</a>
         <a mat-list-item (click)="onNavgate('mypage', 'favorite')">{{
           "SearchByFavorite" | translate
@@ -68,9 +69,6 @@
         }}</a>
         <a mat-list-item (click)="onNavgate('mypage', 'favorite')">{{
           "ViewFavorite" | translate
-        }}</a>
-        <a mat-list-item (click)="onNavgate('mypage', 'review')">{{
-          "ViewReview" | translate
         }}</a>
         <a mat-list-item (click)="onNavgate('mypage', 'profile')">{{
           "EditProfile" | translate
@@ -91,6 +89,16 @@
           (click)="onNavgateFeature('area/kyoto_guidemap.html')"
           >{{ "LetsGoToKyotoNow" | translate }}</a
         >
+        <a
+          mat-list-item
+          (click)="onNavgateFeature('area/kamakura/lunch.html')"
+          >{{ "KanakuraLunch" | translate }}</a
+        >
+        <a
+          mat-list-item
+          (click)="onNavgateFeature('area/HokkaidoSummer.html')"
+          >{{ "SapporoJyosiTabi" | translate }}</a
+        >
         <!-- <a mat-list-item href="">{{ "ExcitingTripForKids" | translate }}</a>
           <a mat-list-item href="">{{ "SeeOther" | translate }}</a> -->
       </mat-nav-list>
@@ -99,9 +107,6 @@
     <mat-nav-list>
       <div class="header">{{ "Other" | translate }}</div>
       <mat-nav-list class="sub">
-        <a mat-list-item (click)="onNavgate('offcial/about')">{{
-          "About" | translate
-        }}</a>
         <a mat-list-item (click)="onNavgate('offcial/guide')">{{
           "Guide" | translate
         }}</a>
