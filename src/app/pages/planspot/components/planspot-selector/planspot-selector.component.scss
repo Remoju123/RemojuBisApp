@@ -270,7 +270,7 @@
           }
 
           @media screen and (min-width: 1025px) {
-            flex-basis: 200px;
+            flex-basis: 173px;
 
             ::ng-deep {
               .mat-form-field-wrapper {
@@ -310,7 +310,7 @@
             &::before {
               content: url("../../../../../assets/img/searchplus.svg");
               display: inline-block;
-              width: 15px;
+              width: 24px;
               height: 30px;
               padding-right: 3px;
               //vertical-align: sub;

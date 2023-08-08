@@ -434,6 +434,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // バスON・OFF
   onClickBus() {
     this.row.isBus = !this.row.isBus;
+    console.log(this.row.isBus)
     // 保存
     this.onChangeTransfer(event);
   }
