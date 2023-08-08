@@ -234,55 +234,60 @@
         justify-content: space-between;
         align-items: center;
 
-        .count {
-          font-size: 17px;
-          color: $color-gry06;
-          margin-right: 5px;
-          flex-basis: 51px;
+        .wrap{
+          display: flex;
+          align-items: center;
+          width: 100%;
+          .count {
+            font-size: 17px;
+            color: $color-gry06;
+            margin-right: 5px;
+            flex-basis: 70px;
 
-          .sm {
-            font-size: 10px;
-          }
-        }
-
-        .mat-form-field.condition {
-          flex-basis: 77px;
-
-          ::ng-deep {
-            .mat-form-field-wrapper {
-              padding-bottom: 0;
-
-              .mat-form-field-infix {
-                border-top-width: 0;
-                width: 77px;
-              }
-            }
-
-            .mat-form-field-underline {
-              height: 0 !important;
+            .sm {
+              font-size: 10px;
             }
           }
 
-          &.mat-focused {
-            ::ng-deep.mat-form-field-ripple {
-              opacity: 0;
-            }
-          }
-
-          @media screen and (min-width: 1025px) {
-            flex-basis: 173px;
+          .mat-form-field.condition {
+            flex-basis: 119px;
 
             ::ng-deep {
               .mat-form-field-wrapper {
                 padding-bottom: 0;
 
                 .mat-form-field-infix {
-                  width: initial;
+                  border-top-width: 0;
+                  width: 77px;
                 }
+              }
 
-                .mat-form-field-appearance-outline .mat-form-field-outline {
-                  color: rgba(0, 0, 0, 0.12);
-                  border: 0;
+              .mat-form-field-underline {
+                height: 0 !important;
+              }
+            }
+
+            &.mat-focused {
+              ::ng-deep.mat-form-field-ripple {
+                opacity: 0;
+              }
+            }
+
+            @media screen and (min-width: 1025px) {
+              flex-basis: 173px;
+
+              ::ng-deep {
+                .mat-form-field-wrapper {
+                  padding-bottom: 0;
+
+                  .mat-form-field-infix {
+                    width: initial;
+                  }
+
+                  .mat-form-field-appearance-outline .mat-form-field-outline {
+                    color: rgba(0, 0, 0, 0.12);
+                    border: 0;
+                  }
                 }
               }
             }
@@ -297,7 +302,7 @@
           button.spot-search {
             font-size: 12px;
             color: $color-gld02;
-            padding: 0 8px 0 12px;
+            padding: 0 8px 0 18px;
             display: flex;
             justify-content: flex-end;
             align-items: center;

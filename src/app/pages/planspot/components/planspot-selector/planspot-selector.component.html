@@ -72,7 +72,8 @@
       </div>
     </div>
     <div class="row info">
-      <div class="count">
+      <div class="wrap">
+        <div class="count">
         <span *ngIf="condition.select !== 'google'">{{ count }}</span
         ><span class="sm" *ngIf="condition.select !== 'google'"
           >&nbsp;{{ "Count" | translate }}</span
@@ -92,6 +93,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+      </div>
       <div class="buttons" *ngIf="!myFavorite">
         <button
           mat-button
