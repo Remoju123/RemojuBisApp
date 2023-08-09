@@ -8,7 +8,7 @@ export class ListSearchCondition {
     this.searchCategories = [];
     this.searchOptions = [];
     this.select = 'all';
-    this.sortval = '9';//投稿日：11　閲覧数：7　プランに追加された回数：9
+    this.sortval = '11';//投稿日：11　閲覧数：7　プランに追加された回数：9
     this.keyword = '';
     this.isRemojuRecommended = true;
     this.isUserPost = true;
