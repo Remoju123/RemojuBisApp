@@ -121,8 +121,8 @@ export class NavMenuComponent implements OnInit, OnDestroy {
   }
 
   onNavgateFeature(page: string) {
-    //location.href = `${location.origin}/contents/ja-jp/${page}`;
-    window.open(`${location.origin}/contents/ja-jp/${page}`, '_blank');
+    location.href = `${location.origin}/contents/ja-jp/${page}`;
+    //window.open(`${location.origin}/contents/ja-jp/${page}`, '_blank');
   }
 
   onClickSwitchLang(e) {
