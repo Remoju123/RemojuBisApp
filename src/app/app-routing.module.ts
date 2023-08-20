@@ -23,6 +23,7 @@ const routes: Routes = [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
           {
             path: 'planspot',
+            title: 'PlanSpot',
             loadChildren: () =>
               import('./pages/planspot/planspot.module').then(
                 (m) => m.PlanspotModule
@@ -30,6 +31,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail',
+            title: 'SpotDetail',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -37,6 +39,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail/:id',
+            title: 'SpotDetail',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -44,6 +47,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail',
+            title: 'PlanDetail',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
@@ -51,6 +55,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail/:id',
+            title: 'PlanDetail',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
@@ -58,6 +63,7 @@ const routes: Routes = [
           },
           {
             path: 'userplans/:id',
+            title: 'UserPlan',
             loadChildren: () =>
               import('./pages/user-plan-list/user-plan-list.module').then(
                 (m) => m.UserPlanListModule
@@ -65,6 +71,7 @@ const routes: Routes = [
           },
           {
             path: 'mypage',
+            title: 'MyPage',
             canActivate: [AuthGuard],
             loadChildren: () =>
               import('./pages/mypage/mypage.module').then(
@@ -73,6 +80,7 @@ const routes: Routes = [
           },
           {
             path: 'mypage#list',
+            title: 'MyPage',
             canActivate: [AuthGuard],
             loadChildren: () =>
               import('./pages/mypage/mypage.module').then(
@@ -81,6 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'offcial',
+            title: 'Offcial',
             loadChildren: () =>
               import('./pages/offcial/offcial.module').then(
                 (m) => m.OffcialModule
