@@ -22,8 +22,8 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
           {
-            path: 'みんなのおすすめ一覧',
-            title: '',
+            path: 'planspot',
+            title: 'みんなのおすすめ一覧',
             loadChildren: () =>
               import('./pages/planspot/planspot.module').then(
                 (m) => m.PlanspotModule
@@ -63,7 +63,7 @@ const routes: Routes = [
           },
           {
             path: 'userplans/:id',
-            title: 'ユーザー作成プラン一覧',
+            title: 'ユーザープラン',
             loadChildren: () =>
               import('./pages/user-plan-list/user-plan-list.module').then(
                 (m) => m.UserPlanListModule
@@ -89,7 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'offcial',
-            title: '運営会社・利用規約',
+            title: '運営会社・利用規約・',
             loadChildren: () =>
               import('./pages/offcial/offcial.module').then(
                 (m) => m.OffcialModule
