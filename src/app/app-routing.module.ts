@@ -22,8 +22,8 @@ const routes: Routes = [
         children: [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
           {
-            path: 'planspot',
-            title: 'PlanSpot',
+            path: 'みんなのおすすめ一覧',
+            title: '',
             loadChildren: () =>
               import('./pages/planspot/planspot.module').then(
                 (m) => m.PlanspotModule
@@ -31,7 +31,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail',
-            title: 'SpotDetail',
+            title: 'スポット詳細',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -39,7 +39,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail/:id',
-            title: 'SpotDetail',
+            title: 'スポット詳細',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -47,7 +47,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail',
-            title: 'PlanDetail',
+            title: 'プラン詳細',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
@@ -55,7 +55,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail/:id',
-            title: 'PlanDetail',
+            title: 'プラン詳細',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
@@ -63,7 +63,7 @@ const routes: Routes = [
           },
           {
             path: 'userplans/:id',
-            title: 'UserPlan',
+            title: 'ユーザー作成プラン一覧',
             loadChildren: () =>
               import('./pages/user-plan-list/user-plan-list.module').then(
                 (m) => m.UserPlanListModule
@@ -71,7 +71,7 @@ const routes: Routes = [
           },
           {
             path: 'mypage',
-            title: 'MyPage',
+            title: 'マイページ',
             canActivate: [AuthGuard],
             loadChildren: () =>
               import('./pages/mypage/mypage.module').then(
@@ -80,7 +80,7 @@ const routes: Routes = [
           },
           {
             path: 'mypage#list',
-            title: 'MyPage',
+            title: 'マイページ',
             canActivate: [AuthGuard],
             loadChildren: () =>
               import('./pages/mypage/mypage.module').then(
@@ -89,7 +89,7 @@ const routes: Routes = [
           },
           {
             path: 'offcial',
-            title: 'Offcial',
+            title: '運営会社・利用規約',
             loadChildren: () =>
               import('./pages/offcial/offcial.module').then(
                 (m) => m.OffcialModule
