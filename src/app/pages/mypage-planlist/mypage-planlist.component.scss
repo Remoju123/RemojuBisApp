@@ -745,7 +745,7 @@ span.sortlink {
               object-fit: cover;
             }
           }
-          
+
         }
 
         .thumbname {
@@ -765,11 +765,11 @@ span.sortlink {
           grid-template-columns: repeat(4,24%);
           column-gap: 8px;
           .thumbspots{
-            
+
               .pic{
                 height: 142px;
               }
-            
+
           }
         }
       }
@@ -817,7 +817,7 @@ span.sortlink {
                 display: flex;
                 align-items: center;
                 //flex-direction: column;
-                
+
                 .container {
                   select {
                     all: unset;
@@ -830,7 +830,7 @@ span.sortlink {
                   border-radius: 6px;
                   &.all{
                     background-color: $color-pnk00;
-                    color: #fff;
+                    color: #5f5f5f;
                     &::after{
                       color: #fff;
                     }
