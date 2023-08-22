@@ -221,7 +221,7 @@ export class GuideComponent implements OnInit, AfterViewInit {
       let scr21 = document.querySelector('.scr21');
       let scr22 = document.querySelector('.scr22');
 
-      gsap.set(scr22, { y: 200, x: 150 });
+      gsap.set(scr22, { y: 100, x: 150 });
 
       let scr31 = document.querySelector('.scr31');
       let scr32 = document.querySelector('.scr32');
