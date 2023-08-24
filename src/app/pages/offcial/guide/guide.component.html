@@ -1,12 +1,32 @@
 <div class="container" id="cont">
-  <div id="load__mask"></div>
+  <div id="load__mask">
+    <button mat-icon-button class="closeVideo" (click)="closeVideo()">
+      <img src="../../../../assets/img/guide/video_stop.svg" alt="close" />
+    </button>
+
+      <video *ngIf="!isMobile" #video preload="auto" autoplay loop controls>
+        <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
+      </video>
+
+
+      <video *ngIf="isMobile" #video preload="auto" autoplay loop controls>
+        <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_1.mp4" type="video/mp4" />
+      </video>
+
+  </div>
+
+  <div class="playVideo" matTooltip="もう一度ビデオを再生します。">
+    <button mat-icon-button (click)="openVideo()">
+      <img src="../../../../assets/img/guide/video_play.svg" alt="play" />
+    </button>
+  </div>
 
   <!--
   <div id="scroll">
     <a href="#">SCROLL</a>
   </div>
 -->
-  <div class="section top">
+  <!--div class="section top">
     <img
       class="logo"
       src="../../../../../assets/img/remoju-logo-b.svg"
@@ -21,7 +41,7 @@
         <path class="a3" d="M0 40 L30 72 L60 40"></path>
       </svg>
     </div>
-  </div>
+  </div-->
 
   <div class="section step1">
     <div class="head">

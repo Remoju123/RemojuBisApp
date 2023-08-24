@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/all';
@@ -14,14 +14,33 @@ gsap.registerPlugin(ScrollToPlugin);
 export class GuideComponent implements OnInit, AfterViewInit {
   constructor(private commonService: CommonService) {}
 
+  @ViewChild('video') video: HTMLVideoElement;
+
   isPc: boolean = true;
+
+  closeVideo(): void {
+    let LoadMask = document.getElementById('load__mask');
+    LoadMask.classList.add('scale-out-center');
+    // setTimeout(() => {
+    //   LoadMask.classList.remove('reval')
+    // },800)
+  }
+
+  openVideo(): void {
+    let LoadMask = document.getElementById('load__mask');
+    LoadMask.classList.remove('scale-out-center');
+    // this.video.currentTime = 0;
+    // this.video.play();
+  }
 
   ngAfterViewInit(): void {
     let LoadMask = document.getElementById('load__mask');
 
-    setTimeout(() => {
-      LoadMask.classList.add('reval');
-    }, 800);
+
+
+    // setTimeout(() => {
+    //   LoadMask.classList.add('reval');
+    // }, 8000);
 
     let Cont = document.getElementById('cont');
     let top = document.querySelector('.section.top');
