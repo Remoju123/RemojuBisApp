@@ -4,12 +4,12 @@
       <img src="../../../../assets/img/guide/video_stop.svg" alt="close" />
     </button>
 
-      <video *ngIf="!isMobile" #video preload="auto" autoplay loop controls>
+      <video *ngIf="!isMobile" #video preload="auto" autoplay loop controls muted>
         <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
       </video>
 
 
-      <video *ngIf="isMobile" #video preload="auto" autoplay loop controls>
+      <video *ngIf="isMobile" #video preload="auto" autoplay loop controls muted>
         <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_1.mp4" type="video/mp4" />
       </video>
 
