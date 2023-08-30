@@ -128,9 +128,6 @@ export class AppComponent implements OnInit, OnDestroy {
     this.oauthService.loadDiscoveryDocument(environment.openidConf);
     this.oauthService
       .tryLogin()
-      .catch(() => {
-        console.log('oauth trylogin error');
-      })
       .then(async () => {
         if (
           this.oauthService.hasValidAccessToken() &&
@@ -161,6 +158,9 @@ export class AppComponent implements OnInit, OnDestroy {
         } else {
           this.commonService.loggedIn = false;
         }
+      })
+      .catch(() => {
+        console.log('oauth trylogin error');
       });
   }
 
