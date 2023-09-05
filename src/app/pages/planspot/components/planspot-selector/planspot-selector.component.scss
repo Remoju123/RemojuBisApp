@@ -5,7 +5,7 @@
   border-bottom: 1px solid $color-gld05;
   border-radius: 0;
   box-shadow: none;
-  height: 147px;
+  height: 157px;
 
   &.close {
     height: 0;
@@ -22,9 +22,14 @@
 
       &.title {
         font-size: 14px;
-        padding: 4px 12px 8px;
+        padding: 0px 12px 8px;
         color: #de7274;
         font-weight: 600;
+        flex-direction: column;
+        align-items: center;
+        span{
+          font-size: smaller;
+        }
       }
 
       .input {

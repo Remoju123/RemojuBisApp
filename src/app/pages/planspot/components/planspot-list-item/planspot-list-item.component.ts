@@ -142,7 +142,7 @@ export class PlanspotListItemComponent implements OnInit {
 
   // タイトル
   genTitle() {
-    return this.item.isPlan
+    return this.item.planName
       ? this.commonService.isValidJson(this.item.planName, this.lang)
       : this.commonService.isValidJson(this.item.spotName, this.lang);
   }
