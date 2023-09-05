@@ -293,26 +293,33 @@ export class MyplanComponent implements OnInit, OnDestroy {
       });
 
     // A8バナー表示
-    const arr = [];
-    this.bannerService.getBannerList().subscribe((d) => {
-      d.map((item) => {
-        if (!this.isMobile) {
-          if (item.size === '300x250') {
-            arr.push(item);
-          }
-        } else {
-          if (item.size === '320x50') {
-            arr.push(item);
-          }
-        }
-      });
-      const _banner = arr.map((f) => f.link);
-      this.renderer.setProperty(
-        this.divA8.nativeElement,
-        'innerHTML',
-        _banner[Math.floor(Math.random() * _banner.length)]
-      );
-    });
+    // const arr = [];
+    // this.bannerService.getBannerList().subscribe((d) => {
+    //   d.map((item) => {
+    //     if (!this.isMobile) {
+    //       if (item.size === '300x250') {
+    //         arr.push(item);
+    //       }
+    //     } else {
+    //       if (item.size === '320x50') {
+    //         arr.push(item);
+    //       }
+    //     }
+    //   });
+    //   const _banner = arr.map((f) => f.link);
+    //   this.renderer.setProperty(
+    //     this.divA8.nativeElement,
+    //     'innerHTML',
+    //     _banner[Math.floor(Math.random() * _banner.length)]
+    //   );
+    // });
+    this.renderer.setProperty(
+      this.divA8.nativeElement,
+      'innerHTML',
+      `<video #video preload="auto" autoplay loop controls muted playsinline style="width:100%">
+        <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
+      </video>`
+    );
   }
 
   ngOnDestroy() {
@@ -434,7 +441,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // バスON・OFF
   onClickBus() {
     this.row.isBus = !this.row.isBus;
-    console.log(this.row.isBus)
+    console.log(this.row.isBus);
     // 保存
     this.onChangeTransfer(event);
   }
@@ -1438,12 +1445,13 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   setThumbPicture(item: PlanSpotCommon) {
     let result = this.noPic;
-    if (item.planUserpictures && item.planUserpictures.length>0) {
-      result = item.planUserpictures[0]?.picturePreviewUrl ?? item.planUserpictures[0]?.picture_url
+    if (item.planUserpictures && item.planUserpictures.length > 0) {
+      result =
+        item.planUserpictures[0]?.picturePreviewUrl ??
+        item.planUserpictures[0]?.picture_url;
     } else if (item.pictures[0]) {
-      result = item.pictures[0]
+      result = item.pictures[0];
     }
     return result;
   }
-
 }
