@@ -279,29 +279,29 @@ export class PlanSpotListService {
           }
           return aIndex > bIndex ? 1 : -1;
         });
-      } else {
-        switch (parseInt(cond.sortval)) {
-          case 7: // 閲覧順
-            _result = _result.sort((a, b) => {
-              return a.pvQtyAll < b.pvQtyAll ? 1 : -1;
-            });
-            break;
-          case 10: // レビュー評価
-            _result = _result.sort((a, b) => {
-              return a.reviewAvg < b.reviewAvg ? 1 : -1;
-            });
-            break;
-          case 11: // 新着純
-            _result = _result.sort((a, b) => {
-              return a.createDate < b.createDate ? 1 : -1;
-            });
-            break;
-          case 9: // プランに追加された件数
-            _result = _result.sort((a, b) => {
-              return a.planSpotQty < b.planSpotQty ? 1 : -1;
-            });
-            break;
-        }
+      }
+      switch (parseInt(cond.sortval)) {
+        case 7: // 閲覧順
+          _result = _result.sort((a, b) => {
+            return a.pvQtyAll < b.pvQtyAll ? 1 : -1;
+          });
+          break;
+        case 10: // レビュー評価
+          _result = _result.sort((a, b) => {
+            return a.reviewAvg < b.reviewAvg ? 1 : -1;
+          });
+          break;
+        case 11: // 新着順
+          _result = _result.sort((a, b) => {
+            return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1;
+          });
+          console.log(_result)
+          break;
+        case 9: // プランに追加された件数
+          _result = _result.sort((a, b) => {
+            return a.planSpotQty < b.planSpotQty ? 1 : -1;
+          });
+          break;
       }
 
       if (!master) {
