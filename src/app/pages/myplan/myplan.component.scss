@@ -45,32 +45,43 @@ form {
 
 .transport {
   display: flex;
+  width:100%;
 
   flex-direction: row;
-  align-items: center;
+  align-items: baseline;
 
   justify-content: space-between;
 
   //padding: 0 12px;
   @include switchTran();
+  @include switchAuto();
 
   .lt {
     display: flex;
-    align-items: center;
-    background: #f8f7f7;
-    border-radius: 20px;
+    align-items:baseline;
+    //background: #f8f7f7;
+    //border-radius: 20px;
     padding: 0 5px 0 15px;
-    height: 40px;
+    //height: 40px;
+    flex-direction: column;
 
     span.label {
       margin-right: 15px;
       white-space: nowrap;
+      font-size: 11px;
     }
   }
 
   .rt {
+    display: flex;
+    align-items:baseline;
+        //background: #f8f7f7;
+    //border-radius: 20px;
+    padding: 0 5px 0 15px;
+    //height: 40px;
+    flex-direction: column;
     span.label {
-      font-size: 10px;
+      font-size: 11px;
     }
 
     .mapview {
@@ -80,7 +91,7 @@ form {
         font-weight: 700;
         height: 32px;
         width: 68px;
-        background-color: $color_grn01;
+        background-color: $color_gld01;
         border-radius: 16px;
         color: #fff;
         text-align: center;
@@ -89,6 +100,19 @@ form {
           background-color: #898989;
         }
       }
+    }
+
+    button.option{
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border: 1px solid #fff;
+      border-radius: 15px;
+      background: #bfa060;
+      line-height: 30px;
+      width: 100%;
+      white-space: nowrap;
+      padding: 0;
     }
   }
 
@@ -107,7 +131,7 @@ form {
       display: flex;
       flex-direction: row;
       height: unset;
-      margin-left: 16px;
+      //margin-left: 16px;
     }
 
     .mat-slide-toggle-content {
@@ -173,6 +197,31 @@ form {
       }
     }
   }
+
+  .timerequired {
+      padding-top: 2px;
+      font-size: 12px;
+      white-space: nowrap;
+      //position: absolute;
+      //right: 12px;
+
+      label {
+        background: #707070;
+        color: #fff;
+        padding: 1px 4px;
+        border-radius: 2px;
+        margin-right: 3px;
+      }
+
+      &::before {
+        display: inline-block;
+        //content: url("../../../assets/img/av-timer.svg");
+        width: 16px;
+        height: 16px;
+        padding-right: 3px;
+        vertical-align: sub;
+      }
+    }
 }
 
 // edit-section style adjust!
@@ -647,14 +696,6 @@ form {
                   .areaName {
                     font-size: 11px;
                     color: #a6a29e;
-
-                    .stayTime {
-                      select {
-                        border-radius: 9px;
-                        background-color: #707070;
-                        color: #fff;
-                      }
-                    }
                   }
 
                   .sugtime {
@@ -667,6 +708,14 @@ form {
 
               &:nth-child(3) {
                 flex-basis: 12%;
+
+                .stayTime {
+                  select {
+                    border-radius: 9px;
+                    background-color: #707070;
+                    color: #fff;
+                  }
+                }
 
                 button.add-to-favorite {
                   box-shadow: none;
@@ -932,7 +981,7 @@ form {
       }
 
       .noName {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: normal;
         color: #f44336;
       }
@@ -999,31 +1048,6 @@ form {
           font-size: 12px;
           display: block;
         }
-      }
-    }
-
-    .timerequired {
-      padding-top: 2px;
-      font-size: 12px;
-      white-space: nowrap;
-      position: absolute;
-      right: 12px;
-
-      label {
-        background: #707070;
-        color: #fff;
-        padding: 1px 4px;
-        border-radius: 2px;
-        margin-right: 3px;
-      }
-
-      &::before {
-        display: inline-block;
-        //content: url("../../../assets/img/av-timer.svg");
-        width: 16px;
-        height: 16px;
-        padding-right: 3px;
-        vertical-align: sub;
       }
     }
   }

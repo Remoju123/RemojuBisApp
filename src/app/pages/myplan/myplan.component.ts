@@ -316,7 +316,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.renderer.setProperty(
       this.divA8.nativeElement,
       'innerHTML',
-      `<video #video preload="auto" autoplay loop controls muted playsinline style="width:100%">
+      `<video #video preload="auto" autoplay controls muted playsinline style="width:100%">
         <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
       </video>`
     );
@@ -359,7 +359,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
                 // 変更を保存
                 this.registPlan();
                 // 最適化OFF
-                this.row.isAuto = false;
+                //this.row.isAuto = false;
                 this.loading = false;
                 if (!r.isCar && r.ekitanStatus !== '0') {
                   this.commonService.messageDialog('ErrorMsgEkitan');
@@ -441,16 +441,18 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // バスON・OFF
   onClickBus() {
     this.row.isBus = !this.row.isBus;
-    console.log(this.row.isBus);
+    this.row.isAuto = false;
     // 保存
     this.onChangeTransfer(event);
   }
 
   // 経路最適化
   onClickAuto() {
+    console.log(this.row);
+
     // 最適化していないこと
     if (this.row.optimized) {
-      this.commonService.messageDialog('Optimized');
+      this.commonService.messageDialog('Optimized')
       return;
     }
 
@@ -494,6 +496,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
           this.onChangeTransfer(event);
         }
       });
+    console.log(this.row);
   }
 
   // 出発地・到着地を設定
@@ -861,6 +864,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
         .getDataSelected()
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((r) => {
+          console.log(r);
           this.$stayTime = r.stayTime;
           this.spotService.businessday = r.businessDay;
           this.$releaseDestination = r.releaseDestination;
@@ -1204,6 +1208,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.myplanService.registPlan().then((result) => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async (r) => {
         //if(r){
+
+        console.log(r);
         const result = [];
         // プランメイン写真
         if (this.row.pictureFile) {

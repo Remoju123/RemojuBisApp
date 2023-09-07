@@ -295,7 +295,6 @@ export class PlanSpotListService {
           _result = _result.sort((a, b) => {
             return a.releaseCreateDatetime < b.releaseCreateDatetime ? 1 : -1;
           });
-          console.log(_result)
           break;
         case 9: // プランに追加された件数
           _result = _result.sort((a, b) => {

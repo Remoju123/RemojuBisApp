@@ -72,7 +72,7 @@
   "TravelDate": "旅行予定日",
   "UseBus": "バス含む",
   "NoBus": "バス含まない",
-  "Auto": "最短ルートを計算",
+  "Auto": "最短ルートで並び替え",
   "EnterPlanName": "保存するプラン名を入力",
   "SpotDeleted": "スポットを削除しました。",
   "StartTime": "出発時間",

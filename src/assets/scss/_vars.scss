@@ -598,7 +598,7 @@ $color-grn01: #81c5b4;
           }
         }
 
-        &:checked ~ #swImg {
+        &:checked ~ #swImgs {
           &::before {
             content: $edit_en;
           }
@@ -611,7 +611,7 @@ $color-grn01: #81c5b4;
         }
       }
 
-      #swImg {
+      #swImgs {
         &::before {
           content: $preview_en;
         }
@@ -632,7 +632,7 @@ $color-grn01: #81c5b4;
         }
       }
 
-      &:checked ~ #swImg {
+      &:checked ~ #swImgs {
         transform: translateX(60px);
         background: $tabColor;
 
@@ -659,7 +659,7 @@ $color-grn01: #81c5b4;
       }
     }
 
-    #swImg {
+    #swImgs {
       position: absolute;
       width: 70px;
       height: $height;
@@ -677,6 +677,7 @@ $color-grn01: #81c5b4;
   }
 }
 
+//移動手段（車・交通）切り替え
 @mixin switchTran {
   .switchTran {
     $edit: "交通機関";
@@ -764,6 +765,111 @@ $color-grn01: #81c5b4;
     }
 
     #swImg {
+      position: absolute;
+      width: 86px;
+      height: $height;
+      background: #81c5b4; //$color;
+      top: 0px;
+      left: 0px;
+      border-radius: $radius;
+      transition: 0.2s;
+
+      &::before {
+        content: $preview;
+        color: #fff;
+      }
+    }
+  }
+}
+
+//最適ルートON/OFF切り替え
+@mixin switchAuto {
+  .switchAuto {
+    $edit: "ON";
+    $preview: "OFF";
+    $edit_en: "ON";
+    $preview_en: "OFF";
+    $height: 30px;
+    $radius: 15px;
+    $color: #707070;
+
+    line-height: $height;
+    letter-spacing: 0;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bolder;
+
+    position: relative;
+    width: 159px;
+    background: #fff;
+
+    &.en {
+      input[type="checkbox"] {
+        &:checked + label {
+          span::after {
+            content: $preview_en;
+          }
+        }
+
+        &:checked ~ #swImga {
+          &::before {
+            content: $edit_en;
+          }
+        }
+      }
+
+      label {
+        span::after {
+          content: $edit_en;
+        }
+      }
+
+      #swImga {
+        &::before {
+          content: $preview_en;
+        }
+      }
+    }
+
+    input[type="checkbox"] {
+      display: none;
+
+      &:checked + label {
+        border-color: $color;
+
+        span::after {
+          content: $preview;
+          padding: 0 78px 0 0;
+          color: $color;
+        }
+      }
+
+      &:checked ~ #swImga {
+        transform: translateX(73px);
+        background: #81c5b4; //$color;
+
+        &::before {
+          content: $edit;
+          color: #fff;
+        }
+      }
+    }
+
+    label {
+      display: block;
+      box-sizing: border-box;
+      height: $height;
+      border: 1px solid $color;
+      border-radius: $radius;
+
+      span::after {
+        content: $edit;
+        padding: 0 0 0 84px;
+        color: $color;
+      }
+    }
+
+    #swImga {
       position: absolute;
       width: 86px;
       height: $height;

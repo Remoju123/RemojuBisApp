@@ -14,11 +14,11 @@
         #switch
       />
       <label for="switch-view1"><span></span></label>
-      <div id="swImg"></div>
+      <div id="swImgs"></div>
     </div>
   </div>
 
-  <!--*----------- 編集 -----------*-->
+  <!--********************** 編集 **********************-->
   <mat-card *ngIf="isEdit" class="myplan-edit">
     <mat-card-content>
       <div id="edit">
@@ -135,17 +135,6 @@
 
       <div class="spacer">
         <img src="../../../assets/img/allow_down_slv.svg" alt="" />
-        <!-- 最短ルート -->
-        <button
-          class="option"
-          (click)="onClickAuto()"
-          [disabled]="!row?.planSpots"
-          matTooltip="{{ 'AutoTips' | translate }}"
-          matTooltipPosition="after"
-          matTooltipClass="toolExplanation"
-        >
-          {{ "Auto" | translate }}
-        </button>
       </div>
 
       <!-- スポットを表示 -->
@@ -162,7 +151,7 @@
         <dl class="th">
           <dt>{{ "Remove" | translate }}</dt>
           <dt>{{ "Spot" | translate }}</dt>
-          <dt>{{ "Favorite" | translate }}</dt>
+          <dt>{{ "SuggestedTime" | translate }}</dt>
           <dt>{{ "Movement" | translate }}</dt>
         </dl>
 
@@ -189,10 +178,10 @@
                   <div class="lt">
                     <span class="order">{{ item.displayOrder }}</span>
                     <img
-                        [src]="setThumbPicture(item)"
-                        [alt]="item.spotId"
-                        [title]="item.spotId"
-                      />
+                      [src]="setThumbPicture(item)"
+                      [alt]="item.spotId"
+                      [title]="item.spotId"
+                    />
                     <!--
                     <ng-container *ngIf="item.pictures[0] || item.planUserpictures; else editbrank">
                       <img
@@ -220,30 +209,24 @@
                         / {{ item.categoryText | langFilter : lang }}
                       </ng-container>
                       / {{ "SuggestedTime" | translate }}
-                      <span class="stayTime">
-                        <select
-                          name="stayTime{{ i }}"
-                          [(ngModel)]="item.stayTime"
-                          (change)="onChangeTransfer($event)"
-                        >
-                          <option
-                            *ngFor="let sTime of $stayTime"
-                            [ngValue]="sTime.id"
-                          >
-                            {{ commonService.isValidJson(sTime.name, lang) }}
-                          </option>
-                        </select>
-                      </span>
                     </span>
                   </div>
                 </dt>
                 <dt>
-                  <button
-                    mat-button
-                    class="add-to-favorite"
-                    [ngClass]="{ on: item.isFavorite }"
-                    (click)="onClickFavorite(item)"
-                  ></button>
+                  <span class="stayTime">
+                    <select
+                      name="stayTime{{ i }}"
+                      [(ngModel)]="item.stayTime"
+                      (change)="onChangeTransfer($event)"
+                    >
+                      <option
+                        *ngFor="let sTime of $stayTime"
+                        [ngValue]="sTime.id"
+                      >
+                        {{ commonService.isValidJson(sTime.name, lang) }}
+                      </option>
+                    </select>
+                  </span>
                 </dt>
                 <dt cdkDragHandle>
                   <img src="../../../assets/img/icon_swap.svg" width="16px" />
@@ -321,7 +304,7 @@
         </button>
       </div>
 
-      <div *ngIf="row && !row.isRelease" class="spacer">
+      <div *ngIf="row && !row.isRelease" class="spacer mt4">
         <img src="../../../assets/img/allow_down_slv.svg" alt="" />
       </div>
 
@@ -359,7 +342,7 @@
     </mat-card-content>
   </mat-card>
 
-  <!--*----------- プレビュー ----------*-->
+  <!--********************** プレビュー **********************-->
   <div class="myplan-preview" *ngIf="!isEdit">
     <mat-card>
       <mat-card-header class="myplan-header" (click)="onClickPlanEdit(row)">
@@ -383,35 +366,23 @@
       </mat-card-header>
     </mat-card>
 
-    <div class="transport">
-      <div class="lt">
-        <span class="label">{{ "TravelRoute" | translate }}</span>
-        <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
-          <input
-            type="checkbox"
-            id="switch-tran"
-            (click)="onClickTran()"
-            x
-            [checked]="!row?.isCar"
-            [disabled]="!row"
-          />
-          <label for="switch-tran"><span></span></label>
-          <div id="swImg"></div>
+    <div
+      class="transport"
+      style="height: 60px; align-items: center; background-color: #f8f7f7"
+    >
+      <div class="lt"></div>
+      <div
+        class="rt"
+        style="display: flex; flex-direction: row; align-items: center"
+      >
+        <div class="timerequired mr8">
+          <label>{{ "Roundtime" | translate }}</label
+          >{{ row.timeRequiredDisp }}
         </div>
-      </div>
-      <div class="rt">
         <div class="mapview">
           <button (click)="onClickMap()">{{ "MapDisp" | translate }}</button>
         </div>
-        <!-- 最短ルート -->
-        <!--
-        <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots">
-          <span class="icon" [ngClass]="row?.isAuto?'color-brown':'color-green'">
-            <img src="/assets/img/keiro.svg" alt="Auto">
-          </span>
-          <span class="label" [ngClass]="row?.isAuto?'color-brown':'color-green'">{{ "Auto" | translate }}</span>
-        </button>
-      --></div>
+      </div>
     </div>
 
     <div class="planhead">
@@ -440,10 +411,6 @@
           <p>{{ row.planExplanation }}</p>
         </mat-list-item>
       </mat-list>
-      <div class="timerequired">
-        <label>{{ "Roundtime" | translate }}</label
-        >{{ row.timeRequiredDisp }}
-      </div>
     </div>
     <!-- スタート時間-->
     <mat-list style="margin: 30px 16px 16px">
@@ -578,7 +545,7 @@
                       />
                     </div>
                     <div class="alt">
-                      {{item.spotName}}
+                      {{ item.spotName }}
                     </div>
                   </ng-template>
                 </div>
@@ -651,26 +618,59 @@
     </div>
   </div>
   <div class="footer">
-    <div class="row1">
-      <!-- 共有先 -->
-      <!--div class="share">
-        <label class="time-label">{{ "ReleaseDestination" | translate }}</label>
-        <div class="container" *ngIf="row">
-          <select
-            name="isRelease"
-            [(ngModel)]="row.isRelease"
-            (change)="changeRelease()"
-          >
-            <option
-              *ngFor="let destination of $releaseDestination"
-              [ngValue]="destination.id === 0 ? false : true"
-            >
-              {{ commonService.isValidJson(destination.name, lang) }}
-            </option>
-          </select>
+    <div class="transport mt8">
+      <div class="lt">
+        <span class="label">{{ "TravelRoute" | translate }}</span>
+        <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
+          <input
+            type="checkbox"
+            id="switch-tran"
+            (click)="onClickTran()"
+            [checked]="!row?.isCar"
+            [disabled]="!row"
+          />
+          <label for="switch-tran"><span></span></label>
+          <div id="swImg"></div>
         </div>
-      </div-->
-
+        <mat-slide-toggle
+          [checked]="row.isBus"
+          (change)="onClickBus()"
+          *ngIf="row && !row.isCar"
+        >
+          <span *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
+          <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
+        </mat-slide-toggle>
+      </div>
+      <div class="rt">
+        <div *ngIf="row && !row.isCar">
+          <span class="label">{{ "Auto" | translate }}</span>
+          <!--
+          <div class="switchAuto" [ngClass]="{ en: lang === 'en' }">
+            <input
+              type="checkbox"
+              id="switch-auto"
+              [disabled]="!row"
+              [checked]="row?.optimized"
+              (change)="onClickAuto()"
+            />
+            <label for="switch-auto"><span></span></label>
+            <div id="swImga"></div>
+          </div>
+          -->
+          <button
+            class="option"
+            (click)="onClickAuto()"
+            [disabled]="!row?.planSpots"
+            matTooltip="{{ 'AutoTips' | translate }}"
+            matTooltipPosition="after"
+            matTooltipClass="toolExplanation"
+          >
+            実行
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row1">
       <!-- 新規プラン作成 -->
       <div class="newplan">
         <button
@@ -695,33 +695,6 @@
           {{ "Save" | translate }}
         </button>
         <!--label for="plansave">{{ "Save" | translate }}</label-->
-      </div>
-    </div>
-
-    <div class="transport">
-      <div class="lt">
-        <span class="label">{{ "TravelRoute" | translate }}</span>
-        <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
-          <input
-            type="checkbox"
-            id="switch-tran"
-            (click)="onClickTran()"
-            [checked]="!row?.isCar"
-            [disabled]="!row"
-          />
-          <label for="switch-tran"><span></span></label>
-          <div id="swImg"></div>
-        </div>
-      </div>
-      <div class="rt">
-        <mat-slide-toggle
-          [checked]="row.isBus"
-          (change)="onClickBus()"
-          *ngIf="row && !row.isCar"
-        >
-          <span *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
-          <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
-        </mat-slide-toggle>
       </div>
     </div>
 
