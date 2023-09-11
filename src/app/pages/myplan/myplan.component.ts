@@ -864,7 +864,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
         .getDataSelected()
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((r) => {
-          console.log(r);
           this.$stayTime = r.stayTime;
           this.spotService.businessday = r.businessDay;
           this.$releaseDestination = r.releaseDestination;

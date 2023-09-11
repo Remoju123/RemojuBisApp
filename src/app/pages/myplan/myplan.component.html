@@ -44,6 +44,7 @@
               </ng-container>
             </div>
           </div>
+          <div class="title">プラン名</div>
         </div>
       </div>
 
@@ -77,10 +78,11 @@
             <span>{{ row?.startPlanSpot.spotName }}</span>
             <button
               type="button"
+              class="delete"
               mat-button
               (click)="onClickStartEndDelete(true)"
             >
-              <i class="material-icons">close</i>
+              <i class="material-icons">cancel</i>
             </button>
           </ng-template>
         </div>
@@ -200,16 +202,12 @@
                 -->
                   </div>
                   <div class="rt">
-                    <span class="spotName" [innerHTML]="item.spotName"></span>
                     <span class="areaName">
                       <ng-container *ngIf="item.areaName">{{
                         item.areaName | langFilter : lang
                       }}</ng-container>
-                      <ng-container *ngIf="item.categoryText">
-                        / {{ item.categoryText | langFilter : lang }}
-                      </ng-container>
-                      / {{ "SuggestedTime" | translate }}
                     </span>
+                    <span class="spotName" [innerHTML]="item.spotName"></span>
                   </div>
                 </dt>
                 <dt>
@@ -331,10 +329,11 @@
             <span>{{ row?.endPlanSpot.spotName }}</span>
             <button
               type="button"
+              class="delete"
               mat-button
               (click)="onClickStartEndDelete(false)"
             >
-              <i class="material-icons">close</i>
+              <i class="material-icons">cancel</i>
             </button>
           </ng-template>
         </div>
@@ -363,6 +362,7 @@
         <!-- <div class='rt'>
           <div class="timerequired">{{ row.timeRequiredDisp  }}</div>
         </div> -->
+        <div class="title">プラン名</div>
       </mat-card-header>
     </mat-card>
 
@@ -370,15 +370,13 @@
       class="transport"
       style="height: 60px; align-items: center; background-color: #f8f7f7"
     >
-      <div class="lt"></div>
-      <div
-        class="rt"
-        style="display: flex; flex-direction: row; align-items: center"
-      >
+      <div class="lt">
         <div class="timerequired mr8">
           <label>{{ "Roundtime" | translate }}</label
           >{{ row.timeRequiredDisp }}
         </div>
+      </div>
+      <div class="rt">
         <div class="mapview">
           <button (click)="onClickMap()">{{ "MapDisp" | translate }}</button>
         </div>
@@ -432,8 +430,8 @@
         </div>
         <span class="label">{{ "PointOfDeparture" | translate }}</span>
       </div>
-      <div class="down_fill">
-        <img src="../../../assets/img/allow_down_fill.svg" alt="" />
+      <div class="spacer">
+        <img src="../../../assets/img/allow_down_slv.svg" alt="" />
       </div>
     </ng-container>
 
@@ -444,6 +442,10 @@
       [nextItem]="row.planSpots[0]"
     >
     </app-transfer-panel>
+
+    <div class="spacer" *ngIf="row.startPlanSpot && row.startPlanSpot.transfer">
+      <img src="../../../assets/img/allow_down_slv.svg" alt="" />
+    </div>
 
     <div class="box" *ngIf="row.planSpots">
       <ng-container *ngFor="let item of row.planSpots; index as i">
@@ -595,6 +597,9 @@
         </mat-card>
       </ng-container>
     </div>
+    <div class="spacer">
+        <img src="../../../assets/img/allow_down_slv.svg" alt="" />
+      </div>
     <div class="endSpot" *ngIf="this.row.endPlanSpot">
       <div class="lt">
         <span class="mark"></span>
@@ -618,7 +623,7 @@
     </div>
   </div>
   <div class="footer">
-    <div class="transport mt8">
+    <div class="transport mt8" style="width: 100%;">
       <div class="lt">
         <span class="label">{{ "TravelRoute" | translate }}</span>
         <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
@@ -627,7 +632,7 @@
             id="switch-tran"
             (click)="onClickTran()"
             [checked]="!row?.isCar"
-            [disabled]="!row"
+            [disabled]="!row || !isEdit"
           />
           <label for="switch-tran"><span></span></label>
           <div id="swImg"></div>
@@ -636,6 +641,7 @@
           [checked]="row.isBus"
           (change)="onClickBus()"
           *ngIf="row && !row.isCar"
+          [disabled]="!isEdit"
         >
           <span *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
           <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
@@ -660,7 +666,7 @@
           <button
             class="option"
             (click)="onClickAuto()"
-            [disabled]="!row?.planSpots"
+            [disabled]="!row?.planSpots || !isEdit"
             matTooltip="{{ 'AutoTips' | translate }}"
             matTooltipPosition="after"
             matTooltipClass="toolExplanation"

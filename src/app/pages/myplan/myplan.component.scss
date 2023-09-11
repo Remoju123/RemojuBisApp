@@ -45,7 +45,7 @@ form {
 
 .transport {
   display: flex;
-  width:100%;
+  //width:100%;
 
   flex-direction: row;
   align-items: baseline;
@@ -79,7 +79,9 @@ form {
     //border-radius: 20px;
     padding: 0 5px 0 15px;
     //height: 40px;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: end;
+    width: 100%;
     span.label {
       font-size: 11px;
     }
@@ -200,7 +202,7 @@ form {
 
   .timerequired {
       padding-top: 2px;
-      font-size: 12px;
+      font-size: 14px;
       white-space: nowrap;
       //position: absolute;
       //right: 12px;
@@ -236,6 +238,38 @@ form {
     .rt {
       span.label {
         font-size: 10px;
+      }
+    }
+  }
+
+  .spacer {
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    img {
+      width: 36px;
+      margin: 6px;
+    }
+
+    button.option {
+      all: unset;
+      font-size: 11px;
+      font-weight: 700;
+      height: 26px;
+      width: auto;
+      padding: 0 12px;
+      background-color: $color-gld01;
+      border-radius: 16px;
+      color: #fff;
+      text-align: center;
+
+      position: absolute;
+      right: 16px;
+      top: 2px;
+
+      &:disabled {
+        background: #bfa06050;
       }
     }
   }
@@ -388,6 +422,12 @@ form {
       //   flex-basis: 26%;
 
       // }
+      .title{
+        font-size: 11px;
+        position:absolute;
+        top: 2px;
+        left: 16px;
+      }
     }
   }
 
@@ -410,9 +450,19 @@ form {
         content: "";
         width: 25px;
         height: 30px;
-        display: inline-block;
-        vertical-align: -3px;
-        margin-right: 3px;
+        display: block;
+        position: absolute;
+        top:-12px;
+        // vertical-align: -3px;
+        // margin-right: 3px;
+      }
+    }
+
+    button.delete{
+      padding: 0;
+      min-width: 36px;
+      .material-icons{
+        font-size: 18px;
       }
     }
 
@@ -434,11 +484,11 @@ form {
 
     .lt {
       display: flex;
-      //align-items: center;
+      align-items: center;
 
       span {
         white-space: nowrap;
-        width: 86px;
+        width: 110px;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -682,20 +732,20 @@ form {
                   height: 4.6em;
 
                   .spotName {
-                    //width: 156px;
-                    // white-space: nowrap;
+                    width: 156px;
+                    white-space: nowrap;
                     text-align: left;
                     //height: 3em;
                     text-overflow: ellipsis;
                     overflow: hidden;
-                    display: -webkit-box;
+                    //display: -webkit-box;
                     -webkit-box-orient: vertical;
                     -webkit-line-clamp: 2;
                   }
 
                   .areaName {
                     font-size: 11px;
-                    color: #a6a29e;
+                    color: #555555;
                   }
 
                   .sugtime {
@@ -1010,6 +1060,12 @@ form {
         }
       }
     }
+    .title{
+    font-size: 11px;
+        position:absolute;
+        top: 2px;
+        left: 16px;
+    }
   }
 
   $img_height: 270px;
@@ -1253,12 +1309,13 @@ form {
 
                 span.sugtime {
                   font-size: 12px;
+                  margin-right: 0.2em;
                 }
 
                 span.stayTime {
                   select {
                     border-radius: 9px;
-                    background-color: #707070;
+                    background-color: #3e3e3e;
                     color: #fff;
 
                     &:disabled {
@@ -1840,7 +1897,7 @@ form {
   .row1 {
     display: flex;
     width: 100%;
-    justify-content: space-evenly;
+    justify-content: space-between;
     label {
       font-size: 10px;
       color: $color-gld01;

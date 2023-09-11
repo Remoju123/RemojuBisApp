@@ -629,7 +629,7 @@ export class MapPanelComponent implements OnInit, OnDestroy {
                 })
               );
             }
-            this.zoomChangeOtherSpot(this.map.zoom);
+            //this.zoomChangeOtherSpot(this.map.zoom);
           }
         });
     }
