@@ -5,18 +5,6 @@
     <span *ngIf="data[1]">{{ "StartEx" | translate }}</span>
     <span *ngIf="!data[1]">{{ "EndEx" | translate }}</span>
   </div>
-  <div class="mapDiv">
-    <agm-map
-      class="map"
-      [scrollwheel]="false"
-      [streetViewControl]="false"
-      [zoom]="zoom"
-      (mapReady)="mapReady($event)">
-    </agm-map>
-    <div class="map-center-overlay" *ngIf="place">
-      <img src="../../../assets/img/pin_mypos.svg" height="48">
-    </div>
-  </div>
   <div class="form">
     <mat-form-field appearance="outline" style="width: 100%;">
       <mat-label>{{ 'GoogleKeyword' | translate }}</mat-label>
@@ -28,6 +16,18 @@
         (onAutocompleteSelected)="onAutocompleteSelected($event)"
         value="{{ place ? place.name : '' }}" />
     </mat-form-field>
+  </div>
+  <div class="mapDiv">
+    <agm-map
+      class="map"
+      [scrollwheel]="false"
+      [streetViewControl]="false"
+      [zoom]="zoom"
+      (mapReady)="mapReady($event)">
+    </agm-map>
+    <div class="map-center-overlay" *ngIf="place">
+      <img src="../../../assets/img/pin_mypos.svg" height="48">
+    </div>
   </div>
 </mat-dialog-content>
 
