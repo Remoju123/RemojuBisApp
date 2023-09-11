@@ -11,7 +11,7 @@ body {
 }
 
 body {
-  margin: 0;
+  margin: 0 0 0 0;
 }
 
 h1,
@@ -101,7 +101,7 @@ button.line {
 button.fb {
   background-color: #1877f2;
   color: #fff;
-  
+
   .mat-icon::before {
     margin-right: 0.2em;
   }
@@ -115,3 +115,8 @@ button.tw {
     margin-right: 0.2em;
   }
 }
+
+// .pac-container{
+//     //margin-top: -210px;
+//     //top:278px!important;
+//   }

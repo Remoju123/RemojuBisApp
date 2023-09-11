@@ -69,6 +69,7 @@ form {
       margin-right: 15px;
       white-space: nowrap;
       font-size: 11px;
+          caret-color: transparent;
     }
   }
 
@@ -77,7 +78,7 @@ form {
     align-items:baseline;
         //background: #f8f7f7;
     //border-radius: 20px;
-    padding: 0 5px 0 15px;
+    padding: 0 15px 0 5px;
     //height: 40px;
     flex-direction: row;
     justify-content: end;
@@ -1897,7 +1898,7 @@ form {
   .row1 {
     display: flex;
     width: 100%;
-    justify-content: space-between;
+    justify-content: space-evenly;
     label {
       font-size: 10px;
       color: $color-gld01;
