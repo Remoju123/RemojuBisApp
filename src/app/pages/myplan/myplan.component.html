@@ -644,6 +644,7 @@
           (change)="onClickBus()"
           *ngIf="row && !row.isCar"
           [disabled]="!isEdit"
+          style="margin-left: 4px;"
         >
           <span *ngIf="row?.isBus">{{ "UseBus" | translate }}</span>
           <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
