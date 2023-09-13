@@ -161,6 +161,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   loading: boolean = false;
 
+  isAuto: boolean;
+
   pictureUrl: string = '../../../assets/img/icon_who.svg';
 
   noPic: string = '../../../assets/img/nopict.png';
@@ -446,13 +448,25 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChangeTransfer(event);
   }
 
+  onCheckedChange(e:any) {
+    this.row.isAuto = e.target.checked;
+    this.isAuto = e.target.checked;
+  }
+
+  onClickPreview() {
+    if (this.isAuto) {
+      this.onClickAuto()
+    } else {
+      this.onClickEdit()
+    }
+  }
+
   // 経路最適化
   onClickAuto() {
-    console.log(this.row);
-
     // 最適化していないこと
     if (this.row.optimized) {
-      this.commonService.messageDialog('Optimized')
+      //this.commonService.messageDialog('Optimized');
+      this.isEdit = !this.isEdit;
       return;
     }
 
@@ -469,6 +483,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
     if (cnt < 4) {
       this.commonService.messageDialog('ErrorMsgAuto');
+      this.isEdit = !this.isEdit
       return;
     }
 
@@ -496,7 +511,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
           this.onChangeTransfer(event);
         }
       });
-    console.log(this.row);
   }
 
   // 出発地・到着地を設定
@@ -1104,12 +1118,12 @@ export class MyplanComponent implements OnInit, OnDestroy {
       this.isWarningCar = true;
       setTimeout(() => {
         this.isWarningCar = false;
-      }, 2500);
+      }, 500);
     } else if (!this.row.isCar && qty > 8) {
       this.isWarningEkitan = true;
       setTimeout(() => {
         this.isWarningEkitan = false;
-      }, 2500);
+      }, 500);
     } else {
       this.isWarningCar = false;
       this.isWarningEkitan = false;
@@ -1117,11 +1131,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
     if (!this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       this.isEdit = true;
     }
-
-    // if (this._qty < qty) {
-    //   alert('added!');
-    //   this._qty = qty;
-    // }
   }
 
   getSpotQty(): number {

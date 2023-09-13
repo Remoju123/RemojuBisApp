@@ -685,7 +685,10 @@ $color-grn01: #81c5b4;
     $edit_en: "Public";
     $preview_en: "Mycar";
     $height: 30px;
-    $radius: 15px;
+    $radius: $height / 2;
+    $span: 56px;
+    $over: 6px;
+    $padl: $span - $over;
     $color: #707070;
     caret-color: transparent;
 
@@ -696,7 +699,7 @@ $color-grn01: #81c5b4;
     font-weight: bolder;
 
     position: relative;
-    width: 159px;
+    width: calc($span * 2);
     background: #fff;
 
     &.en {
@@ -735,13 +738,13 @@ $color-grn01: #81c5b4;
 
         span::after {
           content: $preview;
-          padding: 0 78px 0 0;
+          padding: 0 $span 0 0;
           color: $color;
         }
       }
 
       &:checked ~ #swImg {
-        transform: translateX(73px);
+        transform: translateX($padl);
         background: #81c5b4; //$color;
 
         &::before {
@@ -760,14 +763,14 @@ $color-grn01: #81c5b4;
 
       span::after {
         content: $edit;
-        padding: 0 0 0 84px;
+        padding: 0 0 0 $span;
         color: $color;
       }
     }
 
     #swImg {
       position: absolute;
-      width: 86px;
+      width: calc($span + $over);
       height: $height;
       background: #81c5b4; //$color;
       top: 0px;
@@ -786,13 +789,17 @@ $color-grn01: #81c5b4;
 //最適ルートON/OFF切り替え
 @mixin switchAuto {
   .switchAuto {
-    $edit: "ON";
-    $preview: "OFF";
+    $edit: "する";
+    $preview: "しない";
     $edit_en: "ON";
     $preview_en: "OFF";
     $height: 30px;
-    $radius: 15px;
+    $radius: $height / 2;
+    $span: 46px;
+    $over: 6px;
+    $padl: $span - $over;
     $color: #707070;
+    caret-color: transparent;
 
     line-height: $height;
     letter-spacing: 0;
@@ -801,7 +808,7 @@ $color-grn01: #81c5b4;
     font-weight: bolder;
 
     position: relative;
-    width: 159px;
+    width: calc($span * 2);
     background: #fff;
 
     &.en {
@@ -840,14 +847,14 @@ $color-grn01: #81c5b4;
 
         span::after {
           content: $preview;
-          padding: 0 78px 0 0;
+          padding: 0 $span 0 0;
           color: $color;
         }
       }
 
       &:checked ~ #swImga {
-        transform: translateX(73px);
-        background: #81c5b4; //$color;
+        transform: translateX($padl);
+        background: $color;
 
         &::before {
           content: $edit;
@@ -865,16 +872,16 @@ $color-grn01: #81c5b4;
 
       span::after {
         content: $edit;
-        padding: 0 0 0 84px;
+        padding: 0 0 0 $span;
         color: $color;
       }
     }
 
     #swImga {
       position: absolute;
-      width: 86px;
+      width: calc($span + $over);
       height: $height;
-      background: #81c5b4; //$color;
+      background: $color;
       top: 0px;
       left: 0px;
       border-radius: $radius;
