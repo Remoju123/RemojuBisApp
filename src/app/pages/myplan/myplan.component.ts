@@ -364,7 +364,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
                 //this.row.isAuto = false;
                 this.loading = false;
                 if (!r.isCar && r.ekitanStatus !== '0') {
-                  this.commonService.messageDialog('ErrorMsgEkitan');
+                  this.commonService.messageDialog('ErrorMsgEkitan')
                 }
               }
             });
