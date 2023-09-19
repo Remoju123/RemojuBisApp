@@ -315,13 +315,14 @@ export class MyplanComponent implements OnInit, OnDestroy {
     //     _banner[Math.floor(Math.random() * _banner.length)]
     //   );
     // });
-    this.renderer.setProperty(
-      this.divA8.nativeElement,
-      'innerHTML',
-      `<video #video preload="auto" autoplay controls muted playsinline style="width:100%">
-        <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
-      </video>`
-    );
+
+    // this.renderer.setProperty(
+    //   this.divA8.nativeElement,
+    //   'innerHTML',
+    //   `<video #video preload="auto" autoplay controls muted playsinline style="width:100%">
+    //     <source src="https://remojuv4.blob.core.windows.net/images/video/IMG_0.mp4" type="video/mp4" />
+    //   </video>`
+    // );
   }
 
   ngOnDestroy() {
