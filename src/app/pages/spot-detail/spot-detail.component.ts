@@ -39,6 +39,8 @@ import { makeStateKey, TransferState } from '@angular/platform-browser';
 import { MyplanListCacheStore } from '../../class/mypageplanlist.class';
 import { BannerService } from 'src/app/service/banner.service';
 
+import { Title } from '@angular/platform-browser';
+
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
 export const MYPLANLIST_KEY =
@@ -68,7 +70,8 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private transferState: TransferState,
     @Inject(PLATFORM_ID) private platformId: Object,
     private renderer: Renderer2,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private titleService: Title
   ) {}
 
   data: SpotApp = new SpotApp();
@@ -355,6 +358,12 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
         const langpipe = new LangFilterPipe();
 
+        this.titleService.setTitle(
+          this.isValidJson(this.data.spotName)
+            ? langpipe.transform(this.data.spotName, this.lang)
+            : this.data.spotName
+        );
+
         this.meta.addTags([
           {
             name: 'description',
@@ -621,5 +630,14 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  isValidJson(value) {
+    try {
+      JSON.parse(value);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }

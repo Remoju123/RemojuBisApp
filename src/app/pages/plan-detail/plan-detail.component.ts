@@ -51,6 +51,8 @@ import { NgDialogAnimationService } from 'ng-dialog-animation';
 import { BannerService } from 'src/app/service/banner.service';
 import { MyplanMemoClearPipe } from 'src/app/utils/myplan-memo-clear.pipe';
 
+import { Title } from '@angular/platform-browser';
+
 export const PLANSPOT_KEY = makeStateKey<CacheStore>('PLANSPOT_KEY');
 export const FAVORITE_KEY = makeStateKey<CacheStore>('FAVORITE_KEY');
 export const MYPLANLIST_KEY =
@@ -88,7 +90,8 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object,
     public sanitizer: DomSanitizer,
     private renderer: Renderer2,
-    private bannerService: BannerService
+    private bannerService: BannerService,
+    private titleService: Title
   ) {}
 
   data: PlanApp = new PlanApp();
@@ -532,6 +535,12 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         this.$versionNo = this.data.versionNo;
         this.$planId = this.data.planId;
 
+        this.titleService.setTitle(
+          this.isValidJson(this.data.planName)
+            ? langpipe.transform(this.data.planName, this.lang)
+            : this.data.planName
+        );
+
         if (this.$isRemojuPlan) {
           this.meta.addTags([
             {
@@ -572,6 +581,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
             },
             {
               name: 'subtitle',
+              content: this.data.planName,
+            },
+            {
+              name: 'title',
               content: this.data.planName,
             },
           ]);
@@ -924,5 +937,14 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  isValidJson(value) {
+    try {
+      JSON.parse(value);
+    } catch (e) {
+      return false;
+    }
+    return true;
   }
 }
