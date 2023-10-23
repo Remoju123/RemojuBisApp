@@ -5,9 +5,8 @@ import {
   ChangeDetectorRef,
   OnDestroy,
   ViewChild,
-  ElementRef,
 } from '@angular/core';
-import { NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataService } from '../../service/data.service';
 import { CommonService } from '../../service/common.service';
 //import { IndexedDBService } from "../../service/indexeddb.service";
@@ -15,10 +14,9 @@ import { MyplanService } from '../../service/myplan.service';
 import { LoadNotifyService } from '../../service/load-notify.service';
 import { Catch } from '../../class/log.class';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { HeaderComponent } from '../header/header.component';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MyPlanApp } from '../../class/common.class';
 @Component({
   selector: 'app-root',
   templateUrl: './root.component.html',
