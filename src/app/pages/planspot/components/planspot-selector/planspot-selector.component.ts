@@ -27,6 +27,7 @@ export class PlanspotSelectorComponent implements OnInit {
   @Input() mSort: DataSelected[];
   @Input() searchTarms: tarms;
   @Input() myFavorite: boolean;
+  @Input() isShow:boolean;
   @Output() switch = new EventEmitter<any>();
   @Output() sort = new EventEmitter<any>();
   @Output() keyword = new EventEmitter<any>();

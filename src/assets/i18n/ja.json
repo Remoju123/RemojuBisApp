@@ -127,7 +127,7 @@
   "editCoverImage": "カバー写真を変更",
   "Article": "投稿者のプロフィール",
   "RecommendedPlanwithSpot": "このスポットを含むおすすめプラン",
-  "NumberOfSpots": "スポット数",
+  "NumberOfSpots": "おすすめスポット",
   "ErrorMsgAddSpot": "1つのプランに追加できるスポット数は最大20スポットです。(出発地・到着地を含む)",
   "SearchByKeyword": "キーワード検索",
   "AreaAndCommitment": "エリア・カテゴリー選択",
@@ -294,7 +294,7 @@
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
-  "SearchGuide": "キーワード、地名、住所で検索",
+  "SearchGuide": "こんどどこ行く？おすすめを検索",
   "CreateNew": "新規作成する",
   "LoginConfirmTitle": "保存にはログインが必要です。",
   "LoginConfirmText": "ログイン画面 又は ユーザー登録画面に移動しますか？",
@@ -353,7 +353,7 @@
   "ReleaseStartEndSpotDeleteConfirmText": "出発地と到着地は公開されません。公開する場合は、投稿内容にご注意いただき、利用規約の了承の上、公開を行ってください。自分のみが閲覧可能な状態で保存をする場合には、公開先を「自分のみ(非公開)」に変更し直してから保存ボタンを押してください。",
   "Roundtime": "周遊時間",
   "ErrorMsgEkitan": "経路　公共手段がありませんでした。",
-  "View": "閲覧数",
+  "View": "閲覧",
   "InPlanBox": "「myプラン」エリアで編集可能になりました。",
   "Contact": "お問合せ",
   "PlanboxChange": "myプランに入りました。",
@@ -371,5 +371,6 @@
   "KanakuraLunch": "鎌倉 絶品ランチが食べたい！",
   "SapporoJyosiTabi": "札幌 2泊3日の女子旅プラン",
   "AddNewPlan":"キーワードで検索する",
-  "AddNewfromRecommended":"みんなのおすすめを見る"
+  "AddNewfromRecommended":"みんなのおすすめを見る",
+  "SearchTo":"検索先"
 }

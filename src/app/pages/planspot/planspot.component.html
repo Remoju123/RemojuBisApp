@@ -5,6 +5,7 @@
   [mSort]="$mSort"
   [searchTarms]="optionKeywords"
   [close]="$close"
+  [isShow]="isSelectorShow"
   (switch)="onPlanSpotChange($event)"
   (sort)="sortChange($event)"
   (keyword)="keywordSearch($event)"
@@ -12,15 +13,6 @@
   (reset)="conditionReset()"
 >
 </app-planspot-selector>
-<div *ngIf="condition?.select !== 'google' && condition?.select === 'all'" class="list-header">
-  {{ "AllListHeader" | translate }}
-</div>
-<div *ngIf="condition?.select !== 'google' && condition?.select === 'plan'" class="list-header">
-  {{ "PlanListHeader" | translate }}
-</div>
-<div *ngIf="condition?.select !== 'google' && condition?.select === 'spot'" class="list-header">
-  {{ "SpotListHeader" | translate }}
-</div>
 
 <ng-container *ngIf="condition?.select !== 'google'; else gresult">
   <app-planspot-list

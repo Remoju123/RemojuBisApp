@@ -13,6 +13,12 @@
   // }
 }
 
+#psheader {
+  position: sticky;
+  top: -24px;
+  z-index: 100;
+}
+
 ::ng-deep {
   #userpost {
     .buttons {
@@ -35,7 +41,7 @@
 }
 
 .list-header {
-  position: sticky;
+  // position: sticky;
   height: 21px;
   line-height: 21px;
   top: 0;

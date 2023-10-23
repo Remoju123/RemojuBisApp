@@ -1,5 +1,6 @@
 import {
   Component,
+  HostListener,
   OnDestroy,
   OnInit,
   PLATFORM_ID,
@@ -114,6 +115,8 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   banners: any[];
 
   noPic: string = '../../../../assets/img/nopict.png';
+
+  isSelectorShow: boolean = true;
 
   constructor(
     private translate: TranslateService,
@@ -311,6 +314,16 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   onScrollDown() {
     this.mergeNextDataSet();
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event) {
+    event.stopPropagation();
+    if(document.documentElement.scrollTop > 79){
+      this.isSelectorShow = false;
+    }else{
+      this.isSelectorShow = true;
+    }
   }
 
   async filteringData() {

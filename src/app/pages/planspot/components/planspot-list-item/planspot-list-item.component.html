@@ -14,29 +14,29 @@
           {{ genTitle() }}
         </span>
       </div>
-      <button
-        *ngIf="myFavorite"
-        type="button"
-        class="delete"
-        (click)="onClickDeleteFavorite(item)"
-      ></button>
+      <button *ngIf="myFavorite" type="button" class="delete" (click)="onClickDeleteFavorite(item)"></button>
     </div>
     <div class="card-box" [ngClass]="{ on: chkInMyPlanspot(item) }">
       <div class="card-header">
         <div class="picture">
-          <owl-carousel-o [options]="mainOptions" *ngIf="item.planSpotNames && item.planSpotNames.length > 1; else single">
+          <owl-carousel-o [options]="mainOptions"
+            *ngIf="item.planSpotNames && item.planSpotNames.length > 1; else single">
             <ng-container *ngFor="let row of item.planSpotNames; index as i">
               <ng-template carouselSlide id="item.planId">
                 <div class="thumbmain">
-                  <img
-                    decoding="async"
-                    [src]="item.pictures[i] ? item.pictures[i] : noPic"
-                    [alt]=""
-                    [title]="item.spotName"
-                    (load)="imageloaded = true"
-                  />
-                  <div class="alt" *ngIf="!item.pictures[i + 1]">
-                    {{ item?.planSpotNames[i]?.spotName }}
+                  <div *ngIf="item.planSpotNames.length !== item.pictures.length">
+                    <img decoding="async" [src]="item.pictures[i+1] ? item.pictures[i+1] : noPic" [alt]=""
+                      [title]="item.spotName" (load)="imageloaded = true" />
+                    <div class="alt" *ngIf="!item.pictures[i + 1]">
+                      {{ item?.planSpotNames[i]?.spotName }}
+                    </div>
+                  </div>
+                  <div *ngIf="item.planSpotNames.length === item.pictures.length">
+                    <img decoding="async" [src]="item.pictures[i] ? item.pictures[i] : noPic" [alt]=""
+                      [title]="item.spotName" (load)="imageloaded = true" />
+                    <div class="alt" *ngIf="!item.pictures[i]">
+                      {{ item?.planSpotNames[i]?.spotName }}
+                    </div>
                   </div>
                   <div class="loading" *ngIf="!imageloaded">
                     <p>Loading image...</p>
@@ -48,13 +48,8 @@
           <ng-template #single>
             <ng-container *ngFor="let src of item.pictures; index as i">
               <div class="thumbmain fullwidth">
-                <img
-                  decoding="async"
-                  [src]="src ? src : noPic"
-                  [alt]="item.id"
-                  [title]="item.id"
-                  (load)="imageloaded = true"
-                />
+                <img decoding="async" [src]="src ? src : noPic" [alt]="item.id" [title]="item.id"
+                  (load)="imageloaded = true" />
                 <div class="loading" *ngIf="!imageloaded">
                   <p>Loading image...</p>
                 </div>
@@ -64,17 +59,16 @@
         </div>
         <div class="info">
           <div class="lt">
-            <span
-              class="mark"
-              [ngClass]="{
-                spot: !item.isPlan || item.spotQty === 1,
-                plan: item.isPlan && item.spotQty > 1
-              }"
-            >
-              {{ item.isPlan && item.spotQty > 1 ? "Plan" : "Spot" }}
-            </span>
             <span class="areaName" *ngIf="item.areaName">
               {{ item.areaName | langFilter : lang }}
+            </span>
+          </div>
+          <div class="rt">
+            <span class="mark" [ngClass]="{
+                spot: !item.isPlan || item.spotQty === 1,
+                plan: item.isPlan && item.spotQty > 1
+              }">
+              {{ item.isPlan && item.spotQty > 1 ? "Plan" : "Spot" }}
             </span>
           </div>
         </div>
@@ -86,56 +80,41 @@
             <div class="row">
               <span class="view">
                 {{ "PostedDate" | translate }}：{{
-                  item.releaseCreateDatetime | date : "yyyy/MM/dd"
+                item.releaseCreateDatetime | date : "yyyy/MM/dd"
                 }}
               </span>
               <span class="view">
                 {{ "View" | translate }}：{{ item.pvQtyAll }}
                 {{ "Man" | translate }}
               </span>
-            </div>
-            <div class="row">
               <span class="view">
                 {{ "InplanCount" | translate }}：{{ item.planSpotQty }}
                 {{ "Man" | translate }}
               </span>
-              <!--<span class='view'>
-                {{'ReviewRate'|translate}}：{{item.reviewAvg}}
-              </span>-->
             </div>
             <!-- <span *ngIf="!isProd">
               {{item.id}}
             </span> -->
-            <button
+            <!--button
               *ngIf="!myFavorite"
               mat-button
               class="add-to-favorite"
               [ngClass]="{ on: item.isFavorite }"
               (click)="onClickFavorite(item)"
-            ></button>
+            ></button-->
           </mat-list-item>
           <ng-container *ngIf="item.isPlan; else isSpot">
             <mat-list-item class="row mt02 summery">
               <span class="spots">
-                <label>{{ "NumberOfSpots" | translate }}：</label>
-                <div class="maru">
-                  <span>{{ item.spotQty }}</span>
-                </div>
+                <label>{{ "NumberOfSpots" | translate }}</label>
               </span>
               <span class="timerequired">
                 <label>{{ "Roundtime" | translate }}</label>
-                <span *ngIf="item.timeRequiredHour !== null"
-                  >{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span
-                >
-                <span *ngIf="item.timeRequiredMin !== null"
-                  >{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span
-                >
+                <span *ngIf="item.timeRequiredHour !== null">{{ item.timeRequiredHour }}{{ "Hour" | translate }}</span>
+                <span *ngIf="item.timeRequiredMin !== null">{{ item.timeRequiredMin }}{{ "Minute" | translate }}</span>
               </span>
             </mat-list-item>
-            <mat-list-item
-              class="row psname"
-              [innerHtml]="genPlanSpotNames(item.planSpotNames)"
-            >
+            <mat-list-item class="row psname" [innerHtml]="genPlanSpotNames(item.planSpotNames)">
             </mat-list-item>
           </ng-container>
 
@@ -149,15 +128,14 @@
               </span>
             </mat-list-item>
             <mat-list-item class="row">
-              <span class="businesshour"
-                >{{ "Businesshours" | translate }}：{{
-                  genSpotBusinessHour()
-                }}</span
-              >
+              <span class="businesshour">{{ "Businesshours" | translate }}：{{
+                genSpotBusinessHour()
+                }}</span>
               <span class="regularholiday">{{ genSpotHoliday() }}</span>
             </mat-list-item>
           </ng-template>
-          <mat-list-item class="row categories" *ngIf="item.searchCategories">
+
+          <!--mat-list-item class="row categories" *ngIf="item.searchCategories">
             <mat-card-content class="badge">
               <dl>
                 <dd *ngFor="let item of item.searchCategories">
@@ -165,26 +143,23 @@
                 </dd>
               </dl>
             </mat-card-content>
-          </mat-list-item>
+          </mat-list-item-->
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button
-              mat-flat-button
-              class="link-to-detail"
-              (click)="linktoDetail(item)"
-            >
-              {{ "LinktoDetail" | translate }}
-            </button>
-            <button
-              mat-flat-button
-              class="add-to-plan"
-              [ngClass]="{ on: chkInMyPlanspot(item) }"
-              (click)="onClickAddToPlan(item)"
-            >
-              {{ "AddToPlan" | translate }}
-            </button>
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{ on: item.isFavorite }"
+              (click)="onClickFavorite(item)"></button>
+            <div class="rt">
+              <button mat-flat-button class="link-to-detail" (click)="linktoDetail(item)">
+                {{ "LinktoDetail" | translate }}
+              </button>
+              <button mat-flat-button class="add-to-plan" [ngClass]="{ on: chkInMyPlanspot(item) }"
+                (click)="onClickAddToPlan(item)">
+                {{ "AddToPlan" | translate }}
+              </button>
+            </div>
           </mat-list-item>
         </mat-list>
+
       </div>
 
       <div class="link-area" (click)="linktoDetail(item)"></div>
@@ -206,12 +181,7 @@
           {{ item.googleSpot.spot_name }}
         </span>
       </div>
-      <button
-        *ngIf="myFavorite"
-        type="button"
-        class="delete"
-        (click)="onClickDeleteFavorite(item)"
-      ></button>
+      <button *ngIf="myFavorite" type="button" class="delete" (click)="onClickDeleteFavorite(item)"></button>
     </div>
     <div class="card-box">
       <div class="card-header">
@@ -240,34 +210,21 @@
               {{ "NotPostedRemoju" | translate }}<br />
               {{ "NotPostedRemoju2" | translate }}
             </span>
-            <button
-              *ngIf="!myFavorite"
-              mat-button
-              class="add-to-favorite"
-              [ngClass]="{ on: item.isFavorite }"
-              (click)="onClickFavorite(item)"
-            ></button>
+            <button *ngIf="!myFavorite" mat-button class="add-to-favorite" [ngClass]="{ on: item.isFavorite }"
+              (click)="onClickFavorite(item)"></button>
           </mat-list-item>
           <mat-list-item class="row mt1">
             <span class="googleaddress">{{
               item.googleSpot.formatAddress
-            }}</span>
+              }}</span>
           </mat-list-item>
           <!-- Remoju plan プランに追加 -->
           <mat-list-item class="footer">
-            <button
-              mat-flat-button
-              class="link-to-detail"
-              (click)="linktoDetail(item)"
-            >
+            <button mat-flat-button class="link-to-detail" (click)="linktoDetail(item)">
               {{ "LinktoDetail" | translate }}
             </button>
-            <button
-              mat-flat-button
-              class="add-to-plan"
-              [ngClass]="{ on: chkInMyPlanspot(item) }"
-              (click)="onClickAddToPlan(item)"
-            >
+            <button mat-flat-button class="add-to-plan" [ngClass]="{ on: chkInMyPlanspot(item) }"
+              (click)="onClickAddToPlan(item)">
               {{ "AddToPlan" | translate }}
             </button>
           </mat-list-item>

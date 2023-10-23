@@ -2,123 +2,84 @@
   <mat-card-content>
     <div class="row title" *ngIf="!myFavorite">
       {{ "FindEveryoneRecommendations" | translate }}
-      <span>{{ "FindEveryoneRecommendations2" | translate }}</span>
     </div>
     <div class="row" *ngIf="!myFavorite">
       <div class="input">
-        <input
-          type="text"
-          placeholder="{{ 'SearchGuide' | translate }}"
-          class="keyword"
-          #keywordInput
-          [value]="condition.keyword"
-          (keyup.enter)="onKeywordSearch($event)"
-          (blur)="onKeywordSearch($event)"
-        />
-        <img
-          class="prefix"
-          src="../../../../../assets/img/keyword-search.svg"
-          alt=""
-        />
+        <input type="text" placeholder="{{ 'SearchGuide' | translate }}" class="keyword" #keywordInput
+          [value]="condition.keyword" (keyup.enter)="onKeywordSearch($event)" (blur)="onKeywordSearch($event)" />
+        <img class="prefix" src="../../../../../assets/img/keyword-search.svg" alt="" />
         <button mat-button class="reset" (click)="inputClear()" *ngIf="condition.keyword!==''">
           <img src="../../../../../assets/img/reset_btn.svg" alt="reset" />
         </button>
       </div>
     </div>
-    <div class="row switch">
-      <div class="switch-toggle">
-        <!-- <span>{{ "WhereToLook" | translate }}</span> -->
-        <input
-          id="all"
-          name="state"
-          type="radio"
-          value="all"
-          (change)="onSwitchPlanSpot($event)"
-          [checked]="
-            condition && condition.select !== null
-              ? condition.select === 'all'
-              : false
-          "
-        />
-        <label for="all" class="all" value="all">All</label>
-        <input
-          id="plan"
-          name="state"
-          type="radio"
-          value="plan"
-          (change)="onSwitchPlanSpot($event)"
-          [checked]="condition.select!==null ? condition.select === 'plan' : false"
-        />
-        <label for="plan" class="plan">Plan</label>
-        <input
-          id="spot"
-          name="state"
-          type="radio"
-          value="spot"
-          (change)="onSwitchPlanSpot($event)"
-          [checked]="condition.select!==null ? condition.select === 'spot' : false"
-        />
-        <label for="spot" class="spot" value="spot">Spot</label>
-        <ng-container *ngIf="!myFavorite">
-          <input
-            id="google"
-            name="state"
-            type="radio"
-            value="google"
-            (change)="onSwitchPlanSpot($event)"
-            [checked]="condition.select ? condition.select === 'google' : false"
-          />
-          <label for="google" class="google"></label>
-        </ng-container>
-      </div>
-    </div>
-    <div class="row info">
-      <div class="wrap">
-        <div class="count">
-        <span *ngIf="condition.select !== 'google'">{{ count }}</span
-        ><span class="sm" *ngIf="condition.select !== 'google'"
-          >&nbsp;{{ "Count" | translate }}</span
-        >
-      </div>
-      <mat-form-field
-        class="condition"
-        *ngIf="!myFavorite && condition.select !== 'google'"
-      >
-        <mat-select
-          (selectionChange)="onSortChange($event)"
-          [(value)]="condition.sortval"
-          disableRipple="true"
-        >
-          <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
-            {{ item.name | langFilter : lang }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      </div>
-      <div class="buttons" *ngIf="!myFavorite">
-        <button
-          mat-button
-          class="spot-search"
-          (click)="openDialog(0)"
-          [ngClass]="{ on: this.chkTarms() }"
-          [disabled]="condition.select === 'google'"
-        >
-          {{ "AreaAndCommitment" | translate }}
-        </button>
-      </div>
-    </div>
-    <!-- <div class='row result' [ngClass]="{'on':this.chkTarms()}">
-      <button class='popupItem are' (click)="openDialog(0)">
-        <span>{{condition.select === 'google' ? googleSearchArea : searchTarms?.area}}</span>
-      </button>
-      <button class='popupItem cat' (click)="openDialog(1)" [disabled]="condition.select === 'google'">
-        <span>{{condition.select === 'google' ? condition.keyword : searchTarms?.cate}}</span>
-      </button>
-      <button class="popupItem reset" (click)="condReset()">
-        <mat-icon aria-hidden="false" style="color: #a7a7a7;">delete_forever</mat-icon>
-      </button>
-    </div> -->
   </mat-card-content>
+
+  <div #planSelectorBottom id="planSelectorBottom" *ngIf="isShow">
+    <mat-card-content>
+      <div class="row info">
+        <div class="wrap">
+          <div class="count">
+            <span *ngIf="condition.select !== 'google'">{{ count }}</span><span class="sm"
+              *ngIf="condition.select !== 'google'">&nbsp;{{ "Count" | translate }}</span>
+          </div>
+          <mat-form-field class="condition" *ngIf="!myFavorite && condition.select !== 'google'">
+            <mat-select (selectionChange)="onSortChange($event)" [(value)]="condition.sortval" disableRipple="true">
+              <mat-option *ngFor="let item of mSort" [value]="item.id.toString()">
+                {{ item.name | langFilter : lang }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="buttons" *ngIf="!myFavorite">
+          <button mat-button class="spot-search" (click)="openDialog(0)" [ngClass]="{ on: this.chkTarms() }"
+            [disabled]="condition.select === 'google'">
+            {{ "AreaAndCommitment" | translate }}
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <div *ngIf="condition?.select !== 'google' && condition?.select === 'all'" class="list-header">
+      {{ "AllListHeader" | translate }}
+    </div>
+    <div *ngIf="condition?.select !== 'google' && condition?.select === 'plan'" class="list-header">
+      {{ "PlanListHeader" | translate }}
+    </div>
+    <div *ngIf="condition?.select !== 'google' && condition?.select === 'spot'" class="list-header">
+      {{ "SpotListHeader" | translate }}
+    </div>
+    <div *ngIf="condition?.select === 'google'" class="list-header">
+      {{ "GoogleSearch" | translate }}
+    </div>
+
+    <mat-card-content>
+      <div class="row switch">
+        <div class="head">{{"SearchTo"|translate}}</div>
+        <div class="switch-toggle">
+          <!-- <span>{{ "WhereToLook" | translate }}</span> -->
+          <input id="all" name="state" type="radio" value="all" (change)="onSwitchPlanSpot($event)" [checked]="
+              condition && condition.select !== null
+                ? condition.select === 'all'
+                : false
+            " />
+          <label for="all" class="all" value="all">All</label>
+          <input id="plan" name="state" type="radio" value="plan" (change)="onSwitchPlanSpot($event)"
+            [checked]="condition.select!==null ? condition.select === 'plan' : false" />
+          <label for="plan" class="plan">Plan</label>
+          <input id="spot" name="state" type="radio" value="spot" (change)="onSwitchPlanSpot($event)"
+            [checked]="condition.select!==null ? condition.select === 'spot' : false" />
+          <label for="spot" class="spot" value="spot">Spot</label>
+          <ng-container *ngIf="!myFavorite">
+            <input id="google" name="state" type="radio" value="google" (change)="onSwitchPlanSpot($event)"
+              [checked]="condition.select ? condition.select === 'google' : false" />
+            <label for="google" class="google"></label>
+          </ng-container>
+        </div>
+      </div>
+    </mat-card-content>
+
+  </div>
 
   <div class="popup" [ngClass]="{ on: isChk }">
     <div class="popupInner">
@@ -128,22 +89,16 @@
       <button *ngIf="!myFavorite" class="popupItem are" (click)="openDialog(0)">
         <span>{{
           condition.select === "google" ? "" : searchTarms?.area
-        }}</span>
+          }}</span>
       </button>
-      <button
-        *ngIf="!myFavorite"
-        class="popupItem cat"
-        (click)="openDialog(1)"
-        [disabled]="condition.select === 'google'"
-      >
+      <button *ngIf="!myFavorite" class="popupItem cat" (click)="openDialog(1)"
+        [disabled]="condition.select === 'google'">
         <span>{{
           condition.select === "google" ? condition.keyword : searchTarms?.cate
-        }}</span>
+          }}</span>
       </button>
       <button *ngIf="!myFavorite" class="popupItem reset" (click)="condReset()">
-        <mat-icon aria-hidden="false" style="color: #a7a7a7"
-          >delete_forever</mat-icon
-        >
+        <mat-icon aria-hidden="false" style="color: #a7a7a7">delete_forever</mat-icon>
       </button>
     </div>
   </div>

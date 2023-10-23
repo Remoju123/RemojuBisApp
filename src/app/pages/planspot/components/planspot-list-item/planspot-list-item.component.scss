@@ -47,7 +47,7 @@ div.banner {
       flex-direction: row;
       align-items: center;
       width: 100%;
-      margin-left: 6px;
+      margin-left: 16px;
 
       .mark {
         flex-basis: 41px;
@@ -322,8 +322,6 @@ div.banner {
         .lt {
           display: flex;
 
-          @include marks();
-
           .areaName {
             background-color: rgba(0, 0, 0, 0.6);
             color: #fff;
@@ -354,6 +352,8 @@ div.banner {
           img {
             height: 26px;
           }
+
+          @include marks();
 
           .add-to-favorite {
             // @include ios-reset;
@@ -459,7 +459,8 @@ div.banner {
       border-right: $color-gry07 solid 1px;
       border-radius: 0 0 10px 10px;
       //height: 206px;
-      height: 223px;
+      //height: 223px;
+      height: 167px;
 
       .bottom-view {
         // display: flex;
@@ -481,10 +482,9 @@ div.banner {
             flex-direction: row;
             width: 100%;
             align-items: center;
-
-            .view {
-              flex-basis: 48%;
-            }
+            justify-content: space-between;
+            color: $color-pnk02;
+            
           }
         }
 
@@ -574,6 +574,8 @@ div.banner {
             word-break: break-all;
             margin: 6px 12px;
             width: auto;
+            height: 42px;
+            overflow: hidden;
 
             .wrap {
               display: inline-flex;
@@ -618,7 +620,7 @@ div.banner {
             // overflow: hidden;
             margin-block-start: 0.5em;
             margin-block-end: 0.5em;
-            @include text-truncate(11, 1.6, 3, #fff);
+            @include text-truncate(11, 1.6, 2, #fff);
           }
 
           ::ng-deep.mat-list-item-content {
@@ -729,7 +731,7 @@ div.banner {
             padding-left: 2px;
 
             label {
-              background: #707070;
+              background: $color-gld06;
               color: #fff;
               padding: 1px 4px;
               border-radius: 2px;
@@ -767,6 +769,10 @@ div.banner {
               background-color: #00000087;
               justify-content: center;
               align-items: center;
+            }
+
+            label{
+              font-weight: 700;
             }
 
             span {
@@ -833,10 +839,20 @@ div.banner {
 
         &.footer {
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
           margin-top: 0.8em;
           position: absolute;
           bottom: 12px;
+
+          .mat-list-item-content{
+            width: 100%;
+          }
+
+          .rt{
+            display: flex;
+            width: 100%;
+            justify-content: flex-end;
+          }
 
           .link-to-detail {
             color: #fff;
@@ -918,14 +934,14 @@ div.banner {
               display: inline-block;
               width: 24px;
               height: 24px;
-              background: url("../../../../../assets/img/icon_fav_b.svg");
+              background: url("../../../../../assets/img/icon_fav_p.svg");
               background-repeat: no-repeat;
             }
 
             &.on {
               // background-color: $color-pnk04;
               &::before {
-                background: url("../../../../../assets/img/icon_fav_b_on.svg");
+                background: url("../../../../../assets/img/icon_fav_p_on.svg");
                 background-repeat: no-repeat;
               }
             }

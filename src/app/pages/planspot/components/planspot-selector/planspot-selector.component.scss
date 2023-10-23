@@ -5,16 +5,30 @@
   border-bottom: 1px solid $color-gld05;
   border-radius: 0;
   box-shadow: none;
-  height: 157px;
+  // height: 157px;
 
   &.close {
     height: 0;
     display: none;
   }
 
+  .list-header {
+    // position: sticky;
+    height: 21px;
+    line-height: 21px;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    background-color: $color-gld10;
+    color: #fff;
+  }
+
+
   .mat-card-content {
     margin: 0 16px;
-
+    margin-bottom: 4px;
     .row {
       display: flex;
       justify-content: center;
@@ -51,6 +65,9 @@
           &::placeholder {
             font-weight: normal;
           }
+          &::placeholder{
+            text-align: center;
+          }
         }
 
         img.prefix {
@@ -78,6 +95,12 @@
         $r: 4px;
         margin: 0.2em 0 0.2em;
         justify-content: flex-end;
+
+        .head{
+          display: flex;
+          align-items: center;
+          margin-right: 8px;
+        }
 
         .switch-toggle {
           //background: #7D9E9F;
@@ -419,9 +442,10 @@
           visibility: visible;
         }
       }
+
+      
     }
   }
-
   .popup {
     position: fixed;
     width: calc(100% - 32px);
