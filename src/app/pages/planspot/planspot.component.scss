@@ -17,6 +17,8 @@
   position: sticky;
   top: -24px;
   z-index: 100;
+  display: inline-block;
+  width: 100%;
 }
 
 ::ng-deep {
