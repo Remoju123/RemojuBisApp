@@ -319,7 +319,7 @@ export class PlanspotComponent implements OnInit, OnDestroy, AfterViewChecked {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event) {
     event.stopPropagation();
-    if(document.documentElement.scrollTop > 79){
+    if((window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop) > 79){
       this.isSelectorShow = false;
     }else{
       this.isSelectorShow = true;
