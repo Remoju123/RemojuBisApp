@@ -36,6 +36,7 @@ import { LangFilterPipe } from '../../utils/lang-filter.pipe';
 import { MatDialog } from '@angular/material/dialog';
 import { GoogleSpotDialogComponent } from '../../parts/google-spot-dialog/google-spot-dialog.component';
 import { MapDialogComponent } from '../../parts/map-dialog/map-dialog.component';
+
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -49,6 +50,8 @@ import { MyplanPlanEditDialogComponent } from '../../parts/myplan-plan-edit-dial
 import { MyplanAutoDialogComponent } from 'src/app/parts/myplan-auto-dialog/myplan-auto-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BannerService } from 'src/app/service/banner.service';
+
+import zeroSpotJson from '../../class/zeroSpots.json'
 
 // DatePickerの日本語日付表示修正用
 @Injectable()
@@ -121,7 +124,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
   isEdit: boolean = true;
   isChecked: string = 'checked';
   // スポット0件時のダミー表示
-  spotZero: PlanSpotCommon[];
+  //spotZero: PlanSpotCommon[];
+  spotZero:any[];
   // 初期プラン
   initRow: MyPlanApp;
   // 作成中のプラン
@@ -887,7 +891,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
             a.parentId > b.parentId ? 1 : -1
           );
           this.listSelectedPlan.mArea.map((x) => (x.isHighlight = false));
-          this.spotZero = r.myPlan.planSpots;
+          //this.spotZero = r.myPlan.planSpots;
+          this.spotZero = zeroSpotJson;
           this.initRow = JSON.parse(JSON.stringify(r.myPlan));
           this.initRow.planSpots = null;
           this.initRow.isReleasePrev = false;

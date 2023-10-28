@@ -66,21 +66,22 @@ form {
       margin-right: 15px;
       white-space: nowrap;
       font-size: 11px;
-          caret-color: transparent;
+      caret-color: transparent;
     }
 
   }
 
   .rt {
     display: flex;
-    align-items:baseline;
-        //background: #f8f7f7;
+    align-items: baseline;
+    //background: #f8f7f7;
     //border-radius: 20px;
     padding: 0 8px 0 5px;
     //height: 40px;
     flex-direction: row;
     justify-content: flex-end;
     width: 100%;
+
     span.label {
       font-size: 11px;
     }
@@ -103,7 +104,7 @@ form {
       }
     }
 
-    button.option{
+    button.option {
       color: #fff;
       font-size: 11px;
       font-weight: 700;
@@ -128,6 +129,7 @@ form {
         height: 14px;
       }
     }
+
     .mat-slide-toggle-label {
       display: flex;
       flex-direction: row;
@@ -192,7 +194,7 @@ form {
         background-color: $color-grn01;
       }
 
-      > img {
+      >img {
         width: 100%;
         height: auto;
       }
@@ -200,29 +202,29 @@ form {
   }
 
   .timerequired {
-      padding-top: 2px;
-      font-size: 14px;
-      white-space: nowrap;
-      //position: absolute;
-      //right: 12px;
+    padding-top: 2px;
+    font-size: 14px;
+    white-space: nowrap;
+    //position: absolute;
+    //right: 12px;
 
-      label {
-        background: #707070;
-        color: #fff;
-        padding: 1px 4px;
-        border-radius: 2px;
-        margin-right: 3px;
-      }
-
-      &::before {
-        display: inline-block;
-        //content: url("../../../assets/img/av-timer.svg");
-        width: 16px;
-        height: 16px;
-        padding-right: 3px;
-        vertical-align: sub;
-      }
+    label {
+      background: #707070;
+      color: #fff;
+      padding: 1px 4px;
+      border-radius: 2px;
+      margin-right: 3px;
     }
+
+    &::before {
+      display: inline-block;
+      //content: url("../../../assets/img/av-timer.svg");
+      width: 16px;
+      height: 16px;
+      padding-right: 3px;
+      vertical-align: sub;
+    }
+  }
 }
 
 // edit-section style adjust!
@@ -341,11 +343,11 @@ form {
       align-items: center;
       width: 100%;
 
-      > * {
+      >* {
         min-width: 0;
       }
 
-      > * .label {
+      >* .label {
         display: block;
         font-size: 10px;
         font-weight: bold;
@@ -389,7 +391,7 @@ form {
             margin-top: 8px;
           }
 
-          span > span.required {
+          span>span.required {
             color: red;
           }
 
@@ -421,12 +423,12 @@ form {
       //   flex-basis: 26%;
 
       // }
-      .title{
+      .title {
         font-size: 11px;
-        position:absolute;
+        position: absolute;
         top: 2px;
         left: 16px;
-        color:$color-gld03;
+        color: $color-gld03;
       }
     }
   }
@@ -452,16 +454,17 @@ form {
         height: 30px;
         display: block;
         position: absolute;
-        top:-12px;
+        top: -12px;
         // vertical-align: -3px;
         // margin-right: 3px;
       }
     }
 
-    button.delete{
+    button.delete {
       padding: 0;
       min-width: 36px;
-      .material-icons{
+
+      .material-icons {
         font-size: 18px;
       }
     }
@@ -701,8 +704,7 @@ form {
 
                   span.order {
                     position: absolute;
-                    background: url("../../../assets/img/pin_gold-s.svg")
-                      no-repeat;
+                    background: url("../../../assets/img/pin_gold-s.svg") no-repeat;
                     display: inline-block;
                     width: 25px;
                     height: 30px;
@@ -785,6 +787,7 @@ form {
                   }
 
                   &.on {
+
                     // background-color: $color-pnk04;
                     &::before {
                       background: url("../../../assets/img/icon_bookmark_b_on.svg");
@@ -804,6 +807,7 @@ form {
                 display: flex;
                 height: 68px;
                 width: 40px;
+
                 img {
                   margin-left: 8px;
                 }
@@ -817,10 +821,10 @@ form {
     #overlay {
       position: absolute;
       left: 0;
-      top: 0;
+      top: 17px;
       width: 100%;
-      height: 102%;
-      background: rgba(100, 100, 100, 0.8);
+      height: calc(100% - 17px);
+      background: rgba(100, 100, 100, 0.1);
       z-index: 18;
       display: flex;
       align-items: center;
@@ -997,6 +1001,7 @@ form {
       background-color: #4a4a4a;
       color: #fff;
       text-align: center;
+      border-top: 20px solid transparent;
     }
   }
 }
@@ -1005,7 +1010,7 @@ form {
 
 // myplan-preview
 .myplan-preview {
-  > * {
+  >* {
     padding: 0;
   }
 
@@ -1060,9 +1065,10 @@ form {
         }
       }
     }
-    .title{
+
+    .title {
       font-size: 11px;
-      position:absolute;
+      position: absolute;
       top: 2px;
       left: 16px;
     }
@@ -1371,6 +1377,7 @@ form {
           margin: 0.5em 16px 0;
 
           ::ng-deep .owl-carousel {
+
             .owl-prev,
             .owl-next {
               position: absolute;
@@ -1538,9 +1545,9 @@ form {
             }
           }
 
-          .alt{
+          .alt {
             position: absolute;
-            top:50%;
+            top: 50%;
             transform: translateY(-50%);
             -webkit-transform: translateY(-50%);
             -ms-transform: translateY(-50%);
@@ -1702,7 +1709,7 @@ form {
             z-index: 2;
           }
 
-          > img {
+          >img {
             width: 100%;
             height: 62.6vw;
             object-fit: cover;
@@ -1898,6 +1905,7 @@ form {
     display: flex;
     width: 100%;
     justify-content: space-evenly;
+
     label {
       font-size: 10px;
       color: $color-gld01;
@@ -2125,8 +2133,7 @@ form {
 
                 span.order {
                   position: absolute;
-                  background: url("../../../assets/img/pin_gold-s.svg")
-                    no-repeat;
+                  background: url("../../../assets/img/pin_gold-s.svg") no-repeat;
                   display: inline-block;
                   width: 25px;
                   height: 30px;
@@ -2251,4 +2258,47 @@ form {
     padding: 3px;
     font-size: 12px;
   }
+}
+
+.startend{
+  display: flex;
+  height: 48px;
+  align-items: center;
+  background-color: #eee;
+  font-size: 16px;
+  cursor: pointer;
+
+  .head{
+    width: 80px;
+    height: 100%;
+    background-color: $color-gld10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .ng-star-inserted,
+  .place{
+    margin-left: 1em;
+    color:#8f8f8f;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    span{
+      width: 84%;
+    }
+    button{
+      all:unset;
+      width: 36px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  }
+
+  
 }
