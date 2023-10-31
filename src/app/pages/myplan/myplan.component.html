@@ -136,6 +136,35 @@
           </div>
         </ng-template>
       </a>
+      <div class="sub">
+        <ng-container *ngIf="row; else blanktravel">
+          <mat-form-field class="traveldate">
+            <input matInput [matDatepicker]="picker" [(ngModel)]="row.travelDate" name="travelDate"
+              (dateChange)="registPlan()" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <a href="javascript:void(0);" class="picker" (click)="picker.open()"></a>
+        </ng-container>
+        <ng-template #blanktravel>
+          <a href="javascript:void(0);" class="picker"></a>
+        </ng-template>
+        <label class="time-label">{{ "StartTime" | translate }}</label>
+        <div class="startTime" *ngIf="row; else blankstart">
+          <select name="startTiem" [(ngModel)]="row.startTime" (change)="onChangeTransfer($event)">
+            <option *ngFor="let time of $startTime" [value]="time">
+              {{ time }}
+            </option>
+          </select>
+        </div>
+        <ng-template #blankstart>
+          <div class="startTime">
+            <select name="startTiem" [disabled]="true">
+              <option>09:00</option>
+            </select>
+          </div>
+        </ng-template>
+      </div>
 
       <div class="spacer">
         <img src="../../../assets/img/allow_down_slv.svg" alt="" />

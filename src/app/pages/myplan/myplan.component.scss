@@ -562,6 +562,69 @@ form {
     }
   }
 
+  .sub {
+    position: absolute;
+    top: 117px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    z-index: 103;
+
+    a.picker {
+      background: url("../../../assets/img/icon_calender.svg") no-repeat;
+      width: 16px;
+      height: 15px;
+      display: inline-block;
+    }
+
+    label.time-label {
+      font-size: 10px;
+      color: #a6a29e;
+      margin: 0 5px 0 5px;
+    }
+
+    .startTime {
+      position: relative;
+      width: 70px;
+
+      select {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        padding: 6px 5px;
+        box-sizing: border-box;
+        font-size: 16px;
+        border: #ccc 1px solid;
+        border-radius: 15px;
+        background: #fff;
+      }
+
+      &::after {
+        content: "";
+        display: block;
+        width: 6px;
+        height: 6px;
+        position: absolute;
+        right: 15%;
+        top: 39%;
+        border-bottom: #ae9a65 2px solid;
+        border-right: #ae9a65 2px solid;
+        transform: rotate(45deg) translateY(-30%);
+      }
+    }
+
+    .mat-form-field.traveldate {
+      ::ng-deep .mat-form-field-wrapper {
+        width: 0;
+
+        .mat-datepicker-toggle {
+          display: none;
+        }
+      }
+    }
+
+  }
+
   .spacer {
     display: flex;
     justify-content: center;
@@ -2260,7 +2323,7 @@ form {
   }
 }
 
-.startend{
+.startend {
   display: flex;
   height: 48px;
   align-items: center;
@@ -2268,7 +2331,7 @@ form {
   font-size: 16px;
   cursor: pointer;
 
-  .head{
+  .head {
     width: 80px;
     height: 100%;
     background-color: $color-gld10;
@@ -2280,18 +2343,20 @@ form {
   }
 
   .ng-star-inserted,
-  .place{
+  .place {
     margin-left: 1em;
-    color:#8f8f8f;
+    color: #8f8f8f;
     display: flex;
     justify-content: space-between;
     position: relative;
     width: 100%;
-    span{
+
+    span {
       width: 84%;
     }
-    button{
-      all:unset;
+
+    button {
+      all: unset;
       width: 36px;
       position: absolute;
       right: 0;
@@ -2300,5 +2365,5 @@ form {
     }
   }
 
-  
+
 }
