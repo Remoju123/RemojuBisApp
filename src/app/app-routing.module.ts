@@ -31,7 +31,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail',
-            title: 'スポット詳細',
+            //title: 'スポット詳細',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -39,7 +39,7 @@ const routes: Routes = [
           },
           {
             path: 'spots/detail/:id',
-            title: 'スポット詳細',
+            //title: 'スポット詳細',
             loadChildren: () =>
               import('./pages/spot-detail/spot-detail.module').then(
                 (m) => m.SpotDetailModule
@@ -47,7 +47,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail',
-            title: 'プラン詳細',
+            //title: 'プラン詳細',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
@@ -55,7 +55,7 @@ const routes: Routes = [
           },
           {
             path: 'plans/detail/:id',
-            title: 'プラン詳細',
+            //title: 'プラン詳細',
             loadChildren: () =>
               import('./pages/plan-detail/plan-detail.module').then(
                 (m) => m.PlanDetailModule
