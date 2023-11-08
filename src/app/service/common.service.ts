@@ -69,8 +69,25 @@ export class CommonService implements OnDestroy {
     this.router.events
       .pipe(filter((e: Event): e is RouterEvent => e instanceof NavigationEnd))
       .subscribe((e: RouterEvent) => {
+        this.router.navigate([this.detictUrl(e.url)],{replaceUrl:true});
         this.curUrl.next(e.url);
       });
+  }
+
+  private detictUrl(path:any){
+    let regUrl:string = path;
+    if(path.includes("/m/")){
+      regUrl =  path.replace("/m/","/ja/")
+    }
+    if(path.includes("/ja-jp/")){
+      if(!path.includes("/contents/")){
+        regUrl =  path.replace("/ja-jp/","/ja/")
+      }
+    }
+    if(path.includes("ja-js")){
+      regUrl =  path.replace("/ja-js/","/ja/")
+    }
+    return regUrl;
   }
 
   /*----------------------------

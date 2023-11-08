@@ -11,7 +11,7 @@ import { authConfig } from './auth.config';
 import { CommonService } from './service/common.service';
 import { GaService } from './service/ga.service';
 import { UserService } from './service/user.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
