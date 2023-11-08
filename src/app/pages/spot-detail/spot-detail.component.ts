@@ -358,11 +358,9 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
 
         const langpipe = new LangFilterPipe();
 
-        this.titleService.setTitle(
-          this.isValidJson(this.data.spotName)
-            ? langpipe.transform(this.data.spotName, this.lang)
-            : this.data.spotName
-        );
+        const title = this.isValidJson(this.data.spotName) ? langpipe.transform(this.data.spotName, this.lang) : this.data.spotName;
+
+        this.titleService.setTitle(`${title} - Remoju`);
 
         this.meta.addTags([
           {

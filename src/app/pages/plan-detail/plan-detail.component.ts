@@ -535,11 +535,9 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
         this.$versionNo = this.data.versionNo;
         this.$planId = this.data.planId;
 
-        this.titleService.setTitle(
-          this.isValidJson(this.data.planName)
-            ? langpipe.transform(this.data.planName, this.lang)
-            : this.data.planName
-        );
+        const title = this.isValidJson(this.data.planName) ? langpipe.transform(this.data.planName, this.lang) : this.data.planName;
+
+        this.titleService.setTitle(`${title} - Remoju`);
 
         if (this.$isRemojuPlan) {
           this.meta.addTags([
