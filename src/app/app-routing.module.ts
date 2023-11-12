@@ -23,7 +23,7 @@ const routes: Routes = [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
           {
             path: 'planspot',
-            title: 'おでかけ検索はリモージュ',
+            title: 'おでかけ検索はリモージュ - Remoju<',
             loadChildren: () =>
               import('./pages/planspot/planspot.module').then(
                 (m) => m.PlanspotModule
