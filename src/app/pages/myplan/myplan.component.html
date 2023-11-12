@@ -570,8 +570,8 @@
           <span *ngIf="!row?.isBus">{{ "NoBus" | translate }}</span>
         </mat-slide-toggle>
       </div>
-      <div class="rt">
-        <div *ngIf="row && !row.isCar">
+      <div class="rt" *ngIf="row && !row.isCar">
+        <div>
           <span class="label">{{ "Auto" | translate }}</span>
           <!--
           <div class="switchAuto" [ngClass]="{ en: lang === 'en' }">
@@ -588,11 +588,16 @@
           -->
           <!--
           -->
-          <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots || !isEdit"
+          <!-- <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots || !isEdit"
             matTooltip="{{ 'AutoTips' | translate }}" matTooltipPosition="after" matTooltipClass="toolExplanation">
             ON / OFF
-          </button>
+          </button> -->
+          
         </div>
+        <mat-slide-toggle [checked]="row.isAuto" (change)="onClickAuto()">
+          <span *ngIf="!row?.isAuto">しない</span>
+          <span *ngIf="row?.isAuto">する</span>
+        </mat-slide-toggle>
       </div>
     </div>
     <div class="row1">
