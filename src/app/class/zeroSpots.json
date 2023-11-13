@@ -1,7 +1,7 @@
 [
     {
         "type": 1,
-        "displayOrder": 1,
+        "displayOrder": "1",
         "spotId": 60375,
         "spotName": "[{\"lang\":\"ja\",\"text\":\"1つ目のお出かけ先\"},{\"lang\":\"en\",\"text\":\"Kiyomizu-Dera Temple\"}]",
         "subheading": "[{\"lang\":\"ja\",\"text\":\"初めての京都なら欠かせない！京都を代表する世界遺産。\"},{\"lang\":\"en\",\"text\":\"Night services and a number of souvenir shops at this world heritage site.\"}]",
@@ -58,7 +58,7 @@
     },
     {
         "type": 1,
-        "displayOrder": 2,
+        "displayOrder": "2",
         "spotId": 61067,
         "spotName": "[{\"lang\":\"ja\",\"text\":\"2つ目のお出かけ先\"},{\"lang\":\"en\",\"text\":\"Yasaka Koshindo\"}]",
         "subheading": "[{\"lang\":\"ja\",\"text\":\"京都のインスタ映え神社と言えばここ♪\"},{\"lang\":\"en\",\"text\":\"the Most Colourful Temple in Kyoto\"}]",
@@ -111,65 +111,7 @@
     },
     {
         "type": 1,
-        "displayOrder": 3,
-        "spotId": 60817,
-        "spotName": "[{\"lang\":\"ja\",\"text\":\"3つ目のお出かけ先\"},{\"lang\":\"en\",\"text\":\"Panda no Sanpo\"}]",
-        "subheading": "[{\"lang\":\"ja\",\"text\":\"可愛すぎて食べれない？！インスタに思わず載せたくなるぱんだんごのお店です♡\"},{\"lang\":\"en\",\"text\":\"Too cute to eat! You'll just have to put these adorable panda dango on your Instagram! ♡\"}]",
-        "overview": "[{\"lang\":\"ja\",\"text\":\"2013年3月3日にみたらしだんごが大好きな店主が、大好きなぱんだをモチーフとして始めたのがこのお団子屋さん。  看板メニューはその名も「ぱんだんご」。  丸くて小さいパンダの形のお団子は、焼きたてがとっても柔らかい♡  ぱんだんごに魅せられて、今や国内外から訪れる人もいる人気のお店。  来月3月3日には、おばんざいカフェ「卯sagiの一歩」と楽しいコラボイベントを開催予定です♪  （詳しくはこちらから→https://www.facebook.com/pandanosanpo/ ）    【京都駅】から電車/徒歩で約30分\"},{\"lang\":\"en\",\"text\":\"This dango store was started on March 3rd, 2013 by the shopkeeper, a lover of both pandas and mitarashi dango.  That's why the main attraction is the \\\"pandango\\\".   The tiny, round panda-shaped dango is made fresh, so it's incredibly soft! ♡  The \\\"pandango\\\" is so charming that visitors from all around the country and the world come to this popular shop.  On March 3rd, there will be a super fun collaboration event with the obanzai (Kyoto-style home-cooking) restaurant, Usagi no Ippo.  (Check here for details →https://www.facebook.com/pandanosanpo/ )    Approx. 30 mins. by train/on foot from【Kyoto Sta.】\"}]",
-        "regularHoliday": "1,2,3,7",
-        "latitude": "35.024029",
-        "longitude": "135.733393",
-        "pictureUrl": "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76403.webp",
-        "videos": null,
-        "startTime": null,
-        "stayTime": 60,
-        "aspectRatio": null,
-        "isFavorite": false,
-        "pictures": [
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76403.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76404.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76405.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76406.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76407.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76408.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76409.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76410.webp",
-            "https://ik.imagekit.io/2qejhoz7bda/60817/60817_76411.webp"
-        ],
-        "pictureMemos": null,
-        "pvAllQty": 0,
-        "isEndOfPublication": false,
-        "transfer": null,
-        "memo": null,
-        "areaId": 26,
-        "areaId2": 2605,
-        "areaName": "[{\"lang\":\"ja\",\"text\":\"都道府県\"},{\"lang\":\"en\",\"text\":\"Kyoto\"}]",
-        "categoryText": "[{\"lang\":\"ja\",\"text\":\"食事\"},{\"lang\":\"en\",\"text\":\"Food\"},{\"lang\":\"zh\",\"text\":\"美食\"}]",
-        "categoryIcon": "category_food.svg",
-        "basePlanId": null,
-        "spotAccess": {
-            "version_no": 1,
-            "spot_id": 60817,
-            "display_order": 0,
-            "access": 1,
-            "nearest": "[{\"lang\":\"ja\",\"text\":\"北野白梅町から徒歩7分\"},{\"lang\":\"en\",\"text\":\"7 mins. walk from Kitano-Hakubaicho Sta.\"}]"
-        },
-        "businessHours": [
-            {
-                "version_no": 1,
-                "spot_id": 60817,
-                "display_order": 1,
-                "business_day": "1,2,3,4,5,6,7,8",
-                "business_hours": "[{\"from\":\"12:00\",\"to\":\"\",\"comment\":[{\"lang\":\"ja\",\"text\":\"\"},{\"lang\":\"en\",\"text\":\"\"}]}]",
-                "is_main": true
-            }
-        ],
-        "googleSpot": null,
-        "planUserpictures": null
-    },
-    {
-        "type": 1,
-        "displayOrder": 4,
+        "displayOrder": "-",
         "spotId": 60327,
         "spotName": "[{\"lang\":\"ja\",\"text\":\"６ヶ所まで経路がでます\"},{\"lang\":\"en\",\"text\":\"Kinkakuji\"}]",
         "subheading": "[{\"lang\":\"ja\",\"text\":\"金閣寺\"},{\"lang\":\"en\",\"text\":\"Kinkakuji\"}]",

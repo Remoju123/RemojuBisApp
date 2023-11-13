@@ -557,7 +557,7 @@
       <div class="lt">
         <div>
           <span class="label">{{ "TravelRoute" | translate }}</span>
-          <div class="switchTran" [ngClass]="{ en: lang === 'en' }">
+          <div class="switchTran" [ngClass]="{ en: lang === 'en',prv: !row || !isEdit }">
             <input type="checkbox" id="switch-tran" (click)="onClickTran()" [checked]="!row?.isCar"
               [disabled]="!row || !isEdit" />
             <label for="switch-tran"><span></span></label>
@@ -589,7 +589,8 @@
           <!--
           -->
           <button class="option" (click)="onClickAuto()" [disabled]="!row?.planSpots || !isEdit"
-            matTooltip="{{ 'AutoTips' | translate }}" matTooltipPosition="after" matTooltipClass="toolExplanation">
+            [ngClass]="{prv:!isEdit}" matTooltip="{{ 'AutoTips' | translate }}" matTooltipPosition="after"
+            matTooltipClass="toolExplanation">
             ON / OFF
           </button>
         </div>

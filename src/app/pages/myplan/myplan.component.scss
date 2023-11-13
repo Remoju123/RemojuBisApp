@@ -115,6 +115,9 @@ form {
       width: 100%;
       white-space: nowrap;
       padding: 0;
+      &.prv{
+        opacity: 0.5;
+      }
     }
   }
 
@@ -706,6 +709,9 @@ form {
       &.zero {
         ::ng-deep .mat-expansion-panel-content {
           display: none !important;
+        }
+        .spotName{
+          color: $color-pnk04!important;
         }
       }
 
