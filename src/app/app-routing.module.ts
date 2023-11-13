@@ -18,6 +18,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        title: 'おでかけ検索は、リモージュ｜次のお休み・旅行を計画しよう！- remoju',
         component: RootComponent,
         children: [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
