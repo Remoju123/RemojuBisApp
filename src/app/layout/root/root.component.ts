@@ -25,7 +25,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class RootComponent implements OnInit, OnDestroy {
   private reloadRequestCount = 0;
   private onDestroy$ = new Subject();
-  title = 'おでかけ検索はリモージュ - Remoju<';
+  title = 'おでかけ検索はリモージュ - Remoju';
   showScroll: boolean | undefined;
   showScrollHeight = 300;
   hideScrollHeight = 10;
