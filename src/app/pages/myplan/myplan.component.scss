@@ -115,7 +115,8 @@ form {
       width: 100%;
       white-space: nowrap;
       padding: 0;
-      &.prv{
+
+      &.prv {
         opacity: 0.5;
       }
     }
@@ -710,8 +711,9 @@ form {
         ::ng-deep .mat-expansion-panel-content {
           display: none !important;
         }
-        .spotName{
-          color: $color-pnk04!important;
+
+        .spotName {
+          color: $color-pnk04 !important;
         }
       }
 
@@ -992,6 +994,34 @@ form {
             text-align: center;
             line-height: 2;
           }
+        }
+      }
+
+      .box {
+        position: sticky;
+        z-index: 30;
+        //top: calc(100vh - 158px);
+        bottom: 50%;
+        padding: 15px;
+        width: 80%;
+        margin: auto;
+        right: 0;
+        left: 0;
+        background-color: #ca9f20;
+        color: #fff;
+        border-radius: 32px;
+        font-size: 14px;
+        // text-align: center;
+        //display: none;
+        border: 3px solid #fff;
+        opacity: 0;
+        transition: opacity 1s;
+      }
+
+      &:hover {
+        .box {
+          //display: block;
+          opacity: 1;
         }
       }
     }
@@ -2327,6 +2357,18 @@ form {
     background: #00000090;
     padding: 3px;
     font-size: 12px;
+  }
+
+  .blank {
+    background: #EEAE16;
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .cdk-overlay-container:has(.brank) {
+    .cdk-overlay-connected-position-bounding-box {
+      top: 100px !important;
+    }
   }
 }
 
