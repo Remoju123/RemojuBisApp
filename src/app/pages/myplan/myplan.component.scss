@@ -2359,17 +2359,17 @@ form {
     font-size: 12px;
   }
 
-  .blank {
-    background: #EEAE16;
-    padding: 6px;
-    font-size: 14px;
-  }
+  // .blank {
+  //   //background: #EEAE16;
+  //   padding: 6px;
+  //   font-size: 14px;
+  // }
 
-  .cdk-overlay-container:has(.brank) {
-    .cdk-overlay-connected-position-bounding-box {
-      top: 100px !important;
-    }
-  }
+  // .cdk-overlay-container:has(.brank) {
+  //   .cdk-overlay-connected-position-bounding-box {
+  //     top: 100px !important;
+  //   }
+  // }
 }
 
 .startend {
