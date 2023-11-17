@@ -245,7 +245,7 @@
         <!-- <div id="overlay" *ngIf="!row?.planSpots" matTooltip="まだプランは空です。おでかけ検索するか、おすすめプランから選択してください。" matTooltipPosition="above"
           matTooltipClass="blank">
         </div> -->
-        <div id="overlay">
+        <div id="overlay" *ngIf="!row?.planSpots" >
           <div class="box">まだプランは空です。<br/>おでかけ検索するか、おすすめプランから選択してください。</div>
         </div>
 
