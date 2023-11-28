@@ -72,7 +72,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private bannerService: BannerService,
     private titleService: Title
-  ) {}
+  ) { }
 
   data: SpotApp = new SpotApp();
   $latitude: number;
@@ -378,9 +378,13 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
             content: langpipe.transform(this.data.seo.subtitle, this.lang)
               ? langpipe.transform(this.data.seo.subtitle, this.lang)
               : langpipe.transform(this.data.spotName, this.lang) +
-                ',' +
-                langpipe.transform(this.data.subheading, this.lang),
+              ',' +
+              langpipe.transform(this.data.subheading, this.lang),
           },
+          {
+            name: 'title',
+            content: `${title} - Remoju`
+          }
         ]);
 
         this.reviewResult = this.data.reviewResult;

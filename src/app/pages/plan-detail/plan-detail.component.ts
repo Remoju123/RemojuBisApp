@@ -557,6 +557,10 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
                 ? langpipe.transform(this.data.seo.subtitle, this.lang)
                 : langpipe.transform(this.data.planName, this.lang),
             },
+            {
+              name: 'title',
+              content: `${title} - Remoju`
+            }
           ]);
 
           this.data.planName = langpipe.transform(
