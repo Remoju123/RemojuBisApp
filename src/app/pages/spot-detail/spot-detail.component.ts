@@ -72,7 +72,7 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private bannerService: BannerService,
     private titleService: Title
-  ) {}
+  ) { }
 
   data: SpotApp = new SpotApp();
   $latitude: number;
@@ -138,19 +138,19 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
     this.guid = await this.commonService.getGuid();
 
     const arr = [];
-    this.bannerService.getBannerList().subscribe((d) => {
-      d.map((item) => {
-        if (item.size === '320x50') {
-          arr.push(item);
-        }
-      });
-      const _banner = arr.map((f) => f.link);
-      this.renderer.setProperty(
-        this.divA8.nativeElement,
-        'innerHTML',
-        _banner[Math.floor(Math.random() * _banner.length)]
-      );
-    });
+    // this.bannerService.getBannerList().subscribe((d) => {
+    //   d.map((item) => {
+    //     if (item.size === '320x50') {
+    //       arr.push(item);
+    //     }
+    //   });
+    //   const _banner = arr.map((f) => f.link);
+    //   this.renderer.setProperty(
+    //     this.divA8.nativeElement,
+    //     'innerHTML',
+    //     _banner[Math.floor(Math.random() * _banner.length)]
+    //   );
+    // });
 
     this.activatedRoute.paramMap
       .pipe(takeUntil(this.onDestroy$))
@@ -378,9 +378,13 @@ export class SpotDetailComponent implements OnInit, OnDestroy {
             content: langpipe.transform(this.data.seo.subtitle, this.lang)
               ? langpipe.transform(this.data.seo.subtitle, this.lang)
               : langpipe.transform(this.data.spotName, this.lang) +
-                ',' +
-                langpipe.transform(this.data.subheading, this.lang),
+              ',' +
+              langpipe.transform(this.data.subheading, this.lang),
           },
+          {
+            name: 'title',
+            content: `${title} - Remoju`
+          }
         ]);
 
         this.reviewResult = this.data.reviewResult;

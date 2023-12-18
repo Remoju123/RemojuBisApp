@@ -730,6 +730,10 @@ $color-grn01: #81c5b4;
       }
     }
 
+    &.prv{
+      opacity: 0.5;
+    }
+
     input[type="checkbox"] {
       display: none;
 

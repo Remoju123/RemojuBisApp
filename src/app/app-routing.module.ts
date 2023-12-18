@@ -18,12 +18,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        //title: 'おでかけ検索は、リモージュ｜次のお休み・旅行を計画しよう！- remoju',
         component: RootComponent,
         children: [
           { path: '', redirectTo: '/ja/planspot', pathMatch: 'full' },
           {
             path: 'planspot',
-            title: 'おでかけ検索はリモージュ - Remoju<',
+            //title: 'おでかけ検索は、リモージュ｜次のお休み・旅行を計画しよう！- remoju',
             loadChildren: () =>
               import('./pages/planspot/planspot.module').then(
                 (m) => m.PlanspotModule
@@ -125,4 +126,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -917,7 +917,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.row.timeRequiredDisp = null;
     this.row.isAuto = false;
     this.row.optimized = false;
-    this.row.isBus = false;
+    this.row.isBus = true;
     this.endTime = null;
     this.row.planSpots = null;
     this.isEdit = true;

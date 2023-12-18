@@ -25,7 +25,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class RootComponent implements OnInit, OnDestroy {
   private reloadRequestCount = 0;
   private onDestroy$ = new Subject();
-  title = 'おでかけ検索はリモージュ - Remoju<';
+  //title = 'おでかけ検索は、リモージュ | remoju 次のお休み・旅行を計画しよう！';
   showScroll: boolean | undefined;
   showScrollHeight = 300;
   hideScrollHeight = 10;
@@ -119,6 +119,7 @@ export class RootComponent implements OnInit, OnDestroy {
     this.commonService.curlang$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((lang) => {
+        console.log(lang);
         sessionStorage.setItem('gml', lang);
         this.currentLang = lang;
         let suffix = lang === 'en' ? '_en' : '';

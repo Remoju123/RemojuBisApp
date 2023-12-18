@@ -294,7 +294,7 @@
   "LogoutConfirmTitle": "ログアウトしますか？(未保存のプランがあります)",
   "LogoutConfirmText": "「はい」を選択した場合、未保存の編集内容は削除されます。",
   "NearestSt": "最寄駅",
-  "SearchGuide": "こんどどこ行く？おすすめを検索",
+  "SearchGuide": "どこ行く？おすすめを検索",
   "CreateNew": "新規作成する",
   "LoginConfirmTitle": "保存にはログインが必要です。",
   "LoginConfirmText": "ログイン画面 又は ユーザー登録画面に移動しますか？",
@@ -370,6 +370,8 @@
   "SearchGoogle": "Googleで検索",
   "KanakuraLunch": "鎌倉 絶品ランチが食べたい！",
   "SapporoJyosiTabi": "札幌 2泊3日の女子旅プラン",
+  "KamakuraJyosiTabi":"鎌倉 女子旅を120%楽しむスポット",
+  "AreaSpecial":"地域別 特集ページ",
   "AddNewPlan":"キーワードで検索する",
   "AddNewfromRecommended":"みんなのおすすめを見る",
   "SearchTo":"検索先"
