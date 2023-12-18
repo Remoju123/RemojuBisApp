@@ -598,7 +598,7 @@
           </button> -->
           
         </div>
-        <mat-slide-toggle [checked]="row.isAuto" (change)="onClickAuto()">
+        <mat-slide-toggle [checked]="row.isAuto" (change)="onClickAuto()" [disabled]="!isEdit">
           <span *ngIf="!row?.isAuto">しない</span>
           <span *ngIf="row?.isAuto">する</span>
         </mat-slide-toggle>

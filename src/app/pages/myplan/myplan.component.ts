@@ -125,7 +125,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   isChecked: string = 'checked';
   // スポット0件時のダミー表示
   //spotZero: PlanSpotCommon[];
-  spotZero:any[];
+  spotZero: any[];
   // 初期プラン
   initRow: MyPlanApp;
   // 作成中のプラン
@@ -338,49 +338,53 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   // 編集・プレビュー切り替え
-  // async onClickEdit(isAuto: boolean = false) {
+  //async onClickEdit(isAuto: boolean) {
   async onClickEdit() {
-    // // スポット数チェック
-    // if (this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
-    //   let dialogRef = null;
-    //   if (this.row.isCar) {
-    //     dialogRef = this.commonService.messageDialog('ErrorMsgSetTransferCar');
-    //   } else {
-    //     dialogRef = this.commonService.messageDialog(
-    //       'ErrorMsgSetTransferEkitan'
-    //     );
-    //   }
-    //   dialogRef.afterClosed().subscribe(() => {
-    //     this.switch.nativeElement.checked = false;
-    //   });
-    // } else {
-    //   this.isEdit = !this.isEdit;
-    //   // プレビューの場合
-    //   if (!this.isEdit) {
-    //     // 移動方法取得処理
-    //     if (this.row.isTransferSearch) {
-    //       this.loading = true;
-    //       this.myplanService.setTransfer(this.isAuto).then((result) => {
-    //         result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
-    //           if (r) {
-    //             this.setUserPicture(r);
-    //             // 変更を保存
-    //             this.registPlan();
-    //             // 最適化OFF
-    //             //this.row.isAuto = false;
-    //             this.loading = false;
-    //             if (!r.isCar && r.ekitanStatus !== '0') {
-    //               this.commonService.messageDialog('ErrorMsgEkitan')
-    //             }
-    //           }
-    //         });
-    //       });
-    //     } else {
-    //       this.setPreviewPicture();
-    //     }
-    //     this.setPreviewPicture();
-    //   }
-    // }
+    if(this.row.isAuto && this.isEdit){
+      this.execAuto();
+    }
+
+    // スポット数チェック
+    if (this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
+      let dialogRef = null;
+      if (this.row.isCar) {
+        dialogRef = this.commonService.messageDialog('ErrorMsgSetTransferCar');
+      } else {
+        dialogRef = this.commonService.messageDialog(
+          'ErrorMsgSetTransferEkitan'
+        );
+      }
+      dialogRef.afterClosed().subscribe(() => {
+        this.switch.nativeElement.checked = false;
+      });
+    } else {
+      this.isEdit = !this.isEdit;
+      // プレビューの場合
+      if (!this.isEdit) {
+        // 移動方法取得処理
+        if (this.row.isTransferSearch) {
+          this.loading = true;
+          this.myplanService.setTransfer(this.isAuto).then((result) => {
+            result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
+              if (r) {
+                this.setUserPicture(r);
+                // 変更を保存
+                this.registPlan();
+                // 最適化OFF
+                this.row.isAuto = !this.row.isAuto;
+                this.loading = false;
+                if (!r.isCar && r.ekitanStatus !== '0') {
+                  this.commonService.messageDialog('ErrorMsgEkitan')
+                }
+              }
+            });
+          });
+        } else {
+          this.setPreviewPicture();
+        }
+        this.setPreviewPicture();
+      }
+    }
   }
 
   // プラン編集ダイアログ
@@ -454,7 +458,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChangeTransfer(event);
   }
 
-  onCheckedChange(e:any) {
+  onCheckedChange(e: any) {
     this.row.isAuto = e.target.checked;
     this.isAuto = e.target.checked;
   }
@@ -470,54 +474,57 @@ export class MyplanComponent implements OnInit, OnDestroy {
   // 経路最適化
   onClickAuto() {
     this.row.isAuto = !this.row.isAuto;
-    // // 最適化していないこと
-    // if (this.row.optimized) {
-    //   //this.commonService.messageDialog('Optimized');
-    //   this.isEdit = !this.isEdit;
-    //   return;
-    // }
+    //this.execAuto();
+  }
 
-    // // 出発地、到着地を含めてスポットが4つ以上あること
-    // let cnt = 0;
-    // if (this.row.startPlanSpot) {
-    //   cnt += 1;
-    // }
-    // if (this.row.planSpots) {
-    //   cnt += this.row.planSpots.length;
-    // }
-    // if (this.row.endPlanSpot) {
-    //   cnt += 1;
-    // }
-    // if (cnt < 4) {
-    //   this.commonService.messageDialog('ErrorMsgAuto');
-    //   this.isEdit = !this.isEdit
-    //   return;
-    // }
+  execAuto() {
+    // 最適化していないこと
+    if (this.row.optimized) {
+      //this.commonService.messageDialog('Optimized');
+      this.isEdit = !this.isEdit;
+      return;
+    }
 
-    // const dialog = this.dialog.open(MyplanAutoDialogComponent, {
-    //   maxWidth: '100%',
-    //   width: this.isMobile ? '92vw' : '720px',
-    //   maxHeight: '90vh',
-    //   position: { top: '10px' },
-    //   data: [this.isMobile, this.row],
-    //   autoFocus: false,
-    //   id: 'auto',
-    // });
-    // dialog
-    //   .afterClosed()
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe((d: any) => {
-    //     if (d === 'ok') {
-    //       // 最適化ON
-    //       this.row.isAuto = true;
-    //       this.row.isTransferSearch = true;
-    //       this.onClickEdit(true);
-    //     } else {
-    //       // 最適化OFF
-    //       this.row.isAuto = false;
-    //       this.onChangeTransfer(event);
-    //     }
-    //   });
+    // 出発地、到着地を含めてスポットが4つ以上あること
+    let cnt = 0;
+    if (this.row.startPlanSpot) {
+      cnt += 1;
+    }
+    if (this.row.planSpots) {
+      cnt += this.row.planSpots.length;
+    }
+    if (this.row.endPlanSpot) {
+      cnt += 1;
+    }
+    if (cnt < 4) {
+      this.commonService.messageDialog('ErrorMsgAuto');
+      //this.isEdit = !this.isEdit
+      return;
+    }
+
+    const dialog = this.dialog.open(MyplanAutoDialogComponent, {
+      maxWidth: '100%',
+      width: this.isMobile ? '92vw' : '720px',
+      maxHeight: '90vh',
+      position: { top: '10px' },
+      data: [this.isMobile, this.row],
+      autoFocus: false,
+      id: 'auto',
+    });
+    dialog
+      .afterClosed()
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((d: any) => {
+        if (d === 'ok') {
+          // 最適化ON
+          //this.row.isAuto = true;
+          this.row.isTransferSearch = true;
+        } else {
+          // 最適化OFF
+          //this.row.isAuto = false;
+          this.onChangeTransfer(event);
+        }
+      });
   }
 
   // 出発地・到着地を設定
@@ -1012,7 +1019,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
             this.planService.transtimes(transfer);
           this.row.startPlanSpot.transflow =
             this.planService.transflows(transfer);
-        } catch {}
+        } catch { }
       }
     }
 
@@ -1095,7 +1102,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
               this.planService.transtimes(transfer);
             this.row.planSpots[i].transflow =
               this.planService.transflows(transfer);
-          } catch {}
+          } catch { }
         }
       }
     }
@@ -1270,8 +1277,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
                     var file = this.commonService.blobToFile(
                       blob,
                       Date.now() +
-                        this.row.planSpots[i].planUserpictures[j].pictureFile
-                          .name
+                      this.row.planSpots[i].planUserpictures[j].pictureFile
+                        .name
                     );
                     // 画像保存処理
                     result.push(
