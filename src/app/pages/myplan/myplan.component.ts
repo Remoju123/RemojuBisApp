@@ -1231,8 +1231,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.myplanService.registPlan().then((result) => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async (r) => {
         //if(r){
-
-        console.log(r);
         const result = [];
         // プランメイン写真
         if (this.row.pictureFile) {
