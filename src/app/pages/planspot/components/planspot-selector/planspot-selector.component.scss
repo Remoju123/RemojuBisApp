@@ -7,9 +7,11 @@
   box-shadow: none;
   // height: 157px;
 
-  &.close {
-    height: 0;
-    display: none;
+  @media screen and (min-width: 429px) and (max-width: 1024px) {
+    &.close {
+      height: 0;
+      display: none;
+    }
   }
 
   .list-header {
@@ -29,6 +31,7 @@
   .mat-card-content {
     margin: 0 16px;
     margin-bottom: 4px;
+
     .row {
       display: flex;
       justify-content: center;
@@ -41,7 +44,8 @@
         font-weight: 600;
         flex-direction: column;
         align-items: center;
-        span{
+
+        span {
           font-size: smaller;
         }
       }
@@ -50,6 +54,7 @@
         position: relative;
         display: flex;
         width: 100%;
+
         input {
           width: 100%;
           height: 34px;
@@ -62,10 +67,12 @@
           -webkit-appearance: none;
           text-overflow: ellipsis;
           color: #666;
+
           &::placeholder {
             font-weight: normal;
           }
-          &::placeholder{
+
+          &::placeholder {
             text-align: center;
           }
         }
@@ -96,7 +103,7 @@
         margin: 0.2em 0 0.2em;
         justify-content: flex-end;
 
-        .head{
+        .head {
           display: flex;
           align-items: center;
           margin-right: 8px;
@@ -119,7 +126,7 @@
             position: absolute;
             opacity: 0;
 
-            + label {
+            +label {
               color: #fff;
               cursor: pointer;
               display: flex;
@@ -138,7 +145,7 @@
             }
 
             &#spot {
-              &:checked + label {
+              &:checked+label {
                 background: #679ecf;
                 //border-radius: 12px 0 0 12px;
                 border: $boder-width solid #386389;
@@ -146,7 +153,7 @@
             }
 
             &#plan {
-              &:checked + label {
+              &:checked+label {
                 background: #fdb750;
                 //border-radius: 0 12px 12px 0;
                 border: $boder-width solid #ae8200;
@@ -154,7 +161,7 @@
             }
 
             &#all {
-              &:checked + label {
+              &:checked+label {
                 //background:#797E86;
                 background: #de7274;
                 //border-radius: $r 0 0 $r;
@@ -163,7 +170,7 @@
             }
 
             &#google {
-              &:checked + label {
+              &:checked+label {
                 //background: #aeaeae;
                 //border-radius: 0 $r $r 0;
                 border: $boder-width solid rgb(174, 174, 174);
@@ -191,8 +198,7 @@
                 display: inline-block;
                 width: 15px;
                 height: 14px;
-                background: url("../../../../../assets/img/pref_plan.svg")
-                  no-repeat;
+                background: url("../../../../../assets/img/pref_plan.svg") no-repeat;
                 vertical-align: middle;
                 margin-left: 2px;
               }
@@ -219,8 +225,7 @@
                 display: inline-block;
                 width: 11px;
                 height: 14px;
-                background: url("../../../../../assets/img/pref_spot.svg")
-                  no-repeat;
+                background: url("../../../../../assets/img/pref_spot.svg") no-repeat;
                 vertical-align: middle;
                 margin-right: 2px;
               }
@@ -239,14 +244,14 @@
             &.google {
               //background: #aeaeae;
               border: $boder-width solid #eee;
+
               //width: 36px;
               &::before {
                 content: "";
                 display: inline-block;
                 width: 39px;
                 height: 14px;
-                background: url("../../../../../assets/img/logo_google_icon.svg")
-                  no-repeat;
+                background: url("../../../../../assets/img/logo_google_icon.svg") no-repeat;
                 background-size: contain;
                 vertical-align: middle;
                 margin-right: 2px;
@@ -262,10 +267,11 @@
         justify-content: space-between;
         align-items: center;
 
-        .wrap{
+        .wrap {
           display: flex;
           align-items: center;
           width: 100%;
+
           .count {
             font-size: 17px;
             color: $color-gry06;
@@ -443,9 +449,10 @@
         }
       }
 
-      
+
     }
   }
+
   .popup {
     position: fixed;
     width: calc(100% - 32px);

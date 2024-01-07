@@ -1,17 +1,4 @@
 @import "vars";
-@media screen and (min-width: 1025px) {
-  #psheader {
-    //position: sticky;
-    top: 0;
-    display: block;
-    z-index: 11;
-  }
-  // #container {
-  //   height: 100%;
-  //   overflow-y: scroll;
-  //   position: relative;
-  // }
-}
 
 #psheader {
   position: sticky;
@@ -19,6 +6,22 @@
   z-index: 100;
   display: inline-block;
   width: 100%;
+}
+
+@media screen and (min-width: 1025px) {
+  #psheader {
+    //position: absolute;
+    top: 0;
+    display: block;
+    z-index: 11;
+    
+  }
+
+  // #container {
+  //   height: 100%;
+  //   overflow-y: scroll;
+  //   position: relative;
+  // }
 }
 
 ::ng-deep {
@@ -56,41 +59,47 @@
 }
 
 
-.google-box{
+.google-box {
   display: flex;
-  .box{
-    &.left{
+
+  .box {
+    &.left {
       flex-basis: 78%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      .wrap{
-        width:260px;
-        .title{
+
+      .wrap {
+        width: 260px;
+
+        .title {
           font-size: 16px;
           font-weight: bolder;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        .address{
+
+        .address {
           font-size: 12px;
         }
       }
-      .actions{
-        .add-to-plan{
+
+      .actions {
+        .add-to-plan {
           color: #fff;
-            font-size: 14px;
-            font-weight: 700;
-            border: 1px solid #fff;
-            border-radius: 5px;
-            background: $color-pnk04;
-            // padding: 0 25px;
-            line-height: 27px;
-            // width: 150px;
-            white-space: nowrap;
+          font-size: 14px;
+          font-weight: 700;
+          border: 1px solid #fff;
+          border-radius: 5px;
+          background: $color-pnk04;
+          // padding: 0 25px;
+          line-height: 27px;
+          // width: 150px;
+          white-space: nowrap;
         }
-        .link-to-detail{
+
+        .link-to-detail {
           color: #fff;
           font-size: 14px;
           font-weight: 700;
@@ -102,16 +111,19 @@
         }
       }
     }
-    &.right{
+
+    &.right {
       flex-basis: 22%;
       display: flex;
       justify-content: flex-end;
-      .wrap{
+
+      .wrap {
         width: 90px;
         height: 90px;
         border-radius: 8px;
         overflow: hidden;
-        img{
+
+        img {
           height: 90px;
           object-fit: cover;
           width: 100%;
