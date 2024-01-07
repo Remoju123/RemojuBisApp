@@ -240,7 +240,7 @@ export class PlanspotListItemComponent implements OnInit {
     if (item.isPlan && !item.isRemojuPlan) {
       this.userPosts.emit(item);
     } else {
-      this.keyword.emit(item.postObjectId);
+      this.keyword.emit(item.guid);
     }
   }
 
