@@ -244,20 +244,21 @@ export class PlanspotListItemComponent implements OnInit {
     }
   }
 
+  // A8 settings
   setA8banner(item: PlanSpotList) {
-      const banners = this.banners;
+      // const banners = this.banners;
 
-      //console.log(item.keyword);
-      banners?.map((b) => {
-        if (b.keyword !== '') {
-          //console.log(b.keyword);
-        }
-      });
+      // //console.log(item.keyword);
+      // banners?.map((b) => {
+      //   if (b.keyword !== '') {
+      //     //console.log(b.keyword);
+      //   }
+      // });
 
-      if (banners && banners[item.serialNum % banners.length]) {
-        //console.log(banners[item.serialNum % banners.length].keyword);
-        return banners[item.serialNum % banners.length].link;
-      }
+      // if (banners && banners[item.serialNum % banners.length]) {
+      //   //console.log(banners[item.serialNum % banners.length].keyword);
+      //   return banners[item.serialNum % banners.length].link;
+      // }
       return null;
 
   }

@@ -165,19 +165,20 @@ export class PlanDetailComponent implements OnInit, OnDestroy {
     this.guid = await this.commonService.getGuid();
 
     const arr = [];
-    this.bannerService.getBannerList().subscribe((d) => {
-      d.map((item) => {
-        if (item.size === '320x50') {
-          arr.push(item);
-        }
-      });
-      const _banner = arr.map((f) => f.link);
-      this.renderer.setProperty(
-        this.divA8.nativeElement,
-        'innerHTML',
-        _banner[Math.floor(Math.random() * _banner.length)]
-      );
-    });
+    //A8 Settings
+    // this.bannerService.getBannerList().subscribe((d) => {
+    //   d.map((item) => {
+    //     if (item.size === '320x50') {
+    //       arr.push(item);
+    //     }
+    //   });
+    //   const _banner = arr.map((f) => f.link);
+    //   this.renderer.setProperty(
+    //     this.divA8.nativeElement,
+    //     'innerHTML',
+    //     _banner[Math.floor(Math.random() * _banner.length)]
+    //   );
+    // });
 
     if (
       this.transferState.hasKey(MYPLANLIST_KEY) ||

@@ -125,7 +125,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
   isChecked: string = 'checked';
   // スポット0件時のダミー表示
   //spotZero: PlanSpotCommon[];
-  spotZero:any[];
+  spotZero: any[];
   // 初期プラン
   initRow: MyPlanApp;
   // 作成中のプラン
@@ -338,7 +338,12 @@ export class MyplanComponent implements OnInit, OnDestroy {
   }
 
   // 編集・プレビュー切り替え
-  async onClickEdit(isAuto: boolean = false) {
+  //async onClickEdit(isAuto: boolean) {
+  async onClickEdit() {
+    if(this.row.isAuto && this.isEdit){
+      this.execAuto();
+    }
+
     // スポット数チェック
     if (this.isEdit && (this.isWarningCar || this.isWarningEkitan)) {
       let dialogRef = null;
@@ -359,14 +364,14 @@ export class MyplanComponent implements OnInit, OnDestroy {
         // 移動方法取得処理
         if (this.row.isTransferSearch) {
           this.loading = true;
-          this.myplanService.setTransfer(isAuto).then((result) => {
+          this.myplanService.setTransfer(this.isAuto).then((result) => {
             result.pipe(takeUntil(this.onDestroy$)).subscribe((r) => {
               if (r) {
                 this.setUserPicture(r);
                 // 変更を保存
                 this.registPlan();
                 // 最適化OFF
-                //this.row.isAuto = false;
+                this.row.isAuto = !this.row.isAuto;
                 this.loading = false;
                 if (!r.isCar && r.ekitanStatus !== '0') {
                   this.commonService.messageDialog('ErrorMsgEkitan')
@@ -453,7 +458,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.onChangeTransfer(event);
   }
 
-  onCheckedChange(e:any) {
+  onCheckedChange(e: any) {
     this.row.isAuto = e.target.checked;
     this.isAuto = e.target.checked;
   }
@@ -468,6 +473,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
 
   // 経路最適化
   onClickAuto() {
+    this.row.isAuto = !this.row.isAuto;
+    //this.execAuto();
+  }
+
+  execAuto() {
     // 最適化していないこと
     if (this.row.optimized) {
       //this.commonService.messageDialog('Optimized');
@@ -488,7 +498,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
     }
     if (cnt < 4) {
       this.commonService.messageDialog('ErrorMsgAuto');
-      this.isEdit = !this.isEdit
+      //this.isEdit = !this.isEdit
       return;
     }
 
@@ -507,12 +517,11 @@ export class MyplanComponent implements OnInit, OnDestroy {
       .subscribe((d: any) => {
         if (d === 'ok') {
           // 最適化ON
-          this.row.isAuto = true;
+          //this.row.isAuto = true;
           this.row.isTransferSearch = true;
-          this.onClickEdit(true);
         } else {
           // 最適化OFF
-          this.row.isAuto = false;
+          //this.row.isAuto = false;
           this.onChangeTransfer(event);
         }
       });
@@ -1010,7 +1019,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
             this.planService.transtimes(transfer);
           this.row.startPlanSpot.transflow =
             this.planService.transflows(transfer);
-        } catch {}
+        } catch { }
       }
     }
 
@@ -1093,7 +1102,7 @@ export class MyplanComponent implements OnInit, OnDestroy {
               this.planService.transtimes(transfer);
             this.row.planSpots[i].transflow =
               this.planService.transflows(transfer);
-          } catch {}
+          } catch { }
         }
       }
     }
@@ -1222,8 +1231,6 @@ export class MyplanComponent implements OnInit, OnDestroy {
     this.myplanService.registPlan().then((result) => {
       result.pipe(takeUntil(this.onDestroy$)).subscribe(async (r) => {
         //if(r){
-
-        console.log(r);
         const result = [];
         // プランメイン写真
         if (this.row.pictureFile) {
@@ -1268,8 +1275,8 @@ export class MyplanComponent implements OnInit, OnDestroy {
                     var file = this.commonService.blobToFile(
                       blob,
                       Date.now() +
-                        this.row.planSpots[i].planUserpictures[j].pictureFile
-                          .name
+                      this.row.planSpots[i].planUserpictures[j].pictureFile
+                        .name
                     );
                     // 画像保存処理
                     result.push(
