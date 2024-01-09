@@ -1012,6 +1012,25 @@ div.plandtl {
                 display: inline-block;
                 width: 32px;
                 height: 32px;
+                background: url("../../../assets/img/pop_area.svg");
+                background-repeat: no-repeat;
+              }
+            }
+
+            button.link-to-map {
+              box-shadow: none;
+              min-width: auto;
+              padding: 0;
+              width: 32px;
+              height: 32px;
+              line-height: initial;
+              margin-left: 6px;
+
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 32px;
+                height: 32px;
                 background: url("../../../assets/img/map-icon.svg");
                 background-repeat: no-repeat;
               }

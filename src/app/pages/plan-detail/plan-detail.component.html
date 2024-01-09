@@ -308,6 +308,13 @@
                       [ngClass]="{ on: item.isFavorite }"
                     ></button>
                     <button
+                      *ngIf="item.type !== 1"
+                      mat-button
+                      class="link-to-map"
+                      (click)="linktoSpot(item)"
+                    ></button>
+                    <button
+                      *ngIf="item.type === 1"
                       mat-button
                       class="link-to-spot"
                       (click)="linktoSpot(item)"
